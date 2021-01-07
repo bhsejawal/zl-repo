@@ -3,7 +3,7 @@ import { Router } from 'preact-router';
 import { Provider } from 'react-redux';
 
 import store from './redux/store';
-import Header from './components/header';
+import Header from './components/Header';
 
 // Code-splitting is automated for `routes` directory
 import Home from './routes/home';

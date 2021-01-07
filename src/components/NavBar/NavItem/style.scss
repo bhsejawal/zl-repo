@@ -1,0 +1,50 @@
+@import "../../../style/media-query";
+
+
+.navItem {
+  font-size: 13px;
+  line-height: 18px;
+  color: #535353;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+
+  @media screen and (max-width: #{$phone-portrait-width} - 1) {
+
+    a {
+      padding: 0px !important;
+    }
+
+    span {
+      display: none;
+    }
+  }
+
+
+  a {
+    color: #535353;
+    text-decoration: none;
+    display: inline-block;
+    padding: 0 15px;
+    min-width: 50px;
+    text-align: center;
+    text-decoration: none;
+    cursor: pointer;
+
+    @media screen and (min-width: #{$phone-portrait-width}) and (max-width: #{$phone-landscape-width - 1}) {
+
+      svg {
+        display: none !important;
+      }
+    }
+
+    svg {
+      margin-right: 6px;
+    }
+  }
+
+  a:hover {
+    color: #2E2D2D;
+  }
+}

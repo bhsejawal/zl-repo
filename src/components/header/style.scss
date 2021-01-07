@@ -3,46 +3,42 @@
   left: 0;
   top: 0;
   width: 100%;
-  height: 56px;
+  height: 60px;
   padding: 0;
-  background: #673AB7;
+  background: white;
   box-shadow: 0 0 5px rgba(41, 31, 31, .5);
   z-index: 50;
-}
+  display: flex;
+  justify-content: flex-end;
 
-.header h1 {
-  float: left;
-  margin: 0;
-  padding: 0 15px;
-  font-size: 24px;
-  line-height: 56px;
-  font-weight: 400;
-  color: #FFF;
-}
+  @media (max-width: 1024px) {
 
-.header nav {
-  float: right;
-  font-size: 100%;
-}
+    .logo {
+      position: static !important;
+      display: flex !important;
+      justify-content: flex-start !important;
+      padding-left: 20px !important;
+    }
+  }
 
-.header nav a {
-  display: inline-block;
-  height: 56px;
-  line-height: 56px;
-  padding: 0 15px;
-  min-width: 50px;
-  text-align: center;
-  background: rgba(255,255,255,0);
-  text-decoration: none;
-  color: #FFF;
-  will-change: background-color;
-}
+  .logo {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    display: flex;
+    flex-grow: 1;
+    justify-content: center;
+    align-items: center;
+    pointer-events: none;
+  }
 
-.header nav a:hover,
-.header nav a:active {
-  background: rgba(0,0,0,.2);
-}
-
-.header nav a.active {
-  background: rgba(0,0,0,.4);
+  .userImageSection {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    margin: 0px 15px;
+  }
 }

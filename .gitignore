@@ -1,3 +1,35 @@
-node_modules
-/build
-/*.log
+
+# Dependency directories
+node_modules/
+
+# Build folder
+build
+
+# Build Files
+size-plugin.json
+
+#DS_STORE
+.DS_STORE
+
+# Logs
+logs
+*.log
+npm-debug.log*
+
+# Runtime data
+pids
+*.pid
+*.seed
+*.pid.lock
+
+# dotenv environment variables file
+.env
+
+# webstorm files
+.idea
+
+# Coverage directory used by jest
+coverage
+
+# sonnar scanner directory
+.scannerwork

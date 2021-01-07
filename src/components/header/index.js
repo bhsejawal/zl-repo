@@ -1,13 +1,20 @@
 import { h } from 'preact';
-import { Link } from 'preact-router/match';
+
+import NavBar from '../NavBar';
+import ZoolifeLogo from '../ZoolifeLogo';
+import AnimalIcon from './AnimalIcon';
+
 import style from './style.scss';
 
 const Header = () => (
   <header className={style.header}>
-    <h1>Zoolife</h1>
-    <nav>
-      <Link activeClassName={style.active} href="/">Home</Link>
-    </nav>
+    <div className={style.logo}>
+      <ZoolifeLogo />
+    </div>
+    <NavBar />
+    <div className={style.userImageSection}>
+      <AnimalIcon />
+    </div>
   </header>
 );
 
