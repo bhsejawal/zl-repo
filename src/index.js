@@ -4,6 +4,9 @@ import { Provider } from 'react-redux';
 
 import store from './redux/store';
 import Header from './components/Header';
+import DesignSystem from './routes/designSystem';
+
+import './style/globalStyle.scss';
 
 // Code-splitting is automated for `routes` directory
 import Home from './routes/home';
@@ -16,6 +19,7 @@ const App = () => (
       <Header />
       <Router>
         <Home path="/" />
+        <DesignSystem path="/design" />
       </Router>
     </div>
   </Provider>
