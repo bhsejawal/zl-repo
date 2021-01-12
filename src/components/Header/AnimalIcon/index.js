@@ -22,4 +22,6 @@ const AnimalIcon = ({ animal, color }) => {
   )
 }
 
-export default connect(({ user: { animal, color } }) => ({ animal, color }))(AnimalIcon);
+export default connect(
+  ({ user: { viewer: { animal, color } } }) => ({ animal, color }),
+)(AnimalIcon);

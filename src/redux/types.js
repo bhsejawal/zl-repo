@@ -1,2 +1,4 @@
-// eslint-disable-next-line import/prefer-default-export
 export const TOGGLE_HABITAT = 'TOGGLE_HABITAT';
+
+export const SET_USER_DATA = 'SET_USER_DATA';
+export const UNSET_USER_DATA = 'UNSET_USER_DATA';

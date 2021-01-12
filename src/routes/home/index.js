@@ -17,6 +17,7 @@ const Home = ({ hasHabitat, toggleHabitatAction }) => (
   </div>
 );
 
-export default connect(({ hasHabitat }) => ({ hasHabitat }), {
-  toggleHabitatAction: toggleHabitat,
-})(Home);
+export default connect(
+  ({ habitat: { hasHabitat } }) => ({ hasHabitat }),
+  { toggleHabitatAction: toggleHabitat },
+)(Home);

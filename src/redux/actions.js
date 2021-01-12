@@ -1,6 +1,10 @@
-import { TOGGLE_HABITAT } from './types';
+import { SET_USER_DATA, TOGGLE_HABITAT } from './types';
 
-// eslint-disable-next-line import/prefer-default-export
 export const toggleHabitat = () => ({
   type: TOGGLE_HABITAT,
+});
+
+export const setUserData = ({ username, roles }) => ({
+  type: SET_USER_DATA,
+  payload: { username, roles },
 });

@@ -3,8 +3,10 @@ import { Router } from 'preact-router';
 import { Provider } from 'react-redux';
 
 import store from './redux/store';
+
 import Header from './components/Header';
 import DesignSystem from './routes/designSystem';
+import Login from './routes/login';
 
 import './style/globalStyle.scss';
 
@@ -12,6 +14,7 @@ import './style/globalStyle.scss';
 import Home from './routes/home';
 import Habitat from './routes/habitat';
 
+// TODO: this is not working - should be fixed
 import style from './style/index.scss';
 
 const App = () => (
@@ -22,6 +25,7 @@ const App = () => (
         <Home path="/" exact />
         <Habitat path="/habitat" />
         <DesignSystem path="/design" />
+        <Login path="/login" />
       </Router>
     </div>
   </Provider>
