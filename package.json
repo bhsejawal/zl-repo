@@ -61,7 +61,8 @@
     "react-redux": "^7.2.2",
     "redux": "^4.0.5",
     "redux-thunk": "^2.3.0",
-    "sass-loader": "^10.1.0"
+    "sass-loader": "^10.1.0",
+    "webrtc-adapter": "^7.7.0"
   },
   "jest": {
     "preset": "jest-preset-preact",

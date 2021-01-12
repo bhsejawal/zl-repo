@@ -2,7 +2,6 @@ import { h } from 'preact';
 import { connect } from 'react-redux';
 
 import { toggleHabitat } from '../../redux/actions';
-
 import style from './style.scss';
 
 const Home = ({ hasHabitat, toggleHabitatAction }) => (

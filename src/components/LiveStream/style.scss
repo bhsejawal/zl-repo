@@ -1,0 +1,30 @@
+@import "../../style/media-query";
+
+.streamContainer {
+  flex-grow: 1;
+  position: relative;
+
+  @media screen and (max-width: #{$phone-portrait-width}) {
+
+    .fallbackMessage {
+      padding: 10px !important;
+      font-size: 12px !important;
+    }
+  }
+
+  .fallbackMessage {
+    position: absolute;
+    top: 0;
+    left: 0;
+    background: red;
+    height: 100%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 60px;
+    background: white;
+    opacity: .8;
+  }
+}
+

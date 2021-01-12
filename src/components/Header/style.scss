@@ -1,3 +1,5 @@
+@import "../../style/media-query";
+
 .header {
   position: fixed;
   left: 0;
@@ -11,7 +13,7 @@
   display: flex;
   justify-content: flex-end;
 
-  @media (max-width: 1024px) {
+  @media screen and (max-width: #{$tablet-landscape-width}) {
 
     .logo {
       position: static !important;

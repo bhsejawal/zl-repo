@@ -10,6 +10,7 @@ import './style/globalStyle.scss';
 
 // Code-splitting is automated for `routes` directory
 import Home from './routes/home';
+import Habitat from './routes/habitat';
 
 import style from './style/index.scss';
 
@@ -18,7 +19,8 @@ const App = () => (
     <div className={style.app}>
       <Header />
       <Router>
-        <Home path="/" />
+        <Home path="/" exact />
+        <Habitat path="/habitat" />
         <DesignSystem path="/design" />
       </Router>
     </div>
