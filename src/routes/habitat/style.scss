@@ -1,4 +1,7 @@
 .habitat {
-  display: flex;
   padding-top: 56px;
+
+  .topSection {
+    display: flex;
+  }
 }

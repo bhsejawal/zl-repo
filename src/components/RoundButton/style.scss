@@ -1,0 +1,24 @@
+.roundButton {
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  display: inline-flex;
+  cursor: pointer;
+
+  .btnWrapper {
+    position: relative;
+    width: 100%;
+    height: 100%;
+
+    svg {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translateX(-50%) translateY(-50%);
+    }
+  }
+
+  &:hover {
+    opacity: .85;
+  }
+}

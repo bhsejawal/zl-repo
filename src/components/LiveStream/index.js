@@ -2,6 +2,7 @@ import { h } from 'preact';
 import { useRef } from 'preact/hooks';
 
 import { useWebRTCStream, streamStatuses } from './hooks/useWebRTCStream';
+import TakeSnapshotButton from '../TakeSnapshotButton';
 
 import style from './style.scss';
 
@@ -43,6 +44,7 @@ const Stream = ({ width = 620, height = 355, streamId }) => {
           </p>
         </div>
       )}
+      <TakeSnapshotButton />
     </div>
   );
 }
