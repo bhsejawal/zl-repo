@@ -1,7 +1,18 @@
+@import "./variables";
+
 .habitat {
   padding-top: 56px;
 
-  .topSection {
-    display: flex;
-  }
+}
+
+.topSection {
+  display: flex;
+}
+
+.middleSection {
+  padding: 40px $ypadding;
+}
+
+.bottomSection {
+  padding: 0 $ypadding;
 }

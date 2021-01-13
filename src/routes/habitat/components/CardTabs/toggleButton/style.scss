@@ -1,0 +1,23 @@
+.btn {
+  font-family: Avenir;
+  background-color: transparent;
+  border: 0;
+  cursor: pointer;
+  border-bottom: 3px solid transparent;
+  color: #757575;
+  padding: 5px 0;
+
+  &:hover {
+    color: #535353;
+  }
+
+  &:active {
+    color: #2E2D2D;
+  }
+
+  &.active {
+    border-bottom: 3px solid var(--blue);
+    color: var(--blue);
+  }
+}
+

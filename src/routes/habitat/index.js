@@ -3,8 +3,9 @@ import { h } from 'preact';
 import LiveStream from '../../components/LiveStream';
 import Chat from './components/Chat';
 import NextTalkBar from './components/NextTalkBar';
-import GlobalsContextProvider from "../../components/GlobalsContextProvider";
+import CardTabs from './components/CardTabs';
 
+import GlobalsContextProvider from "../../components/GlobalsContextProvider";
 import { useWindowResize } from '../../hooks';
 
 import style from './style.scss';
@@ -24,6 +25,14 @@ const Habitat = () => {
           <NextTalkBar width={sideBarWidth} height={height} />
           <LiveStream width={streamWidth} height={height} streamId="384199109141848371717542" />
           <Chat width={chatWidth} height={height} />
+        </div>
+
+        <div className={style.middleSection}>
+          middle
+        </div>
+
+        <div className={style.bottomSection}>
+          <CardTabs />
         </div>
       </div>
     </GlobalsContextProvider>
