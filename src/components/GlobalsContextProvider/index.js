@@ -8,7 +8,8 @@ const GlobalsContextProvider = ({ children }) => {
   useEffect(() => {
     const onConnect = () => {
       console.log('socket connected');
-      socket.emit('joinRoom', { room: 'zlRoom', userId: 'zlUserId' });
+      // this needs to be exposed, we need to be able to choose which room we're connecting;
+      socket.emit('joinRoom', { room: '58347159', userId: 'zlUserId' });
     };
 
     if (socket) {

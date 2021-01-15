@@ -1,0 +1,23 @@
+.cameraPinContainer {
+  width: 35px;
+  height: 58px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: rgba(22, 73, 77, .9);
+  border-radius: 100px;
+
+  .cameraPin {
+    width: 30px;
+    cursor: pointer;
+  }
+}
+
+.dragged {
+  position: absolute;
+  top: -500px;
+
+  img {
+    height: 40px;
+  }
+}

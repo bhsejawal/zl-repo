@@ -1,8 +1,8 @@
 import { combineReducers } from "redux";
-import habitat from './habitat';
+import mainStream from './mainStream';
 import user from './user';
 
 export default combineReducers({
-  habitat,
+  mainStream,
   user,
 });

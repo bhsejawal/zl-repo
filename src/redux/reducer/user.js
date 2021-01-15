@@ -1,4 +1,8 @@
 import { SET_USER_DATA, UNSET_USER_DATA } from "../types";
+import { generateUserData } from '../../helpers';
+
+// mock data for test, will generate random user, color and animal on every load
+const initialViewer = generateUserData();
 
 const initialState = {
   logged: false,
@@ -12,10 +16,7 @@ const initialState = {
   permissions: [],
 
   // currently holding mock data. This should be stored in db
-  viewer: {
-    animal: 'dog',
-    color: '#7033ff',
-  },
+  viewer: initialViewer,
 };
 
 export default (state = initialState, { type, payload }) => {
