@@ -7,6 +7,8 @@ import { faHeart } from '@fortawesome/pro-light-svg-icons';
 
 import profileMask from '../../../../../assets/profile-mask.svg';
 
+import TextEditor from '../../../../../components/TextEditor';
+
 import style from './style.scss';
 
 const Info = ({ info: { profileImg, name, zooName }, liked = false }) => {
@@ -35,7 +37,16 @@ const Info = ({ info: { profileImg, name, zooName }, liked = false }) => {
       </div>
 
       <div>
-        <h4 className={style.name}>{name}</h4>
+        <TextEditor
+          postToUrl="/"
+          textProp="cardTitle"
+          minLen={10}
+          maxLen={80}
+          initialText={name}
+        >
+          {(text) => <h4 className={style.name}>{text}</h4>}
+        </TextEditor>
+
         <p className={style.zooNameWrapper}>
           at
           {' '}
