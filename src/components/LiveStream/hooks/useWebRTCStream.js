@@ -19,7 +19,12 @@ export const useWebRTCStream = (streamId, videoContainer) => {
   const [isWebsocketConnected, setIsWebsocketConnected] = useState(false);
 
   useEffect(() => {
-    if (streamId && videoContainer.current && !isWebsocketConnected) {
+    if (
+      streamId
+      && videoContainer.current
+      && !isWebsocketConnected
+      && streamStatus === streamStatuses.CLOSED
+    ) {
       setStreamStatus(streamStatuses.INITIALIZING);
       webRTCAdaptor = new WebRTCAdaptor({
         websocket_url: MEDIASERVER_SOCKET_URL,
