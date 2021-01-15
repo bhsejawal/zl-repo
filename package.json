@@ -54,6 +54,7 @@
     "@fortawesome/pro-solid-svg-icons": "^5.15.1",
     "@fortawesome/react-fontawesome": "^0.1.14",
     "classnames": "^2.2.6",
+    "grommet": "^2.16.2",
     "node-sass": "^5.0.0",
     "preact": "^10.5.9",
     "preact-cli-plugin-env-vars": "^1.2.1",
@@ -64,6 +65,7 @@
     "redux-thunk": "^2.3.0",
     "sass-loader": "^10.1.0",
     "socket.io-client": "^2.3.0",
+    "styled-components": "^5.2.1",
     "url-join": "^4.0.1",
     "webrtc-adapter": "^7.7.0"
   },
