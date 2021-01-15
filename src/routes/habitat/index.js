@@ -14,10 +14,10 @@ import style from './style.scss';
 const Habitat = () => {
   const { width: windowWidth } = useWindowResize();
 
-  const streamWidth = windowWidth * 0.75;
-  const chatWidth = windowWidth * 0.15;
-  const sideBarWidth = windowWidth * 0.1;
-  const height = (windowWidth * 0.75) * 0.5625;
+  const sideBarWidth = 84;
+  const chatWidth = 285;
+  const streamWidth = windowWidth - sideBarWidth - chatWidth;
+  const height = streamWidth * 0.5625;
 
   return (
     <GlobalsContextProvider>

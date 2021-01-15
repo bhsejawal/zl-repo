@@ -1,0 +1,17 @@
+.chat {
+  background-color: var(--turquoise);
+  width: 285px;
+}
+
+.chatNavigator {
+  padding: 0 15px;
+  height: 36px;
+  font-size: 13px;
+  line-height: 36px;
+  color: white;
+  display: flex;
+
+  > span:first-child {
+    margin-right: auto;
+  }
+}

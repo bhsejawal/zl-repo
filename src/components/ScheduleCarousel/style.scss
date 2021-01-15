@@ -1,0 +1,32 @@
+$dotsHeight: 27px;
+
+.container {
+  position: relative;
+  background-color: transparent;
+  padding-bottom: $dotsHeight;
+  line-height: $dotsHeight;
+  user-select: none;
+
+  .dots {
+
+    :global {
+
+      li {
+        display: flex;
+        align-items: center;
+        height: $dotsHeight;
+
+        &:not(.react-multi-carousel-dot--active) {
+          opacity: .5;
+        }
+
+        button {
+          border: 0;
+          background-color: white;
+          width: 6px;
+          height: 6px;
+        }
+      }
+    }
+  }
+}

@@ -25,6 +25,8 @@
   --mediumGrey: #CDCDCD;
   --lightGrey: #EBEBEB;
   --white: #FFFFFF;
+
+  --headerHeight: 60px
 }
 
 html,
@@ -94,4 +96,27 @@ a {
   &:disabled {
     color: var(--mediumGrey);
   }
+}
+
+@keyframes shimmerAnimation {
+
+  0% {
+    background-position: -1200px 0;
+  }
+
+  100% {
+    background-position: 1200px 0;
+  }
+}
+
+.shimmer {
+  animation-duration: 2.2s;
+  animation-fill-mode: forwards;
+  animation-iteration-count: infinite;
+  animation-name: shimmerAnimation;
+  animation-timing-function: linear;
+  background: #ddd;
+  background: linear-gradient(270deg, #EBEBEB 0%, #CDCDCD 100%);
+  border-radius: 100px;
+  background-size: 1200px 100%;
 }

@@ -1,0 +1,87 @@
+$cardWidth: 240px;
+
+.card {
+  display: block;
+  width: $cardWidth;
+  height: 140px;
+  margin: auto;
+
+  .wrapper {
+    width: $cardWidth;
+    height: 140px;
+    background-color: white;
+    border-radius: 5px;
+    display: flex;
+    padding: 15px;
+  }
+
+  .content {
+    display: flex;
+    flex-direction: column;
+    width: 140px;
+  }
+
+  .header {
+    font-size: 10px;
+    line-height: 10px;
+    margin-bottom: 10px;
+    color: var(--grey);
+  }
+
+  .description {
+    font-size: 13px;
+    line-height: 18px;
+    margin: 0 0 auto 0;
+  }
+
+  .image {
+    display: flex;
+    margin: auto 0 auto auto;
+    flex-direction: column;
+    justify-content: center;
+
+    img {
+      max-width: 64px;
+    }
+  }
+}
+
+.loading {
+
+  .image {
+    opacity: 0;
+  }
+
+  .header {
+    height: 12px;
+    width: 102px;
+    color: transparent !important;
+  }
+
+  .description {
+    height: 12px;
+    position: relative;
+    width: 140px;
+    color: transparent !important;
+
+    &:after {
+      content: "";
+      margin-top: 30px;
+      position: absolute;
+      bottom: -20px;
+      background: inherit;
+      border-radius: inherit;
+      right: 0;
+      left: 0;
+      height: 12px;
+      width: 113px;
+    }
+  }
+
+  button {
+    color: transparent !important;
+    border: 0 !important;
+    cursor: default !important;
+    pointer-events: none;
+  }
+}
