@@ -4,6 +4,7 @@ import LiveStream from '../../components/LiveStream';
 import Chat from './components/Chat';
 import NextTalkBar from './components/NextTalkBar';
 import CardTabs from './components/CardTabs';
+import StreamProfile from './components/StreamProfile';
 
 import GlobalsContextProvider from "../../components/GlobalsContextProvider";
 import { useWindowResize } from '../../hooks';
@@ -28,7 +29,7 @@ const Habitat = () => {
         </div>
 
         <div className={style.middleSection}>
-          middle
+          <StreamProfile />
         </div>
 
         <div className={style.bottomSection}>

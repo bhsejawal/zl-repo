@@ -1,0 +1,14 @@
+.profile {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 150px;
+}
+
+.error {
+  /* We need to update this when design team have them ready */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: var(--redDark);
+}

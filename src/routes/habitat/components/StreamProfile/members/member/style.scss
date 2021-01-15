@@ -1,0 +1,20 @@
+.member {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.text {
+  color: var(--charcoalLight);
+  font-size: 12px;
+  line-height: 18px;
+  text-align: center;
+  margin: 0px 10px;
+  white-space: nowrap;
+}
+
+.profileImg {
+  border-radius: 100%;
+  border: 5px solid #fff;
+  margin: 2px 10px;
+}

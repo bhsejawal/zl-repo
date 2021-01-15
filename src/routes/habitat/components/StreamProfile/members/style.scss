@@ -1,0 +1,49 @@
+$arrowMargin: 10px;
+
+.wrapper {
+  border: 1px solid #EBEBEB;
+  border-bottom: 0;
+  border-top: 0;
+  padding: 0 $arrowMargin;
+  margin: 0 15px;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  flex-grow: 1;
+  overflow-x: hidden;
+}
+
+.members {
+  overflow-x: hidden;
+  display: flex;
+  flex-grow: 1;
+}
+
+.hidden > * {
+  opacity: 0;
+}
+
+.stretch {
+  justify-content: space-around;
+}
+
+.scroll {
+  justify-content: flex-start;
+}
+
+.arrow {
+  cursor: pointer;
+}
+
+.arrowLeft {
+  margin-right: $arrowMargin;
+}
+
+.arrowRight {
+  margin-left: $arrowMargin;
+}
+
+.arrowDisabled {
+  pointer-events: none;
+  color: #757575;
+}
