@@ -5,6 +5,7 @@ import { Provider } from 'react-redux';
 import store from './redux/store';
 
 import Header from './components/Header';
+import AdminRouter from './shared/AdminRouter';
 import DesignSystem from './routes/designSystem';
 import Login from './routes/login';
 
@@ -26,6 +27,7 @@ const App = () => (
         <Habitat path="/habitat" />
         <DesignSystem path="/design" />
         <Login path="/login" />
+        <AdminRouter path="/admin/:*" />
       </Router>
     </div>
   </Provider>

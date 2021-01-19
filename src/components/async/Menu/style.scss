@@ -1,0 +1,21 @@
+.menuContainer {
+  height: 100%;
+  display: flex;
+  margin-right: auto;
+
+  .wrapper {
+    display: flex;
+    justify-items: center;
+    font-family: "Avenir", "Arial", "Roboto", "Helvetica Neue", sans-serif;
+  }
+
+  button {
+    color: var(--charcoalLight);
+    padding-left: 12px;
+
+    &:focus {
+      box-shadow: none;
+    }
+  }
+}
+
