@@ -7,7 +7,7 @@ import { faHeart } from '@fortawesome/pro-light-svg-icons';
 
 import profileMask from '../../../../../assets/profile-mask.svg';
 
-import TextEditor from '../../../../../components/TextEditor';
+import TextEditor from '../../../../../components/AdminEditWrappers/TextEditor';
 
 import style from './style.scss';
 

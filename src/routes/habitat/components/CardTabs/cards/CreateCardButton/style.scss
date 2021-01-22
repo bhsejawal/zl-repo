@@ -1,0 +1,11 @@
+@import "../variables.scss";
+
+.card > div {
+  width: 230px;
+  height: $card-height;
+  border-radius: 10px;
+  border: 1px solid var(--lightBlue);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

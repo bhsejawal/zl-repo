@@ -1,26 +1,52 @@
 import { h } from 'preact';
-import { useCallback, useState } from 'preact/hooks';
+import { useCallback, useEffect, useState } from 'preact/hooks';
+import { connect } from 'react-redux';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faSpinner } from '@fortawesome/pro-solid-svg-icons';
 
-import { MEET, INFO, QUICK_LOOK } from './constants';
+import { QUICK_LOOK } from './constants';
+import { setActiveTab, setCards } from './actions';
+import { fetchCards } from './api';
 
 import Tabs from './tabs';
 import Shortcuts from './shortcuts';
+import CardEditor from './CardEditor';
+import Card1 from './cards/Card1';
+// eslint-disable-next-line
+import CreateCardButton from 'async!./cards/CreateCardButton';
 
 import style from './style.scss';
 
-// TODO: remove these mock tabs when we have server side implementation
-const tabs = {
-  [MEET]: ['tab1', 'tab2'],
-  [INFO]: ['tab3'],
-}
-
-const CardTabs = () => {
-  const [activeTab, setActiveTab] = useState(MEET);
+const CardTabs = ({
+  cards = [],
+  activeTab,
+  isAdmin,
+  setCardsAction,
+  setActiveTabAction,
+}) => {
   const [activeShortcut, setActiveShortcut] = useState(QUICK_LOOK);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const load = async () => {
+      try {
+        setLoading(true);
+        const { cards: newCards } = await fetchCards('mockCamID', activeTab);
+        setCardsAction(newCards);
+      } catch (err) {
+        // TODO: implement error UI
+        console.error(err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    load();
+  }, [activeTab, setCardsAction]);
 
   const onTabClick = useCallback(({ target }) => {
-    setActiveTab(target.dataset.value);
-  }, [setActiveTab]);
+    setActiveTabAction(target.dataset.value);
+  }, [setActiveTabAction]);
 
   const onShortcutClick = useCallback(({ target }) => {
     setActiveShortcut(target.dataset.value);
@@ -31,10 +57,34 @@ const CardTabs = () => {
       <Tabs active={activeTab} onClick={onTabClick} />
 
       <div className={style.cards}>
-        {/* NOTE: we'll probably completely change this */}
-        {tabs[activeTab] && tabs[activeTab].map((tl) => (
-          <div className={style.card}>{tl}</div>
-        ))}
+        <div>
+          {loading && (
+            <div className={style.loading}>
+              <FontAwesomeIcon icon={faSpinner} spin size="2x" />
+            </div>
+          )}
+
+          {!loading && (
+            cards.map((card) => (
+              <CardEditor card={card}>
+                {card.type === 'type1' && (
+                  <Card1
+                    tag={card.tag}
+                    img={card.data.img}
+                    title={card.data.title}
+                    text={card.data.text}
+                  />
+                )}
+              </CardEditor>
+            ))
+          )}
+
+          {/* this span is a hack for async-loader */}
+          {/* seems like there's a bug, and async loader component can't find previous sibling */}
+          <span />
+
+          {!loading && isAdmin && <CreateCardButton />}
+        </div>
       </div>
 
       <Shortcuts active={activeShortcut} onClick={onShortcutClick} />
@@ -42,4 +92,21 @@ const CardTabs = () => {
   );
 };
 
-export default CardTabs;
+export default connect(
+  ({
+    habitat: {
+      cards: {
+        items: cards,
+        activeTab,
+      },
+    },
+  }) => ({
+    cards,
+    activeTab,
+    isAdmin: true,
+  }),
+  {
+    setCardsAction: setCards,
+    setActiveTabAction: setActiveTab,
+  },
+)(CardTabs);

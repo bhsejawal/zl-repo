@@ -22,3 +22,11 @@ export const generateUserData = () => ({
   username: generateRandomName(),
   userId: generateUUID(),
 });
+
+export const isValidUrl = (url) => {
+  try {
+    return !!(new URL(url));
+  } catch {
+    return false;
+  }
+};

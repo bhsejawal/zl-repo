@@ -1,4 +1,5 @@
 import { h } from 'preact';
+import { useMemo, useState } from 'preact/hooks';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTimes } from '@fortawesome/pro-solid-svg-icons';
 import {
@@ -10,7 +11,6 @@ import {
   FormField,
   TextArea,
 } from 'grommet';
-import { useMemo, useState } from 'preact/hooks';
 
 const TEXT_INPUT = 'text'
 

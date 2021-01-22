@@ -1,12 +1,11 @@
 import { cloneElement, h } from 'preact';
 import { useCallback, useRef, useState } from 'preact/hooks';
 import { connect } from 'react-redux';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEdit } from '@fortawesome/pro-solid-svg-icons';
 
-import EditModalLoader from '../async/EditModalLoader';
+import EditButton from '../EditButton';
+import TextEditorLoader from '../../async/TextEditorLoader';
 
-import style from './style.scss';
+import style from '../wrapper.scss';
 
 const TextEditor = ({
   isAdmin,
@@ -39,18 +38,12 @@ const TextEditor = ({
 
   return (
     <div className={style.wrapper}>
-      {cloneElement(children(text), { ref: childRef }, text)}
+      {cloneElement(children(text), { ref: childRef })}
 
-      <button
-        type="button"
-        className={style.editBtn}
-        onClick={onEditBtnClick}
-      >
-        <FontAwesomeIcon icon={faEdit} />
-      </button>
+      <EditButton onClick={onEditBtnClick} />
 
       {/* TODO: fix loading - it displays empty h4 element */}
-      <EditModalLoader
+      <TextEditorLoader
         initialText={text}
         postToUrl={postToUrl}
         textProp={textProp}

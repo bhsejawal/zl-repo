@@ -1,11 +1,11 @@
 import { h } from 'preact';
 import { Suspense, lazy } from 'preact/compat';
 
-import FallbackLoader from './FallbackLoader';
+import FallbackLoader from '../../FallbackLoader';
 
 const EditModal = lazy(() => import('async!./EditModal'));
 
-const EditModalLoader = ({
+const TextEditorLoader = ({
   initialText,
   postToUrl,
   textProp,
@@ -36,4 +36,4 @@ const EditModalLoader = ({
   );
 };
 
-export default EditModalLoader;
+export default TextEditorLoader;

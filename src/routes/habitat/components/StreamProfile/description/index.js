@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faShieldCheck } from '@fortawesome/pro-light-svg-icons';
 
 import style from './style.scss';
-import TextEditor from '../../../../../components/TextEditor';
+import TextEditor from '../../../../../components/AdminEditWrappers/TextEditor';
 
 const Description = ({ text: descriptionText }) => (
   <div className={style.desc}>

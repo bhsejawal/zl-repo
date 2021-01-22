@@ -1,0 +1,21 @@
+@import "../variables.scss";
+
+.card {
+  width: 250px;
+  height: $card-height;
+  position: relative;
+  border-radius: 10px;
+  padding: 25px 20px 10px 20px;
+}
+
+.tag {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  border-radius: 5px;
+  font-size: 10px;
+  line-height: 14px;
+  font-weight: 900;
+  padding: 3px 8px;
+  color: #fff;
+}
