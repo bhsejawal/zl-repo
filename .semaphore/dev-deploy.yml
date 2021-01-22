@@ -1,0 +1,28 @@
+version: v1.0
+name: Dev Deploy
+agent:
+  machine:
+    type: e1-standard-2
+    os_image: ubuntu1804
+blocks:
+  - name: S3 Deploy
+    dependencies: []
+    task:
+      secrets:
+        - name: aws-website
+      jobs:
+        - name: Copy to S3
+          commands:
+            - checkout
+            - cache restore zl-app-build-$SEMAPHORE_GIT_SHA
+            - aws s3 sync "build" "s3://zl.brizi.tech/app/" --acl "public-read"
+  - name: AWS Invalidation
+    dependencies:
+      - S3 Deploy
+    task:
+      secrets:
+        - name: aws-website
+      jobs:
+        - name: Invalidation
+          commands:
+           - aws cloudfront create-invalidation --distribution-id E1VOJTGLW3E8KB --paths "/*"

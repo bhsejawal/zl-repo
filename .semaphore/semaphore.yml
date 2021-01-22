@@ -1,0 +1,92 @@
+version: v1.0
+name: Lint, Test, and SonarCloud Analysis
+agent:
+  machine:
+    type: e1-standard-2
+    os_image: ubuntu1804
+blocks:
+  - name: Lint and test
+    task:
+      jobs:
+        - name: ESLint
+          commands:
+            - npm run lint
+        - name: Unit Tests
+          commands:
+            - npm run test
+            - cache store zl-app-test-coverage-$SEMAPHORE_GIT_SHA coverage
+      prologue:
+        commands:
+          - nvm install 12
+          - node --version
+          - npm --version
+          - checkout
+          - >-
+            cache restore zl-app-node-modules-$SEMAPHORE_GIT_BRANCH-$(checksum
+            package-lock.json)
+          - npm install
+          - >-
+            cache store zl-app-node-modules-$SEMAPHORE_GIT_BRANCH-$(checksum
+            package-lock.json) node_modules
+          - cp .env.sample .env
+    dependencies: []
+  - name: Build
+    task:
+      jobs:
+        - name: Preact Build
+          commands:
+            - npm run build
+            - cache store zl-app-build-$SEMAPHORE_GIT_SHA build
+      prologue:
+        commands:
+          - nvm install 12
+          - node --version
+          - npm --version
+          - checkout
+          - >-
+            cache restore zl-app-node-modules-$SEMAPHORE_GIT_BRANCH-$(checksum
+            package-lock.json)
+          - npm install
+          - >-
+            cache store zl-app-node-modules-$SEMAPHORE_GIT_BRANCH-$(checksum
+            package-lock.json) node_modules
+          - cp .env.sample .env
+    dependencies:
+      - Lint and test
+  - name: Static Code Analysis
+    task:
+      env_vars:
+        - name: JAVA_HOME
+          value: /usr/lib/jvm/java-11-openjdk-amd64
+      prologue:
+        commands:
+          - nvm install 12
+          - node --version
+          - npm --version
+          - checkout
+          - >-
+            cache restore zl-app-node-modules-$SEMAPHORE_GIT_BRANCH-$(checksum
+            package-lock.json)
+          - npm install
+          - >-
+            cache store zl-app-node-modules-$SEMAPHORE_GIT_BRANCH-$(checksum
+            package-lock.json) node_modules
+          - cp .env.sample .env
+          - sudo apt-get update
+          - sudo apt-get install -y openjdk-11-jre-headless openjdk-11-jdk-headless
+          - cache restore zl-app-test-coverage-$SEMAPHORE_GIT_SHA
+      jobs:
+        - name: Sonar Scanner
+          commands:
+            - npx sonar-scanner -D "sonar.pullrequest.key=$SEMAPHORE_GIT_PR_NUMBER" -D "sonar.pullrequest.branch=$SEMAPHORE_GIT_BRANCH"
+    dependencies:
+      - Lint and test
+    skip:
+      when: pull_request !~ '.*'
+execution_time_limit:
+  minutes: 10
+promotions:
+  - name: Dev deploy
+    pipeline_file: dev-deploy.yml
+    auto_promote:
+      when: "result = 'passed' and branch = 'master'"
