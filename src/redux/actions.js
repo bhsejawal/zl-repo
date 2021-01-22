@@ -4,6 +4,8 @@ import {
   REMOVE_USER_INTERACTION,
   TOGGLE_IS_STREAM_PLAYING,
   TOGGLE_SHOW_EMOJI_BASKET,
+  ADD_MESSAGE,
+  CLEAR_MESSAGES,
 } from './types';
 
 const DEFAULT_INTERACTION_TIMEOUT = 3000;
@@ -29,3 +31,19 @@ export const addUserInteraction = (payload) => (dispatch) => {
 
 export const toggleIsStreamPlaying = () => ({ type: TOGGLE_IS_STREAM_PLAYING });
 export const toggleShowEmojiBasket = () => ({ type: TOGGLE_SHOW_EMOJI_BASKET });
+
+let messageId = 0;
+
+const addChatMessage = (message) => ({
+  type: ADD_MESSAGE,
+  payload: message,
+});
+
+export const addMessage = (message) => (dispatch) => {
+  messageId += 1;
+  dispatch(addChatMessage({ message, messageId}));
+}
+
+export const clearMessages = () => ({
+  type: CLEAR_MESSAGES,
+});

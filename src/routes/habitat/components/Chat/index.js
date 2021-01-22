@@ -2,6 +2,7 @@ import { h } from 'preact';
 import { faLongArrowAltRight } from '@fortawesome/pro-regular-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import ScheduleCarousel from '../../../../components/ScheduleCarousel';
+import ChatComponent from '../../../../components/Chat';
 
 import style from './style.scss';
 
@@ -22,6 +23,7 @@ const Chat = ({ height, width }) => (
       </span>
     </div>
     <ScheduleCarousel />
+    <ChatComponent />
   </div>
 );
 

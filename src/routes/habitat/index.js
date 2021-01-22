@@ -22,7 +22,7 @@ const Habitat = () => {
   return (
     <GlobalsContextProvider>
       <div className={style.habitat}>
-        <div className={style.topSection}>
+        <div className={style.topSection} style={{ height, maxHeight: height }}>
           <NextTalkBar width={sideBarWidth} height={height} />
           <LiveStream width={streamWidth} height={height} streamId="384199109141848371717542" interactive />
           <Chat width={chatWidth} height={height} />

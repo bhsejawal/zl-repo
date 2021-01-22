@@ -2,7 +2,7 @@ import { h } from 'preact';
 
 import NavBar from '../NavBar';
 import ZoolifeLogo from '../ZoolifeLogo';
-import AnimalIcon from './AnimalIcon';
+import AnimalIcon from '../AnimalIcon';
 import Menu from '../async/Menu';
 
 import style from './style.scss';

@@ -1,6 +1,8 @@
 .chat {
   background-color: var(--turquoise);
   width: 285px;
+  display: flex;
+  flex-direction: column;
 }
 
 .chatNavigator {

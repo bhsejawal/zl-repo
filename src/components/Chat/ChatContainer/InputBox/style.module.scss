@@ -1,0 +1,41 @@
+.inputBox {
+  display: flex;
+  background-color: #037164;;
+  padding: 10px;
+
+  .inputContainer {
+    display: flex;
+    width: 100%;
+    position: relative;
+
+    input {
+      border-radius: 100px;
+      flex-grow: 1;
+      font-size: 14px;
+      border: 0;
+      outline: none;
+      padding: 10px;
+      box-sizing: content-box;
+
+      &:placeholder {
+        color: white;
+      }
+    }
+
+  }
+}
+
+.SendButton {
+  padding: 10px;
+  margin-left: 10px;
+  color: #FFFFFF;
+  background: rgba(212, 27, 44, 1);
+  border-radius: 100px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 0px;
+  height: 34px;
+  outline: none;
+}
+
