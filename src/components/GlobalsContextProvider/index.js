@@ -13,7 +13,8 @@ const GlobalsContextProvider = ({ children }) => {
     };
 
     if (socket) {
-      throw new Error('Socket already exists');
+      console.warn('Socket already exists');
+      socket.close();
     }
 
     socket = io(`${process.env.PREACT_APP_WS_PROTOCOL}${process.env.PREACT_APP_API_AUTHORITY}`);

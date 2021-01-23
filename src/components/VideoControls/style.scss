@@ -1,0 +1,49 @@
+.controls {
+  display: flex;
+  position: absolute;
+  top: unset;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  background: #00000059;
+  padding: 6px;
+  width: 100%;
+  max-width: unset;
+
+  button {
+    background-color: transparent;
+    border: 0;
+    color: white;
+  }
+
+  .rangeInput {
+    width: 75px;
+    display: inline-flex;
+    margin-right: auto;
+
+    input {
+      box-shadow: none;
+    }
+  }
+
+  .soundButton {
+    font-size: 20px;
+    width: 38px;
+    justify-items: left;
+    display: flex;  }
+
+}
+
+.controlsHidden {
+  display: flex;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+
+  button {
+    background-color: transparent;
+    border: 0;
+    color: white;
+    padding: 5px 10px;
+  }
+}

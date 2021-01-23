@@ -85,3 +85,35 @@ $cardWidth: 240px;
     pointer-events: none;
   }
 }
+
+.liveTalk {
+  width: 240px;
+  height: 140px;
+  border-radius: 5px;
+  overflow: hidden;
+  position: relative;
+
+  .bottomSection {
+    position: absolute;
+    padding: 5px 15px;
+    background-color: var(--turquoiseLight);
+    font-weight: 500;
+    font-size: 10px;
+    line-height: 16px;
+    bottom: 0;
+    top: unset;
+    right: 0;
+    left: 0;
+    transform: none;
+    text-align: center;
+    color: white;
+
+    p {
+      margin: 0;
+    }
+  }
+
+  video:-webkit-media-controls-timeline {
+    display: none;
+  }
+}
