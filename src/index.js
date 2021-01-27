@@ -8,6 +8,7 @@ import Header from './components/Header';
 import AdminRouter from './shared/AdminRouter';
 import DesignSystem from './routes/designSystem';
 import Login from './routes/login';
+import Signup from './routes/signup';
 
 import './style/globalStyle.scss';
 
@@ -24,6 +25,7 @@ const App = () => (
       <Header />
       <Router>
         <Home path="/" exact />
+        <Signup path="/signup" />
         <Habitat path="/habitat" />
         <DesignSystem path="/design" />
         <Login path="/login" />
