@@ -8,8 +8,12 @@ import { faHeart } from '@fortawesome/pro-light-svg-icons';
 import profileMask from '../../../../../assets/profile-mask.svg';
 
 import TextEditor from '../../../../../components/AdminEditWrappers/TextEditor';
+import ImageEditor from '../../../../../components/AdminEditWrappers/ImageEditor';
 
 import style from './style.scss';
+
+// TODO: this is just a mock variable - we should change it when we have habitat collection
+const habitatId = 'habitat-id';
 
 const Info = ({ info: { profileImg, name, zooName }, liked = false }) => {
   const [isLiked, setIsLiked] = useState(liked);
@@ -22,17 +26,32 @@ const Info = ({ info: { profileImg, name, zooName }, liked = false }) => {
   return (
     <div className={style.info}>
       <div className={style.profileImgWrapper}>
-        <div className={style.profileImg}>
-          <div>
-            <img src={profileImg} alt="Profile" />
-          </div>
-          <button onClick={onFavClick} type="button" className={style.favBtn}>
-            <FontAwesomeIcon
-              icon={isLiked ? faHeartSolid : faHeart}
-              color={isLiked ? "var(--pink)" : "var(--grey)"}
-            />
-          </button>
-        </div>
+        <ImageEditor
+          initialImgUrl={profileImg}
+          postToUrl={`/admin/habitats/${habitatId}`}
+          imageProp="profileImg"
+          editBtnPosition={{ right: '50px', top: '10px' }}
+          constraints={{
+            maxResolution: 240,
+            acceptedFormats: ['jpg', 'jpeg', 'png'],
+            aspectRatio: '1:1',
+            maxFileSize: '50kb',
+          }}
+        >
+          {(img) => (
+            <div className={style.profileImg}>
+              <div>
+                <img src={img} alt="Profile" />
+              </div>
+            </div>
+          )}
+        </ImageEditor>
+        <button onClick={onFavClick} type="button" className={style.favBtn}>
+          <FontAwesomeIcon
+            icon={isLiked ? faHeartSolid : faHeart}
+            color={isLiked ? "var(--pink)" : "var(--grey)"}
+          />
+        </button>
         <img className={style.mask} src={profileMask} alt="Mask" />
       </div>
 

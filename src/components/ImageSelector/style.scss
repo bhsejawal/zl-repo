@@ -3,7 +3,30 @@
 }
 
 .constraints {
-  font-size: 12px;
-  margin: 0 0 5px 0;
+  margin: 2px 0 15px 0;
   color: var(--grey);
+  line-height: 12px;
+
+  * {
+    font-size: 12px;
+    line-height: 12px;
+  }
+}
+
+.uploadBtnWrapper {
+  position: relative;
+  margin-right: 10px;
+
+  input {
+    width: 104px;
+    opacity: 0;
+    cursor: pointer;
+  }
+
+  button {
+    position: absolute;
+    left: 0;
+    top: 0;
+    pointer-events: none;
+  }
 }

@@ -71,7 +71,7 @@ const EditModal = ({
 
           <Box flex overflow="auto" pad="xsmall">
             <FormField name="text">
-              <TextArea name="text" type="text" />
+              <TextArea name={TEXT_INPUT} type="text" />
             </FormField>
 
             {error && (

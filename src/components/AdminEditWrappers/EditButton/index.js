@@ -4,9 +4,10 @@ import { faEdit } from '@fortawesome/pro-solid-svg-icons';
 
 import style from './style.scss';
 
-const EditButton = ({ onClick }) => (
+const EditButton = ({ onClick, style: inlineStyle }) => (
   <button
     type="button"
+    style={inlineStyle}
     className={style.editBtn}
     onClick={onClick}
   >

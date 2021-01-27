@@ -1,9 +1,11 @@
 import { h } from 'preact';
 import { forwardRef } from 'preact/compat';
+import { isEmpty } from 'lodash-es';
 import {
   useEffect,
   useMemo,
   useState,
+  useCallback,
   useImperativeHandle,
 } from 'preact/hooks';
 import {
@@ -16,8 +18,25 @@ import {
 import classnames from 'classnames';
 
 import { isValidUrl } from '../../helpers';
+import { uploadFile } from './api';
 
 import style from './style.scss';
+
+const RESOLUTION_CONSTRAINT = 'RESOLUTION_CONSTRAINT';
+const FILE_SIZE_CONSTRAINT = 'FILE_SIZE_CONSTRAINT';
+const ASPECT_RATIO_CONSTRAINT = 'ASPECT_RATIO_CONSTRAINT';
+const ACCEPTED_FORMAT_CONSTRAINT = 'ACCEPTED_FORMAT_CONSTRAINT';
+
+const ValidationLine = ({ error, text }) => (
+  <Text color={error && 'status-error'}>{text}</Text>
+);
+
+const Constraints = ({ constraints, errors }) => constraints.map(({ type, text }, ind) => (
+  <>
+    <ValidationLine error={errors[type]} text={text} />
+    {ind !== constraints.length - 1 && (', ')}
+  </>
+));
 
 const ImageSelector = forwardRef(({
   label,
@@ -26,12 +45,13 @@ const ImageSelector = forwardRef(({
   required,
   // used to recognize which property is being changed by the parent
   prop,
+  // preview image ref that we can used to validate resolution
+  previewRef,
   constraints: {
-    // used in case of square image
     maxResolution,
     minResolution,
-    // width and height constraints are currently not implemented
-    // we should add them latter if needed
+    // TODO: implement size validation
+    // maybe we could fetch it with HEAD request type
     maxFileSize,
     aspectRatio,
     acceptedFormats,
@@ -40,9 +60,75 @@ const ImageSelector = forwardRef(({
   onBlur,
 }, ref) => {
   const [errorMsg, setErrorMsg] = useState();
+  const [errors, setErrors] = useState({});
   const isUrlValid = useMemo(() => isValidUrl(url), [url]);
 
   useEffect(() => setErrorMsg(undefined), [url]);
+
+  const validateConstraints = useCallback(() => {
+    const newErrors = {};
+
+    if (previewRef?.current) {
+      const imgWidth = previewRef.current.naturalHeight;
+      const imgHeight = previewRef.current.naturalWidth;
+
+      if ((maxResolution && (imgWidth > maxResolution || imgHeight > maxResolution))
+        || (minResolution && (imgWidth < maxResolution || imgHeight < maxResolution))
+      ) {
+        newErrors[RESOLUTION_CONSTRAINT] = true;
+      } else {
+        newErrors[RESOLUTION_CONSTRAINT] = false;
+      }
+
+      if (aspectRatio) {
+        const [width, height] = aspectRatio.split(':').map(Number);
+        if (width / height !== imgWidth / imgHeight) {
+          newErrors[ASPECT_RATIO_CONSTRAINT] = true;
+        } else {
+          newErrors[ASPECT_RATIO_CONSTRAINT] = false;
+        }
+      }
+
+      if (acceptedFormats && acceptedFormats.length > 0) {
+        if (!acceptedFormats.some((format) => url.endsWith(format))) {
+          newErrors[ACCEPTED_FORMAT_CONSTRAINT] = true;
+        } else {
+          newErrors[ACCEPTED_FORMAT_CONSTRAINT] = false;
+        }
+      }
+    }
+
+    return newErrors;
+  }, [
+    url,
+    previewRef,
+    maxResolution,
+    minResolution,
+    // TODO: implement this too
+    // maxFileSize,
+    aspectRatio,
+    acceptedFormats,
+  ]);
+
+  // eslint-disable-next-line consistent-return
+  useEffect(() => {
+    const onLoad = () => {
+      const newErrors = validateConstraints();
+      if (!isEmpty(newErrors)) {
+        setErrors(newErrors);
+      }
+    };
+
+    const el = previewRef?.current;
+
+    if (el) {
+      el.addEventListener('load', onLoad);
+
+      return () => {
+        el.removeEventListener('load', onLoad);
+      }
+    }
+  }, [validateConstraints, previewRef]);
 
   useImperativeHandle(ref, () => ({
     validate: () => {
@@ -56,39 +142,79 @@ const ImageSelector = forwardRef(({
         isValid = false;
       }
 
+      const newErrors = validateConstraints();
+
+      if (!isEmpty(newErrors)) {
+        setErrors({ ...errors, ...newErrors });
+        isValid = false;
+      }
+
       return isValid;
     },
   }));
 
-  const constraintsMsg = useMemo(() => {
+  const constraints = useMemo(() => {
     const constraints = [];
 
     if (maxResolution && minResolution) {
-      constraints.push(`Resolution: >${minResolution}, <${maxResolution}`);
+      constraints.push({
+        type: RESOLUTION_CONSTRAINT,
+        text: `Resolution: >${minResolution}, <${maxResolution}`,
+      });
     } else if (maxResolution) {
-      constraints.push(`Resolution: <${maxResolution}`);
+      constraints.push({
+        type: RESOLUTION_CONSTRAINT,
+        text: `Resolution: <${maxResolution}`,
+      });
     } else if (minResolution) {
-      constraints.push(`Resolution: >${minResolution}`);
+      constraints.push({
+        type: RESOLUTION_CONSTRAINT,
+        text: `Resolution: >${minResolution}`,
+      });
     }
 
     if (maxFileSize) {
-      constraints.push(`File: ${maxFileSize}`);
+      constraints.push({
+        type: FILE_SIZE_CONSTRAINT,
+        text: `File: ${maxFileSize}`,
+      });
     }
 
     if (aspectRatio) {
-      constraints.push(`Aspect Ratio: ${aspectRatio}`);
+      constraints.push({
+        type: ASPECT_RATIO_CONSTRAINT,
+        text: `Aspect Ratio: ${aspectRatio}`,
+      });
     }
 
     if (acceptedFormats) {
       if (acceptedFormats instanceof Array) {
-        constraints.push(`Accepted Formats: ${acceptedFormats.join(', ')}`)
+        constraints.push({
+          type: ACCEPTED_FORMAT_CONSTRAINT,
+          text: `Accepted Formats: ${acceptedFormats.join(', ')}`,
+        })
       } else {
         throw new Error('"acceptedFormats" accepts only arrays');
       }
     }
 
-    return constraints.join(', ');
+    return constraints;
   }, [maxResolution, minResolution, maxFileSize, aspectRatio, acceptedFormats]);
+
+  const onInputChange = async ({ target }) => {
+    try {
+      const { url } = await uploadFile(target.files[0], maxResolution, acceptedFormats);
+      onChange(url);
+    } catch (err) {
+      const { error } = err.body;
+
+      if (error === 'Invalid format') {
+        setErrors({ ...errors, [ACCEPTED_FORMAT_CONSTRAINT]: true });
+      } else {
+        console.log(err);
+      }
+    }
+  };
 
   return (
     <div>
@@ -97,7 +223,6 @@ const ImageSelector = forwardRef(({
         data-prop={prop}
         placeholder={placeholder}
         value={url}
-        onChange={onChange}
         onBlur={onBlur}
       />
       {errorMsg && (
@@ -105,10 +230,15 @@ const ImageSelector = forwardRef(({
           <Text color="status-error">{errorMsg}</Text>
         </Box>
       )}
-      <p className={style.constraints}>{constraintsMsg}</p>
+      <div className={style.constraints}>
+        <Constraints constraints={constraints} errors={errors} />
+      </div>
 
       <Box direction="row">
-        <Button label="Upload" margin={{ right: '5px' }} />
+        <div className={style.uploadBtnWrapper}>
+          <input onChange={onInputChange} type="file" name="file" />
+          <Button label="Upload" margin={{ right: '5px' }} />
+        </div>
 
         <a
           download
