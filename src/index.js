@@ -15,6 +15,7 @@ import AdminRouter from './shared/AdminRouter';
 import DesignSystem from './routes/designSystem';
 import Login from './routes/login';
 import Signup from './routes/signup';
+import Map from './routes/map';
 
 import './style/globalStyle.scss';
 
@@ -41,6 +42,7 @@ const App = () => (
                 <Login path="/login" />
                 <AdminRouter path="/admin/:*" />
                 <Plans path="/plans" />
+                <Map path="/map" />
               </Router>
             </Main>
           </>

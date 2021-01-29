@@ -1,0 +1,26 @@
+@import "../../style/media-query";
+
+.map {
+  min-height: 100%;
+  width: 100%;
+
+  .content {
+    display: flex;
+    flex-direction: row;
+    padding-left: 60px;
+
+    @media screen and (max-width: #{$tablet-portrait-width}) {
+      flex-direction: column;
+      padding: 0 20px;
+      align-items: center;
+    }
+  }
+
+  .description {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    max-width: 380px;
+  }
+}
+

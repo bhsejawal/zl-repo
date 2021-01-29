@@ -4,6 +4,7 @@ import user from './user';
 import chat from './chat';
 import habitat from '../../routes/habitat/reducer';
 import plans from './plans';
+import map from '../../components/HabitatMap/reducer';
 
 export default combineReducers({
   mainStream,
@@ -11,4 +12,5 @@ export default combineReducers({
   chat,
   habitat,
   plans,
+  map,
 });

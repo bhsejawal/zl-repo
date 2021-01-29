@@ -12,7 +12,7 @@ import style from './style.scss';
 
 const NavBar = () => (
   <div className={style.navBar}>
-    <NavItem text="Map" url="/" icon={faMapMarkerAlt} />
+    <NavItem text="Map" url="/map" icon={faMapMarkerAlt} />
     <NavItem text="Talk Schedule" url="/" icon={faCalendarDay} />
     <NavItem text="Favorites" url="/" icon={faHeart} />
     <NavItem text="Share" url="/" icon={faShare} />
