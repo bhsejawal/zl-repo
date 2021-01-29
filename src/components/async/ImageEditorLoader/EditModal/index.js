@@ -1,5 +1,5 @@
 import { h } from 'preact';
-import { useRef, useState } from 'preact/hooks';
+import { useCallback, useRef, useState } from 'preact/hooks';
 import {
   Layer,
   Box,
@@ -44,9 +44,13 @@ const EditModal = ({
     onUpdate(value);
   };
 
-  const onChange = ({ target }) => {
+  const onBlur = useCallback(({ target }) => {
     setValue(target.value);
-  }
+  }, []);
+
+  const onChange = useCallback((newVal) => {
+    setValue(newVal);
+  }, []);
 
   return (
     <Layer position="center" onClickOutside={onClose}>
@@ -77,8 +81,8 @@ const EditModal = ({
                   url={value}
                   label="Image URL"
                   constraints={constraints}
-                  onChange={setValue}
-                  onBlur={onChange}
+                  onChange={onChange}
+                  onBlur={onBlur}
                 />
               </Box>
             </Box>

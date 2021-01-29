@@ -1,0 +1,204 @@
+import { h } from 'preact';
+import { forwardRef } from 'preact/compat';
+import {
+  useEffect,
+  useRef,
+  useState,
+  useImperativeHandle,
+  useCallback,
+} from 'preact/hooks';
+import {
+  Box,
+  Text,
+  Heading,
+  TextArea,
+  TextInput,
+} from 'grommet';
+
+import ImageSelector from '../../../../../../../components/ImageSelector';
+
+import style from './style.scss';
+
+const ThreeIconsCardForm = forwardRef(({
+  title,
+  img1,
+  img2,
+  img3,
+  text1,
+  text2,
+  text3,
+  onInputChange,
+  onDataChange,
+}, ref) => {
+  const img1Ref = useRef();
+  const img2Ref = useRef();
+  const img3Ref = useRef();
+  const [titleErrorMsg, setTitleErrorMsg] = useState();
+  const [text1ErrorMsg, setText1ErrorMsg] = useState();
+
+  useImperativeHandle(ref, () => ({
+    validate: () => {
+      let isValid = true;
+
+      if (!title || title.length === 0) {
+        setTitleErrorMsg('Title is required');
+        isValid = false;
+      }
+
+      if (!text1 || text1.length === 0) {
+        setText1ErrorMsg('Text is required');
+        isValid = false;
+      }
+
+      return isValid
+        && img1Ref.current.validate()
+        && img2Ref.current.validate()
+        && img3Ref.current.validate();
+    },
+  }));
+
+  useEffect(() => setTitleErrorMsg(undefined), [title]);
+  useEffect(() => setText1ErrorMsg(undefined), [text1]);
+
+  const onImg1Change = useCallback(
+    (img1) => onDataChange({ img1 }),
+    [onDataChange],
+  );
+
+  const onImg2Change = useCallback(
+    (img2) => onDataChange({ img2 }),
+    [onDataChange],
+  );
+
+  const onImg3Change = useCallback(
+    (img3) => onDataChange({ img3 }),
+    [onDataChange],
+  );
+
+  return (
+    <>
+      <Box margin={{ bottom: '20px' }}>
+        <Heading margin={{ top: '0', bottom: '5px' }} level="5">Title:</Heading>
+        <TextInput
+          reverse
+          value={title}
+          data-prop="title"
+          onChange={onInputChange}
+          maxLength="20"
+          icon={(
+            <span style={{ color: titleErrorMsg && 'var(--red)' }}>
+              {title?.length ?? 0}
+              /20
+            </span>
+          )}
+        />
+        {titleErrorMsg && (
+          <Box>
+            <Text color="status-error">{titleErrorMsg}</Text>
+          </Box>
+        )}
+      </Box>
+
+      <Box margin={{ bottom: '20px' }}>
+        <Heading margin={{ top: '0', bottom: '5px' }} level="5">Item 1 Text:</Heading>
+        <div className={style.textAreaWrapper}>
+          <TextArea
+            value={text1}
+            className={style.textarea}
+            rows="3"
+            data-prop="text1"
+            onChange={onInputChange}
+            maxLength="60"
+          />
+          <span className={style.bottomRight}>
+            {text1?.length ?? 0}
+            /60
+          </span>
+        </div>
+        {text1ErrorMsg && (
+          <Box>
+            <Text color="status-error">{text1ErrorMsg}</Text>
+          </Box>
+        )}
+      </Box>
+
+      <Box margin={{ bottom: '20px' }}>
+        <Heading margin={{ top: '0', bottom: '5px' }} level="5">Icon:</Heading>
+        <ImageSelector
+          required
+          prop="img1"
+          url={img1}
+          ref={img1Ref}
+          placeholder="https://"
+          constraints={{ acceptedFormats: ['svg'] }}
+          onBlur={onInputChange}
+          onChange={onImg1Change}
+        />
+      </Box>
+
+      <Box margin={{ bottom: '20px' }}>
+        <Heading margin={{ top: '0', bottom: '5px' }} level="5">Item 2 Text:</Heading>
+        <div className={style.textAreaWrapper}>
+          <TextArea
+            value={text2}
+            className={style.textarea}
+            rows="3"
+            data-prop="text2"
+            onChange={onInputChange}
+            maxLength="60"
+          />
+          <span className={style.bottomRight}>
+            {text2?.length ?? 0}
+            /60
+          </span>
+        </div>
+      </Box>
+
+      <Box margin={{ bottom: '20px' }}>
+        <Heading margin={{ top: '0', bottom: '5px' }} level="5">Icon:</Heading>
+        <ImageSelector
+          prop="img2"
+          url={img2}
+          ref={img2Ref}
+          placeholder="https://"
+          constraints={{ acceptedFormats: ['svg'] }}
+          onBlur={onInputChange}
+          onChange={onImg2Change}
+        />
+      </Box>
+
+      <Box margin={{ bottom: '20px' }}>
+        <Heading margin={{ top: '0', bottom: '5px' }} level="5">Item 3 Text:</Heading>
+        <div className={style.textAreaWrapper}>
+          <TextArea
+            value={text3}
+            className={style.textarea}
+            rows="3"
+            data-prop="text3"
+            onChange={onInputChange}
+            maxLength="60"
+          />
+          <span className={style.bottomRight}>
+            {text3?.length ?? 0}
+            /60
+          </span>
+        </div>
+      </Box>
+
+      <Box margin={{ bottom: '20px' }}>
+        <Heading margin={{ top: '0', bottom: '5px' }} level="5">Icon:</Heading>
+        <ImageSelector
+          prop="img3"
+          url={img3}
+          ref={img3Ref}
+          placeholder="https://"
+          constraints={{ acceptedFormats: ['svg'] }}
+          onBlur={onInputChange}
+          onChange={onImg3Change}
+        />
+      </Box>
+    </>
+  );
+});
+
+export default ThreeIconsCardForm;

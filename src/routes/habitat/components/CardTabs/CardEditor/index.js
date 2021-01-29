@@ -1,4 +1,4 @@
-import { cloneElement, h } from 'preact';
+import { cloneElement, h, toChildArray } from 'preact';
 import { useCallback, useRef, useState } from 'preact/hooks';
 import { connect } from 'react-redux';
 
@@ -26,7 +26,9 @@ const CardEditor = ({ children, isAdmin, card }) => {
 
   return (
     <div className={style.wrapper}>
-      {cloneElement(children, { ref: childRef })}
+      {toChildArray(children).map((child) => child && (
+        cloneElement(child, { ref: childRef })
+      ))}
 
       <EditButton onClick={onEditBtnClick} />
 

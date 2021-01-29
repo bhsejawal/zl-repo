@@ -1,0 +1,19 @@
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+
+  video {
+    width: 100%;
+  }
+}
+
+.text {
+  font-size: 15px;
+  text-align: center;
+  line-height: 20px;
+  margin-top: 5px;
+  margin-bottom: 15px;
+}

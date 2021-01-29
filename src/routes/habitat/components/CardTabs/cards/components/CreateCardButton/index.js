@@ -4,7 +4,7 @@ import { faPlus } from '@fortawesome/pro-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Button } from 'grommet';
 
-import CardEditorLoader from '../../CardEditor/CardEditorLoader';
+import CardEditorLoader from '../../../CardEditor/CardEditorLoader';
 
 import style from './style.scss';
 

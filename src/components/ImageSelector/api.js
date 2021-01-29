@@ -6,7 +6,10 @@ export const uploadFile = async (file, maxResolution, acceptedFormats) => {
   const formData = new FormData();
 
   formData.append('file', file, file.filename);
-  formData.append('maxResolution', maxResolution);
+
+  if (maxResolution) {
+    formData.append('maxResolution', maxResolution);
+  }
 
   acceptedFormats.forEach((format) => {
     formData.append('acceptedFormats[]', format);

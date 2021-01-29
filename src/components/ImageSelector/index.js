@@ -88,13 +88,13 @@ const ImageSelector = forwardRef(({
           newErrors[ASPECT_RATIO_CONSTRAINT] = false;
         }
       }
+    }
 
-      if (acceptedFormats && acceptedFormats.length > 0) {
-        if (!acceptedFormats.some((format) => url.endsWith(format))) {
-          newErrors[ACCEPTED_FORMAT_CONSTRAINT] = true;
-        } else {
-          newErrors[ACCEPTED_FORMAT_CONSTRAINT] = false;
-        }
+    if (acceptedFormats && acceptedFormats.length > 0) {
+      if (!acceptedFormats.some((format) => url.endsWith(format))) {
+        newErrors[ACCEPTED_FORMAT_CONSTRAINT] = true;
+      } else {
+        newErrors[ACCEPTED_FORMAT_CONSTRAINT] = false;
       }
     }
 
@@ -114,9 +114,7 @@ const ImageSelector = forwardRef(({
   useEffect(() => {
     const onLoad = () => {
       const newErrors = validateConstraints();
-      if (!isEmpty(newErrors)) {
-        setErrors(newErrors);
-      }
+      setErrors(newErrors);
     };
 
     const el = previewRef?.current;
@@ -137,7 +135,7 @@ const ImageSelector = forwardRef(({
       if (required && (!url || url.length === 0)) {
         setErrorMsg('Image is required');
         isValid = false;
-      } else if (!isUrlValid) {
+      } else if (required && url && url.length > 0 && !isUrlValid) {
         setErrorMsg('Invalid URL');
         isValid = false;
       }
@@ -145,7 +143,12 @@ const ImageSelector = forwardRef(({
       const newErrors = validateConstraints();
 
       if (!isEmpty(newErrors)) {
+        // TODO: scroll into view if there are new errors
         setErrors({ ...errors, ...newErrors });
+      }
+
+      // if any of newErrors is true
+      if (Object.values(newErrors).some((e) => e)) {
         isValid = false;
       }
 

@@ -1,6 +1,6 @@
 import { h } from 'preact';
 import { forwardRef, useImperativeHandle } from 'preact/compat';
-import { useEffect, useRef, useState } from 'preact/hooks';
+import { useEffect, useState } from 'preact/hooks';
 import {
   Box,
   Text,
@@ -9,19 +9,18 @@ import {
   TextInput,
 } from 'grommet';
 
-import ImageSelector from '../../../../../../../components/ImageSelector';
-
 import style from './style.scss';
 
-const Card1Form = forwardRef(({
+const OriginAndHabitatCardForm = forwardRef(({
   title,
   text,
-  img,
+  location,
+  onInputChange,
   onDataChange,
 }, ref) => {
-  const imgSelectorRef = useRef();
   const [titleErrorMsg, setTitleErrorMsg] = useState();
   const [textErrorMsg, setTextErrorMsg] = useState();
+  const [locationErrorMsg, setLocationErrorMsg] = useState();
 
   useImperativeHandle(ref, () => ({
     validate: () => {
@@ -37,13 +36,21 @@ const Card1Form = forwardRef(({
         isValid = false;
       }
 
-      const isImgValid = imgSelectorRef.current.validate();
-      return isValid && isImgValid;
+      if (!location || location.length === 0) {
+        setLocationErrorMsg('Location is required');
+      }
+
+      return isValid;
     },
   }));
 
   useEffect(() => setTitleErrorMsg(undefined), [title]);
   useEffect(() => setTextErrorMsg(undefined), [text]);
+  useEffect(() => setLocationErrorMsg(undefined), [location]);
+
+  const onLocationBlur = () => {
+    onDataChange({ img: `https://maps.googleapis.com/maps/api/staticmap?center=${location}&size=250x250&key=${process.env.PREACT_APP_MAPS_API_KEY}` });
+  };
 
   return (
     <>
@@ -53,7 +60,7 @@ const Card1Form = forwardRef(({
           reverse
           value={title}
           data-prop="title"
-          onChange={onDataChange}
+          onChange={onInputChange}
           maxLength="20"
           icon={(
             <span style={{ color: titleErrorMsg && 'var(--red)' }}>
@@ -77,7 +84,7 @@ const Card1Form = forwardRef(({
             className={style.textarea}
             rows="5"
             data-prop="text"
-            onChange={onDataChange}
+            onChange={onInputChange}
             maxLength="120"
           />
           <span className={style.bottomRight}>
@@ -93,19 +100,29 @@ const Card1Form = forwardRef(({
       </Box>
 
       <Box margin={{ bottom: '20px' }}>
-        <Heading margin={{ top: '0', bottom: '5px' }} level="5">Icon:</Heading>
-        <ImageSelector
-          required
-          prop="img"
-          url={img}
-          ref={imgSelectorRef}
-          placeholder="https://"
-          constraints={{ acceptedFormats: ['svg'], maxFileSize: '50kb' }}
-          onBlur={onDataChange}
+        <Heading margin={{ top: '0', bottom: '5px' }} level="5">Country Or Continent:</Heading>
+        <TextInput
+          reverse
+          data-prop="location"
+          value={location}
+          onChange={onInputChange}
+          onBlur={onLocationBlur}
+          maxLength="50"
+          icon={(
+            <span style={{ color: locationErrorMsg && 'var(--red)' }}>
+              {location?.length ?? 0}
+              /50
+            </span>
+          )}
         />
+        {locationErrorMsg && (
+          <Box>
+            <Text color="status-error">{locationErrorMsg}</Text>
+          </Box>
+        )}
       </Box>
     </>
   );
 });
 
-export default Card1Form;
+export default OriginAndHabitatCardForm;

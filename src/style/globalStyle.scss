@@ -120,3 +120,26 @@ a {
   border-radius: 100px;
   background-size: 1200px 100%;
 }
+
+.simpleSelect {
+  position: relative;
+
+  select {
+    background: transparent;
+    border: 1px solid rgba(0, 0, 0, .33);
+    border-radius: 4px;
+    font-weight: 600;
+    padding: 11px;
+    padding-right: 24px;
+    appearance: none;
+    width: 100%;
+  }
+
+  svg {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+}
+

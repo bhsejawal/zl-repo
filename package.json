@@ -54,6 +54,7 @@
     "@fortawesome/pro-solid-svg-icons": "^5.15.1",
     "@fortawesome/react-fontawesome": "^0.1.14",
     "classnames": "^2.2.6",
+    "date-fns": "^2.16.1",
     "emoji-mart": "^3.0.0",
     "grommet": "^2.16.2",
     "lodash-es": "^4.17.20",

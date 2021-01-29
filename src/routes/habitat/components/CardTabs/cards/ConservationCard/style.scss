@@ -1,0 +1,31 @@
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+}
+
+.img {
+  width: 100%;
+  height: 80px;
+}
+
+.title {
+  font-size: 25px;
+  text-align: center;
+  margin-top: 0;
+  margin-bottom: 20px;
+}
+
+.text {
+  font-size: 15px;
+  text-align: center;
+  margin: 0;
+  line-height: 20px;
+}
+
+.btn {
+  margin-top: 20px;
+  font-size: 14px;
+}

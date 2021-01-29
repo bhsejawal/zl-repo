@@ -1,9 +1,10 @@
 import { h } from 'preact';
-import CardWrapper from '../CardWrapper';
+
+import CardWrapper from '../components/CardWrapper';
 
 import style from './style.scss';
 
-const Card1 = ({
+const OriginAndHabitatCard = ({
   tag,
   img,
   title,
@@ -22,4 +23,4 @@ const Card1 = ({
   </CardWrapper>
 );
 
-export default Card1;
+export default OriginAndHabitatCard;

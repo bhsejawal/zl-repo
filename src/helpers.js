@@ -25,7 +25,9 @@ export const generateUserData = () => ({
 
 export const isValidUrl = (url) => {
   try {
-    return !!(new URL(url));
+    return !!(new URL(url.startsWith('/')
+      ? `${window.location.origin}${url}`
+      : url));
   } catch {
     return false;
   }

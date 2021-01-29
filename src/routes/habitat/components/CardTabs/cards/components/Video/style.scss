@@ -1,0 +1,31 @@
+.video {
+  position: relative;
+
+  video {
+    max-width: 100%;
+    max-height: 100%;
+  }
+}
+
+.control {
+  cursor: pointer;
+  z-index: 5;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  opacity: .8;
+  transition: opacity .05s ease-in;
+}
+
+.pause {
+  opacity: .05;
+
+  &:hover {
+    opacity: .8;
+  }
+}
+
+.hidden {
+  display: none;
+}
