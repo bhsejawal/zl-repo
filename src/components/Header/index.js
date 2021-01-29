@@ -1,4 +1,5 @@
 import { h } from 'preact';
+import { Header } from 'grommet';
 
 import NavBar from '../NavBar';
 import ZoolifeLogo from '../ZoolifeLogo';
@@ -7,8 +8,8 @@ import Menu from '../async/Menu';
 
 import style from './style.scss';
 
-const Header = () => (
-  <header className={style.header}>
+const HeaderComponent = () => (
+  <Header className={style.header}>
     <Menu />
     <div className={style.logo}>
       <ZoolifeLogo />
@@ -17,7 +18,7 @@ const Header = () => (
     <div className={style.userImageSection}>
       <AnimalIcon />
     </div>
-  </header>
+  </Header>
 );
 
-export default Header;
+export default HeaderComponent;
