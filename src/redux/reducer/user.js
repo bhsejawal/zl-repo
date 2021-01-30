@@ -7,14 +7,24 @@ const initialViewer = generateUserData();
 const initialState = {
   logged: false,
   sessionChecked: false,
+  // This will be for Viewers
+  subscription: {
+    isActive: true,
+    // daily/monthly
+    type: 'monthly',
+    // should be used for the Trial/track how long the user can watch the videos
+    expireDate: new Date(),
+  },
   username: null,
-  // I guess we'll have something like this
-  // that will tell us if user is a viewer, moderator, admin, etc.
-  role: undefined,
-  // this could be something like a mapping of zoos and permissions
-  // empty if user has no permissions
-  permissions: [],
-
+  // Valid: [guest, viewer, partner, host, admin]
+  // Default value will be Guest once we go live
+  role: 'admin',
+  // This needs to be the zooId ONLY for Partners
+  // IT needs to be undefined for Hosts
+  zooId: 'torontozoo',
+  // This needs to be list of habitats that a Host can stream to
+  // Should be undefined for Hosts
+  habitats: ['mockCamID'],
   // currently holding mock data. This should be stored in db
   viewer: initialViewer,
 };

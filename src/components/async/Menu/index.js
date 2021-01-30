@@ -1,14 +1,15 @@
 import { h } from 'preact';
 import { route } from 'preact-router';
-import { connect } from 'react-redux';
 import { Grommet, Menu as GrommetMenu } from 'grommet';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBars } from '@fortawesome/pro-light-svg-icons';
 
+import { hasPermission } from '../../Authorize';
+
 import style from './style.scss';
 
-const Menu = ({ isAdmin }) => {
-  if (!isAdmin) {
+const Menu = () => {
+  if (!hasPermission('admin:menu')) {
     return null;
   }
 
@@ -32,8 +33,4 @@ const Menu = ({ isAdmin }) => {
   );
 };
 
-export default connect(
-  // ({ user: { role } }) => ({ isAdmin: role === 'admin' }),
-  // TODO: this is used only as mock
-  () => ({ isAdmin: true }),
-)(Menu);
+export default Menu;

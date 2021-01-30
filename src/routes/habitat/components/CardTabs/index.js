@@ -18,6 +18,8 @@ import {
 import { setActiveTab, setCards } from './actions';
 import { fetchCards } from './api';
 
+import Can from '../../../../components/Authorize';
+
 import Tabs from './tabs';
 import Shortcuts from './shortcuts';
 import CardEditor from './CardEditor';
@@ -38,7 +40,6 @@ import style from './style.scss';
 const CardTabs = ({
   cards = [],
   activeTab,
-  isAdmin,
   setCardsAction,
   setActiveTabAction,
 }) => {
@@ -183,7 +184,12 @@ const CardTabs = ({
           {/* seems like there's a bug, and async loader component can't find previous sibling */}
           <span />
 
-          {!loading && isAdmin && <CreateCardButton />}
+          {!loading && (
+            <Can
+              perform="habitat:edit-cards"
+              yes={() => (<CreateCardButton />)}
+            />
+          )}
         </div>
       </div>
 
@@ -203,7 +209,6 @@ export default connect(
   }) => ({
     cards,
     activeTab,
-    isAdmin: true,
   }),
   {
     setCardsAction: setCards,

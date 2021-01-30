@@ -1,6 +1,6 @@
 import { cloneElement, h } from 'preact';
 import { useCallback, useRef, useState } from 'preact/hooks';
-import { connect } from 'react-redux';
+import { hasPermission } from '../../Authorize';
 
 import EditButton from '../EditButton';
 import TextEditorLoader from '../../async/TextEditorLoader';
@@ -8,7 +8,6 @@ import TextEditorLoader from '../../async/TextEditorLoader';
 import style from '../wrapper.scss';
 
 const TextEditor = ({
-  isAdmin,
   initialText,
   children,
   postToUrl,
@@ -32,7 +31,7 @@ const TextEditor = ({
     setText(newText);
   }, [setText]);
 
-  if (!isAdmin) {
+  if (!hasPermission('habitat:edit-text')) {
     return children(text);
   }
 
@@ -57,8 +56,4 @@ const TextEditor = ({
   );
 };
 
-export default connect(
-  // ({ user: { role } }) => ({ isAdmin: role === 'admin' }),
-  // TODO: this is used only as mock
-  () => ({ isAdmin: true }),
-)(TextEditor);
+export default TextEditor;

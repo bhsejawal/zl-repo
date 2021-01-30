@@ -1,6 +1,7 @@
 import { cloneElement, h, toChildArray } from 'preact';
 import { useCallback, useRef, useState } from 'preact/hooks';
-import { connect } from 'react-redux';
+
+import { hasPermission } from '../../../../../components/Authorize';
 
 import EditButton from '../../../../../components/AdminEditWrappers/EditButton';
 // eslint-disable-next-line
@@ -8,7 +9,7 @@ import CardEditorLoader from 'async!./CardEditorLoader';
 
 import style from '../../../../../components/AdminEditWrappers/wrapper.scss';
 
-const CardEditor = ({ children, isAdmin, card }) => {
+const CardEditor = ({ children, card }) => {
   const childRef = useRef();
   const [editModalOpen, setEditModalOpen] = useState(false);
 
@@ -20,7 +21,7 @@ const CardEditor = ({ children, isAdmin, card }) => {
     setEditModalOpen(false);
   }, [setEditModalOpen]);
 
-  if (!isAdmin) {
+  if (!hasPermission('habitat:edit-cards')) {
     return children;
   }
 
@@ -41,8 +42,4 @@ const CardEditor = ({ children, isAdmin, card }) => {
   );
 };
 
-export default connect(
-  // ({ user: { role } }) => ({ isAdmin: role === 'admin' }),
-  // TODO: this is used only as mock
-  () => ({ isAdmin: true }),
-)(CardEditor);
+export default CardEditor;

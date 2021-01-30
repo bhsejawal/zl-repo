@@ -1,15 +1,15 @@
 import { cloneElement, h } from 'preact';
 import { useCallback, useRef, useState } from 'preact/hooks';
-import { connect } from 'react-redux';
 
 import EditButton from '../EditButton';
 import ImageEditorLoader from '../../async/ImageEditorLoader';
 
 import style from '../wrapper.scss';
 
+import { hasPermission } from '../../Authorize';
+
 const ImageEditor = ({
   children,
-  isAdmin,
   initialImgUrl,
   postToUrl,
   imageProp,
@@ -32,7 +32,7 @@ const ImageEditor = ({
     setImgUrl(newUrl);
   }, [setImgUrl]);
 
-  if (!isAdmin) {
+  if (!hasPermission('habitat:edit-media')) {
     return children(imgUrl);
   }
 
@@ -56,8 +56,4 @@ const ImageEditor = ({
   );
 };
 
-export default connect(
-  // ({ user: { role } }) => ({ isAdmin: role === 'admin' }),
-  // TODO: this is used only as mock
-  () => ({ isAdmin: true }),
-)(ImageEditor);
+export default ImageEditor;
