@@ -1,0 +1,11 @@
+.item {
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-right: 20px;
+
+  &:last-child {
+    margin-right: 0;
+  }
+}

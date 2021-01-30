@@ -11,14 +11,6 @@ import {
   Grommet,
 } from 'grommet';
 import { useCallback, useRef, useState } from 'preact/hooks';
-import { subMonths } from 'date-fns';
-
-// NOTE: we are currently unable set human readable name because of this bug
-// https://github.com/webpack-contrib/file-loader/issues/367#issuecomment-593931637
-// eslint-disable-next-line max-len
-// import defaultImg from 'file-loader?name=placeholder.svg!../../../../../../../assets/quick-look-card-img.svg';
-import defaultImg from '../../../../../../../assets/quick-look-card-img.svg';
-import defaultAnimalImg from '../../../../../../../assets/default-animal-card-img.png';
 
 import { addCard, updateCard, deleteCard } from './actions';
 import {
@@ -39,7 +31,6 @@ import {
   FOUR_ICONS_CARD_TYPE,
   ANIMAL_PROFILE_CARD_TYPE,
   CONSERVATION_CARD_TYPE,
-  ENDANGERED,
   TWO_VIDEOS_CARD_TYPE,
   SINGLE_VIDEO_CARD_TYPE,
   ORIGIN_AND_HABITAT_CARD_TYPE,
@@ -65,6 +56,7 @@ import SingleVideoCardForm from './SingleVideoCardForm';
 import OriginAndHabitatCardForm from './OriginAndHabitatCardForm';
 
 import style from './style.scss';
+import CardsList from './CardsList';
 
 const margins = {
   top: '20px',
@@ -137,105 +129,11 @@ const EditModal = ({
     }
   };
 
-  const createSingleIconCard = () => {
-    setType(SINGLE_ICON_CARD_TYPE);
-    setTag(QUICK_LOOK);
-    setData({
-      title: 'Title',
-      text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore.',
-      img: defaultImg,
-    });
-  };
-
-  const createThreeIconsCard = () => {
-    setType(THREE_ICONS_CARD_TYPE);
-    setTag(QUICK_LOOK);
-    setData({
-      title: 'Title',
-      img1: defaultImg,
-      text1: 'Sed do eiusmod tempor incididunt ut labore et dolore.',
-      img2: defaultImg,
-      text2: 'Sed do eiusmod tempor incididunt ut labore et dolore.',
-      img3: defaultImg,
-      text3: 'Sed do eiusmod tempor incididunt ut labore et dolore.',
-    });
-  }
-
-  const createFourIconsCard = () => {
-    setType(FOUR_ICONS_CARD_TYPE);
-    setTag(FOOD_AND_DIET);
-    setData({
-      title: 'Title',
-      text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor.',
-      img1: defaultImg,
-      icon1Txt: 'Lorem',
-      img2: defaultImg,
-      icon2Txt: 'Lorem',
-      img3: defaultImg,
-      icon3Txt: 'Lorem',
-      img4: defaultImg,
-      icon4Txt: 'Lorem',
-    });
-  };
-
-  const createAnimalProfileCard = () => {
-    setType(ANIMAL_PROFILE_CARD_TYPE);
-    setTag(CONSERVATION);
-    setData({
-      img: defaultAnimalImg,
-      name: 'Kobe',
-      title: 'The energeting baby',
-      sex: 'Male',
-      dateOfBirth: subMonths(new Date(), 6).toISOString(),
-      text1: 'Baby Kobe was Born in June 7 2018 at Toronto Zoo',
-      text2: 'The youngest child of Charlie and Cleo',
-      text3: 'Loves to climb, play and annoy his Mom and Aunties',
-    });
-  };
-
-  const createConservationCard = () => {
-    setType(CONSERVATION_CARD_TYPE);
-    setTag(CONSERVATION);
-    setData({
-      status: ENDANGERED,
-      title: 'An Endangered Species',
-      text: 'Nearly 80 percent of western lowland gorillas live in unprotected areas that are vulnerable to poaching. Habitat loss is the greatest reason for their decline.',
-      btnLabel: 'Donate to the Gorillas',
-      btnLink: 'https://example.com',
-    });
-  };
-
-  const createTwoVideosCard = () => {
-    setType(TWO_VIDEOS_CARD_TYPE);
-    setTag(QUICK_LOOK);
-    setData({
-      video1Url: 'https://production.assets.clips.twitchcdn.net/AT-cm%7C1021969410.mp4',
-      text1: 'Kobe feeding from Mom, Cleo.',
-      video2Url: 'https://production.assets.clips.twitchcdn.net/AT-cm%7C1021969410.mp4',
-      text2: 'Kobe playing with his favorite enrichment toy - hay clouds!',
-    });
-  };
-
-  const createSingleVideoCard = () => {
-    setType(SINGLE_VIDEO_CARD_TYPE);
-    setTag(FOOD_AND_DIET);
-    setData({
-      videoUrl: 'https://nbt-photos.s3.amazonaws.com/assets/mixkit-red-frog-on-a-log-1487-large-1611786559965.mp4',
-      title: 'Food & Diet',
-      text: 'Gorillas eat an entirely vegetarian diet and grow up to 400 lbs!',
-    });
-  };
-
-  const createOriginAndHabitatCard = () => {
-    setType(ORIGIN_AND_HABITAT_CARD_TYPE);
-    setTag(ORIGIN_AND_HABITAT);
-    setData({
-      title: 'Title',
-      location: 'Africa',
-      text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore.',
-      img: `https://maps.googleapis.com/maps/api/staticmap?center=Africa&size=250x250&key=${process.env.PREACT_APP_MAPS_API_KEY}`,
-    });
-  };
+  const onCardTypeSelect = useCallback((type, tag, data) => {
+    setType(type);
+    setTag(tag);
+    setData(data);
+  }, []);
 
   // this is used for input fields in the forms
   const onInputChange = useCallback(({ target }) => {
@@ -267,24 +165,7 @@ const EditModal = ({
 
           <Box flex="grow" justify="center" align="center">
             {!data && (
-              <>
-                {/* TODO: implement design - this is only temporary */}
-                <Button label="Create Single Icon Card" onClick={createSingleIconCard} />
-                <p />
-                <Button label="Create Three Icon Card" onClick={createThreeIconsCard} />
-                <p />
-                <Button label="Create Four Icon Card" onClick={createFourIconsCard} />
-                <p />
-                <Button label="Create Animal Profile Card" onClick={createAnimalProfileCard} />
-                <p />
-                <Button label="Create Conservation Card" onClick={createConservationCard} />
-                <p />
-                <Button label="Create Two Videos Card" onClick={createTwoVideosCard} />
-                <p />
-                <Button label="Create Single Video Card" onClick={createSingleVideoCard} />
-                <p />
-                <Button label="Create Origin & Habitat Card" onClick={createOriginAndHabitatCard} />
-              </>
+              <CardsList activeTab={activeTab} onContinue={onCardTypeSelect} />
             )}
 
             {deleteActive && (
