@@ -1,10 +1,18 @@
 import { h } from 'preact';
+import { lazy, Suspense } from 'preact/compat';
 import { faLongArrowAltRight } from '@fortawesome/pro-regular-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import ScheduleCarousel from '../../../../components/ScheduleCarousel';
-import ChatComponent from '../../../../components/Chat';
 
 import style from './style.scss';
+
+const ChatComponent = lazy(() => {
+  if (typeof window !== 'undefined') {
+    return import('../../../../components/Chat')
+  }
+
+  return null;
+});
 
 const Chat = ({ height, width }) => (
   <div
@@ -23,7 +31,9 @@ const Chat = ({ height, width }) => (
       </span>
     </div>
     <ScheduleCarousel />
-    <ChatComponent />
+    <Suspense>
+      <ChatComponent />
+    </Suspense>
   </div>
 );
 

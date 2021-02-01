@@ -3,7 +3,7 @@ import { Suspense, lazy } from 'preact/compat';
 
 import FallbackLoader from '../../FallbackLoader';
 
-const EditModal = lazy(() => import('async!./EditModal'));
+const EditModal = lazy(() => import('./EditModal'));
 
 const TextEditorLoader = ({
   initialText,

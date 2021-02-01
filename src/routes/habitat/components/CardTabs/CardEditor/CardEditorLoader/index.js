@@ -3,7 +3,7 @@ import { Suspense, lazy } from 'preact/compat';
 
 import FallbackLoader from '../../../../../../components/FallbackLoader';
 
-const EditModal = lazy(() => import('async!./EditModal'));
+const EditModal = lazy(() => import('./EditModal'));
 
 const CardEditorLoader = ({ open, card, onClose }) => {
   if (!open) {

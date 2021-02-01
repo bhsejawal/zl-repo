@@ -1,5 +1,5 @@
 import { useState, useCallback, useRef } from 'preact/hooks';
-import { Picker as EmojiPicker } from 'emoji-mart';
+import { lazy, Suspense } from 'preact/compat';
 import 'emoji-mart/css/emoji-mart.css';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -7,7 +7,11 @@ import { faSmileWink } from '@fortawesome/pro-light-svg-icons';
 
 import { useOnClickOutside } from '../../../../hooks';
 
+import EmojiPickerFallback from './EmojiPickerFallback';
+
 import style from './style.module.scss';
+
+const EmojiPicker = lazy(() => import('./EmojiPicker'));
 
 const EmojiInput = ({ value, onSelection }) => {
   const [showDropdown, setDropdownState] = useState(false);
@@ -35,17 +39,9 @@ const EmojiInput = ({ value, onSelection }) => {
       <FontAwesomeIcon icon={faSmileWink} onClick={toggleDropdown} />
       {showDropdown && (
         <div className={style.EmoteContainer}>
-          <EmojiPicker
-            title=""
-            emoji=""
-            native
-            onSelect={addEmoji}
-            onClick={addEmoji}
-            autoFocus
-            showPreview={false}
-            showSkinTones={false}
-            perLine={7}
-          />
+          <Suspense fallback={<EmojiPickerFallback />}>
+            <EmojiPicker addEmoji={addEmoji} />
+          </Suspense>
         </div>
       )}
     </div>
