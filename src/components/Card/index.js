@@ -1,7 +1,7 @@
 import { h } from 'preact';
 import classnames from 'classnames';
 
-import Button from '../../Button';
+import Button from '../Button';
 
 import style from './style.scss';
 
@@ -12,6 +12,7 @@ const Card = ({
   onClick,
   live,
   loading,
+  roundImage,
 }) => (
   <div className={classnames(style.card, { [style.loading]: loading })}>
     <div className={style.wrapper}>
@@ -21,7 +22,7 @@ const Card = ({
         <Button className={classnames({ shimmer: loading })} variant={live ? 'secondary' : 'outline'} size="xs" onClick={onClick}>Remind Me</Button>
       </div>
       <div className={style.image}>
-        <img src={image} alt="" />
+        <img src={image} alt="" className={classnames({ [style.round]: roundImage })} />
       </div>
     </div>
   </div>

@@ -9,8 +9,8 @@ import {
 
 import Carousel from 'react-multi-carousel';
 import Tag from '../Tag';
-import Card from './Card';
-import LiveTalk from './Card/LiveTalk';
+import Card from '../Card';
+import LiveTalk from '../Card/LiveTalk';
 import { GlobalsContext } from '../../context';
 
 // Temporarily until loading from DB

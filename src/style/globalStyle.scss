@@ -143,3 +143,22 @@ a {
   }
 }
 
+.customScrollBar {
+  overflow: auto;
+  scrollbar-width: thin;
+  scrollbar-color: white transparent;
+
+  &::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: #FFFFFF;
+    border-radius: 20px;
+    border: 2px solid var(--turquoise);
+  }
+}

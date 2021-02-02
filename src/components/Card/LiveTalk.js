@@ -1,8 +1,8 @@
 import { h } from 'preact';
 import { createRef } from 'preact/compat';
 import classnames from 'classnames';
-import VideoControls from '../../VideoControls';
-import LiveStream from '../../LiveStream';
+import VideoControls from '../VideoControls';
+import LiveStream from '../LiveStream';
 
 import style from './style.scss';
 
