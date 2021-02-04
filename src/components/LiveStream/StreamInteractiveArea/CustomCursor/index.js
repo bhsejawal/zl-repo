@@ -4,13 +4,10 @@ import { faSpinner } from '@fortawesome/free-solid-svg-icons';
 
 import { LOADING, FULL_CURSOR } from './constants';
 
-import { getAnimalCursor } from './helpers';
-
 const CustomCursor = ({
   animal,
   color,
   cursorState = FULL_CURSOR,
-  rotate,
   showClickEffect,
 }) => {
   if (cursorState === LOADING) {
@@ -33,7 +30,7 @@ const CustomCursor = ({
           <ellipse stroke="1.5" fill="url(#ellipse)" ry="55" rx="185" cy="441" cx="192" />
         </>
       )}
-      <path transform={rotate && 'rotate(-90 0 0) scale(-1 1)'} fill="white" d={getAnimalCursor(animal)} />
+      <image href={animal} width="250" height="250" x="67" y="80" />
     </svg>
   );
 };

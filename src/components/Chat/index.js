@@ -81,10 +81,14 @@ const Chat = ({
 export default connect(({
   user: {
     viewer: {
+      // not sure what type of userId is this
+      // TODO: maybe we should use mongodb _id for this
       userId,
-      animal,
+    },
+    profile: {
+      animalIcon: animal,
       color,
-      username,
+      nickname: username,
     },
   },
   mainStream: { channelId },

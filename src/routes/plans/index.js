@@ -9,6 +9,7 @@ import {
 import { connect } from 'react-redux';
 
 import PlanCard from '../../components/PlanCard';
+import Header from '../../components/Header';
 
 import background from '../../assets/plansBackground.png';
 
@@ -21,53 +22,57 @@ const Plans = ({ plans }) => {
   }
 
   return (
-    <Box
-      fill={isLargeScreen}
-      responsive
-      background={{
-        image: `url(${background})`,
-        size: 'contain',
-        position: 'bottom',
-        repeat: 'no-repeat',
-        attachment: 'fixed',
-      }}
-      pad={{ horizontal: !isLargeScreen ? 'xlarge' : 'none' }}
-    >
-      <Heading level={1} textAlign="center" fill>
-        Select a Plan
-      </Heading>
-      <Text textAlign="center" margin={{ bottom: 'xxsmall' }}>
-        Become part of the ZooLife Family!
-      </Text>
-      <Text textAlign="center">
-        50% of our proceeds go to the conservation zoos.
-      </Text>
+    <>
+      <Header />
       <Box
-        direction={['xsmall', 'small'].includes(size) ? 'column' : 'row'}
-        fill justify="center"
-        gap={size === 'medium' ? 'medium' : 'large'}
-        margin={{top: 'large', bottom: 'large' }}
-        pad={{ top: !isLargeScreen ? 'small' : 'none', bottom: 'xlarge' }}
+        style={{ paddingTop: '60px' }}
+        fill={isLargeScreen}
+        responsive
+        background={{
+          image: `url(${background})`,
+          size: 'contain',
+          position: 'bottom',
+          repeat: 'no-repeat',
+          attachment: 'fixed',
+        }}
+        pad={{ horizontal: !isLargeScreen ? 'xlarge' : 'none' }}
       >
-        {plans.map(({
-          planName,
-          planPrice,
-          planType,
-          color,
-          benefits,
-          planId,
-        }) => (
-          <PlanCard
-            key={planId}
-            planName={planName}
-            planPrice={planPrice}
-            planType={planType}
-            color={color}
-            benefits={benefits}
-          />
-        ))}
+        <Heading level={1} textAlign="center" fill>
+          Select a Plan
+        </Heading>
+        <Text textAlign="center" margin={{ bottom: 'xxsmall' }}>
+          Become part of the ZooLife Family!
+        </Text>
+        <Text textAlign="center">
+          50% of our proceeds go to the conservation zoos.
+        </Text>
+        <Box
+          direction={['xsmall', 'small'].includes(size) ? 'column' : 'row'}
+          fill justify="center"
+          gap={size === 'medium' ? 'medium' : 'large'}
+          margin={{top: 'large', bottom: 'large' }}
+          pad={{ top: !isLargeScreen ? 'small' : 'none', bottom: 'xlarge' }}
+        >
+          {plans.map(({
+            planName,
+            planPrice,
+            planType,
+            color,
+            benefits,
+            planId,
+          }) => (
+            <PlanCard
+              key={planId}
+              planName={planName}
+              planPrice={planPrice}
+              planType={planType}
+              color={color}
+              benefits={benefits}
+            />
+          ))}
+        </Box>
       </Box>
-    </Box>
+    </>
   );
 };
 

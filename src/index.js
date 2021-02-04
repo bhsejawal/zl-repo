@@ -12,7 +12,6 @@ import { hasPermission } from './components/Authorize/index'
 
 import zoolifeTheme from './style/theme';
 
-import Header from './components/Header';
 import AdminRouter from './shared/AdminRouter';
 import DesignSystem from './routes/designSystem';
 import Login from './routes/login';
@@ -25,6 +24,7 @@ import './style/globalStyle.scss';
 import Home from './routes/home';
 import Habitat from './routes/habitat';
 import Plans from './routes/plans';
+import Profile from './routes/profile';
 
 const customBreakpoints = deepMerge(grommet, zoolifeTheme)
 
@@ -44,21 +44,19 @@ const App = () => {
       <Grommet full theme={customBreakpoints} >
         <ResponsiveContext.Consumer>
           {(size) => (
-            <>
-              <Header />
-              <Main fill={size === 'large'} pad={{ top: '60px' }}>
-                <Router onChange={verifyRoutePermission}>
-                  <Home path="/" exact />
-                  <Habitat path="/habitat" permission="habitat:view" />
-                  <DesignSystem path="/design" />
-                  <Signup path="/signup" />
-                  <Login path="/login" />
-                  <AdminRouter path="/admin/:*" />
-                  <Plans path="/plans" />
-                  <Map path="/map" permission="map:view" />
-                </Router>
-              </Main>
-            </>
+            <Main fill={size === 'large'}>
+              <Router onChange={verifyRoutePermission}>
+                <Home path="/" exact />
+                <Habitat path="/habitat" permission="habitat:view" />
+                <DesignSystem path="/design" />
+                <Signup path="/signup" />
+                <Login path="/login" />
+                <AdminRouter path="/admin/:*" />
+                <Plans path="/plans" />
+                <Map path="/map" permission="map:view" />
+                <Profile path="/profile" permission="profile:edit" />
+              </Router>
+            </Main>
           )}
         </ResponsiveContext.Consumer>
       </Grommet>

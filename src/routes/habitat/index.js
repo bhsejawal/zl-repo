@@ -5,6 +5,7 @@ import Chat from './components/Chat';
 import NextTalkBar from './components/NextTalkBar';
 import CardTabs from './components/CardTabs';
 import StreamProfile from './components/StreamProfile';
+import Header from '../../components/Header';
 
 import GlobalsContextProvider from "../../components/GlobalsContextProvider";
 import { useWindowResize } from '../../hooks';
@@ -21,7 +22,8 @@ const Habitat = () => {
 
   return (
     <GlobalsContextProvider>
-      <div className={style.habitat}>
+      <Header />
+      <div className={style.habitat} style={{ paddingTop: '60px' }}>
         <div className={style.topSection} style={{ height, maxHeight: height }}>
           <NextTalkBar width={sideBarWidth} height={height} />
           <LiveStream width={streamWidth} height={height} streamId="384199109141848371717542" interactive />

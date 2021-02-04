@@ -1,4 +1,5 @@
 import { h } from 'preact';
+import { Link } from 'preact-router';
 import { Header } from 'grommet';
 
 import NavBar from '../NavBar';
@@ -16,7 +17,9 @@ const HeaderComponent = () => (
     </div>
     <NavBar />
     <div className={style.userImageSection}>
-      <AnimalIcon />
+      <Link href="/profile">
+        <AnimalIcon />
+      </Link>
     </div>
   </Header>
 );

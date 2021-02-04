@@ -174,7 +174,15 @@ const InteractiveAreaHandler = ({
 };
 
 export default connect(({
-  user: { viewer: { userId, animal, color }},
+  user: {
+    // TODO: not sure what type of userId is this
+    // maybe we should use mongodb _id here
+    viewer: { userId },
+    profile: {
+      animalIcon: animal,
+      color,
+    },
+  },
   mainStream: { channelId, emojis },
 }) => ({
   userId,

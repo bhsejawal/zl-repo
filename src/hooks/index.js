@@ -43,3 +43,14 @@ export const useOnClickOutside = (ref, handler) => {
     [ref, handler],
   );
 };
+
+// this will return false only before initial fetch
+export const useIsInitiallyLoaded = (isFetching) => {
+  const [loaded, setLoaded] = useState();
+  useEffect(() => {
+    if (loaded === undefined && !isFetching) {
+      setLoaded(true);
+    }
+  }, [isFetching, loaded]);
+  return loaded;
+};

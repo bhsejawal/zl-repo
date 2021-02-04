@@ -25,16 +25,17 @@ const isSubscriptionActive = () => {
 
 const rules = {
   guest: {
-    static: ['checkout:plans'],
+    static: ['checkout:plans', 'profile:edit'],
   },
   viewer: {
+    static: ['profile:edit'],
     dynamic: {
       "habitat:view": isSubscriptionActive,
       "map:view": isSubscriptionActive,
     },
   },
   partner: {
-    static: ['habitat:view', 'map:view'],
+    static: ['habitat:view', 'map:view', 'profile:edit'],
     dynamic: {
       "zoo:edit-timezone": canEditZoo,
       "zoo:edit-location": canEditZoo,
@@ -49,7 +50,7 @@ const rules = {
     },
   },
   host: {
-    static: ['habitat:view', 'map:view'],
+    static: ['habitat:view', 'map:view', 'profile:edit'],
     dynamic: {
       "habitat:broadcast": canEditHabitat,
     },

@@ -65,6 +65,7 @@
     "preact-router": "^3.2.1",
     "pubnub": "^4.29.11",
     "pubnub-react": "^2.1.0",
+    "react-colorful": "^4.4.4",
     "react-multi-carousel": "^2.6.1",
     "react-redux": "^7.2.2",
     "redux": "^4.0.5",

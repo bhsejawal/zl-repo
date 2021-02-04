@@ -62,7 +62,13 @@ const InputBox = ({
 
 export default connect(({
   mainStream: { channelId },
-  user: { viewer: { username, color, animal } },
+  user: {
+    profile: {
+      animalIcon: animal,
+      color,
+      nickname: username,
+    },
+  },
 }) => ({
   channelId,
   username,

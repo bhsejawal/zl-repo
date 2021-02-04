@@ -3,14 +3,13 @@ import { connect } from 'react-redux';
 
 import style from './style.scss';
 
-import { getIcon } from './helpers';
-
 const AnimalIcon = ({
-  animal,
+  animalIcon,
   color,
   width = 30,
 }) => {
-  if (!animal) {
+  if (!animalIcon) {
+    // TODO: display loading indicator maybe if this is possible
     return null;
   }
 
@@ -19,13 +18,11 @@ const AnimalIcon = ({
       style={{ backgroundColor: color, width, height: width }}
       className={style.animalIcon}
     >
-      <svg viewBox="0 0 24 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d={getIcon(animal)} fill="white" />
-      </svg>
+      <img src={animalIcon} alt="animal" />
     </div>
   )
 }
 
 export default connect(
-  ({ user: { viewer: { animal, color } } }) => ({ animal, color }),
+  ({ user: { profile: { animalIcon, color } } }) => ({ animalIcon, color }),
 )(AnimalIcon);
