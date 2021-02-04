@@ -5,11 +5,13 @@ import { forwardRef } from 'preact/compat';
 import StreamInteractiveArea from './StreamInteractiveArea';
 import VideoControls from '../VideoControls';
 
-import { useWebRTCStream, streamStatuses } from './hooks/useWebRTCStream';
+import { useWebRTCStream } from './hooks/useWebRTCStream';
+
+import { wsMessages } from './helpers/constants';
 
 import style from './style.scss';
 
-const { PLAYING, ERROR } = streamStatuses;
+const { PLAY_STARTED, ERROR } = wsMessages;
 
 const Stream = forwardRef(({
   width = 620,
@@ -40,11 +42,11 @@ const Stream = forwardRef(({
         style={{ width, height }}
       />
 
-      {streamStatus === PLAYING
+      {streamStatus === PLAY_STARTED
       && interactive
       && <StreamInteractiveArea width={width} height={height} parentRef={containerRef} />}
 
-      {![ERROR, PLAYING].includes(streamStatus) && (
+      {![ERROR, PLAY_STARTED].includes(streamStatus) && (
         // TODO: Add fallback message/image for error when design team provide us
         <div className={style.fallbackMessage}>
           <p>Loading stream...</p>

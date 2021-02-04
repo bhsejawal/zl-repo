@@ -1,6 +1,5 @@
 /* eslint-disable import/prefer-default-export */
 import { PeerStats } from './peerStats';
-import { WebSocketAdaptor } from './websocketAdaptor'
 
 export class WebRTCAdaptor {
   constructor(initialValues) {
@@ -31,13 +30,21 @@ export class WebRTCAdaptor {
     this.videoContainer = null;
     this.candidateTypes = ["udp", "tcp"];
     this.desktopStream = null;
+    this.isInitialized = false;
 
     Object.entries(initialValues).forEach(([key, value]) => {
       if (Object.prototype.hasOwnProperty.call(initialValues, key)) {
         this[key] = value;
       }
     });
+  }
 
+  init () {
+    if (this.isInitialized) {
+      return;
+    }
+
+    this.isInitialized = true;
     this.localVideo = document.getElementById(this.localVideoId);
 
     // It should be compatible with previous version
@@ -65,14 +72,6 @@ export class WebRTCAdaptor {
           this.gotStream(stream);
         }, true)
       }
-    } else if (this.webSocketAdaptor == null || this.webSocketAdaptor.isConnected() === false) {
-      // just playing, it does not open any stream
-      this.webSocketAdaptor = new WebSocketAdaptor({
-        websocket_url: this.websocket_url,
-        webrtcadaptor: this,
-        callback: this.callback,
-        callbackError: this.callbackError,
-      });
     }
   }
 
@@ -89,6 +88,7 @@ export class WebRTCAdaptor {
 
   play(streamId, token, roomId, enableTracks) {
     this.playStreamId.push(streamId);
+
     const jsCmd = {
       command: "play",
       streamId,
@@ -195,12 +195,7 @@ export class WebRTCAdaptor {
     this.localVideo.srcObject = stream;
 
     if (this.webSocketAdaptor == null || this.webSocketAdaptor.isConnected() === false) {
-      this.webSocketAdaptor = new WebSocketAdaptor({
-        websocket_url: this.websocket_url,
-        webrtcadaptor: this,
-        callback: this.callback,
-        callbackError: this.callbackError,
-      })
+      this.restartSocket()
     }
     this.getDevices()
   }
@@ -412,11 +407,11 @@ export class WebRTCAdaptor {
 
   closePeerConnection(streamId) {
     if (this.remotePeerConnection[streamId] !== null) {
-      if (this.remotePeerConnection[streamId].dataChannel !== null) {
-        this.remotePeerConnection[streamId].dataChannel.close();
+      if (this.remotePeerConnection[streamId]?.dataChannel !== null) {
+        this.remotePeerConnection[streamId]?.dataChannel?.close();
       }
-      if (this.remotePeerConnection[streamId].signalingState !== "closed") {
-        this.remotePeerConnection[streamId].close();
+      if (this.remotePeerConnection[streamId]?.signalingState !== "closed") {
+        this.remotePeerConnection[streamId]?.close();
         this.remotePeerConnection[streamId] = null;
         delete this.remotePeerConnection[streamId];
         const playStreamIndex = this.playStreamId.indexOf(streamId);
@@ -800,7 +795,7 @@ export class WebRTCAdaptor {
   // After calling this function, create new WebRTCAdaptor instance, don't use the the same object
   // Because all streams are closed on server side as well when websocket connection is closed.
 
-  closeWebSocket() {
+  closePeerConnections() {
     Object.values(this.remotePeerConnection).forEach((peerConnection) => {
       peerConnection.close();
     });
@@ -810,7 +805,6 @@ export class WebRTCAdaptor {
     // }
     // free the remote peer connection by initializing again
     this.remotePeerConnection = [];
-    this.webSocketAdaptor.close();
   }
 
   peerMessage(streamId, definition, data) {

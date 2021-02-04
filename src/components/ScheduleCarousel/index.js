@@ -73,6 +73,7 @@ const ScheduleCarousel = () => {
           },
         }}
       >
+        {streamId && <LiveTalk streamId={streamId} />}
         <Card
           live
           header={<Tag label="LIVE" />}
@@ -94,8 +95,6 @@ const ScheduleCarousel = () => {
           onClick={() => console.log('Remind Me')}
         />
         <Card loading />
-        {/* until we fix issue with 2 videos on same screen, live talk will be disabled */}
-        {streamId && <LiveTalk streamId={streamId} disabled />}
       </Carousel>
     </div>
   );
