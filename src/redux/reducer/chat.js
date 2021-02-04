@@ -1,5 +1,5 @@
 import {
-  ADD_MESSAGE,
+  ADD_MESSAGES,
   CLEAR_MESSAGES,
 } from '../types';
 
@@ -9,12 +9,12 @@ const initialState = {
 
 export default (state = initialState, { type, payload }) => {
   switch (type) {
-    case ADD_MESSAGE: {
-      const { message } = payload;
+    case ADD_MESSAGES: {
+      const { messages } = payload;
 
       return {
         ...state,
-        messages: [...state.messages, message],
+        messages: [...state.messages, ...messages],
       };
     }
     case CLEAR_MESSAGES: {

@@ -4,7 +4,7 @@ import {
   REMOVE_USER_INTERACTION,
   TOGGLE_IS_STREAM_PLAYING,
   TOGGLE_SHOW_EMOJI_BASKET,
-  ADD_MESSAGE,
+  ADD_MESSAGES,
   CLEAR_MESSAGES,
 } from './types';
 
@@ -35,13 +35,18 @@ export const toggleShowEmojiBasket = () => ({ type: TOGGLE_SHOW_EMOJI_BASKET });
 let messageId = 0;
 
 const addChatMessage = (message) => ({
-  type: ADD_MESSAGE,
+  type: ADD_MESSAGES,
   payload: message,
 });
 
-export const addMessage = (message) => (dispatch) => {
+export const addMessages = (messages) => (dispatch) => {
+  const messageList = messages.map((message) => {
+    messageId += 1;
+    return { ...message, messageId };
+  });
+
   messageId += 1;
-  dispatch(addChatMessage({ message, messageId}));
+  dispatch(addChatMessage({ messages: messageList }));
 }
 
 export const clearMessages = () => ({

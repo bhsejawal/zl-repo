@@ -4,7 +4,7 @@ import { PubNubProvider } from 'pubnub-react';
 import { connect } from 'react-redux';
 
 import { ChatContext } from '../../context';
-import { addMessage, clearMessages } from '../../redux/actions';
+import { addMessages, clearMessages } from '../../redux/actions';
 
 import ChatContainer from './ChatContainer';
 
@@ -16,15 +16,23 @@ const Chat = ({
   animal,
   color,
   username,
-  addMessageAction,
+  addMessagesAction,
   clearMessagesAction,
 }) => {
   const [isConnectedToPubnub, setIsConnectedToPubnub] = useState(false);
 
   const addMessageListener = useCallback((msg) => {
     const { message } = msg;
-    addMessageAction(message)
-  }, [addMessageAction]);
+    addMessagesAction([message])
+  }, [addMessagesAction]);
+
+  const handleFetchedMessages = useCallback((status, response) => {
+    if (status.statusCode === 200 && response.channels[channelId]) {
+      const messages = response.channels[channelId];
+      const messagesList = messages.map(({ message}) => message);
+      addMessagesAction(messagesList)
+    }
+  }, [channelId, addMessagesAction]);
 
   useEffect(() => {
     if (isConnectedToPubnub) {
@@ -32,7 +40,7 @@ const Chat = ({
         message: addMessageListener,
       });
     }
-  }, [isConnectedToPubnub, addMessageAction, addMessageListener])
+  }, [isConnectedToPubnub, addMessagesAction, addMessageListener])
 
   useEffect(() => {
     if (channelId && animal && color && userId && username) {
@@ -45,6 +53,11 @@ const Chat = ({
 
       pubnub.subscribe({ channels: [channelId], withPresence: true });
 
+      pubnub.fetchMessages({
+        channels: [channelId],
+        count: 10,
+      }, handleFetchedMessages);
+
       pubnub.objects.setUUIDMetadata({
         data: {
           name: username,
@@ -54,7 +67,7 @@ const Chat = ({
 
       setIsConnectedToPubnub(true);
     }
-  }, [channelId, animal, color, userId, username])
+  }, [channelId, animal, color, userId, username, handleFetchedMessages])
 
   useEffect(() => () => {
     if (pubnub) {
@@ -99,6 +112,6 @@ export default connect(({
   channelId,
   username,
 }), {
-  addMessageAction: addMessage,
+  addMessagesAction: addMessages,
   clearMessagesAction: clearMessages,
 })(Chat);
