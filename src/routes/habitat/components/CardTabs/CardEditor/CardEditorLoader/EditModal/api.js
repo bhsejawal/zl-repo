@@ -3,7 +3,7 @@ import {
   callDelete,
   patch,
   post,
-} from '../../../../../../../shared/fetch';
+} from 'Shared/fetch';
 
 export const createCard = (cameraId, type, tab, tag, data) => {
   const url = buildURL(`/admin/cameras/${cameraId}/cards/tabs/${tab}`);

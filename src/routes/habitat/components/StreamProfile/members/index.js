@@ -1,8 +1,9 @@
 import { h } from 'preact';
 import { useCallback, useRef } from 'preact/hooks';
 
+import List from 'Components/List';
+
 import Member from './member';
-import List from '../../../../../components/List';
 
 const Members = ({ members = [] }) => {
   const listRef = useRef();

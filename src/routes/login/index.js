@@ -2,9 +2,10 @@ import { h } from 'preact';
 import { useEffect, useState } from 'preact/hooks';
 import { route } from 'preact-router';
 import { connect } from 'react-redux';
-import { setUserData } from '../../redux/actions';
 
-import { buildURL, post } from '../../shared/fetch';
+import { buildURL, post } from 'Shared/fetch';
+
+import { setUserData } from '../../redux/actions';
 
 import style from './style.scss';
 

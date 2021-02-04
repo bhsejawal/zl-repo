@@ -4,8 +4,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faGreaterThan, faLessThan } from '@fortawesome/pro-light-svg-icons';
 import classnames from 'classnames';
 
-import Tag from '../../../../components/Tag';
-import Card from '../../../../components/Card';
+import Tag from 'Components/Tag';
+import Card from 'Components/Card';
 import { useOnClickOutside } from '../../../../hooks';
 
 import style from './style.scss';

@@ -1,4 +1,4 @@
-import { buildURL, get } from '../../../../shared/fetch';
+import { buildURL, get } from 'Shared/fetch';
 
 // eslint-disable-next-line import/prefer-default-export
 export const fetchCards = (cameraId, tab) => {

@@ -1,4 +1,4 @@
-import { buildURL, handleResponse } from '../../shared/fetch';
+import { buildURL, handleResponse } from 'Shared/fetch';
 
 // eslint-disable-next-line import/prefer-default-export
 export const uploadFile = async (file, maxResolution, acceptedFormats) => {

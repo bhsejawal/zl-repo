@@ -17,7 +17,7 @@ import {
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronDown } from '@fortawesome/pro-solid-svg-icons';
 
-import ImageSelector from '../../../../../../../components/ImageSelector';
+import ImageSelector from 'Components/ImageSelector';
 
 import style from './style.scss';
 

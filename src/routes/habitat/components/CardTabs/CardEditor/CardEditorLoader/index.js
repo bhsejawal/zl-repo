@@ -1,7 +1,7 @@
 import { h } from 'preact';
 import { Suspense, lazy } from 'preact/compat';
 
-import FallbackLoader from '../../../../../../components/FallbackLoader';
+import FallbackLoader from 'Components/FallbackLoader';
 
 const EditModal = lazy(() => import('./EditModal'));
 

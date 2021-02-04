@@ -15,7 +15,7 @@ import {
   TextInput,
 } from 'grommet';
 
-import ImageSelector from '../../../../../../../components/ImageSelector';
+import ImageSelector from 'Components/ImageSelector';
 
 import style from './style.scss';
 

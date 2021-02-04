@@ -1,13 +1,14 @@
 import { h } from 'preact';
 
-import LiveStream from '../../components/LiveStream';
+import LiveStream from 'Components/LiveStream';
+import GlobalsContextProvider from "Components/GlobalsContextProvider";
+import Header from 'Components/Header';
+
 import Chat from './components/Chat';
 import NextTalkBar from './components/NextTalkBar';
 import CardTabs from './components/CardTabs';
 import StreamProfile from './components/StreamProfile';
-import Header from '../../components/Header';
 
-import GlobalsContextProvider from "../../components/GlobalsContextProvider";
 import { useWindowResize } from '../../hooks';
 
 import style from './style.scss';

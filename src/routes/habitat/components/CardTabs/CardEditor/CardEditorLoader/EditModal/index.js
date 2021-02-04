@@ -12,6 +12,24 @@ import {
 } from 'grommet';
 import { useCallback, useRef, useState } from 'preact/hooks';
 
+import SingleIconCard from 'Cards/SingleIconCard';
+import ThreeIconsCard from 'Cards/ThreeIconsCard';
+import FourIconsCard from 'Cards/FourIconsCard';
+import AnimalProfileCard from 'Cards/AnimalProfileCard';
+import ConservationCard from 'Cards/ConservationCard';
+import TwoVideosCard from 'Cards/TwoVideosCard';
+import SingleVideoCard from 'Cards/SingleVideoCard';
+import OriginAndHabitatCard from 'Cards/OriginAndHabitatCard';
+
+import SingleIconCardForm from './SingleIconCardForm';
+import ThreeIconsCardForm from './ThreeIconsCardForm';
+import FourIconsCardForm from './FourIconsCardForm';
+import AnimalProfileCardForm from './AnimalProfileCardForm';
+import ConservationCardForm from './ConservationCardForm';
+import TwoVideosCardForm from './TwoVideosCardForm';
+import SingleVideoCardForm from './SingleVideoCardForm';
+import OriginAndHabitatCardForm from './OriginAndHabitatCardForm';
+
 import { addCard, updateCard, deleteCard } from './actions';
 import {
   createCard,
@@ -36,24 +54,6 @@ import {
   ORIGIN_AND_HABITAT_CARD_TYPE,
 } from '../../../constants';
 import grommetTheme from '../../../../../../../grommetTheme';
-
-import SingleIconCard from '../../../cards/SingleIconCard';
-import ThreeIconsCard from '../../../cards/ThreeIconsCard';
-import FourIconsCard from '../../../cards/FourIconsCard';
-import AnimalProfileCard from '../../../cards/AnimalProfileCard';
-import ConservationCard from '../../../cards/ConservationCard';
-import TwoVideosCard from '../../../cards/TwoVideosCard';
-import SingleVideoCard from '../../../cards/SingleVideoCard';
-import OriginAndHabitatCard from '../../../cards/OriginAndHabitatCard';
-
-import SingleIconCardForm from './SingleIconCardForm';
-import ThreeIconsCardForm from './ThreeIconsCardForm';
-import FourIconsCardForm from './FourIconsCardForm';
-import AnimalProfileCardForm from './AnimalProfileCardForm';
-import ConservationCardForm from './ConservationCardForm';
-import TwoVideosCardForm from './TwoVideosCardForm';
-import SingleVideoCardForm from './SingleVideoCardForm';
-import OriginAndHabitatCardForm from './OriginAndHabitatCardForm';
 
 import style from './style.scss';
 import CardsList from './CardsList';

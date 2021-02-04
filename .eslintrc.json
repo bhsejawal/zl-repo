@@ -7,6 +7,19 @@
         "airbnb",
         "preact"
     ],
+    "settings": {
+        "import/resolver": {
+            "alias": {
+                "map": [
+                    ["Components", "./src/components"],
+                    ["Assets", "./src/assets"],
+                    ["Cards", "./src/routes/habitat/components/CardTabs/cards"],
+                    ["Shared", "./src/shared"]
+                ],
+                "extensions": [".js"]
+            }
+        }
+    },
     "globals": {
         "Atomics": "readonly",
         "SharedArrayBuffer": "readonly"

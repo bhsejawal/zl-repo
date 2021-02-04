@@ -8,10 +8,10 @@ import {
 
 import { connect } from 'react-redux';
 
-import PlanCard from '../../components/PlanCard';
-import Header from '../../components/Header';
+import PlanCard from 'Components/PlanCard';
+import Header from 'Components/Header';
 
-import background from '../../assets/plansBackground.png';
+import background from 'Assets/plansBackground.png';
 
 const Plans = ({ plans }) => {
   const size = useContext(ResponsiveContext);

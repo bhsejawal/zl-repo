@@ -1,5 +1,5 @@
 import { Box } from 'grommet';
-import SocialLoginButton from '../../components/SocialLoginButton';
+import SocialLoginButton from 'Components/SocialLoginButton';
 
 const Signup = () => (
   <Box margin={{ top: 'xlarge' }} direction="row" gap="small">

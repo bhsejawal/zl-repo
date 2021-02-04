@@ -3,7 +3,7 @@ import { forwardRef, useImperativeHandle } from 'preact/compat';
 import { useCallback, useRef } from 'preact/hooks';
 import { Box, Heading, TextArea } from 'grommet';
 
-import ImageSelector from '../../../../../../../components/ImageSelector';
+import ImageSelector from 'Components/ImageSelector';
 
 import style from './style.scss';
 

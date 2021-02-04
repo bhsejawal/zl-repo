@@ -5,10 +5,10 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHeart as faHeartSolid } from '@fortawesome/pro-solid-svg-icons';
 import { faHeart } from '@fortawesome/pro-light-svg-icons';
 
-import profileMask from '../../../../../assets/profile-mask.svg';
+import profileMask from 'Assets/profile-mask.svg';
 
-import TextEditor from '../../../../../components/AdminEditWrappers/TextEditor';
-import ImageEditor from '../../../../../components/AdminEditWrappers/ImageEditor';
+import TextEditor from 'Components/AdminEditWrappers/TextEditor';
+import ImageEditor from 'Components/AdminEditWrappers/ImageEditor';
 
 import style from './style.scss';
 

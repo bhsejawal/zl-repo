@@ -1,7 +1,7 @@
 import { h } from 'preact';
 
-import HabitatMap from '../../components/HabitatMap'
-import Header from '../../components/Header';
+import HabitatMap from 'Components/HabitatMap'
+import Header from 'Components/Header';
 
 import style from './style.scss';
 

@@ -1,4 +1,4 @@
-import { buildURL } from '../../shared/fetch';
+import { buildURL } from 'Shared/fetch';
 
 import facebook from './logos/facebook.svg';
 import google from './logos/google.svg';

@@ -8,56 +8,56 @@ import {
   RadioButton,
 } from 'grommet';
 
-import List from '../../../../../../../../components/List';
-import SingleIconCard from '../../../../cards/SingleIconCard';
-import ThreeIconsCard from '../../../../cards/ThreeIconsCard';
-import FourIconsCard from '../../../../cards/FourIconsCard';
-import AnimalProfileCard from '../../../../cards/AnimalProfileCard';
-import ConservationCard from '../../../../cards/ConservationCard';
-import TwoVideosCard from '../../../../cards/TwoVideosCard';
-import SingleVideoCard from '../../../../cards/SingleVideoCard';
-import OriginAndHabitatCard from '../../../../cards/OriginAndHabitatCard';
+import List from 'Components/List';
+import SingleIconCard from 'Cards/SingleIconCard';
+import ThreeIconsCard from 'Cards/ThreeIconsCard';
+import FourIconsCard from 'Cards/FourIconsCard';
+import AnimalProfileCard from 'Cards/AnimalProfileCard';
+import ConservationCard from 'Cards/ConservationCard';
+import TwoVideosCard from 'Cards/TwoVideosCard';
+import SingleVideoCard from 'Cards/SingleVideoCard';
+import OriginAndHabitatCard from 'Cards/OriginAndHabitatCard';
 
 import {
   tag as singleIconCardTag,
   type as singleIconCardType,
   data as singleIconCardData,
-} from '../../../../cards/SingleIconCard/sampleData';
+} from 'Cards/SingleIconCard/sampleData';
 import {
   tag as threeIconsCardTag,
   type as threeIconsCardType,
   data as threeIconsCardData,
-} from '../../../../cards/ThreeIconsCard/sampleData';
+} from 'Cards/ThreeIconsCard/sampleData';
 import {
   tag as fourIconsCardTag,
   type as fourIconsCardType,
   data as fourIconsCardData,
-} from '../../../../cards/FourIconsCard/sampleData';
+} from 'Cards/FourIconsCard/sampleData';
 import {
   tag as animalProfileCardTag,
   type as animalProfileCardType,
   data as animalProfileCardData,
-} from '../../../../cards/AnimalProfileCard/sampleData';
+} from 'Cards/AnimalProfileCard/sampleData';
 import {
   tag as conservationCardTag,
   type as conservationCardType,
   data as conservationCardData,
-} from '../../../../cards/ConservationCard/sampleData';
+} from 'Cards/ConservationCard/sampleData';
 import {
   tag as twoVideosCardTag,
   type as twoVideosCardType,
   data as twoVideosCardData,
-} from '../../../../cards/TwoVideosCard/sampleData';
+} from 'Cards/TwoVideosCard/sampleData';
 import {
   tag as singleVideoCardTag,
   type as singleVideoCardType,
   data as singleVideoCardData,
-} from '../../../../cards/SingleVideoCard/sampleData';
+} from 'Cards/SingleVideoCard/sampleData';
 import {
   tag as originAndHabitatCardTag,
   type as originAndHabitatCardType,
   data as originAndHabitatCardData,
-} from '../../../../cards/OriginAndHabitatCard/sampleData';
+} from 'Cards/OriginAndHabitatCard/sampleData';
 
 import style from './style.scss';
 

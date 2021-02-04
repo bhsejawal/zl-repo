@@ -1,13 +1,13 @@
 import { cloneElement, h, toChildArray } from 'preact';
 import { useCallback, useRef, useState } from 'preact/hooks';
 
-import { hasPermission } from '../../../../../components/Authorize';
+import { hasPermission } from 'Components/Authorize';
 
-import EditButton from '../../../../../components/AdminEditWrappers/EditButton';
+import EditButton from 'Components/AdminEditWrappers/EditButton';
 // eslint-disable-next-line
 import CardEditorLoader from 'async!./CardEditorLoader';
 
-import style from '../../../../../components/AdminEditWrappers/wrapper.scss';
+import style from 'Components/AdminEditWrappers/wrapper.scss';
 
 const CardEditor = ({ children, card }) => {
   const childRef = useRef();

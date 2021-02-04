@@ -4,6 +4,8 @@ import { connect } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSpinner } from '@fortawesome/pro-solid-svg-icons';
 
+import Can from 'Components/Authorize';
+
 import {
   ANIMAL_PROFILE_CARD_TYPE,
   CONSERVATION_CARD_TYPE,
@@ -17,8 +19,6 @@ import {
 } from './constants';
 import { setActiveTab, setCards } from './actions';
 import { fetchCards } from './api';
-
-import Can from '../../../../components/Authorize';
 
 import Tabs from './tabs';
 import Shortcuts from './shortcuts';

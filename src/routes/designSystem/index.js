@@ -1,5 +1,5 @@
 import { h } from 'preact';
-import Button from '../../components/Button';
+import Button from 'Components/Button';
 
 import style from './style.scss';
 

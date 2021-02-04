@@ -1,0 +1,12 @@
+{
+    "compilerOptions": {
+      "baseUrl": "./",
+      "paths": {
+        "Cards/*": ["./src/routes/habitat/components/CardTabs/cards/*"],
+        "Components/*": ["./src/components/*"],
+        "Assets/*": ["./src/assets/*"],
+        "Shared/*": ["./src/shared/*"]
+      }
+    },
+    "exclude": ["node_modules", "dist"]
+  }
