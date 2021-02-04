@@ -60,9 +60,8 @@ import {
 } from 'Cards/OriginAndHabitatCard/sampleData';
 
 import style from './style.scss';
+import { INFO, MEET } from '../../../../constants';
 
-// TODO: remove, and use activeTab to render available cards based on that
-// eslint-disable-next-line no-unused-vars
 const CardsList = ({ activeTab, onContinue }) => {
   // TODO: we'll need to render the list based on the tab
   const listRef = useRef();
@@ -140,66 +139,79 @@ const CardsList = ({ activeTab, onContinue }) => {
 
       <Box flex="grow" width={{ max: '1190px' }}>
         <List ref={listRef}>
-          {/* eslint-disable-next-line jsx-a11y/click-events-have-key-events */}
-          <div className={style.item} role="button" tabIndex="0" onClick={onSingleIconCardClick}>
-            <Text size="20px" margin="small" textAlign="center">Single Icon</Text>
-            {/* eslint-disable-next-line react/jsx-props-no-spreading */}
-            <SingleIconCard {...singleIconCardData} tag={singleIconCardTag} />
-            <Box pad="small">
-              <RadioButton checked={selectedType === singleIconCardType} />
-            </Box>
-          </div>
+          {activeTab === INFO && (
+            // eslint-disable-next-line jsx-a11y/click-events-have-key-events
+            <div className={style.item} role="button" tabIndex="0" onClick={onSingleIconCardClick}>
+              <Text size="20px" margin="small" textAlign="center">Single Icon</Text>
+              {/* eslint-disable-next-line react/jsx-props-no-spreading */}
+              <SingleIconCard {...singleIconCardData} tag={singleIconCardTag} />
+              <Box pad="small">
+                <RadioButton checked={selectedType === singleIconCardType} />
+              </Box>
+            </div>
+          )}
 
-          {/* eslint-disable-next-line jsx-a11y/click-events-have-key-events */}
-          <div className={style.item} role="button" tabIndex="0" onClick={onThreeIconsCardClick}>
-            <Text size="20px" margin="small" textAlign="center">Three Icons</Text>
-            {/* eslint-disable-next-line react/jsx-props-no-spreading */}
-            <ThreeIconsCard {...threeIconsCardData} tag={threeIconsCardTag} />
-            <Box pad="small">
-              <RadioButton checked={selectedType === threeIconsCardType} />
-            </Box>
-          </div>
+          {activeTab === INFO && (
+            // eslint-disable-next-line jsx-a11y/click-events-have-key-events
+            <div className={style.item} role="button" tabIndex="0" onClick={onThreeIconsCardClick}>
+              <Text size="20px" margin="small" textAlign="center">Three Icons</Text>
+              {/* eslint-disable-next-line react/jsx-props-no-spreading */}
+              <ThreeIconsCard {...threeIconsCardData} tag={threeIconsCardTag} />
+              <Box pad="small">
+                <RadioButton checked={selectedType === threeIconsCardType} />
+              </Box>
+            </div>
+          )}
 
-          {/* eslint-disable-next-line jsx-a11y/click-events-have-key-events */}
-          <div className={style.item} role="button" tabIndex="0" onClick={onFourIconsCardClick}>
-            <Text size="20px" margin="small" textAlign="center">Four Icons</Text>
-            {/* eslint-disable-next-line react/jsx-props-no-spreading */}
-            <FourIconsCard {...fourIconsCardData} tag={fourIconsCardTag} />
-            <Box pad="small">
-              <RadioButton checked={selectedType === fourIconsCardType} />
-            </Box>
-          </div>
+          {activeTab === INFO && (
+            // eslint-disable-next-line jsx-a11y/click-events-have-key-events
+            <div className={style.item} role="button" tabIndex="0" onClick={onFourIconsCardClick}>
+              <Text size="20px" margin="small" textAlign="center">Four Icons</Text>
+              {/* eslint-disable-next-line react/jsx-props-no-spreading */}
+              <FourIconsCard {...fourIconsCardData} tag={fourIconsCardTag} />
+              <Box pad="small">
+                <RadioButton checked={selectedType === fourIconsCardType} />
+              </Box>
+            </div>
+          )}
 
-          {/* eslint-disable-next-line jsx-a11y/click-events-have-key-events */}
-          <div className={style.item} role="button" tabIndex="0" onClick={onAnimalProfileCardClick}>
-            <Text size="20px" margin="small" textAlign="center">Animal Profile</Text>
-            {/* eslint-disable-next-line react/jsx-props-no-spreading */}
-            <AnimalProfileCard {...animalProfileCardData} tag={animalProfileCardTag} />
-            <Box pad="small">
-              <RadioButton checked={selectedType === animalProfileCardType} />
-            </Box>
-          </div>
+          {activeTab === MEET && (
+            // eslint-disable-next-line jsx-a11y/click-events-have-key-events
+            <div className={style.item} role="button" tabIndex="0" onClick={onAnimalProfileCardClick}>
+              <Text size="20px" margin="small" textAlign="center">Animal Profile</Text>
+              {/* eslint-disable-next-line react/jsx-props-no-spreading */}
+              <AnimalProfileCard {...animalProfileCardData} tag={animalProfileCardTag} />
+              <Box pad="small">
+                <RadioButton checked={selectedType === animalProfileCardType} />
+              </Box>
+            </div>
+          )}
 
-          {/* eslint-disable-next-line jsx-a11y/click-events-have-key-events */}
-          <div className={style.item} role="button" tabIndex="0" onClick={onConservationCardClick}>
-            <Text size="20px" margin="small" textAlign="center">Conservation</Text>
-            {/* eslint-disable-next-line react/jsx-props-no-spreading */}
-            <ConservationCard {...conservationCardData} tag={conservationCardTag} />
-            <Box pad="small">
-              <RadioButton checked={selectedType === conservationCardType} />
-            </Box>
-          </div>
+          {activeTab === INFO && (
+            // eslint-disable-next-line jsx-a11y/click-events-have-key-events
+            <div className={style.item} role="button" tabIndex="0" onClick={onConservationCardClick}>
+              <Text size="20px" margin="small" textAlign="center">Conservation</Text>
+              {/* eslint-disable-next-line react/jsx-props-no-spreading */}
+              <ConservationCard {...conservationCardData} tag={conservationCardTag} />
+              <Box pad="small">
+                <RadioButton checked={selectedType === conservationCardType} />
+              </Box>
+            </div>
+          )}
 
-          {/* eslint-disable-next-line jsx-a11y/click-events-have-key-events */}
-          <div className={style.item} role="button" tabIndex="0" onClick={onTwoVideosCardClick}>
-            <Text size="20px" margin="small" textAlign="center">Two Videos</Text>
-            {/* eslint-disable-next-line react/jsx-props-no-spreading */}
-            <TwoVideosCard {...twoVideosCardData} tag={twoVideosCardTag} />
-            <Box pad="small">
-              <RadioButton checked={selectedType === twoVideosCardType} />
-            </Box>
-          </div>
+          {(activeTab === INFO || activeTab === MEET) && (
+            // eslint-disable-next-line jsx-a11y/click-events-have-key-events
+            <div className={style.item} role="button" tabIndex="0" onClick={onTwoVideosCardClick}>
+              <Text size="20px" margin="small" textAlign="center">Two Videos</Text>
+              {/* eslint-disable-next-line react/jsx-props-no-spreading */}
+              <TwoVideosCard {...twoVideosCardData} tag={twoVideosCardTag} />
+              <Box pad="small">
+                <RadioButton checked={selectedType === twoVideosCardType} />
+              </Box>
+            </div>
+          )}
 
+          {/* this type of card is available on all tabs */}
           {/* eslint-disable-next-line jsx-a11y/click-events-have-key-events */}
           <div className={style.item} role="button" tabIndex="0" onClick={onSingleVideoCardClick}>
             <Text size="20px" margin="small" textAlign="center">Single Video</Text>
@@ -210,15 +222,17 @@ const CardsList = ({ activeTab, onContinue }) => {
             </Box>
           </div>
 
-          {/* eslint-disable-next-line jsx-a11y/click-events-have-key-events */}
-          <div className={style.item} role="button" tabIndex="0" onClick={onOriginAndHabitatCardClick}>
-            <Text size="20px" margin="small" textAlign="center">Origin And Habitat</Text>
-            {/* eslint-disable-next-line react/jsx-props-no-spreading */}
-            <OriginAndHabitatCard {...originAndHabitatCardData} tag={originAndHabitatCardTag} />
-            <Box pad="small">
-              <RadioButton checked={selectedType === originAndHabitatCardType} />
-            </Box>
-          </div>
+          {activeTab === INFO && (
+            // eslint-disable-next-line jsx-a11y/click-events-have-key-events
+            <div className={style.item} role="button" tabIndex="0" onClick={onOriginAndHabitatCardClick}>
+              <Text size="20px" margin="small" textAlign="center">Origin And Habitat</Text>
+              {/* eslint-disable-next-line react/jsx-props-no-spreading */}
+              <OriginAndHabitatCard {...originAndHabitatCardData} tag={originAndHabitatCardTag} />
+              <Box pad="small">
+                <RadioButton checked={selectedType === originAndHabitatCardType} />
+              </Box>
+            </div>
+          )}
         </List>
       </Box>
 
