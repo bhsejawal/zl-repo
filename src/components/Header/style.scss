@@ -9,9 +9,10 @@
   padding: 0;
   background: white;
   box-shadow: 0 0 5px rgba(41, 31, 31, .5);
-  z-index: 4;
+  z-index: 100;
   display: flex;
   justify-content: flex-end;
+
 
   @media screen and (max-width: #{$tablet-landscape-width}) {
 

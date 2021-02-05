@@ -33,9 +33,9 @@ const Info = ({ info: { profileImg, name, zooName }, liked = false }) => {
           editBtnPosition={{ right: '50px', top: '10px' }}
           constraints={{
             maxResolution: 240,
-            acceptedFormats: ['jpg', 'jpeg', 'png'],
+            acceptedFormats: ['jpg', 'jpeg', 'png', 'svg'],
             aspectRatio: '1:1',
-            maxFileSize: '50kb',
+            maxFileSize: 50_000,
           }}
         >
           {(img) => (

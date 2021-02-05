@@ -75,7 +75,10 @@ const SingleVideoCardForm = forwardRef(({
           url={videoUrl}
           ref={videoSelectorRef}
           placeholder="https://"
-          constraints={{ acceptedFormats: ['mp4'], maxFileSize: '5mb' }}
+          constraints={{
+            acceptedFormats: ['mp4'],
+            maxFileSize: 5_000_000,
+          }}
           onBlur={onInputChange}
           onChange={onVideoChange}
         />

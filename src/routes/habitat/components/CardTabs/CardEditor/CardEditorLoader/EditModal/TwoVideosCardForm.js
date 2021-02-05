@@ -19,8 +19,10 @@ const TwoVideosCardForm = forwardRef(({
   const video2SelectorRef = useRef();
 
   useImperativeHandle(ref, () => ({
-    validate: () => video1SelectorRef.current.validate()
-      && video2SelectorRef.current.validate(),
+    validate: () => Promise.all([
+      video1SelectorRef.current.validate(),
+      video2SelectorRef.current.validate(),
+    ]),
   }));
 
   const onVideo1Change = useCallback(
@@ -43,7 +45,10 @@ const TwoVideosCardForm = forwardRef(({
           url={video1Url}
           ref={video1SelectorRef}
           placeholder="https://"
-          constraints={{ acceptedFormats: ['mp4'], maxFileSize: '3mb' }}
+          constraints={{
+            acceptedFormats: ['mp4'],
+            maxFileSize: 3_000_000,
+          }}
           onBlur={onInputChange}
           onChange={onVideo1Change}
         />
@@ -75,7 +80,10 @@ const TwoVideosCardForm = forwardRef(({
           url={video2Url}
           ref={video2SelectorRef}
           placeholder="https://"
-          constraints={{ acceptedFormats: ['mp4'], maxFileSize: '3mb' }}
+          constraints={{
+            acceptedFormats: ['mp4'],
+            maxFileSize: 3_000_000,
+          }}
           onBlur={onInputChange}
           onChange={onVideo2Change}
         />

@@ -16,9 +16,10 @@ import {
   TextInput,
 } from 'grommet';
 import classnames from 'classnames';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faSpinner } from '@fortawesome/pro-solid-svg-icons';
 
-import { isValidUrl } from '../../helpers';
-import { uploadFile } from './api';
+import { fromUrlToS3, getHeaders, uploadFile } from './api';
 
 import style from './style.scss';
 
@@ -28,7 +29,7 @@ const ASPECT_RATIO_CONSTRAINT = 'ASPECT_RATIO_CONSTRAINT';
 const ACCEPTED_FORMAT_CONSTRAINT = 'ACCEPTED_FORMAT_CONSTRAINT';
 
 const ValidationLine = ({ error, text }) => (
-  <Text color={error && 'status-error'}>{text}</Text>
+  <Text color={error ? 'status-error' : undefined}>{text}</Text>
 );
 
 const Constraints = ({ constraints, errors }) => constraints.map(({ type, text }, ind) => (
@@ -50,24 +51,43 @@ const ImageSelector = forwardRef(({
   constraints: {
     maxResolution,
     minResolution,
-    // TODO: implement size validation
-    // maybe we could fetch it with HEAD request type
     maxFileSize,
     aspectRatio,
     acceptedFormats,
   } = {},
   onChange,
-  onBlur,
 }, ref) => {
+  const [isLoading, setIsLoading] = useState();
   const [errorMsg, setErrorMsg] = useState();
   const [errors, setErrors] = useState({});
-  const isUrlValid = useMemo(() => isValidUrl(url), [url]);
+  const acceptedFormatsStr = acceptedFormats.join(',');
 
   useEffect(() => setErrorMsg(undefined), [url]);
 
-  const validateConstraints = useCallback(() => {
+  const validateConstraints = useCallback(async () => {
     const newErrors = {};
+    const headers = await getHeaders(url);
 
+    if (acceptedFormats && acceptedFormats.length > 0) {
+      const [imgFormat] = headers
+        .get('content-type')
+        .split('/')
+        .reverse();
+      if (!acceptedFormats.some((format) => url.endsWith(format))
+        && !acceptedFormats.some((format) => format === imgFormat)) {
+        newErrors[ACCEPTED_FORMAT_CONSTRAINT] = true;
+      } else {
+        newErrors[ACCEPTED_FORMAT_CONSTRAINT] = false;
+      }
+    }
+
+    if (maxFileSize && maxFileSize < headers.get('content-length')) {
+      newErrors[FILE_SIZE_CONSTRAINT] = true;
+    } else {
+      newErrors[FILE_SIZE_CONSTRAINT] = false;
+    }
+
+    // we assume the new image is loaded while we were waiting for head request in getHeaders
     if (previewRef?.current) {
       const imgWidth = previewRef.current.naturalHeight;
       const imgHeight = previewRef.current.naturalWidth;
@@ -90,31 +110,32 @@ const ImageSelector = forwardRef(({
       }
     }
 
-    if (acceptedFormats && acceptedFormats.length > 0) {
-      if (!acceptedFormats.some((format) => url.endsWith(format))) {
-        newErrors[ACCEPTED_FORMAT_CONSTRAINT] = true;
-      } else {
-        newErrors[ACCEPTED_FORMAT_CONSTRAINT] = false;
-      }
-    }
-
     return newErrors;
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     url,
     previewRef,
     maxResolution,
     minResolution,
-    // TODO: implement this too
-    // maxFileSize,
+    maxFileSize,
     aspectRatio,
-    acceptedFormats,
+    // using string here instead of acceptedFormats
+    // because array is passed and it's always different
+    acceptedFormatsStr,
   ]);
 
   // eslint-disable-next-line consistent-return
   useEffect(() => {
-    const onLoad = () => {
-      const newErrors = validateConstraints();
-      setErrors(newErrors);
+    const onLoad = async () => {
+      try {
+        setIsLoading(true);
+        const newErrors = await validateConstraints();
+        setErrors(newErrors);
+      } catch (err) {
+        console.error(err);
+      } finally {
+        setIsLoading(false);
+      }
     };
 
     const el = previewRef?.current;
@@ -126,33 +147,50 @@ const ImageSelector = forwardRef(({
         el.removeEventListener('load', onLoad);
       }
     }
+
+    // no need to wait for load since we'll skip preview image in validateConstraints
+    onLoad();
   }, [validateConstraints, previewRef]);
 
   useImperativeHandle(ref, () => ({
-    validate: () => {
+    validate: async () => {
       let isValid = true;
+
+      try {
+        if ((new URL(url)).origin !== window.location.origin) {
+          setErrorMsg(`Only URLs from ${window.location.origin} are allowed`);
+          return false;
+        }
+      } catch (err) {
+        // it's probably invalid URL
+        console.error(err);
+      }
 
       if (required && (!url || url.length === 0)) {
         setErrorMsg('Image is required');
         isValid = false;
-      } else if (required && url && url.length > 0 && !isUrlValid) {
-        setErrorMsg('Invalid URL');
-        isValid = false;
       }
 
-      const newErrors = validateConstraints();
+      try {
+        setIsLoading(true);
+        const newErrors = await validateConstraints();
+        if (!isEmpty(newErrors)) {
+          // TODO: scroll into view if there are new errors
+          setErrors({ ...errors, ...newErrors });
+        }
 
-      if (!isEmpty(newErrors)) {
-        // TODO: scroll into view if there are new errors
-        setErrors({ ...errors, ...newErrors });
+        // if any of newErrors is true
+        if (Object.values(newErrors).some((e) => e)) {
+          isValid = false;
+        }
+
+        return isValid;
+      } catch (err) {
+        setErrorMsg('We had problems validatin the image. Please check for failed network requests.');
+        return false;
+      } finally {
+        setIsLoading(false);
       }
-
-      // if any of newErrors is true
-      if (Object.values(newErrors).some((e) => e)) {
-        isValid = false;
-      }
-
-      return isValid;
     },
   }));
 
@@ -177,10 +215,22 @@ const ImageSelector = forwardRef(({
     }
 
     if (maxFileSize) {
-      constraints.push({
-        type: FILE_SIZE_CONSTRAINT,
-        text: `File: ${maxFileSize}`,
-      });
+      if (maxFileSize < 1000) {
+        constraints.push({
+          type: FILE_SIZE_CONSTRAINT,
+          text: `File: ${maxFileSize}B`,
+        });
+      } else if (maxFileSize < 1000 * 1000) {
+        constraints.push({
+          type: FILE_SIZE_CONSTRAINT,
+          text: `File: ${Math.round(maxFileSize / 1_000)}kB`,
+        });
+      } else {
+        constraints.push({
+          type: FILE_SIZE_CONSTRAINT,
+          text: `File: ${Math.round(maxFileSize / (1_000_000))}MB`,
+        });
+      }
     }
 
     if (aspectRatio) {
@@ -206,16 +256,45 @@ const ImageSelector = forwardRef(({
 
   const onInputChange = async ({ target }) => {
     try {
-      const { url } = await uploadFile(target.files[0], maxResolution, acceptedFormats);
-      onChange(url);
+      setIsLoading(true);
+      const { path } = await uploadFile(
+        target.files[0],
+        maxResolution,
+        acceptedFormats,
+        maxFileSize,
+      );
+      onChange(`${window.location.origin}/${path}`);
     } catch (err) {
       const { error } = err.body;
 
       if (error === 'Invalid format') {
         setErrors({ ...errors, [ACCEPTED_FORMAT_CONSTRAINT]: true });
+      } else if (error === 'File too large') {
+        setErrors({ ...errors, [FILE_SIZE_CONSTRAINT]: true });
       } else {
-        console.log(err);
+        console.error(err);
       }
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const onBlur = async ({ target }) => {
+    const urlObj = new URL(target.value);
+
+    if (urlObj.origin === window.location.origin) {
+      onChange(target.value);
+      return;
+    }
+
+    try {
+      setIsLoading(true);
+      const { path } = await fromUrlToS3(target.value);
+      onChange(`${window.location.origin}/${path}`);
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -227,6 +306,9 @@ const ImageSelector = forwardRef(({
         placeholder={placeholder}
         value={url}
         onBlur={onBlur}
+        icon={isLoading ? <FontAwesomeIcon icon={faSpinner} spin /> : undefined}
+        disabled={isLoading}
+        reverse
       />
       {errorMsg && (
         <Box>
@@ -239,8 +321,8 @@ const ImageSelector = forwardRef(({
 
       <Box direction="row">
         <div className={style.uploadBtnWrapper}>
-          <input onChange={onInputChange} type="file" name="file" />
-          <Button label="Upload" margin={{ right: '5px' }} />
+          <input disabled={isLoading} onChange={onInputChange} type="file" name="file" />
+          <Button disabled={isLoading} label="Upload" margin={{ right: '5px' }} />
         </div>
 
         <a
@@ -248,9 +330,9 @@ const ImageSelector = forwardRef(({
           href={url}
           target="_blank"
           rel="noopener noreferrer"
-          className={classnames({ [style.disabled]: !isUrlValid })}
+          className={classnames({ [style.disabled]: errorMsg })}
         >
-          <Button label="Download" disabled={!isUrlValid} />
+          <Button label="Download" disabled={errorMsg} />
         </a>
       </Box>
     </div>

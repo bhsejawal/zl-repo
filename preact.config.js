@@ -9,4 +9,13 @@ export default (config, env, helpers) => {
   config.resolve.alias.Shared = path.resolve(__dirname, 'src/shared');
 
   envVars(config, env, helpers);
+
+  if (config.devServer) {
+    config.devServer.proxy = [{
+      path: '/assets/**',
+      secure: false,
+      changeOrigin: true,
+      target: 'https://zoolife.brizi.tech/',
+    }];
+  }
 };

@@ -28,12 +28,17 @@ const EditModal = ({
   const previewRef = useRef();
   const [value, setValue] = useState(initialImgUrl);
 
-  const onSubmit = (evt) => {
+  const onSubmit = async (evt) => {
     evt.preventDefault();
-    const isValid = imgSelectorRef.current.validate();
 
-    if (!isValid) {
-      return
+    try {
+      const isValid = await imgSelectorRef.current.validate();
+      if (!isValid) {
+        return
+      }
+    } catch (err) {
+      console.error(err);
+      return;
     }
 
     const formData = new FormData(evt.target);

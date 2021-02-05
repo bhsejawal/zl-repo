@@ -37,7 +37,7 @@ const AnimalProfileCardForm = forwardRef(({
   const [nameErrorMsg, setNameErrorMsg] = useState();
 
   useImperativeHandle(ref, () => ({
-    validate: () => {
+    validate: async () => {
       let isValid = true;
 
       if (!name || name.length === 0) {
@@ -45,7 +45,8 @@ const AnimalProfileCardForm = forwardRef(({
         isValid = false;
       }
 
-      return isValid && imgRef.current.validate();
+      const isImgValid = await imgRef.current.validate();
+      return isValid && isImgValid;
     },
   }));
 
@@ -71,7 +72,10 @@ const AnimalProfileCardForm = forwardRef(({
           url={img}
           ref={imgRef}
           placeholder="https://"
-          constraints={{ acceptedFormats: ['jpg', 'jpeg', 'png'], maxFileSize: '50kb' }}
+          constraints={{
+            acceptedFormats: ['jpg', 'jpeg', 'png'],
+            maxFileSize: 50_000,
+          }}
           onBlur={onInputChange}
           onChange={onImgChange}
         />

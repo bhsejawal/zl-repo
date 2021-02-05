@@ -40,7 +40,7 @@ const FourIconsCardForm = forwardRef(({
   const [textErrorMsg, setTextErrorMsg] = useState();
 
   useImperativeHandle(ref, () => ({
-    validate: () => {
+    validate: async () => {
       let isValid = true;
 
       if (!title || title.length === 0) {
@@ -53,11 +53,14 @@ const FourIconsCardForm = forwardRef(({
         isValid = false;
       }
 
-      return isValid
-        && img1Ref.current.validate()
-        && img2Ref.current.validate()
-        && img3Ref.current.validate()
-        && img4Ref.current.validate();
+      const imagesValid = await Promise.all([
+        img1Ref.current.validate(),
+        img2Ref.current.validate(),
+        img3Ref.current.validate(),
+        img4Ref.current.validate(),
+      ]);
+
+      return isValid && imagesValid.every((valid) => valid === true);
     },
   }));
 

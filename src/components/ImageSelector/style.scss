@@ -16,9 +16,11 @@
 .uploadBtnWrapper {
   position: relative;
   margin-right: 10px;
+  cursor: pointer;
 
   input {
     width: 104px;
+    height: 32px;
     opacity: 0;
     cursor: pointer;
   }

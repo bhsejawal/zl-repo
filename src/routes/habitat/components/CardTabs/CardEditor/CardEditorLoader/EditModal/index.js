@@ -86,8 +86,13 @@ const EditModal = ({
   const [deleteActive, setDeleteActive] = useState(false);
 
   const onPublish = async () => {
-    const isValid = formRef.current.validate();
-    if (!isValid) {
+    try {
+      const isValid = await formRef.current.validate();
+      if (!isValid) {
+        return;
+      }
+    } catch (err) {
+      console.error(err);
       return;
     }
 

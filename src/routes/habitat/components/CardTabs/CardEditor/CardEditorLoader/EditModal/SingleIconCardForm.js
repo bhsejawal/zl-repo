@@ -30,7 +30,7 @@ const SingleIconCardForm = forwardRef(({
   const [textErrorMsg, setTextErrorMsg] = useState();
 
   useImperativeHandle(ref, () => ({
-    validate: () => {
+    validate: async () => {
       let isValid = true;
 
       if (!title || title.length === 0) {
@@ -43,7 +43,7 @@ const SingleIconCardForm = forwardRef(({
         isValid = false;
       }
 
-      const isImgValid = imgSelectorRef.current.validate();
+      const isImgValid = await imgSelectorRef.current.validate();
       return isValid && isImgValid;
     },
   }));
@@ -113,7 +113,7 @@ const SingleIconCardForm = forwardRef(({
           placeholder="https://"
           constraints={{
             acceptedFormats: ['svg', 'jpg', 'jpeg', 'png'],
-            maxFileSize: '50kb',
+            maxFileSize: 20_000,
           }}
           onBlur={onInputChange}
           onChange={onImgChange}
