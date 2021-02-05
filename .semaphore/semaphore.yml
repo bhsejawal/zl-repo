@@ -32,6 +32,8 @@ blocks:
     dependencies: []
   - name: Build
     task:
+      secrets:
+        - name: zl-app-tech
       jobs:
         - name: Preact Build
           commands:
