@@ -103,7 +103,9 @@ const initializeSocketConnection = () => {
   }
 }
 
-initializeSocketConnection();
+if (typeof window !== 'undefined') {
+  initializeSocketConnection();
+}
 
 export const removeWebRTCAdaptor = (streamId) => {
   if (webRTCMap.has(streamId)) {
