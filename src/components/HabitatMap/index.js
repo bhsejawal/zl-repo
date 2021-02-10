@@ -1,12 +1,13 @@
 import { h } from 'preact';
 import { useEffect } from 'preact/hooks';
 import { connect } from 'react-redux';
+import classnames from 'classnames';
 
-import { fetchMapData } from './actions';
+import { fetchMapData, setHabitat } from './actions';
 
 import style from './style.scss';
 
-const HabitatMap = ({ habitats, fetchMapDataAction }) => {
+const HabitatMap = ({ habitats, fetchMapDataAction, setHabitatAction }) => {
   useEffect(() => {
     fetchMapDataAction();
   }, [fetchMapDataAction]);
@@ -14,32 +15,28 @@ const HabitatMap = ({ habitats, fetchMapDataAction }) => {
   return (
     <div className={style.map}>
       <div className={style.wrapper}>
-        {habitats.map((habitat) => {
-          const [[id, data]] = Object.entries(habitat);
+        {habitats.filter(( show ) => show).map((habitat) => {
           const {
+            id,
+            online,
+            liveTalk,
             top,
             left,
-            border,
-            link,
             image,
-            width,
-          } = data;
+          } = habitat;
 
           return (
             <div
               key={id}
-              className={style.habitat}
-              style={{
-                top,
-                left,
-                border,
-                width,
-                height: width,
-              }}
+              id={id}
+              className={classnames(
+                style.habitat, { [style.liveTalk]: liveTalk, [style.offline]: !online },
+              )}
+              style={{top, left}}
             >
-              <a href={link}>
+              <button type="button" onClick={() => setHabitatAction(id)}>
                 <img src={image} alt="" />
-              </a>
+              </button>
             </div>
           )
         })}
@@ -51,5 +48,8 @@ const HabitatMap = ({ habitats, fetchMapDataAction }) => {
 
 export default connect(
   ({ map: { habitats } }) => ({ habitats }),
-  { fetchMapDataAction: fetchMapData },
+  {
+    fetchMapDataAction: fetchMapData,
+    setHabitatAction: setHabitat,
+  },
 )(HabitatMap);

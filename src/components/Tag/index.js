@@ -1,7 +1,12 @@
+import classnames from 'classnames';
+
 import style from './style.scss';
 
-const Tag = ({ label }) => (
-  <div className={style.tag}>
+const Tag = ({
+  label,
+  varient, // liveTalk, online, offline
+}) => (
+  <div className={classnames(style.tag, style[varient])}>
     {label}
   </div>
 );

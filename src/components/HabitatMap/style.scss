@@ -1,5 +1,5 @@
 .map {
-  margin-top: 60px;
+  align-self: center;
   margin-left: auto;
   display: flex;
   overflow: hidden;
@@ -12,9 +12,12 @@
   }
 
   .habitat {
-    width: 45px;
-    height: 45px;
-    background-color: green;
+    top: -50px;
+    left: -50px;
+    width: 52px;
+    height: 52px;
+    border: 4px solid var(--limeGreen);
+    background-color: white;
     position: absolute;
     transform: translate(-50%, -50%);
     border-radius: 50%;
@@ -27,6 +30,21 @@
     img {
       width: 100%;
       height: auto;
+    }
+
+    button {
+      padding: 0;
+      border: 0;
+      cursor: pointer;
+    }
+
+    &.liveTalk {
+      border-color: var(--blue);
+    }
+
+    &.offline {
+      border-color: var(--coral);
+      opacity: .5;
     }
   }
 

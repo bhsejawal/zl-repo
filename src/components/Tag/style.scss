@@ -7,4 +7,16 @@
   display: inline-flex;
   padding: 4px 8px;
   border-radius: 5px;
+
+  &.liveTalk {
+    background: var(--blue);
+  }
+
+  &.online {
+    background: var(--limeGreen);
+  }
+
+  &.offline {
+    background: var(--coral);
+  }
 }

@@ -1,4 +1,4 @@
-import { SET_MAP_DATA } from './types';
+import { SET_MAP_DATA, SELECT_HABITAT } from './types';
 import { getMapData } from './api';
 
 const setMapData = ({ data }) => ({
@@ -6,7 +6,6 @@ const setMapData = ({ data }) => ({
   payload: data,
 });
 
-// eslint-disable-next-line import/prefer-default-export
 export const fetchMapData = () => async (dispatch) => {
   try {
     const data = await getMapData();
@@ -15,3 +14,8 @@ export const fetchMapData = () => async (dispatch) => {
     console.error(error);
   }
 };
+
+export const setHabitat = (habitat) => ({
+  type: SELECT_HABITAT,
+  payload: { habitat },
+});
