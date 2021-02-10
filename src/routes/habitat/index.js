@@ -1,4 +1,6 @@
 import { h } from 'preact';
+import { useEffect } from 'preact/hooks';
+import { connect } from 'react-redux';
 
 import LiveStream from 'Components/LiveStream';
 import GlobalsContextProvider from "Components/GlobalsContextProvider";
@@ -11,15 +13,26 @@ import StreamProfile from './components/StreamProfile';
 
 import { useWindowResize } from '../../hooks';
 
+import { fetchHabitatSettings } from './actions';
+
 import style from './style.scss';
 
-const Habitat = () => {
+const Habitat = ({ isFetching, fetchHabitatSettingsAction }) => {
   const { width: windowWidth } = useWindowResize();
+
+  useEffect(() => {
+    fetchHabitatSettingsAction('test');
+  }, [fetchHabitatSettingsAction]);
 
   const sideBarWidth = 84;
   const chatWidth = 285;
   const streamWidth = windowWidth - sideBarWidth - chatWidth;
   const height = streamWidth * 0.5625;
+
+  if (isFetching) {
+    // This should use the lottie loader as we implement it
+    return null;
+  }
 
   return (
     <GlobalsContextProvider>
@@ -43,4 +56,8 @@ const Habitat = () => {
   );
 }
 
-export default Habitat;
+export default connect((
+  { habitat: { habitatInfo: { isFetching} } },
+) => ({ isFetching }), {
+  fetchHabitatSettingsAction: fetchHabitatSettings,
+})(Habitat);

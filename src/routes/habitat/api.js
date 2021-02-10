@@ -9,8 +9,8 @@ export class RequestError extends Error {
 // eslint-disable-next-line import/prefer-default-export
 // this is currently hardcoded and not in use
 // TODO: Create habitat settings and .env support
-export const getHabitatSettings = (cameraId) => fetch(
-  `https://twitch.brizi.tech/cameras/${cameraId}/zoolife`,
+export const getHabitatSettings = (habitat) => fetch(
+  `${process.env.PREACT_APP_HTTP_PROTOCOL}${process.env.PREACT_APP_API_AUTHORITY}/habitats/${habitat}`,
   {
     method: 'GET',
     headers: { 'Content-Type': 'application/json' },
