@@ -9,9 +9,10 @@ const Button = ({
   disabled,
   children,
   onClick,
+  submit,
 }) => (
   <button
-    type="button"
+    type={submit ? 'submit' : 'button'}
     onClick={onClick}
     disabled={disabled}
     className={classnames(style.button, className, {

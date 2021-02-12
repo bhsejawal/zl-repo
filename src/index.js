@@ -5,7 +5,7 @@ import { Provider } from 'react-redux';
 import { Grommet, Main, ResponsiveContext } from 'grommet';
 import { deepMerge } from 'grommet/utils';
 import { grommet } from 'grommet/themes';
-
+import AppLoader from 'Components/AppLoader';
 import store from './redux/store';
 
 import { hasPermission } from './components/Authorize/index'
@@ -42,6 +42,7 @@ const App = () => {
   return (
     <Provider store={store}>
       <Grommet full theme={customBreakpoints} >
+        <AppLoader />
         <ResponsiveContext.Consumer>
           {(size) => (
             <Main fill={size === 'large'}>
