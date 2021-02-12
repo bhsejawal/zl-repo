@@ -10,7 +10,7 @@ import store from './redux/store';
 
 import { hasPermission } from './components/Authorize/index'
 
-import zoolifeTheme from './style/theme';
+import zoolifeTheme from './grommetTheme';
 
 import AdminRouter from './shared/AdminRouter';
 import DesignSystem from './routes/designSystem';

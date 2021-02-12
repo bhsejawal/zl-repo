@@ -9,6 +9,7 @@ import {
 } from 'grommet';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
+import { SecondaryButton } from 'Components/Buttons';
 
 import ImageSelector from '../../../ImageSelector';
 
@@ -101,7 +102,7 @@ const EditModal = ({
             direction="row"
             align="center"
           >
-            <Button type="submit" primary label="Save" />
+            <SecondaryButton type="submit" label="Save" />
           </Box>
         </Form>
       </Box>

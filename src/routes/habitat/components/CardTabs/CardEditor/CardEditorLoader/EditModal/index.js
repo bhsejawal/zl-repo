@@ -11,6 +11,7 @@ import {
   Grommet,
 } from 'grommet';
 import { useCallback, useRef, useState } from 'preact/hooks';
+import { OutlineButton, SecondaryButton } from 'Components/Buttons';
 
 import SingleIconCard from 'Cards/SingleIconCard';
 import ThreeIconsCard from 'Cards/ThreeIconsCard';
@@ -179,12 +180,12 @@ const EditModal = ({
                   Are you sure you want to delete this card?
                 </Heading>
                 <Box direction="row" justify="center">
-                  <Button
+                  <OutlineButton
                     label="Go Back"
                     margin={{ right: '10px' }}
                     onClick={() => setDeleteActive(false)}
                   />
-                  <Button primary label="Delete" onClick={onDelete} />
+                  <SecondaryButton primary label="Delete" onClick={onDelete} />
                 </Box>
                 <Box margin="medium">
                   {error && (
@@ -290,15 +291,19 @@ const EditModal = ({
                     />
                   )}
 
-                  <Box direction="row" justify="center" pad="small">
+                  <Box direction="row" justify={cardData ? 'between' : 'center'} pad={{top: '20px'}}>
                     {cardData && (
-                      <Button
-                        margin={{ right: '10px' }}
+                      <OutlineButton
+                        style={{minWidth: 'calc((100%/2) - 5px)'}}
                         label="Delete"
                         onClick={() => setDeleteActive(true)}
                       />
                     )}
-                    <Button label="Publish" primary onClick={onPublish} />
+                    <SecondaryButton
+                      style={{minWidth: cardData && 'calc((100%/2) - 5px)'}}
+                      label="Publish"
+                      onClick={onPublish}
+                    />
                   </Box>
                   {error && (
                     <Box>

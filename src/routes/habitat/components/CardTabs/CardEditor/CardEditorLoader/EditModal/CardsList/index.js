@@ -4,7 +4,6 @@ import {
   Heading,
   Box,
   Text,
-  Button,
   RadioButton,
 } from 'grommet';
 
@@ -18,6 +17,7 @@ import TwoVideosCard from 'Cards/TwoVideosCard';
 import SingleVideoCard from 'Cards/SingleVideoCard';
 import OriginAndHabitatCard from 'Cards/OriginAndHabitatCard';
 
+import { SecondaryButton } from 'Components/Buttons';
 import {
   tag as singleIconCardTag,
   type as singleIconCardType,
@@ -237,8 +237,7 @@ const CardsList = ({ activeTab, onContinue }) => {
       </Box>
 
       <Box border="top" pad="medium" align="center">
-        <Button
-          primary
+        <SecondaryButton
           disabled={!selectedType}
           label="Continue"
           onClick={onContinueBtnClick}

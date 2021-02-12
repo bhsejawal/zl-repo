@@ -11,13 +11,13 @@ import {
 import {
   Box,
   Text,
-  Button,
   Heading,
   TextInput,
 } from 'grommet';
 import classnames from 'classnames';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSpinner } from '@fortawesome/pro-solid-svg-icons';
+import { OutlineButton } from 'Components/Buttons';
 
 import { fromUrlToS3, getHeaders, uploadFile } from './api';
 
@@ -322,7 +322,7 @@ const ImageSelector = forwardRef(({
       <Box direction="row">
         <div className={style.uploadBtnWrapper}>
           <input disabled={isLoading} onChange={onInputChange} type="file" name="file" />
-          <Button disabled={isLoading} label="Upload" margin={{ right: '5px' }} />
+          <OutlineButton className="xsmall" disabled={isLoading} label="Upload" margin={{ right: '5px' }} />
         </div>
 
         <a
@@ -332,7 +332,7 @@ const ImageSelector = forwardRef(({
           rel="noopener noreferrer"
           className={classnames({ [style.disabled]: errorMsg })}
         >
-          <Button label="Download" disabled={errorMsg} />
+          <OutlineButton className="xsmall" label="Download" disabled={errorMsg} />
         </a>
       </Box>
     </div>

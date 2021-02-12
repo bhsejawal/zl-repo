@@ -24,6 +24,7 @@ import { isEmpty, random } from 'lodash-es';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEyeDropper, faSpinner, faTimes } from '@fortawesome/pro-solid-svg-icons';
 import { HexColorPicker } from "react-colorful";
+import { PrimaryButton } from 'Components/Buttons';
 import classnames from 'classnames';
 
 import backgroundImg from '../../assets/profileBackground.svg';
@@ -332,8 +333,7 @@ const Profile = ({ updateProfileAction }) => {
             </FormField>
 
             <Box align="start" margin={{ top: 'medium' }}>
-              <Button
-                primary
+              <PrimaryButton
                 // TODO: we need a better way across the whole app for
                 // button state, and loading indicators
                 disabled={isLoading}

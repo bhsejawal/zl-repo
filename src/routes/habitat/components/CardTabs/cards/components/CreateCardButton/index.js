@@ -2,7 +2,7 @@ import { h } from 'preact';
 import { useCallback, useState } from 'preact/hooks';
 import { faPlus } from '@fortawesome/pro-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { Button } from 'grommet';
+import { OutlineButton } from 'Components/Buttons';
 
 import CardEditorLoader from '../../../CardEditor/CardEditorLoader';
 
@@ -23,11 +23,10 @@ const CreateCardButton = () => {
     <>
       <div className={style.card}>
         <div>
-          <Button
+          <OutlineButton
             onClick={onBtnClick}
-            icon={<FontAwesomeIcon icon={faPlus} color="var(--lightBlue)" />}
+            icon={<FontAwesomeIcon icon={faPlus} color="var(--blue)" />}
             label="New"
-            color="var(--lightBlue)"
           />
         </div>
       </div>
