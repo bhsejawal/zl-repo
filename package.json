@@ -57,6 +57,7 @@
     "@fortawesome/react-fontawesome": "^0.1.14",
     "classnames": "^2.2.6",
     "date-fns": "^2.16.1",
+    "date-fns-tz": "^1.1.1",
     "emoji-mart": "^3.0.0",
     "grommet": "^2.16.2",
     "lodash-es": "^4.17.20",
@@ -67,6 +68,7 @@
     "preact-router": "^3.2.1",
     "pubnub": "^4.29.11",
     "pubnub-react": "^2.1.0",
+    "react-big-calendar": "^0.31.0",
     "react-colorful": "^4.4.4",
     "react-multi-carousel": "^2.6.1",
     "react-redux": "^7.2.2",
@@ -76,6 +78,7 @@
     "socket.io-client": "^2.3.0",
     "styled-components": "^5.2.1",
     "url-join": "^4.0.1",
+    "use-http": "^1.0.16",
     "webrtc-adapter": "^7.7.0"
   },
   "jest": {

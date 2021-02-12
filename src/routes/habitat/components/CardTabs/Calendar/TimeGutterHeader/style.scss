@@ -1,0 +1,13 @@
+$circle-size: 10px;
+
+.circle {
+  display: inline-block;
+  width: $circle-size;
+  height: $circle-size;
+  border-radius: 100%;
+  background-color: var(--lightBlue);
+}
+
+.monthYear {
+  margin-bottom: 10px;
+}

@@ -1,0 +1,35 @@
+.title {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 100%;
+  font-size: 12px;
+  line-height: 18px;
+}
+
+.label {
+  font-size: 10px;
+  line-height: 10px;
+  letter-spacing: .5px;
+  text-transform: uppercase;
+  margin-top: 7px;
+}
+
+.disabled {
+  composes: disabled from "../style.scss";
+}
+
+.normalEvent {
+  background-color: var(--lightBlue) !important;
+  cursor: default !important;
+  // pointer-events: all !important;
+  user-select: text !important;
+}
+
+.specialEvent {
+  background-color: var(--coral) !important;
+}
+
+.drop {
+  border-radius: 5px;
+}

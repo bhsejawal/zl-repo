@@ -1,0 +1,38 @@
+.bigCalendar {
+  padding: 35px 0;
+
+  :global {
+
+    .rbc-allday-cell {
+      display: none;
+    }
+
+
+    .rbc-time-content > *:nth-child(2) .rbc-events-container,
+    .rbc-time-content > *:nth-child(2) .rbc-timeslot-group {
+      border-left: 0;
+    }
+
+    .rbc-time-gutter .rbc-timeslot-group,
+    .rbc-time-view,
+    .rbc-time-header-content,
+    .rbc-header,
+    .rbc-time-content,
+    .rbc-time-slot {
+      border: 0;
+    }
+
+    .rbc-today {
+      background-color: transparent;
+    }
+
+    .rbc-timeslot-group {
+      min-height: 55px;
+    }
+  }
+}
+
+.disabled {
+  opacity: .5;
+  pointer-events: none;
+}

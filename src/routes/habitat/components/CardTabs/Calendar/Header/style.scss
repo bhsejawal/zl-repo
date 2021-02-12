@@ -1,0 +1,32 @@
+.headerItem {
+  position: relative;
+}
+
+.arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+}
+
+.leftArrow {
+  composes: arrow;
+  left: 0;
+}
+
+.rightArrow {
+  composes: arrow;
+  right: 0;
+}
+
+.disabled {
+  composes: disabled from "../style.scss";
+}
+
+.today {
+  color: var(--oceanBlue);
+
+  .number {
+    text-decoration: underline;
+  }
+}
