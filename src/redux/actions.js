@@ -10,9 +10,9 @@ import {
 
 const DEFAULT_INTERACTION_TIMEOUT = 3000;
 
-export const setUserData = ({ username, roles }) => ({
+export const setUserData = ({ username, role }) => ({
   type: SET_USER_DATA,
-  payload: { username, roles },
+  payload: { username, role },
 });
 
 let interactionId = 0;
