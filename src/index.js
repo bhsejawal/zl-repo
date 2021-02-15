@@ -17,6 +17,7 @@ import DesignSystem from './routes/designSystem';
 import Login from './routes/login';
 import Signup from './routes/signup';
 import Map from './routes/map';
+import Schedule from './routes/schedule';
 
 import './style/globalStyle.scss';
 
@@ -56,6 +57,7 @@ const App = () => {
                 <Plans path="/plans" />
                 <Map path="/map" permission="map:view" />
                 <Profile path="/profile" permission="profile:edit" />
+                <Schedule path="/schedule" permission="schedule:view" />
               </Router>
             </Main>
           )}

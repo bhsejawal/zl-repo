@@ -1,5 +1,24 @@
 export default {
+  checkBox: {
+    size: '20px',
+  },
   global: {
+    colors: {
+      brand: '#368185',
+    },
+    focus: {
+      border: {
+        color: 'transparent',
+      },
+      shadow: {
+        size: '0',
+      },
+    },
+    drop: {
+      border: {
+        radius: "5px",
+      },
+    },
     breakpoints: {
       xsmall: {
         value: 414,
@@ -18,11 +37,6 @@ export default {
       family: "Avenir, Arial, Roboto, Helvetica Neue, sans-serif",
       size: "16px",
       lineHeight: "22px",
-    },
-    focus: {
-      shadow: {
-        size: '0',
-      },
     },
   },
   button: {

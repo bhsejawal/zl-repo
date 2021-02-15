@@ -2,6 +2,8 @@ import urlJoin from 'url-join';
 
 const baseUrl = urlJoin(process.env.PREACT_APP_HTTP_PROTOCOL, process.env.PREACT_APP_API_AUTHORITY);
 
+export const API_BASE_URL = baseUrl;
+
 export const buildURL = (...args) => urlJoin(baseUrl, ...args);
 
 export class RequestError extends Error {

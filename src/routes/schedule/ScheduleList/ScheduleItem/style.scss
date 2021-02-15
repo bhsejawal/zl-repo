@@ -1,0 +1,26 @@
+.scheduleItem {
+  background: white;
+  border-radius: 10px;
+  min-height: 300px;
+  position: relative;
+}
+
+.sessionButton {
+  height: 45px;
+  font-size: 14px;
+  font-weight: 800;
+  min-width: 120px;
+  max-width: 120px;
+}
+
+.textBox {
+  overflow: hidden;
+  word-break: break-word;
+  white-space: break-spaces;
+}
+
+.zooImage {
+  position: absolute;
+  right: 10px;
+  top: 10px;
+}
