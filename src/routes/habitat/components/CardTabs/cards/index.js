@@ -18,11 +18,13 @@ import ConservationCard from './ConservationCard';
 import TwoVideosCard from './TwoVideosCard';
 import SingleVideoCard from './SingleVideoCard';
 import OriginAndHabitatCard from './OriginAndHabitatCard';
+import AnimalBodyCard from './AnimalBodyCard';
 
 import { setCards } from '../actions';
 import { fetchCards } from '../api';
 
 import {
+  ANIMAL_BODY_CARD_TYPE,
   ANIMAL_PROFILE_CARD_TYPE,
   CONSERVATION_CARD_TYPE,
   FOUR_ICONS_CARD_TYPE,
@@ -171,6 +173,14 @@ const Cards = ({
                     title={card.data.title}
                     img={card.data.img}
                     text={card.data.text}
+                  />
+                )}
+
+                {card.type === ANIMAL_BODY_CARD_TYPE && (
+                  <AnimalBodyCard
+                    tag={card.tag}
+                    img={card.data.img}
+                    parts={card.data.parts}
                   />
                 )}
               </CardEditor>

@@ -21,6 +21,7 @@ import ConservationCard from 'Cards/ConservationCard';
 import TwoVideosCard from 'Cards/TwoVideosCard';
 import SingleVideoCard from 'Cards/SingleVideoCard';
 import OriginAndHabitatCard from 'Cards/OriginAndHabitatCard';
+import AnimalBodyCard from 'Cards/AnimalBodyCard';
 
 import SingleIconCardForm from './SingleIconCardForm';
 import ThreeIconsCardForm from './ThreeIconsCardForm';
@@ -30,6 +31,8 @@ import ConservationCardForm from './ConservationCardForm';
 import TwoVideosCardForm from './TwoVideosCardForm';
 import SingleVideoCardForm from './SingleVideoCardForm';
 import OriginAndHabitatCardForm from './OriginAndHabitatCardForm';
+
+import CardsList from './CardsList';
 
 import { addCard, updateCard, deleteCard } from './actions';
 import {
@@ -53,11 +56,12 @@ import {
   TWO_VIDEOS_CARD_TYPE,
   SINGLE_VIDEO_CARD_TYPE,
   ORIGIN_AND_HABITAT_CARD_TYPE,
+  ANIMAL_BODY_CARD_TYPE,
 } from '../../../constants';
 import grommetTheme from '../../../../../../../grommetTheme';
 
 import style from './style.scss';
-import CardsList from './CardsList';
+import AnimalBodyCardForm from './AnimalBodyCardForm';
 
 const margins = {
   top: '20px',
@@ -90,6 +94,7 @@ const EditModal = ({
     try {
       const isValid = await formRef.current.validate();
       if (!isValid) {
+        setError(true);
         return;
       }
     } catch (err) {
@@ -291,6 +296,14 @@ const EditModal = ({
                     />
                   )}
 
+                  {type === ANIMAL_BODY_CARD_TYPE && (
+                    <AnimalBodyCard
+                      tag={tag}
+                      img={data.img}
+                      parts={data.parts}
+                    />
+                  )}
+
                   <Box direction="row" justify={cardData ? 'between' : 'center'} pad={{top: '20px'}}>
                     {cardData && (
                       <OutlineButton
@@ -308,13 +321,15 @@ const EditModal = ({
                   {error && (
                     <Box>
                       <Text size="14px" textAlign="center" color="status-error">
-                        There was an error. Please try again.
+                        There was an error.
+                        <br />
+                        Please check your input and try again.
                       </Text>
                     </Box>
                   )}
                 </Box>
 
-                <Box height={{ max: '545px' }} pad={{ vertical: 'medium' }}>
+                <Box width="medium" height={{ max: '545px' }} pad={{ vertical: 'medium' }}>
                   <Heading margin={{ bottom: '20px', top: '0', left: '24px' }} level="2">Edit Card</Heading>
 
                   <div className={style.form}>
@@ -450,6 +465,16 @@ const EditModal = ({
                         title={data.title}
                         text={data.text}
                         location={data.location}
+                        onInputChange={onInputChange}
+                        onDataChange={onDataChange}
+                      />
+                    )}
+
+                    {type === ANIMAL_BODY_CARD_TYPE && (
+                      <AnimalBodyCardForm
+                        ref={formRef}
+                        img={data.img}
+                        parts={data.parts}
                         onInputChange={onInputChange}
                         onDataChange={onDataChange}
                       />

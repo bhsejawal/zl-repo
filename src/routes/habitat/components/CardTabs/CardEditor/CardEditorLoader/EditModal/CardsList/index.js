@@ -16,6 +16,7 @@ import ConservationCard from 'Cards/ConservationCard';
 import TwoVideosCard from 'Cards/TwoVideosCard';
 import SingleVideoCard from 'Cards/SingleVideoCard';
 import OriginAndHabitatCard from 'Cards/OriginAndHabitatCard';
+import AnimalBodyCard from 'Cards/AnimalBodyCard';
 
 import { SecondaryButton } from 'Components/Buttons';
 import {
@@ -58,9 +59,15 @@ import {
   type as originAndHabitatCardType,
   data as originAndHabitatCardData,
 } from 'Cards/OriginAndHabitatCard/sampleData';
+import {
+  tag as animalBodyCardTag,
+  type as animalBodyCardType,
+  data as animalBodyCardData,
+} from 'Cards/AnimalBodyCard/sampleData';
+
+import { BODY, INFO, MEET } from '../../../../constants';
 
 import style from './style.scss';
-import { INFO, MEET } from '../../../../constants';
 
 const CardsList = ({ activeTab, onContinue }) => {
   // TODO: we'll need to render the list based on the tab
@@ -123,6 +130,12 @@ const CardsList = ({ activeTab, onContinue }) => {
     setSelectedTag(originAndHabitatCardTag);
     setSelectedData(originAndHabitatCardData);
   };
+
+  const onAnimalBodyCardClick = () => {
+    setSelectedType(animalBodyCardType);
+    setSelectedTag(animalBodyCardTag);
+    setSelectedData(animalBodyCardData);
+  }
 
   const onContinueBtnClick = () => {
     onContinue(selectedType, selectedTag, selectedData);
@@ -230,6 +243,18 @@ const CardsList = ({ activeTab, onContinue }) => {
               <OriginAndHabitatCard {...originAndHabitatCardData} tag={originAndHabitatCardTag} />
               <Box pad="small">
                 <RadioButton checked={selectedType === originAndHabitatCardType} />
+              </Box>
+            </div>
+          )}
+
+          {activeTab === BODY && (
+            // eslint-disable-next-line jsx-a11y/click-events-have-key-events
+            <div className={style.item} role="button" tabIndex="0" onClick={onAnimalBodyCardClick}>
+              <Text size="20px" margin="small" textAlign="center">Animal Body</Text>
+              {/* eslint-disable-next-line react/jsx-props-no-spreading */}
+              <AnimalBodyCard {...animalBodyCardData} tag={animalBodyCardTag} />
+              <Box pad="small">
+                <RadioButton checked={selectedType === animalBodyCardType} />
               </Box>
             </div>
           )}

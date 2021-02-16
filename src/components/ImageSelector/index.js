@@ -53,7 +53,7 @@ const ImageSelector = forwardRef(({
     minResolution,
     maxFileSize,
     aspectRatio,
-    acceptedFormats,
+    acceptedFormats = [],
   } = {},
   onChange,
 }, ref) => {

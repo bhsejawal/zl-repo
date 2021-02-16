@@ -22,7 +22,11 @@ const CardEditor = ({ children, card }) => {
   }, [setEditModalOpen]);
 
   if (!hasPermission('habitat:edit-cards')) {
-    return children;
+    return (
+      <div className={style.wrapper}>
+        {children}
+      </div>
+    );
   }
 
   return (
