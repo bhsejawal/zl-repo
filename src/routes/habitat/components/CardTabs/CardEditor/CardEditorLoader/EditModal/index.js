@@ -13,6 +13,7 @@ import {
 import { useCallback, useRef, useState } from 'preact/hooks';
 import { OutlineButton, SecondaryButton } from 'Components/Buttons';
 
+import classnames from 'classnames';
 import SingleIconCard from 'Cards/SingleIconCard';
 import ThreeIconsCard from 'Cards/ThreeIconsCard';
 import FourIconsCard from 'Cards/FourIconsCard';
@@ -204,135 +205,10 @@ const EditModal = ({
 
             {data && !deleteActive && (
               <Box fill align="stretch" direction="row">
-                <Box pad="medium">
-                  {type === SINGLE_ICON_CARD_TYPE && (
-                    <SingleIconCard
-                      tag={tag}
-                      img={data.img}
-                      title={data.title}
-                      text={data.text}
-                    />
-                  )}
-
-                  {type === THREE_ICONS_CARD_TYPE && (
-                    <ThreeIconsCard
-                      tag={tag}
-                      title={data.title}
-                      img1={data.img1}
-                      img2={data.img2}
-                      img3={data.img3}
-                      text1={data.text1}
-                      text2={data.text2}
-                      text3={data.text3}
-                    />
-                  )}
-
-                  {type === FOUR_ICONS_CARD_TYPE && (
-                    <FourIconsCard
-                      tag={tag}
-                      title={data.title}
-                      text={data.text}
-                      img1={data.img1}
-                      img2={data.img2}
-                      img3={data.img3}
-                      img4={data.img4}
-                      icon1Txt={data.icon1Txt}
-                      icon2Txt={data.icon2Txt}
-                      icon3Txt={data.icon3Txt}
-                      icon4Txt={data.icon4Txt}
-                    />
-                  )}
-
-                  {type === ANIMAL_PROFILE_CARD_TYPE && (
-                    <AnimalProfileCard
-                      tag={tag}
-                      img={data.img}
-                      name={data.name}
-                      title={data.title}
-                      sex={data.sex}
-                      dateOfBirth={data.dateOfBirth}
-                      text1={data.text1}
-                      text2={data.text2}
-                      text3={data.text3}
-                    />
-                  )}
-
-                  {type === CONSERVATION_CARD_TYPE && (
-                    <ConservationCard
-                      tag={tag}
-                      status={data.status}
-                      title={data.title}
-                      text={data.text}
-                      btnLabel={data.btnLabel}
-                      btnLink={data.btnLink}
-                    />
-                  )}
-
-                  {type === TWO_VIDEOS_CARD_TYPE && (
-                    <TwoVideosCard
-                      tag={tag}
-                      video1Url={data.video1Url}
-                      text1={data.text1}
-                      video2Url={data.video2Url}
-                      text2={data.text2}
-                    />
-                  )}
-
-                  {type === SINGLE_VIDEO_CARD_TYPE && (
-                    <SingleVideoCard
-                      tag={tag}
-                      videoUrl={data.videoUrl}
-                      title={data.title}
-                      text={data.text}
-                    />
-                  )}
-
-                  {type === ORIGIN_AND_HABITAT_CARD_TYPE && (
-                    <OriginAndHabitatCard
-                      tag={tag}
-                      img={data.img}
-                      title={data.title}
-                      text={data.text}
-                    />
-                  )}
-
-                  {type === ANIMAL_BODY_CARD_TYPE && (
-                    <AnimalBodyCard
-                      tag={tag}
-                      img={data.img}
-                      parts={data.parts}
-                    />
-                  )}
-
-                  <Box direction="row" justify={cardData ? 'between' : 'center'} pad={{top: '20px'}}>
-                    {cardData && (
-                      <OutlineButton
-                        style={{minWidth: 'calc((100%/2) - 5px)'}}
-                        label="Delete"
-                        onClick={() => setDeleteActive(true)}
-                      />
-                    )}
-                    <SecondaryButton
-                      style={{minWidth: cardData && 'calc((100%/2) - 5px)'}}
-                      label="Publish"
-                      onClick={onPublish}
-                    />
-                  </Box>
-                  {error && (
-                    <Box>
-                      <Text size="14px" textAlign="center" color="status-error">
-                        There was an error.
-                        <br />
-                        Please check your input and try again.
-                      </Text>
-                    </Box>
-                  )}
-                </Box>
-
                 <Box width="medium" height={{ max: '545px' }} pad={{ vertical: 'medium' }}>
-                  <Heading margin={{ bottom: '20px', top: '0', left: '24px' }} level="2">Edit Card</Heading>
+                  <Heading margin={{ bottom: '20px', top: '0', left: '50px' }} level="2">Edit Card</Heading>
 
-                  <div className={style.form}>
+                  <div className={classnames(style.form, 'customScrollBar grey')}>
                     <Box margin={{ bottom: '20px' }}>
                       <Heading margin={{ top: '0', bottom: '5px' }} level="5">Card Tag:</Heading>
                       <div className="simpleSelect">
@@ -480,6 +356,131 @@ const EditModal = ({
                       />
                     )}
                   </div>
+                </Box>
+                <Box height="520px" margin={{left: '11px'}} background="var(--lightGrey)" width="1px" />
+                <Box pad={{vertical: 'medium', horizontal: '65px'}}>
+                  {type === SINGLE_ICON_CARD_TYPE && (
+                    <SingleIconCard
+                      tag={tag}
+                      img={data.img}
+                      title={data.title}
+                      text={data.text}
+                    />
+                  )}
+
+                  {type === THREE_ICONS_CARD_TYPE && (
+                    <ThreeIconsCard
+                      tag={tag}
+                      title={data.title}
+                      img1={data.img1}
+                      img2={data.img2}
+                      img3={data.img3}
+                      text1={data.text1}
+                      text2={data.text2}
+                      text3={data.text3}
+                    />
+                  )}
+
+                  {type === FOUR_ICONS_CARD_TYPE && (
+                    <FourIconsCard
+                      tag={tag}
+                      title={data.title}
+                      text={data.text}
+                      img1={data.img1}
+                      img2={data.img2}
+                      img3={data.img3}
+                      img4={data.img4}
+                      icon1Txt={data.icon1Txt}
+                      icon2Txt={data.icon2Txt}
+                      icon3Txt={data.icon3Txt}
+                      icon4Txt={data.icon4Txt}
+                    />
+                  )}
+
+                  {type === ANIMAL_PROFILE_CARD_TYPE && (
+                    <AnimalProfileCard
+                      tag={tag}
+                      img={data.img}
+                      name={data.name}
+                      title={data.title}
+                      sex={data.sex}
+                      dateOfBirth={data.dateOfBirth}
+                      text1={data.text1}
+                      text2={data.text2}
+                      text3={data.text3}
+                    />
+                  )}
+
+                  {type === CONSERVATION_CARD_TYPE && (
+                    <ConservationCard
+                      tag={tag}
+                      status={data.status}
+                      title={data.title}
+                      text={data.text}
+                      btnLabel={data.btnLabel}
+                      btnLink={data.btnLink}
+                    />
+                  )}
+
+                  {type === TWO_VIDEOS_CARD_TYPE && (
+                    <TwoVideosCard
+                      tag={tag}
+                      video1Url={data.video1Url}
+                      text1={data.text1}
+                      video2Url={data.video2Url}
+                      text2={data.text2}
+                    />
+                  )}
+
+                  {type === SINGLE_VIDEO_CARD_TYPE && (
+                    <SingleVideoCard
+                      tag={tag}
+                      videoUrl={data.videoUrl}
+                      title={data.title}
+                      text={data.text}
+                    />
+                  )}
+
+                  {type === ORIGIN_AND_HABITAT_CARD_TYPE && (
+                    <OriginAndHabitatCard
+                      tag={tag}
+                      img={data.img}
+                      title={data.title}
+                      text={data.text}
+                    />
+                  )}
+
+                  {type === ANIMAL_BODY_CARD_TYPE && (
+                    <AnimalBodyCard
+                      tag={tag}
+                      img={data.img}
+                      parts={data.parts}
+                    />
+                  )}
+
+                  <Box direction="row" justify={cardData ? 'between' : 'center'} pad={{top: '20px'}}>
+                    {cardData && (
+                      <OutlineButton
+                        style={{minWidth: 'calc((100%/2) - 5px)'}}
+                        label="Delete"
+                        onClick={() => setDeleteActive(true)}
+                      />
+                    )}
+                    <SecondaryButton
+                      style={{minWidth: cardData && 'calc((100%/2) - 5px)'}}
+                      label="Publish"
+                      onClick={onPublish}
+                    />
+                  </Box>
+                  {error && (
+                    <Box>
+                      <Text size="14px" textAlign="center" color="status-error" margin={{ top: '10px'}}>
+                        There was an error.
+                        <br />
+                        Please check your input and try again.
+                      </Text>
+                    </Box>
+                  )}
                 </Box>
               </Box>
             )}

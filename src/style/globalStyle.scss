@@ -162,4 +162,9 @@ a {
     border-radius: 20px;
     border: 2px solid var(--turquoise);
   }
+
+  &.grey::-webkit-scrollbar-thumb {
+    background-color: var(--lightGrey);
+    border: 2px solid transparent;
+  }
 }
