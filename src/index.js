@@ -27,7 +27,7 @@ import Habitat from './routes/habitat';
 import Plans from './routes/plans';
 import Profile from './routes/profile';
 
-const customBreakpoints = deepMerge(grommet, zoolifeTheme)
+const customBreakpoints = deepMerge(grommet, zoolifeTheme);
 
 const App = () => {
   const verifyRoutePermission = ({ active }) => {

@@ -332,11 +332,9 @@ const Profile = ({ updateProfileAction }) => {
               <TextInput id="nickname" value={nickname} onChange={onNicknameChange} />
             </FormField>
 
-            <Box align="start" margin={{ top: 'medium' }}>
+            <Box align="start" margin={{ top: 'small' }}>
               <PrimaryButton
-                // TODO: we need a better way across the whole app for
-                // button state, and loading indicators
-                disabled={isLoading}
+                loading={isLoading}
                 label="Enter ZooLife!"
                 onClick={onEnter}
               />

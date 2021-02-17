@@ -1,30 +1,57 @@
 import { Button } from 'grommet';
 import classnames from 'classnames';
 
-import btnStyle from './style.scss';
+import style from './style.scss';
 
-export const PrimaryButton = ({ style, className, ...args }) => (
+const getLabel = (loading, label) => (loading && typeof loading === 'boolean' && 'Loading...')
+  || (loading && typeof loading === 'string' && loading)
+  || label;
+
+export const PrimaryButton = ({
+  loading,
+  label,
+  size = "large",
+  className,
+  ...args
+}) => (
   <Button
-    className={classnames(className, btnStyle.button, btnStyle.primary)}
-    style={{ ...style }}
+    primary
+    size={size}
+    className={classnames(className, { [style.loading]: loading })}
+    label={getLabel(loading, label)}
     /* eslint-disable-next-line react/jsx-props-no-spreading */
     {...args}
   />
 );
 
-export const SecondaryButton = ({ style, className, ...args }) => (
+export const SecondaryButton = ({
+  loading,
+  label,
+  size = "large",
+  className,
+  ...args
+}) => (
   <Button
-    className={classnames(className, btnStyle.button, btnStyle.secondary)}
-    style={{ ...style }}
+    secondary
+    size={size}
+    className={classnames(className, { [style.loading]: loading })}
+    label={getLabel(loading, label)}
     /* eslint-disable-next-line react/jsx-props-no-spreading */
     {...args}
   />
 );
 
-export const OutlineButton = ({ style, className, ...args }) => (
+export const OutlineButton = ({
+  loading,
+  label,
+  size = "large",
+  className,
+  ...args
+}) => (
   <Button
-    className={classnames(className, btnStyle.button, btnStyle.outline)}
-    style={{ ...style }}
+    size={size}
+    className={classnames(className, { [style.loading]: loading })}
+    label={getLabel(loading, label)}
     /* eslint-disable-next-line react/jsx-props-no-spreading */
     {...args}
   />
