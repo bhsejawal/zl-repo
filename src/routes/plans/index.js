@@ -13,6 +13,8 @@ import Header from 'Components/Header';
 
 import background from 'Assets/plansBackground.png';
 
+import ZoolifeBenefits from './benefitsSection';
+
 const Plans = ({ plans }) => {
   const size = useContext(ResponsiveContext);
   const isLargeScreen = size === 'large';
@@ -25,52 +27,64 @@ const Plans = ({ plans }) => {
     <>
       <Header />
       <Box
-        style={{ paddingTop: '60px' }}
-        fill={isLargeScreen}
+        margin={{ top: '60px' }}
+        fill={['medium', 'large'].includes(size)}
         responsive
-        background={{
-          image: `url(${background})`,
-          size: 'contain',
-          position: 'bottom',
-          repeat: 'no-repeat',
-          attachment: 'fixed',
-        }}
-        pad={{ horizontal: !isLargeScreen ? 'xlarge' : 'none' }}
+        direction={ isLargeScreen ? 'row' : 'column' }
       >
-        <Heading level={1} textAlign="center" fill>
-          Select a Plan
-        </Heading>
-        <Text textAlign="center" margin={{ bottom: 'xxsmall' }}>
-          Become part of the ZooLife Family!
-        </Text>
-        <Text textAlign="center">
-          50% of our proceeds go to the conservation zoos.
-        </Text>
         <Box
-          direction={['xsmall', 'small'].includes(size) ? 'column' : 'row'}
-          fill justify="center"
-          gap={size === 'medium' ? 'medium' : 'large'}
-          margin={{top: 'large', bottom: 'large' }}
-          pad={{ top: !isLargeScreen ? 'small' : 'none', bottom: 'xlarge' }}
+          fill
+          basis={isLargeScreen ? '3/4' : 'full'}
+          background={{
+            image: `url(${background})`,
+            size: 'contain',
+            position: 'bottom',
+            repeat: 'no-repeat',
+            attachment: 'fixed',
+          }}
         >
-          {plans.map(({
-            planName,
-            planPrice,
-            planType,
-            color,
-            benefits,
-            planId,
-          }) => (
-            <PlanCard
-              key={planId}
-              planName={planName}
-              planPrice={planPrice}
-              planType={planType}
-              color={color}
-              benefits={benefits}
-            />
-          ))}
+          <Box pad={{ vertical: "large", horizontal: "15%" }}>
+            <Heading level={1} textAlign="center" fill>
+              Explore more #zoolife
+            </Heading>
+            <Text textAlign="center">
+              50% of your ticket directly funds conservation
+              &amp; animal care efforts led by our AZA-accredited partners.
+            </Text>
+          </Box>
+          <Box
+            direction={['medium', 'large'].includes(size) ? 'row' : 'column'}
+            fill
+            align="center"
+            justify="center"
+            gap="large"
+            margin={{top: 'small', bottom: 'medium' }}
+            pad={{ top: !isLargeScreen ? 'small' : 'none' }}
+          >
+            {plans.map(({
+              planName,
+              planPrice,
+              planType,
+              color,
+              benefits,
+              planId,
+              planCurrency,
+              amountOff,
+            }) => (
+              <PlanCard
+                key={planId}
+                planName={planName}
+                planPrice={planPrice}
+                planType={planType}
+                planCurrency={planCurrency}
+                color={color}
+                benefits={benefits}
+                amountOff={amountOff}
+              />
+            ))}
+          </Box>
         </Box>
+        <ZoolifeBenefits />
       </Box>
     </>
   );

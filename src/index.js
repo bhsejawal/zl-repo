@@ -48,7 +48,7 @@ const App = () => {
           {(size) => (
             <Main fill={size === 'large'}>
               <Router onChange={verifyRoutePermission}>
-                <Home path="/" exact />
+                <Home path="/" exact default />
                 <Habitat path="/habitat" permission="habitat:view" />
                 <DesignSystem path="/design" />
                 <Signup path="/signup" />
