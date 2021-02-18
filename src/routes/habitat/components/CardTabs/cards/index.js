@@ -1,9 +1,8 @@
 import { h } from 'preact';
 import { useCallback, useEffect, useState } from 'preact/hooks';
 import { connect } from 'react-redux';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSpinner } from '@fortawesome/pro-solid-svg-icons';
 
+import Loader from 'Components/async/Loader';
 import Can from 'Components/Authorize';
 import Shortcuts from '../shortcuts';
 import CardEditor from '../CardEditor';
@@ -77,9 +76,7 @@ const Cards = ({
       <div className={style.cards}>
         <div>
           {loading && (
-            <div className={style.loading}>
-              <FontAwesomeIcon icon={faSpinner} spin size="2x" />
-            </div>
+            <Loader />
           )}
 
           {!loading && (

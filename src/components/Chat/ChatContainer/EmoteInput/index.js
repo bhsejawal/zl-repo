@@ -5,9 +5,9 @@ import 'emoji-mart/css/emoji-mart.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSmileWink } from '@fortawesome/pro-light-svg-icons';
 
-import { useOnClickOutside } from '../../../../hooks';
+import Loader from 'Components/async/Loader';
 
-import EmojiPickerFallback from './EmojiPickerFallback';
+import { useOnClickOutside } from '../../../../hooks';
 
 import style from './style.module.scss';
 
@@ -39,7 +39,7 @@ const EmojiInput = ({ value, onSelection }) => {
       <FontAwesomeIcon icon={faSmileWink} onClick={toggleDropdown} />
       {showDropdown && (
         <div className={style.EmoteContainer}>
-          <Suspense fallback={<EmojiPickerFallback />}>
+          <Suspense fallback={<Loader />}>
             <EmojiPicker addEmoji={addEmoji} />
           </Suspense>
         </div>

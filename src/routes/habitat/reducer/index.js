@@ -1,7 +1,7 @@
 import { LOAD_HABITAT_SETTINGS } from '../types';
 
 const initialState = {
-  habitatId: 'mockCamID',
+  habitatId: '60257af51cf87a9d09c5dbd9',
   zooId: 'torontozoo',
   isFetching: false,
   weather: undefined,

@@ -1,7 +1,9 @@
-import { faSpinner, faTimes } from '@fortawesome/pro-solid-svg-icons';
+import { faTimes } from '@fortawesome/pro-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { h } from 'preact';
 import { useEffect, useState } from 'preact/hooks';
+
+import Loader from 'Components/async/Loader';
 
 import Description from './description';
 import Info from './info';
@@ -50,7 +52,7 @@ const StreamProfile = () => {
 
   return (
     <div className={style.profile}>
-      {loading && <FontAwesomeIcon icon={faSpinner} spin size="2x" />}
+      {loading && <Loader />}
       {error && (
         <div className={style.error}>
           <FontAwesomeIcon icon={faTimes} size="3x" />

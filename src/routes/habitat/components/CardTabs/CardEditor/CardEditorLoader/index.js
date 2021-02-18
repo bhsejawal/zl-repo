@@ -1,7 +1,7 @@
 import { h } from 'preact';
 import { Suspense, lazy } from 'preact/compat';
 
-import FallbackLoader from 'Components/FallbackLoader';
+import Loader from 'Components/async/Loader';
 
 const EditModal = lazy(() => import('./EditModal'));
 
@@ -11,7 +11,7 @@ const CardEditorLoader = ({ open, card, onClose }) => {
   }
 
   return (
-    <Suspense fallback={<FallbackLoader />}>
+    <Suspense fallback={<Loader />}>
       <EditModal
         card={card}
         onClose={onClose}

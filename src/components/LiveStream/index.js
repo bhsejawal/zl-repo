@@ -2,6 +2,8 @@ import { h } from 'preact';
 import { useRef } from 'preact/hooks';
 import { forwardRef } from 'preact/compat';
 
+import Loader from 'Components/async/Loader';
+
 import StreamInteractiveArea from './StreamInteractiveArea';
 import VideoControls from '../VideoControls';
 
@@ -23,6 +25,7 @@ const Stream = forwardRef(({
   const videoRef = useRef();
   const containerRef = useRef(null);
   const streamStatus = useWebRTCStream(streamId, passedRef || videoRef);
+
   return (
     <div
       className={style.streamContainer}
@@ -49,7 +52,7 @@ const Stream = forwardRef(({
       {![ERROR, PLAY_STARTED].includes(streamStatus) && (
         // TODO: Add fallback message/image for error when design team provide us
         <div className={style.fallbackMessage}>
-          <p>Loading stream...</p>
+          <Loader />
         </div>
       )}
 

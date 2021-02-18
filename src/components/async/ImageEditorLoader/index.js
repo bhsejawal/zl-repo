@@ -1,7 +1,7 @@
 import { h } from 'preact';
 import { Suspense, lazy } from 'preact/compat';
 
-import FallbackLoader from '../../FallbackLoader';
+import Loader from 'Components/async/Loader';
 
 const EditModal = lazy(() => import('./EditModal'));
 
@@ -19,7 +19,7 @@ const TextEditorLoader = ({
   }
 
   return (
-    <Suspense fallback={<FallbackLoader />}>
+    <Suspense fallback={<Loader />}>
       <EditModal
         initialImgUrl={initialImgUrl}
         postToUrl={postToUrl}

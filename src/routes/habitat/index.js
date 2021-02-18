@@ -21,7 +21,7 @@ const Habitat = ({ isFetching, fetchHabitatSettingsAction }) => {
   const { width: windowWidth } = useWindowResize();
 
   useEffect(() => {
-    fetchHabitatSettingsAction('test');
+    fetchHabitatSettingsAction('60257af51cf87a9d09c5dbd9');
   }, [fetchHabitatSettingsAction]);
 
   const sideBarWidth = 84;

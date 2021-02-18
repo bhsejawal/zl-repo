@@ -1,8 +1,7 @@
 import { h } from 'preact';
 import { lazy, Suspense, useMemo } from 'preact/compat';
 import { Box } from 'grommet';
-import { faSpinner } from '@fortawesome/pro-regular-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+
 import { utcToZonedTime } from 'date-fns-tz';
 import {
   addWeeks,
@@ -13,16 +12,13 @@ import {
 } from 'date-fns';
 import useFetch from 'use-http';
 
+import Loader from 'Components/async/Loader';
+
 import { buildURL } from 'Shared/fetch';
 
 const { timeZone } = Intl.DateTimeFormat().resolvedOptions();
 
 const Calendar = lazy(() => import('.'));
-const Loader = () => (
-  <Box height={{ min: '530px' }} align="center" justify="center">
-    <FontAwesomeIcon icon={faSpinner} spin size="2x" />
-  </Box>
-);
 
 const CalendarLoader = () => {
   const url = useMemo(() => {
@@ -75,7 +71,7 @@ const CalendarLoader = () => {
   }, [events]);
 
   if (loading) {
-    return <Loader />
+    return <Loader height="450px" />
   }
 
   if (error) {
@@ -87,7 +83,7 @@ const CalendarLoader = () => {
   }
 
   return (
-    <Suspense fallback={<Loader />}>
+    <Suspense fallback={<Loader height="450px" />}>
       <Calendar schedules={schedules} />
     </Suspense>
   )
