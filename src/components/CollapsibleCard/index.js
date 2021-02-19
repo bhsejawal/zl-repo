@@ -1,5 +1,5 @@
 import { h } from 'preact';
-import { useCallback, useState } from 'preact/hooks';
+import { useCallback, useEffect, useState } from 'preact/hooks';
 import { memo } from 'preact/compat';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronDown, faChevronUp } from '@fortawesome/free-solid-svg-icons';
@@ -14,12 +14,19 @@ const CollapsibleCard = ({
   style: propStyle,
   children,
   defaultOpen = false,
+  onOpen,
 }) => {
   const [open, setOpen] = useState(defaultOpen);
 
   const toggle = useCallback(() => {
     setOpen(!open);
   }, [open]);
+
+  useEffect(() => {
+    if (open) {
+      onOpen?.();
+    }
+  }, [open, onOpen]);
 
   return (
     <Card className={className} style={propStyle}>

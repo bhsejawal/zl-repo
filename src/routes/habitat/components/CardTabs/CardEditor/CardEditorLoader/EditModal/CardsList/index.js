@@ -17,6 +17,7 @@ import TwoVideosCard from 'Cards/TwoVideosCard';
 import SingleVideoCard from 'Cards/SingleVideoCard';
 import OriginAndHabitatCard from 'Cards/OriginAndHabitatCard';
 import AnimalBodyCard from 'Cards/AnimalBodyCard';
+import QuizCard from 'Cards/QuizCard';
 
 import { SecondaryButton } from 'Components/Buttons';
 import {
@@ -64,8 +65,18 @@ import {
   type as animalBodyCardType,
   data as animalBodyCardData,
 } from 'Cards/AnimalBodyCard/sampleData';
+import {
+  tag as quizCardTag,
+  type as quizCardType,
+  data as quizCardData,
+} from 'Cards/QuizCard/sampleData';
 
-import { BODY, INFO, MEET } from '../../../../constants';
+import {
+  BODY,
+  INFO,
+  MEET,
+  QUIZ,
+} from '../../../../constants';
 
 import style from './style.scss';
 
@@ -137,6 +148,12 @@ const CardsList = ({ activeTab, onContinue }) => {
     setSelectedData(animalBodyCardData);
   }
 
+  const onQuizCardClick = () => {
+    setSelectedType(quizCardType);
+    setSelectedTag(quizCardTag);
+    setSelectedData(quizCardData);
+  };
+
   const onContinueBtnClick = () => {
     onContinue(selectedType, selectedTag, selectedData);
   }
@@ -159,7 +176,7 @@ const CardsList = ({ activeTab, onContinue }) => {
               {/* eslint-disable-next-line react/jsx-props-no-spreading */}
               <SingleIconCard {...singleIconCardData} tag={singleIconCardTag} />
               <Box pad="small">
-                <RadioButton checked={selectedType === singleIconCardType} />
+                <RadioButton name="card" checked={selectedType === singleIconCardType} />
               </Box>
             </div>
           )}
@@ -171,7 +188,7 @@ const CardsList = ({ activeTab, onContinue }) => {
               {/* eslint-disable-next-line react/jsx-props-no-spreading */}
               <ThreeIconsCard {...threeIconsCardData} tag={threeIconsCardTag} />
               <Box pad="small">
-                <RadioButton checked={selectedType === threeIconsCardType} />
+                <RadioButton name="card" checked={selectedType === threeIconsCardType} />
               </Box>
             </div>
           )}
@@ -183,7 +200,7 @@ const CardsList = ({ activeTab, onContinue }) => {
               {/* eslint-disable-next-line react/jsx-props-no-spreading */}
               <FourIconsCard {...fourIconsCardData} tag={fourIconsCardTag} />
               <Box pad="small">
-                <RadioButton checked={selectedType === fourIconsCardType} />
+                <RadioButton name="card" checked={selectedType === fourIconsCardType} />
               </Box>
             </div>
           )}
@@ -195,7 +212,7 @@ const CardsList = ({ activeTab, onContinue }) => {
               {/* eslint-disable-next-line react/jsx-props-no-spreading */}
               <AnimalProfileCard {...animalProfileCardData} tag={animalProfileCardTag} />
               <Box pad="small">
-                <RadioButton checked={selectedType === animalProfileCardType} />
+                <RadioButton name="card" checked={selectedType === animalProfileCardType} />
               </Box>
             </div>
           )}
@@ -207,7 +224,7 @@ const CardsList = ({ activeTab, onContinue }) => {
               {/* eslint-disable-next-line react/jsx-props-no-spreading */}
               <ConservationCard {...conservationCardData} tag={conservationCardTag} />
               <Box pad="small">
-                <RadioButton checked={selectedType === conservationCardType} />
+                <RadioButton name="card" checked={selectedType === conservationCardType} />
               </Box>
             </div>
           )}
@@ -219,7 +236,7 @@ const CardsList = ({ activeTab, onContinue }) => {
               {/* eslint-disable-next-line react/jsx-props-no-spreading */}
               <TwoVideosCard {...twoVideosCardData} tag={twoVideosCardTag} />
               <Box pad="small">
-                <RadioButton checked={selectedType === twoVideosCardType} />
+                <RadioButton name="card" checked={selectedType === twoVideosCardType} />
               </Box>
             </div>
           )}
@@ -231,7 +248,7 @@ const CardsList = ({ activeTab, onContinue }) => {
             {/* eslint-disable-next-line react/jsx-props-no-spreading */}
             <SingleVideoCard {...singleVideoCardData} tag={singleVideoCardTag} />
             <Box pad="small">
-              <RadioButton checked={selectedType === singleVideoCardType} />
+              <RadioButton name="card" checked={selectedType === singleVideoCardType} />
             </Box>
           </div>
 
@@ -242,7 +259,7 @@ const CardsList = ({ activeTab, onContinue }) => {
               {/* eslint-disable-next-line react/jsx-props-no-spreading */}
               <OriginAndHabitatCard {...originAndHabitatCardData} tag={originAndHabitatCardTag} />
               <Box pad="small">
-                <RadioButton checked={selectedType === originAndHabitatCardType} />
+                <RadioButton name="card" checked={selectedType === originAndHabitatCardType} />
               </Box>
             </div>
           )}
@@ -254,7 +271,19 @@ const CardsList = ({ activeTab, onContinue }) => {
               {/* eslint-disable-next-line react/jsx-props-no-spreading */}
               <AnimalBodyCard {...animalBodyCardData} tag={animalBodyCardTag} />
               <Box pad="small">
-                <RadioButton checked={selectedType === animalBodyCardType} />
+                <RadioButton name="card" checked={selectedType === animalBodyCardType} />
+              </Box>
+            </div>
+          )}
+
+          {activeTab === QUIZ && (
+            // eslint-disable-next-line jsx-a11y/click-events-have-key-events
+            <div className={style.item} role="button" tabIndex="0" onClick={onQuizCardClick}>
+              <Text size="20px" margin="small" textAlign="center">Quiz</Text>
+              {/* eslint-disable-next-line react/jsx-props-no-spreading */}
+              <QuizCard {...quizCardData} />
+              <Box pad="small">
+                <RadioButton name="card" checked={selectedType === quizCardType} />
               </Box>
             </div>
           )}

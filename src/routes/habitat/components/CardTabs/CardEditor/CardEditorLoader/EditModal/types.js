@@ -1,0 +1,2 @@
+export const SET_CARD_DATA = 'SET_CARD_DATA';
+export const UPDATE_CARD_DATA = 'UPDATE_CARD_DATA';

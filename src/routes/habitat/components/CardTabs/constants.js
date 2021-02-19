@@ -24,6 +24,7 @@ export const TWO_VIDEOS_CARD_TYPE = 'TWO_VIDEOS_CARD_TYPE';
 export const SINGLE_VIDEO_CARD_TYPE = 'SINGLE_VIDEO_CARD_TYPE';
 export const ORIGIN_AND_HABITAT_CARD_TYPE = 'ORIGIN_AND_HABITAT_CARD_TYPE';
 export const ANIMAL_BODY_CARD_TYPE = 'ANIMAL_BODY_CARD_TYPE';
+export const QUIZ_CARD_TYPE = 'QUIZ_CARD_TYPE';
 
 // conservation status
 export const ENDANGERED = 'endangered';

@@ -5,7 +5,6 @@ import {
   useEffect,
   useReducer,
   useRef,
-  useState,
 } from 'preact/hooks';
 import { isEmpty, omit } from 'lodash-es';
 import {
@@ -106,7 +105,19 @@ const PartInputCard = memo(({
         style={propStyle}
         key={part.id}
         label={label}
-        icon={<FontAwesomeIcon icon={faTrashAlt} onClick={onRemoveHandler} />}
+        icon={(
+          <Button
+            plain
+            title={!onRemove ? 'At least one card is required' : undefined}
+            disabled={!onRemove}
+            onClick={onRemoveHandler}
+          >
+            <FontAwesomeIcon
+              style={{ opacity: !onRemove ? '.3' : undefined }}
+              icon={faTrashAlt}
+            />
+          </Button>
+        )}
       >
         <Box margin={{ bottom: '20px' }}>
           <Box margin={{ bottom: '20px' }}>
@@ -193,7 +204,6 @@ const AnimalBodyCardForm = forwardRef(({
   onDataChange,
 }, ref) => {
   const imgSelectorRef = useRef();
-  const [minCardError, setMinCardError] = useState();
   const [errors, dispatchErrAction] = useReducer(errorsReducer, {});
   const [localParts, dispatchPartsAction] = useReducer(partsReducer, parts);
 
@@ -232,10 +242,6 @@ const AnimalBodyCardForm = forwardRef(({
     }
   }, [localParts, parts, onDataChange]);
 
-  useEffect(() => {
-    setMinCardError(parts.length === 0);
-  }, [parts])
-
   const addNewPart = useCallback(() => {
     dispatchPartsAction({ type: ADD_PART });
   }, []);
@@ -257,12 +263,9 @@ const AnimalBodyCardForm = forwardRef(({
     validate: async () => {
       const cardsValid = Object.values(errors).every(isEmpty);
       const isImgValid = await imgSelectorRef.current.validate();
-      return isImgValid && !minCardError && cardsValid;
+      return isImgValid && cardsValid;
     },
   }));
-
-  // useEffect(() => setTitleErrorMsg(undefined), [title]);
-  // useEffect(() => setTextErrorMsg(undefined), [text]);
 
   return (
     <>
@@ -293,16 +296,10 @@ const AnimalBodyCardForm = forwardRef(({
           errors={errors[ind]}
           label={`Body Part ${ind + 1}`}
           // style={{ marginBottom: ind < parts.length - 1 ? '20px' : undefined }}
-          onRemove={removePart}
+          onRemove={parts.length > 1 ? removePart : undefined}
           onChange={onPartFormChange}
         />
       ))}
-
-      {minCardError && (
-        <Box align="center">
-          <Text color="status-error">At least 1 point is required</Text>
-        </Box>
-      )}
 
       <Box pad="medium" align="center">
         <Button label="Add New Body Part" onClick={addNewPart} />

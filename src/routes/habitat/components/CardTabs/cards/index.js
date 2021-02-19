@@ -1,6 +1,9 @@
 import { h } from 'preact';
 import { useCallback, useEffect, useState } from 'preact/hooks';
 import { connect } from 'react-redux';
+import useFetch from 'use-http';
+
+import { API_BASE_URL } from 'Shared/fetch';
 
 import Loader from 'Components/async/Loader';
 import Can from 'Components/Authorize';
@@ -18,6 +21,7 @@ import TwoVideosCard from './TwoVideosCard';
 import SingleVideoCard from './SingleVideoCard';
 import OriginAndHabitatCard from './OriginAndHabitatCard';
 import AnimalBodyCard from './AnimalBodyCard';
+import QuizCard from './QuizCard';
 
 import { setCards } from '../actions';
 import { fetchCards } from '../api';
@@ -29,6 +33,7 @@ import {
   FOUR_ICONS_CARD_TYPE,
   ORIGIN_AND_HABITAT_CARD_TYPE,
   QUICK_LOOK,
+  QUIZ_CARD_TYPE,
   SINGLE_ICON_CARD_TYPE,
   SINGLE_VIDEO_CARD_TYPE,
   THREE_ICONS_CARD_TYPE,
@@ -45,12 +50,28 @@ const Cards = ({
 }) => {
   const [activeShortcut, setActiveShortcut] = useState(QUICK_LOOK);
   const [loading, setLoading] = useState(true);
+  const { get } = useFetch(API_BASE_URL, {
+    credentials: 'include',
+    cachePolicy: 'no-cache',
+  });
 
   useEffect(() => {
     const load = async () => {
       try {
         setLoading(true);
-        const { cards: newCards } = await fetchCards('mockCamID', activeTab);
+        const { cards: newCards } = await fetchCards('mockHabitatID', activeTab);
+
+        await Promise.all(newCards.map(async (card) => {
+          // quiz cards have trivia question IDs in data which needs to be mapped
+          // into questions, and we also need to map answers
+          if (card.type === QUIZ_CARD_TYPE) {
+            // eslint-disable-next-line no-underscore-dangle
+            const cardData = await get(`cards/${card._id}/questions`);
+            // eslint-disable-next-line no-param-reassign
+            card.data = cardData;
+          }
+        }));
+
         setCardsAction(newCards);
       } catch (err) {
         // TODO: implement error UI
@@ -61,7 +82,7 @@ const Cards = ({
     };
 
     load();
-  }, [activeTab, setCardsAction]);
+  }, [activeTab, get, setCardsAction]);
 
   useEffect(() => {
     // TODO: guess we should scroll to the first cart that have tag === shortcut
@@ -178,6 +199,16 @@ const Cards = ({
                     tag={card.tag}
                     img={card.data.img}
                     parts={card.data.parts}
+                  />
+                )}
+
+                {card.type === QUIZ_CARD_TYPE && (
+                  <QuizCard
+                    // eslint-disable-next-line no-underscore-dangle
+                    cardId={card._id}
+                    questions={card.data.questions}
+                    answers={card.data.answers}
+                    correctAnswers={card.data.correctAnswers}
                   />
                 )}
               </CardEditor>

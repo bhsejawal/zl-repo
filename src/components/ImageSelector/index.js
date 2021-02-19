@@ -322,7 +322,7 @@ const ImageSelector = forwardRef(({
       <Box direction="row">
         <div className={style.uploadBtnWrapper}>
           <input disabled={isLoading} onChange={onInputChange} type="file" name="file" />
-          <OutlineButton className="xsmall" disabled={isLoading} label="Upload" margin={{ right: '5px' }} />
+          <OutlineButton size="small" disabled={isLoading} label="Upload" margin={{ right: '5px' }} />
         </div>
 
         <a
@@ -332,7 +332,7 @@ const ImageSelector = forwardRef(({
           rel="noopener noreferrer"
           className={classnames({ [style.disabled]: errorMsg })}
         >
-          <OutlineButton className="xsmall" label="Download" disabled={errorMsg} />
+          <OutlineButton size="small" label="Download" disabled={errorMsg} />
         </a>
       </Box>
     </div>

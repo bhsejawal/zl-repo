@@ -8,4 +8,8 @@
   &:last-child {
     margin-right: 0;
   }
+
+  > * {
+    pointer-events: none;
+  }
 }

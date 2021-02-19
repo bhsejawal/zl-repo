@@ -81,7 +81,7 @@ const CardWrapper = ({ tag, noPadding, children }) => {
       }
 
       default: {
-        return 'var(--oceanBlue)';
+        return 'var(--sage)';
       }
     }
   }, [tag]);
@@ -91,7 +91,11 @@ const CardWrapper = ({ tag, noPadding, children }) => {
       className={style.card}
       style={{ backgroundColor: color, padding: noPadding && '0' }}
     >
-      <span className={style.tag} style={{ backgroundColor: tagColor }}>{tag}</span>
+      {tag && (
+        <span className={style.tag} style={{ backgroundColor: tagColor }}>
+          {tag}
+        </span>
+      )}
       {children}
     </div>
   );
