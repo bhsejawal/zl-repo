@@ -52,9 +52,10 @@
   border-radius: 50%;
   min-width: 10px;
   height: 10px;
-  background: rgba(255,78,216, .6);
-  animation: pinPulse 1.2s forwards;
+  background: var(--cursorColor);
+  animation: pinPulse 1.2s infinite;
   animation-delay: 125ms;
+  transform: translate3d(0%, -125%, 0);
 }
 
 .clickIndicatorPinOtherUser {
@@ -62,7 +63,7 @@
   min-width: 10px;
   height: 10px;
   background: rgba(255,255,255, .6);
-  animation: pinPulseOtherUser 1.2s forwards;
+  animation: pinPulseOtherUser 1.2s infinite;
   animation-delay: 125ms;
 }
 
@@ -89,7 +90,7 @@
 @keyframes pinPulse {
 
   from {
-    box-shadow: #FF4ED8 0px 0px 0px 0px;
+    box-shadow: var(--cursorColor) 0px 0px 0px 0px;
   }
 
   to {

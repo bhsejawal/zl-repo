@@ -4,7 +4,7 @@ import classnames from 'classnames';
 import CustomCursor from '../../CustomCursor';
 import CameraPin from '../../StreamControls/CameraPin/cursor.png';
 
-import { DEFAULT_CURSOR_DELAY } from '../../CustomCursor/constants';
+import { DEFAULT_CURSOR_DELAY, LOADING_PIN } from '../../CustomCursor/constants';
 
 import style from './style.scss';
 
@@ -30,7 +30,20 @@ const Click = ({
           transitionDuration: `${cursorDelay / 1000}s`,
         }}
       >
-        <CustomCursor color={color} animal={animal} showClickEffect />
+        {isUserAction && (
+          <CustomCursor
+            color={color}
+            animal={animal}
+            showClickEffect
+            cursorState={LOADING_PIN}
+          />
+        )}
+        <div
+          className={isUserAction ? style.clickIndicatorPin : style.clickIndicatorPinOtherUser}
+          style={{ "--cursorColor": color }}
+        >
+          <div className={style.pulseIndicator} />
+        </div>
       </span>
     );
   }

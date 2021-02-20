@@ -2,7 +2,9 @@ import { h } from 'preact';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSpinner } from '@fortawesome/free-solid-svg-icons';
 
-import { LOADING, FULL_CURSOR } from './constants';
+import { LOADING, FULL_CURSOR, LOADING_PIN } from './constants';
+
+import style from './style.scss';
 
 const CustomCursor = ({
   animal,
@@ -11,11 +13,22 @@ const CustomCursor = ({
   showClickEffect,
 }) => {
   if (cursorState === LOADING) {
-    return <FontAwesomeIcon className="loader" icon={faSpinner} spin style={{ color }} />;
+    return <FontAwesomeIcon className={style.loader} icon={faSpinner} spin style={{ color }} />;
   }
 
   if (!animal || !color) {
     return null;
+  }
+
+  if (cursorState === LOADING_PIN) {
+    return (
+      <div style={{position: 'relative' }}>
+        <FontAwesomeIcon className={style.pinLoader} icon={faSpinner} spin />
+        <svg viewBox="0 0 384 542" xmlns="http://www.w3.org/2000/svg">
+          <path fill={color} d="m177.192432,438.293035c-109.036569,-160.781319 -129.275776,-177.282397 -129.275776,-236.37195c0,-80.939856 64.508063,-146.55412 144.083341,-146.55412s144.083341,65.614264 144.083341,146.55412c0,59.089553 -20.239207,75.590631 -129.275776,236.37195c-7.155389,10.513732 -22.460492,10.512968 -29.61513,0z" />
+        </svg>
+      </div>
+    );
   }
 
   return (
