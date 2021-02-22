@@ -14,8 +14,10 @@ export const getUser = () => async (dispatch) => {
     dispatch(setUserData(data));
   } catch (error) {
     if (error.statusCode === 401) {
-      route('/login', true);
       console.error('User is not authenticated', error);
+      if (!['/login', '/signup'].includes(window.location.pathname)) {
+        route('/login', true);
+      }
     } else {
       console.error('Error while getting user info', error);
     }

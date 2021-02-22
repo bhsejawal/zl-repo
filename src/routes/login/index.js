@@ -2,10 +2,12 @@ import { h } from 'preact';
 import { useEffect, useState } from 'preact/hooks';
 import { route } from 'preact-router';
 import { connect } from 'react-redux';
+import { get } from 'lodash-es';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faEyeSlash } from "@fortawesome/pro-solid-svg-icons";
 import { buildURL, post } from 'Shared/fetch';
 import SocialLoginButton from 'Components/SocialLoginButton';
+import classnames from 'classnames';
 
 import { setUserData } from '../../redux/actions';
 import Button from '../../components/Button';
@@ -13,7 +15,7 @@ import Button from '../../components/Button';
 import style from './style.scss';
 
 const Login = ({ logged, setUserDataAction }) => {
-  const [username, setUsername] = useState();
+  const [email, setEmail] = useState();
   const [password, setPassword] = useState();
   const [hasError, setHasError] = useState();
   const [showPassword, setShowPassword] = useState(false);
@@ -29,21 +31,20 @@ const Login = ({ logged, setUserDataAction }) => {
 
     try {
       const url = buildURL('/admin/users/login');
-      const { error, user } = await post(url, { username, password });
-
-      if (error) {
-        throw new Error(error);
-      }
-
+      const { user } = await post(url, { email, password });
       setUserDataAction(user);
     } catch (err) {
-      console.error(err);
-      setHasError(true);
+      console.error('Error while user logging in', err);
+      if (err.statusCode === 401) {
+        setHasError(get(err, 'body.error'));
+      } else {
+        setHasError('Something went wrong. Please try again!');
+      }
     }
   }
 
   const onUsernameChange = ({ target }) => {
-    setUsername(target.value);
+    setEmail(target.value);
   };
 
   const onPasswordChange = ({ target }) => {
@@ -66,16 +67,16 @@ const Login = ({ logged, setUserDataAction }) => {
             <div className={style.inputWrapper}>
               <input
                 type="text"
-                name="username"
-                placeholder="Username"
-                value={username}
+                name="email"
+                placeholder="Email"
+                value={email}
                 onChange={onUsernameChange}
               />
             </div>
-            <div className={style.error} />
+            <div className={style.errorSection} />
           </div>
           <div className={style.inputContainer}>
-            <span className={style.label}>Email</span>
+            <span className={style.label}>Password</span>
             <div className={style.inputWrapper}>
               <input
                 type={showPassword ? 'text' : 'password'}
@@ -88,8 +89,8 @@ const Login = ({ logged, setUserDataAction }) => {
                 <FontAwesomeIcon icon={showPassword ? faEyeSlash : faEye} />
               </button>
             </div>
-            <div className={style.error}>
-              {hasError && 'There was an error. Please try again.'}
+            <div className={classnames(style.errorSection, {[style.active]: hasError})}>
+              {hasError}
             </div>
           </div>
           <Button className={style.submitBtn} submit variant="primary">Submit</Button>

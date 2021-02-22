@@ -20,7 +20,7 @@ import {
 } from 'grommet';
 import { route } from 'preact-router';
 import { connect } from 'react-redux';
-import { isEmpty, random } from 'lodash-es';
+import { isEmpty } from 'lodash-es';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEyeDropper, faSpinner, faTimes } from '@fortawesome/pro-solid-svg-icons';
 import { HexColorPicker } from "react-colorful";
@@ -86,28 +86,6 @@ const icons = [
   animal14,
   animal15,
 ];
-const sampleNicknames = [
-  'HungryHippo',
-  'FancyFlamingo',
-  'LyingLion',
-  'TinyTiger',
-  'GoofyGiraffe',
-  'EdgyElephant',
-  'ZanyZebra',
-  'PeachyPanda',
-  'PettyPeacock',
-  'KookyKoala',
-  'GrumpyGorilla',
-  'RagingRhino',
-  'PlushyPenguin',
-  'RandomRabbit',
-  'CarefulCamel',
-  'RosyRam',
-  'WearyWolf',
-  'BashfulBear',
-  'LankyLlama',
-  'TiredTurtle',
-];
 
 const ColorItem = ({ color, selected, onClick }) => (
   <button
@@ -130,13 +108,13 @@ const IconItem = ({ icon, selected, onClick }) => (
   </button>
 );
 
-const Profile = ({ updateProfileAction }) => {
+const Profile = ({ username, updateProfileAction }) => {
   const pickerRef = useRef();
   const size = useContext(ResponsiveContext);
   const [isLoading, setIsLoading] = useState(true);
   const [color, setColor] = useState('#FFB145');
   const [icon, setIcon] = useState(animal1);
-  const [nickname, setNickname] = useState();
+  const [nickname, setNickname] = useState(username);
   const [errorMsg, setErrorMsg] = useState();
   const [isPickerOpen, setIsPickerOpen] = useState(false);
   const { width: pageWidth } = useWindowResize();
@@ -156,8 +134,6 @@ const Profile = ({ updateProfileAction }) => {
           setColor(profile.color);
           setIcon(profile.animalIcon);
           setNickname(profile.nickname);
-        } else {
-          setNickname(sampleNicknames[random(0, sampleNicknames.length - 1)]);
         }
       } catch (err) {
         // TODO: display an error somewhere when we have UI designs for it
@@ -347,6 +323,6 @@ const Profile = ({ updateProfileAction }) => {
 };
 
 export default connect(
-  null,
+  ({ user: { username } }) => ({ username }),
   { updateProfileAction: updateProfile },
 )(Profile);

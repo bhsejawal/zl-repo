@@ -69,12 +69,19 @@
       border-color: #368185;
       color: var(--charcoal);
     }
+
+    &.errorBorder {
+      border-color: var(--redDark);
+    }
   }
 
-  .error {
+  .errorSection {
     font-size: 12px;
     min-height: 24px;
-    color: var(--redDark);
+
+    &.active {
+      color: var(--redDark);
+    }
   }
 }
 
