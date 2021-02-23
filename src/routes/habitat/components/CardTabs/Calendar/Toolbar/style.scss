@@ -1,0 +1,43 @@
+$circle-size: 10px;
+
+.toolbar {
+  padding: 20px 0;
+  padding-left: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  * {
+    user-select: none;
+  }
+}
+
+.circle {
+  display: inline-block;
+  width: $circle-size;
+  height: $circle-size;
+  border-radius: 100%;
+  background-color: var(--lightBlue);
+}
+
+.arrow {
+  margin: 0 10px;
+  cursor: pointer;
+  user-select: none;
+}
+
+.leftArrow {
+  composes: arrow;
+  left: 0;
+  margin-left: 30px;
+}
+
+.rightArrow {
+  composes: arrow;
+  right: 0;
+  margin-right: 30px;
+}
+
+.disabled {
+  composes: disabled from "../style.scss";
+}

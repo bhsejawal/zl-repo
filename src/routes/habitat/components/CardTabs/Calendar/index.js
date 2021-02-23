@@ -13,7 +13,7 @@ import {
 
 import Event from './Event';
 import Header from './Header';
-import TimeGutterHeader from './TimeGutterHeader';
+import Toolbar from './Toolbar';
 
 import Context from './Context';
 
@@ -30,6 +30,8 @@ const localizer = dateFnsLocalizer({
   locales,
 });
 
+const TimeGutterHeader = () => null;
+
 // eslint-disable-next-line
 const Calendar = ({ schedules }) => {
   const [currentDate, setCurrentDate] = useState(new Date());
@@ -43,9 +45,18 @@ const Calendar = ({ schedules }) => {
     setCurrentDate(subWeeks(currentDate, 1));
   }, [currentDate]);
 
+  const moveToToday = useCallback(() => {
+    setCurrentDate(new Date());
+  }, []);
+
   return (
     <div>
-      <Context.Provider value={{ moveNext, movePrev, monthYear }}>
+      <Context.Provider value={{
+        moveNext,
+        movePrev,
+        moveToToday,
+        monthYear,
+      }}>
         <BigCalendar
           className={style.bigCalendar}
           date={currentDate}
@@ -54,8 +65,8 @@ const Calendar = ({ schedules }) => {
           views={[Views.WEEK]}
           localizer={localizer}
           drilldownView={null}
-          toolbar={false}
           components={{
+            toolbar: Toolbar,
             header: Header,
             timeGutterHeader: TimeGutterHeader,
             eventWrapper: Event,
