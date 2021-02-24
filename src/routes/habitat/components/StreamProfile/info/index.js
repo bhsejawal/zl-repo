@@ -4,8 +4,10 @@ import { Link } from 'preact-router';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHeart as faHeartSolid } from '@fortawesome/pro-solid-svg-icons';
 import { faHeart } from '@fortawesome/pro-light-svg-icons';
+import useFetch from 'use-http';
 
 import profileMask from 'Assets/profile-mask.svg';
+import { API_BASE_URL } from 'Shared/fetch';
 
 import TextEditor from 'Components/AdminEditWrappers/TextEditor';
 import ImageEditor from 'Components/AdminEditWrappers/ImageEditor';
@@ -17,10 +19,18 @@ const habitatId = 'habitat-id';
 
 const Info = ({ info: { profileImg, name, zooName }, liked = false }) => {
   const [isLiked, setIsLiked] = useState(liked);
+  const { post } = useFetch(API_BASE_URL, { credentials: 'include' });
 
-  const onFavClick = () => {
+  const onFavClick = async () => {
     setIsLiked(!isLiked);
-    // TODO: implement server update
+    // TODO: update this ID - it's currently just a mock value
+    const habitatId = '60351c41bda21d7746e573d8';
+    try {
+      await post('/habitats/favorite', { habitatId });
+    } catch (err) {
+      // TODO: handle error properly - display something to user
+      console.error(err);
+    }
   };
 
   return (

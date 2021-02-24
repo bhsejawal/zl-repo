@@ -26,6 +26,7 @@ import Home from './routes/home';
 import Habitat from './routes/habitat';
 import Plans from './routes/plans';
 import Profile from './routes/profile';
+import Favorite from './routes/favorite';
 
 const customBreakpoints = deepMerge(grommet, zoolifeTheme);
 
@@ -58,6 +59,7 @@ const App = () => {
                 <Map path="/map" permission="map:view" />
                 <Profile path="/profile" permission="profile:edit" />
                 <Schedule path="/schedule" permission="schedule:view" />
+                <Favorite path="/favorite" permission="favorite:edit" />
               </Router>
             </Main>
           )}

@@ -49,8 +49,10 @@ export const useIsInitiallyLoaded = (isFetching) => {
   const [loaded, setLoaded] = useState();
   useEffect(() => {
     if (loaded === undefined && !isFetching) {
-      setLoaded(true);
+      setLoaded(false);
+    } else if (loaded !== undefined) {
+      setLoaded(!isFetching);
     }
   }, [isFetching, loaded]);
-  return loaded;
+  return !!loaded;
 };
