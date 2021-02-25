@@ -32,3 +32,6 @@ export const isValidUrl = (url) => {
     return false;
   }
 };
+
+export const emailRegex = /^[A-Z0-9+_.-]+@[A-Z0-9.-]+\.[A-Z0-9.-]+$/gi;
+export const passwordRegex = /^(?=.*[a-zA-Z])(?=.*[0-9])(?!.*\s).{8,50}$/gm;

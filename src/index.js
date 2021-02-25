@@ -27,6 +27,7 @@ import Habitat from './routes/habitat';
 import Plans from './routes/plans';
 import Profile from './routes/profile';
 import Favorite from './routes/favorite';
+import PasswordReset from './routes/passwordReset';
 
 const customBreakpoints = deepMerge(grommet, zoolifeTheme);
 
@@ -54,6 +55,8 @@ const App = () => {
                 <DesignSystem path="/design" />
                 <Signup path="/signup" />
                 <Login path="/login" />
+                <Login path="/login/token/:token" />
+                <PasswordReset path="/passwordReset" />
                 <AdminRouter path="/admin/:*" />
                 <Plans path="/plans" />
                 <Map path="/map" permission="map:view" />

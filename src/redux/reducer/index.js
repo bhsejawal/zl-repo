@@ -9,6 +9,7 @@ import habitat from '../../routes/habitat/reducer';
 import plans from './plans';
 import schedule from '../../routes/schedule/reducer';
 import appLoader from '../../components/AppLoader/reducer';
+import passwordReset from '../../routes/login/ResetModal/reducer';
 
 export default combineReducers({
   mainStream,
@@ -19,4 +20,5 @@ export default combineReducers({
   map,
   schedule,
   appLoader,
+  passwordReset,
 });

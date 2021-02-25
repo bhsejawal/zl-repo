@@ -1,4 +1,3 @@
-import { route } from 'preact-router';
 import { HIDE_APP_LOADER, SHOW_APP_LOADER } from './types';
 import { getUser as get } from './api';
 import { setUserData } from '../../redux/actions';
@@ -15,9 +14,6 @@ export const getUser = () => async (dispatch) => {
   } catch (error) {
     if (error.statusCode === 401) {
       console.error('User is not authenticated', error);
-      if (!['/login', '/signup'].includes(window.location.pathname)) {
-        route('/login', true);
-      }
     } else {
       console.error('Error while getting user info', error);
     }

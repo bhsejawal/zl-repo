@@ -78,6 +78,13 @@
   .errorSection {
     font-size: 12px;
     min-height: 24px;
+    width: 100%;
+    text-align: left;
+
+    p {
+      text-align: center;
+      margin: 0;
+    }
 
     &.active {
       color: var(--redDark);

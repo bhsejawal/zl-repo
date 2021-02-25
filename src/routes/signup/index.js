@@ -10,12 +10,10 @@ import classnames from 'classnames';
 import SocialLoginButton from 'Components/SocialLoginButton';
 
 import { setUserData } from '../../redux/actions';
+import { emailRegex, passwordRegex } from '../../helpers';
 import Button from '../../components/Button';
 
 import style from '../login/style.scss';
-
-const passwordRegex = /^(?=.*[a-zA-Z])(?=.*[0-9])(?!.*\s).{8,50}$/gm;
-const emailRegex = /^[A-Z0-9+_.-]+@[A-Z0-9.-]+\.[A-Z0-9.-]+$/gi;
 
 const Signup = ({ logged, setUserDataAction }) => {
   const [email, setEmail] = useState();
@@ -105,7 +103,6 @@ const Signup = ({ logged, setUserDataAction }) => {
                 name="email"
                 placeholder="Email"
                 value={email}
-                onInvalid={() => setPasswordError(true)}
                 onChange={onEmailChange}
                 className={classnames({[style.errorBorder]: emailError})}
               />
@@ -122,7 +119,6 @@ const Signup = ({ logged, setUserDataAction }) => {
                 name="password"
                 placeholder="Password"
                 value={password}
-                onInvalid={() => setPasswordError(true)}
                 onChange={onPasswordChange}
               />
               <button type="button" onClick={() => setShowPassword(!showPassword)}>

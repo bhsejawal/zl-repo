@@ -10,11 +10,20 @@ import SocialLoginButton from 'Components/SocialLoginButton';
 import classnames from 'classnames';
 
 import { setUserData } from '../../redux/actions';
+import {showModal, validateToken} from './ResetModal/actions';
+
 import Button from '../../components/Button';
+import PasswordResetModal from './ResetModal';
 
 import style from './style.scss';
 
-const Login = ({ logged, setUserDataAction }) => {
+const Login = ({
+  logged,
+  setUserDataAction,
+  setShowModalAction,
+  token, // from URL
+  validateTokenAction,
+}) => {
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
   const [hasError, setHasError] = useState();
@@ -25,6 +34,12 @@ const Login = ({ logged, setUserDataAction }) => {
       route('/', true);
     }
   }, [logged]);
+
+  useEffect(() => {
+    if (token) {
+      validateTokenAction(token);
+    }
+  }, [token, validateTokenAction]);
 
   const onSubmit = async (evt) => {
     evt.preventDefault();
@@ -95,7 +110,7 @@ const Login = ({ logged, setUserDataAction }) => {
           </div>
           <Button className={style.submitBtn} submit variant="primary">Submit</Button>
           <br />
-          <button className={style.reset} type="button" onClick={() => console.log('OPEN RESET POPUP')}>
+          <button className={style.reset} type="button" onClick={() => setShowModalAction(true)}>
             Forgot password?
           </button>
           <div className={style.separator}>
@@ -109,11 +124,16 @@ const Login = ({ logged, setUserDataAction }) => {
           <SocialLoginButton variant="google" />
         </div>
       </div>
+      <PasswordResetModal />
     </div>
   );
 };
 
 export default connect(
   ({ user: { logged } }) => ({ logged }),
-  { setUserDataAction: setUserData },
+  {
+    setUserDataAction: setUserData,
+    setShowModalAction: showModal,
+    validateTokenAction: validateToken,
+  },
 )(Login);
