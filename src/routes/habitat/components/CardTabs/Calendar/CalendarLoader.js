@@ -15,22 +15,26 @@ import useFetch from 'use-http';
 import Loader from 'Components/async/Loader';
 
 import { buildURL } from 'Shared/fetch';
+import { connect } from 'react-redux';
 
 const { timeZone } = Intl.DateTimeFormat().resolvedOptions();
 
 const Calendar = lazy(() => import('.'));
 
-const CalendarLoader = () => {
+const CalendarLoader = ({ habitatId }) => {
   const url = useMemo(() => {
     const weekStart = startOfWeek(new Date());
     const startTime = weekStart.toISOString();
     const stopTime = addWeeks(weekStart, 4).toISOString();
     const pageSize = 10000;
-    // TODO: we should read habitatId from somewhere (guessing redux)
-    // const params = new URLSearchParams({ habitatId, startTime, stopTime, pageSize });
-    const params = new URLSearchParams({ pageSize, startTime, stopTime });
+    const params = new URLSearchParams({
+      habitatId,
+      startTime,
+      stopTime,
+      pageSize,
+    });
     return buildURL(`/schedules?${params}`);
-  }, []);
+  }, [habitatId]);
 
   const { loading, error, data: { events = [] } = {} } = useFetch(url, null, []);
   const schedules = useMemo(() => {
@@ -89,4 +93,6 @@ const CalendarLoader = () => {
   )
 };
 
-export default CalendarLoader;
+export default connect(
+  ({ habitat: { habitatInfo: { _id: habitatId } } }) => ({ habitatId }),
+)(CalendarLoader);

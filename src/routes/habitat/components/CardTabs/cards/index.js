@@ -45,6 +45,7 @@ import style from './style.scss';
 const Cards = ({
   cards = [],
   activeTab,
+  habitatId,
   shortcut,
   setCardsAction,
 }) => {
@@ -59,7 +60,7 @@ const Cards = ({
     const load = async () => {
       try {
         setLoading(true);
-        const { cards: newCards } = await fetchCards('mockHabitatID', activeTab);
+        const { cards: newCards } = await fetchCards(habitatId, activeTab);
 
         await Promise.all(newCards.map(async (card) => {
           // quiz cards have trivia question IDs in data which needs to be mapped
@@ -81,8 +82,10 @@ const Cards = ({
       }
     };
 
-    load();
-  }, [activeTab, get, setCardsAction]);
+    if (habitatId) {
+      load();
+    }
+  }, [activeTab, get, habitatId, setCardsAction]);
 
   useEffect(() => {
     // TODO: guess we should scroll to the first cart that have tag === shortcut
@@ -240,10 +243,14 @@ export default connect(
         items: cards,
         activeTab,
       },
+      habitatInfo: {
+        _id: habitatId,
+      },
     },
   }) => ({
     cards,
     activeTab,
+    habitatId,
   }),
   { setCardsAction: setCards },
 )(Cards);

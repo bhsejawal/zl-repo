@@ -1,5 +1,10 @@
 import { cloneElement, h } from 'preact';
-import { useCallback, useRef, useState } from 'preact/hooks';
+import {
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from 'preact/hooks';
 
 import EditButton from '../EditButton';
 import ImageEditorLoader from '../../async/ImageEditorLoader';
@@ -19,6 +24,10 @@ const ImageEditor = ({
   const childRef = useRef();
   const [editModalOpen, setEditModalOpen] = useState(false);
   const [imgUrl, setImgUrl] = useState(initialImgUrl);
+
+  useEffect(() => {
+    setImgUrl(initialImgUrl);
+  }, [initialImgUrl]);
 
   const onEditBtnClick = () => {
     setEditModalOpen(true);

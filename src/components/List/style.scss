@@ -17,6 +17,8 @@ $arrowMargin: 10px;
   overflow-x: hidden;
   display: flex;
   flex-grow: 1;
+  height: 100%;
+  align-items: center;
 }
 
 .hidden > * {
@@ -29,6 +31,10 @@ $arrowMargin: 10px;
 
 .scroll {
   justify-content: flex-start;
+}
+
+.arrowWrapper {
+  user-select: none;
 }
 
 .arrow {

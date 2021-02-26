@@ -102,6 +102,7 @@ const EditModal = ({
     tag: cardTag,
     type: cardType,
   } = {},
+  habitatId,
   activeTab,
   onClose,
   addCardAction,
@@ -143,7 +144,7 @@ const EditModal = ({
           const { questionIds } = await post('admin/trivia/questions', { questions });
           // TODO: we need to read cameraId (or habitatId) from redux
           const { card: createdCard } = await createCard(
-            null,
+            habitatId,
             type,
             activeTab,
             tag,
@@ -155,7 +156,7 @@ const EditModal = ({
           addCardAction(createdCard);
         } else {
           // TODO: we need to read cameraId (or habitatId) from redux
-          const { card: createdCard } = await createCard(null, type, activeTab, tag, data);
+          const { card: createdCard } = await createCard(habitatId, type, activeTab, tag, data);
           addCardAction(createdCard);
         }
 
@@ -596,9 +597,13 @@ export default connect(
       cards: {
         activeTab,
       },
+      habitatInfo: {
+        _id: habitatId,
+      },
     },
   }) => ({
     activeTab,
+    habitatId,
   }),
   {
     addCardAction: addCard,

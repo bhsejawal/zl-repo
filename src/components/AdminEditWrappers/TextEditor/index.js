@@ -1,7 +1,12 @@
 import { cloneElement, h } from 'preact';
-import { useCallback, useRef, useState } from 'preact/hooks';
-import { hasPermission } from '../../Authorize';
+import {
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from 'preact/hooks';
 
+import { hasPermission } from '../../Authorize';
 import EditButton from '../EditButton';
 import TextEditorLoader from '../../async/TextEditorLoader';
 
@@ -18,6 +23,12 @@ const TextEditor = ({
   const childRef = useRef();
   const [editModalOpen, setEditModalOpen] = useState(false);
   const [text, setText] = useState(initialText);
+
+  // initialText will probably first have "undefined" value
+  // also, it will make it possible to change it both from parent and child
+  useEffect(() => {
+    setText(initialText);
+  }, [initialText]);
 
   const onEditBtnClick = () => {
     setEditModalOpen(true);

@@ -1,22 +1,13 @@
-import { LOAD_HABITAT_SETTINGS } from './types';
-import { getHabitatSettings } from './api';
+import { SET_HABITAT, SET_HABITAT_LIKED, UNSET_HABITAT } from './types';
 
-const requestHabitatSettings = () => ({ type: LOAD_HABITAT_SETTINGS });
-
-const receiveHabitatSettings = (error, habitat) => ({
-  type: LOAD_HABITAT_SETTINGS,
-  payload: { error, habitat },
+export const setHabitat = ({ habitat }) => ({
+  type: SET_HABITAT,
+  payload: { habitat },
 });
 
-// eslint-disable-next-line import/prefer-default-export
-export const fetchHabitatSettings = (habitatId) => async (dispatch) => {
-  dispatch(requestHabitatSettings());
+export const setHabitatLiked = (isLiked) => ({
+  type: SET_HABITAT_LIKED,
+  payload: { isLiked },
+});
 
-  try {
-    const habitat = await getHabitatSettings(habitatId);
-    dispatch(receiveHabitatSettings(undefined, habitat));
-  } catch (err) {
-    console.error(err);
-    dispatch(receiveHabitatSettings(err.message));
-  }
-};
+export const unsetHabitat = () => ({ type: UNSET_HABITAT });

@@ -4,11 +4,13 @@ import { Link } from 'preact-router';
 import { faCircle } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHeart } from '@fortawesome/pro-solid-svg-icons';
-import { Button as GrommetButton } from 'grommet';
+import { Button } from 'grommet';
 import classnames from 'classnames';
 
 import Tag from 'Components/Tag';
-import Button from 'Components/Button';
+
+import zooPlaceholder from './zooPlaceholder.png';
+import wideImgPlaceholder from './wideImgPlaceholder.png';
 
 import style from './style.scss';
 
@@ -35,22 +37,21 @@ const HabitatStatus = ({ online, liveTalk }) => {
 const HabitatCard = ({
   className,
   habitatId,
+  zooSlug,
   slug,
   online,
   liveTalk,
-  card: {
-    image,
-    logo,
-    title,
-    description,
-  } = {},
+  image,
+  logo,
+  title,
+  description,
   onFavoriteClick,
 }) => (
   <div className={classnames(style.habitatCard, className)}>
     <div className={style.header}>
-      <img src={image} alt="" />
+      <img src={image ?? wideImgPlaceholder} alt="" />
       <div className={style.logo}>
-        <img src={logo} alt="" />
+        <img src={logo ?? zooPlaceholder} alt="" />
       </div>
       <div className={style.tag}>
         <HabitatStatus online={online} liveTalk={liveTalk} />
@@ -58,21 +59,19 @@ const HabitatCard = ({
     </div>
     <div className={style.body}>
       <h3>{title}</h3>
-      <p>{description}</p>
+      <p>{description || "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s"}</p>
 
       <div className={classnames(style.buttons, { [style.favorite]: onFavoriteClick })}>
-        <Link href={`/zoo/${slug}`}>
-          <Button variant="primary" size="" type="button">
-            Enter Habitat
-          </Button>
+        <Link href={encodeURI(`/${zooSlug}/${slug}`)}>
+          <Button primary label="Enter Habitat" size="large" />
         </Link>
         {onFavoriteClick && (
-          <GrommetButton
+          <Button
             onClick={() => onFavoriteClick(habitatId)}
             margin={{ horizontal: 'small' }}
           >
             <FontAwesomeIcon icon={faHeart} color="var(--pink)" size="2x" />
-          </GrommetButton>
+          </Button>
         )}
       </div>
     </div>

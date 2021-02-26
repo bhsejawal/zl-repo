@@ -14,8 +14,6 @@ import HabitatCard from 'Components/HabitatCard';
 import Loader from 'Components/async/Loader';
 
 import { useIsInitiallyLoaded, useWindowResize } from '../../hooks';
-import zooPlaceholder from './zooPlaceholder.png';
-import wideImgPlaceholder from './wideImgPlaceholder.png';
 
 const SET_DATA = 'SET_DATA';
 const REMOVE_HABITAT = 'REMOVE_HABITAT';
@@ -53,7 +51,7 @@ const Favorite = () => {
   const { del, response: delResponse } = useFetch(url, {
     credentials: 'include',
     cachePolicy: 'no-cache',
-    headers: { 'content-type': 'application/json' },
+    headers: { 'Content-Type': 'application/json' },
   });
   const loaded = useIsInitiallyLoaded(loading);
 
@@ -124,23 +122,22 @@ const Favorite = () => {
             liveTalk,
             animal: title,
             zoo,
-            description = "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s",
-            wideImage: image = wideImgPlaceholder,
+            description,
+            wideImage: image,
           }) => (
             <Box key={_id} pad="small" flex="shrink">
               <HabitatCard
                 favorite
                 slug={slug}
+                zooSlug={zoo?.slug}
                 habitatId={_id}
                 online={online}
                 liveTalk={liveTalk}
+                title={title}
+                description={description}
+                image={image}
+                logo={zoo?.logo}
                 onFavoriteClick={onFavoriteClick}
-                card={{
-                  title,
-                  description,
-                  image,
-                  logo: zoo?.logo ?? zooPlaceholder,
-                }}
               />
             </Box>
           ))}

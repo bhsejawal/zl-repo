@@ -27,6 +27,7 @@ import Habitat from './routes/habitat';
 import Plans from './routes/plans';
 import Profile from './routes/profile';
 import Favorite from './routes/favorite';
+import NotFound from './routes/notFound';
 import PasswordReset from './routes/passwordReset';
 
 const customBreakpoints = deepMerge(grommet, zoolifeTheme);
@@ -50,8 +51,7 @@ const App = () => {
           {(size) => (
             <Main fill={size === 'large'}>
               <Router onChange={verifyRoutePermission}>
-                <Home path="/" exact default />
-                <Habitat path="/habitat" permission="habitat:view" />
+                <Home path="/" exact />
                 <DesignSystem path="/design" />
                 <Signup path="/signup" />
                 <Login path="/login" />
@@ -63,6 +63,13 @@ const App = () => {
                 <Profile path="/profile" permission="profile:edit" />
                 <Schedule path="/schedule" permission="schedule:view" />
                 <Favorite path="/favorite" permission="favorite:edit" />
+
+                {/* NOTE: Habitat and NotFound need to be at the end */}
+                <Habitat
+                  path="/:zooName/:habitatSlug"
+                  permission="habitat:view"
+                />
+                <NotFound path=":*" />
               </Router>
             </Main>
           )}

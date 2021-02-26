@@ -1,93 +1,106 @@
 import { h } from 'preact';
-import { useState, useRef } from 'preact/hooks';
+import { useState, useRef, useMemo } from 'preact/hooks';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faGreaterThan, faLessThan } from '@fortawesome/pro-light-svg-icons';
+import { faSpinner, faTimes } from '@fortawesome/pro-solid-svg-icons';
+import { Box } from 'grommet';
+import { formatDistanceToNow } from 'date-fns';
 import classnames from 'classnames';
 
 import Tag from 'Components/Tag';
 import Card from 'Components/Card';
+
 import { useOnClickOutside } from '../../../../hooks';
+import { useUpcomingTalks } from '../../hooks';
 
 import style from './style.scss';
 
-const list = [
-  {
-    isLive: true,
-    text: 'LIVE NOW',
-    icon: 'https://s3.ca-central-1.amazonaws.com/zl.brizi.tech/assets/hippo.png',
-    description: 'Making Breakfast with the hippo Nutritionist',
-  },
-  {
-    isLive: false,
-    text: 'STARTS IN 30M',
-    icon: 'https://s3.ca-central-1.amazonaws.com/zl.brizi.tech/assets/giraffe.png',
-    description: 'Making Breakfast with the giraffe Nutritionist',
-  },
-  {
-    isLive: false,
-    text: 'STARTS IN 3H',
-    icon: 'https://s3.ca-central-1.amazonaws.com/zl.brizi.tech/assets/meerkat.png',
-    link: 'https://s3.ca-central-1.amazonaws.com/zl.brizi.tech/assets/meerkat.png',
-    description: 'Making Breakfast with the meerkat Nutritionist',
-  },
-];
+const now = new Date();
 
 const NextTalkBar = ({ height, width }) => {
   const [expand, setExpand] = useState(false);
   const ref = useRef();
+  const { loading, error, upcoming = [] } = useUpcomingTalks(null);
+  const list = useMemo(
+    () => upcoming.map(({ startTime, isStreamLive, ...rest }) => ({
+      // TODO: we should format it to a shorter value ('days' -> 'd', 'minutes' -> 'm)
+      text: startTime > now && `starts in ${formatDistanceToNow(startTime)}`,
+      isLive: startTime <= now && isStreamLive,
+      ...rest,
+    })),
+    [upcoming],
+  );
 
   useOnClickOutside(ref, () => setExpand(false));
 
   return (
     <div ref={ref} className={style.liveTalktBar} style={{ height, width }}>
-      <div className={classnames(style.expandBar, 'customScrollBar', {[style.active]: expand})}>
-        <button type="button" className={style.liveTalkExpandButton} onClick={() => setExpand(!expand)}>
-          <span>Talk</span>
-          <FontAwesomeIcon icon={faLessThan} />
-        </button>
-        <div className={style.listWrapper}>
-          {list.map(({
-            isLive,
-            text,
-            icon,
-            description,
-          }) => (
-            <Card
-              key={`${text}-${description}`}
-              live={isLive}
-              header={isLive ? <Tag label="LIVE" /> : text}
-              description={description}
-              image={icon}
-              roundImage
-              onClick={() => console.log('Remind Me')}
-            />
-          ))}
-        </div>
-      </div>
-      <div className={style.content}>
-        <button type="button" className={style.liveTalkExpandButton} onClick={() => setExpand(!expand)}>
-          <span>Talk</span>
-          <FontAwesomeIcon icon={faGreaterThan} />
-        </button>
-        <ul>
-          {list.map(({
-            icon,
-            text,
-            isLive,
-            link,
-          }) => (
-            <li key={`${text}-${icon}`}>
-              {/* eslint-disable-next-line no-script-url */}
-              <a href={link || 'javascript:void(0)'}>
-                <img src={icon} alt="" />
-                <span>
-                  {isLive ? <Tag label={text} /> : text}
-                </span>
-              </a>
-            </li>
-          ))}
-        </ul>
-      </div>
+      {/* TODO: update loading and error when we get designs */}
+      {loading && !error && (
+        <Box fill justify="center" align="center">
+          <FontAwesomeIcon size="lg" color="var(--lightGrey)" icon={faSpinner} spin />
+        </Box>
+      )}
+      {!loading && error && (
+        <Box fill justify="center" align="center">
+          <FontAwesomeIcon size="lg" color="var(--pink)" icon={faTimes} />
+        </Box>
+      )}
+      {!loading && !error && (
+        <>
+          <div className={classnames(style.expandBar, 'customScrollBar', {[style.active]: expand})}>
+            <button type="button" className={style.liveTalkExpandButton} onClick={() => setExpand(!expand)}>
+              <span>Talk</span>
+              <FontAwesomeIcon icon={faLessThan} />
+            </button>
+            <div className={style.listWrapper}>
+              {list.map(({
+                _id,
+                isLive,
+                text,
+                profileImage,
+                description,
+              }) => (
+                <Card
+                  key={_id}
+                  live={isLive}
+                  header={isLive ? <Tag label="LIVE" /> : text}
+                  description={description}
+                  image={profileImage}
+                  roundImage
+                  onClick={() => console.log('Remind Me')}
+                />
+              ))}
+            </div>
+          </div>
+
+          <div className={style.content}>
+            <button type="button" className={style.liveTalkExpandButton} onClick={() => setExpand(!expand)}>
+              <span>Talk</span>
+              <FontAwesomeIcon icon={faGreaterThan} />
+            </button>
+            <ul>
+              {list.map(({
+                _id,
+                profileImage,
+                text,
+                isLive,
+                link,
+              }) => (
+                <li key={_id}>
+                  {/* eslint-disable-next-line no-script-url */}
+                  <a href={link || 'javascript:void(0)'}>
+                    <img src={profileImage} alt="" />
+                    <span>
+                      {isLive ? <Tag label="LIVE NOW" /> : text}
+                    </span>
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </>
+      )}
     </div>
   );
 };

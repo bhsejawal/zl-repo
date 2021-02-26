@@ -9,13 +9,13 @@ import {
 } from 'grommet';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
-import { SecondaryButton } from 'Components/Buttons';
+import useFetch from 'use-http';
 
+import { buildURL } from 'Shared/fetch';
+import { SecondaryButton } from 'Components/Buttons';
 import ImageSelector from '../../../ImageSelector';
 
 import style from './style.scss';
-
-const IMAGE_FORM_NAME = 'image';
 
 const EditModal = ({
   initialImgUrl,
@@ -28,6 +28,18 @@ const EditModal = ({
   const imgSelectorRef = useRef();
   const previewRef = useRef();
   const [value, setValue] = useState(initialImgUrl);
+
+  const {
+    loading,
+    // TODO: display error somewhere when we have UI designs
+    // eslint-disable-next-line no-unused-vars
+    error,
+    response,
+    patch,
+  } = useFetch(
+    buildURL(postToUrl),
+    { credentials: 'include', cachePolicy: 'no-cache' },
+  );
 
   const onSubmit = async (evt) => {
     evt.preventDefault();
@@ -42,12 +54,12 @@ const EditModal = ({
       return;
     }
 
-    const formData = new FormData(evt.target);
-    const data = { [imageProp]: formData.get(IMAGE_FORM_NAME) };
-    console.log(postToUrl, data);
-    // TODO: post data to the server
-    onClose();
-    onUpdate(value);
+    await patch({ [imageProp]: value });
+
+    if (response.ok) {
+      onClose();
+      onUpdate(value);
+    }
   };
 
   const onBlur = useCallback(({ target }) => {
@@ -102,7 +114,7 @@ const EditModal = ({
             direction="row"
             align="center"
           >
-            <SecondaryButton type="submit" label="Save" />
+            <SecondaryButton loading={loading} type="submit" label="Save" />
           </Box>
         </Form>
       </Box>

@@ -1,4 +1,5 @@
 import { h } from 'preact';
+import { connect } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faShieldCheck } from '@fortawesome/pro-light-svg-icons';
 
@@ -6,12 +7,13 @@ import TextEditor from 'Components/AdminEditWrappers/TextEditor';
 
 import style from './style.scss';
 
-const Description = ({ text: descriptionText }) => (
+const Description = ({ habitatId, description = '' }) => (
   <div className={style.desc}>
     <FontAwesomeIcon icon={faShieldCheck} size="2x" color="var(--turquoiseLight)" />
     <TextEditor
+      postToUrl={`/admin/habitats/${habitatId}`}
       textProp="description"
-      initialText={descriptionText}
+      initialText={description}
       minLen={50}
       maxLen={130}
     >
@@ -20,4 +22,16 @@ const Description = ({ text: descriptionText }) => (
   </div>
 );
 
-export default Description;
+export default connect(
+  ({
+    habitat: {
+      habitatInfo: {
+        _id: habitatId,
+        description,
+      },
+    },
+  }) => ({
+    habitatId,
+    description,
+  }),
+)(Description);

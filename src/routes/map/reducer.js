@@ -13,10 +13,11 @@ export default (state = initialState, { type, payload }) => {
     }
 
     case SELECT_HABITAT: {
-      const { habitat } = payload;
+      const { habitatId } = payload;
       return {
         ...state,
-        activeHabitat: state.activeHabitat !== habitat ? habitat : null,
+        activeHabitat: state.habitats
+          .find(({ _id }) => _id === habitatId),
       };
     }
 

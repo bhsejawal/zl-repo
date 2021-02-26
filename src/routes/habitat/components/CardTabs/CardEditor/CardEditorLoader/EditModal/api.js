@@ -5,8 +5,8 @@ import {
   post,
 } from 'Shared/fetch';
 
-export const createCard = (cameraId, type, tab, tag, data) => {
-  const url = buildURL(`/admin/cameras/${cameraId}/cards/tabs/${tab}`);
+export const createCard = (habitatId, type, tab, tag, data) => {
+  const url = buildURL(`/admin/habitats/${habitatId}/cards/tabs/${tab}`);
   return post(url, { type, tag, data });
 };
 

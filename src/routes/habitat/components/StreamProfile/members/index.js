@@ -1,26 +1,31 @@
 import { h } from 'preact';
 import { useCallback, useRef } from 'preact/hooks';
+import { connect } from 'react-redux';
 
 import List from 'Components/List';
-
 import Member from './member';
 
-const Members = ({ members = [] }) => {
+const Members = ({ familyMembers = [] }) => {
   const listRef = useRef();
   const loadedImagesRef = useRef(0);
 
   const onImgLoad = useCallback(() => {
     loadedImagesRef.current += 1;
-    if (loadedImagesRef.current === members.length) {
+    if (loadedImagesRef.current === familyMembers.length) {
       listRef.current.updateLayout();
     }
-  }, [members]);
+  }, [familyMembers]);
 
   return (
     <List ref={listRef}>
-      {members.map(({ name, age, profileImg }, ind) => (
+      {familyMembers.map(({
+        _id,
+        name,
+        age,
+        profileImg,
+      }, ind) => (
         <Member
-          key={`${name}-${age}-${profileImg}`}
+          key={_id}
           index={ind}
           name={name}
           age={age}
@@ -32,4 +37,6 @@ const Members = ({ members = [] }) => {
   )
 };
 
-export default Members;
+export default connect(
+  ({ habitat: { habitatInfo: { familyMembers } } }) => ({ familyMembers }),
+)(Members);

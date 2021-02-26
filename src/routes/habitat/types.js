@@ -1,2 +1,3 @@
-// eslint-disable-next-line import/prefer-default-export
-export const LOAD_HABITAT_SETTINGS = 'LOAD_HABITAT_SETTINGS';
+export const SET_HABITAT = 'SET_HABITAT';
+export const UNSET_HABITAT = 'UNSET_HABITAT';
+export const SET_HABITAT_LIKED = 'SET_HABITAT_LIKED';

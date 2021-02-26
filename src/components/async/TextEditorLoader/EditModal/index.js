@@ -12,6 +12,9 @@ import {
   FormField,
   TextArea,
 } from 'grommet';
+import useFetch from 'use-http';
+
+import { buildURL } from 'Shared/fetch';
 
 const TEXT_INPUT = 'text'
 
@@ -25,6 +28,17 @@ const EditModal = ({
   onUpdate,
 }) => {
   const [value, setValue] = useState({ text: initialText });
+  const {
+    loading,
+    // TODO: display error somewhere when we have UI designs
+    // eslint-disable-next-line no-unused-vars
+    error: requestError,
+    response,
+    patch,
+  } = useFetch(
+    buildURL(postToUrl),
+    { credentials: 'include', cachePolicy: 'no-cache' },
+  );
 
   const error = useMemo(() => {
     if (value.text.length < minLen) {
@@ -36,7 +50,7 @@ const EditModal = ({
     return undefined;
   }, [value.text, minLen, maxLen]);
 
-  const onSubmit = (evt) => {
+  const onSubmit = async (evt) => {
     evt.preventDefault();
 
     if (error) {
@@ -44,11 +58,12 @@ const EditModal = ({
     }
 
     const formData = new FormData(evt.target);
-    const data = { [textProp]: formData.get(TEXT_INPUT) };
-    console.log(postToUrl, data);
-    // TODO: post data to the server
-    onClose();
-    onUpdate(value.text);
+    await patch({ [textProp]: formData.get(TEXT_INPUT) });
+
+    if (response.ok) {
+      onClose();
+      onUpdate(value.text);
+    }
   };
 
   const onChange = (nextVal) => {
@@ -90,7 +105,7 @@ const EditModal = ({
             direction="row"
             align="center"
           >
-            <SecondaryButton type="submit" label="Save" />
+            <SecondaryButton loading={loading} type="submit" label="Save" />
           </Box>
         </Form>
       </Box>

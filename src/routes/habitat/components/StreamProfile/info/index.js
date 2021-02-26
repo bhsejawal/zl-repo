@@ -1,35 +1,70 @@
 import { h } from 'preact';
-import { useState } from 'preact/hooks';
+import { useMemo, useState } from 'preact/hooks';
 import { Link } from 'preact-router';
+import { connect } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faHeart as faHeartSolid } from '@fortawesome/pro-solid-svg-icons';
+import { faHeart as faHeartSolid, faSpinner, faTimes } from '@fortawesome/pro-solid-svg-icons';
 import { faHeart } from '@fortawesome/pro-light-svg-icons';
 import useFetch from 'use-http';
 
 import profileMask from 'Assets/profile-mask.svg';
-import { API_BASE_URL } from 'Shared/fetch';
+import { buildURL } from 'Shared/fetch';
 
 import TextEditor from 'Components/AdminEditWrappers/TextEditor';
 import ImageEditor from 'Components/AdminEditWrappers/ImageEditor';
 
+import { setHabitatLiked } from '../../../actions';
+
 import style from './style.scss';
 
-// TODO: this is just a mock variable - we should change it when we have habitat collection
-const habitatId = 'habitat-id';
+const Info = ({
+  habitatId,
+  animal,
+  profileImage,
+  zooName,
+  zooSlug,
+  isLiked,
+  setLikedAction,
+}) => {
+  const [error, setError] = useState();
+  const {
+    post,
+    del,
+    response,
+    loading,
+  } = useFetch(buildURL('/habitats/favorite'), {
+    credentials: 'include',
+    cachePolicy: 'no-cache',
+    headers: { 'Content-Type': 'application/json' },
+  });
 
-const Info = ({ info: { profileImg, name, zooName }, liked = false }) => {
-  const [isLiked, setIsLiked] = useState(liked);
-  const { post } = useFetch(API_BASE_URL, { credentials: 'include' });
+  const likeIcon = useMemo(() => {
+    if (loading) {
+      return faSpinner;
+    }
+    if (error) {
+      return faTimes;
+    }
+    if (isLiked) {
+      return faHeartSolid;
+    }
+    return faHeart;
+  }, [isLiked, loading, error]);
 
   const onFavClick = async () => {
-    setIsLiked(!isLiked);
-    // TODO: update this ID - it's currently just a mock value
-    const habitatId = '60351c41bda21d7746e573d8';
-    try {
-      await post('/habitats/favorite', { habitatId });
-    } catch (err) {
-      // TODO: handle error properly - display something to user
-      console.error(err);
+    if (isLiked) {
+      await del({ habitatId });
+    } else {
+      await post({ habitatId });
+    }
+
+    if (!response.ok) {
+      setError(true);
+      setTimeout(() => {
+        setError(undefined);
+      }, 2000);
+    } else {
+      setLikedAction(!isLiked);
     }
   };
 
@@ -37,9 +72,9 @@ const Info = ({ info: { profileImg, name, zooName }, liked = false }) => {
     <div className={style.info}>
       <div className={style.profileImgWrapper}>
         <ImageEditor
-          initialImgUrl={profileImg}
+          initialImgUrl={profileImage}
           postToUrl={`/admin/habitats/${habitatId}`}
-          imageProp="profileImg"
+          imageProp="profileImage"
           editBtnPosition={{ right: '50px', top: '10px' }}
           constraints={{
             maxResolution: 240,
@@ -58,8 +93,9 @@ const Info = ({ info: { profileImg, name, zooName }, liked = false }) => {
         </ImageEditor>
         <button onClick={onFavClick} type="button" className={style.favBtn}>
           <FontAwesomeIcon
-            icon={isLiked ? faHeartSolid : faHeart}
-            color={isLiked ? "var(--pink)" : "var(--grey)"}
+            icon={likeIcon}
+            color={isLiked && !loading ? "var(--pink)" : "var(--grey)"}
+            spin={likeIcon === faSpinner}
           />
         </button>
         <img className={style.mask} src={profileMask} alt="Mask" />
@@ -67,11 +103,11 @@ const Info = ({ info: { profileImg, name, zooName }, liked = false }) => {
 
       <div>
         <TextEditor
-          postToUrl="/"
-          textProp="cardTitle"
+          postToUrl={`/admin/habitats/${habitatId}`}
+          textProp="animal"
           minLen={10}
           maxLen={80}
-          initialText={name}
+          initialText={animal}
         >
           {(text) => <h4 className={style.name}>{text}</h4>}
         </TextEditor>
@@ -79,11 +115,34 @@ const Info = ({ info: { profileImg, name, zooName }, liked = false }) => {
         <p className={style.zooNameWrapper}>
           at
           {' '}
-          <Link href="/">{zooName}</Link>
+          {/* TODO: we need to agree on this routing path */}
+          {/* maybe we could use `/z/${zooName}` */}
+          {/* if we go with only `/${zooName}` we would need to do much more work to handle 404 */}
+          <Link href={`/zoo/${zooSlug}`}>{zooName}</Link>
         </p>
       </div>
     </div>
   );
 };
 
-export default Info;
+export default connect(
+  ({
+    habitat: {
+      habitatInfo: {
+        _id: habitatId,
+        animal,
+        profileImage,
+        isLiked,
+        zoo: { name: zooName, slug: zooSlug } = {},
+      },
+    },
+  }) => ({
+    habitatId,
+    animal,
+    profileImage,
+    zooName,
+    zooSlug,
+    isLiked,
+  }),
+  { setLikedAction: setHabitatLiked },
+)(Info);
