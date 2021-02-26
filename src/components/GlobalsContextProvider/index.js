@@ -1,7 +1,7 @@
 import { h } from 'preact';
 import { useEffect } from 'preact/hooks';
 import io from 'socket.io-client';
-import { GlobalsContext } from '../../context';
+import { GlobalsContext } from 'Shared/context';
 
 let socket;
 const GlobalsContextProvider = ({ children }) => {

@@ -10,10 +10,11 @@ import { connect } from 'react-redux';
 import Carousel from 'react-multi-carousel';
 import { formatDistanceToNow } from 'date-fns';
 
+import { GlobalsContext } from 'Shared/context';
+
 import Tag from '../Tag';
 import Card from '../Card';
 import LiveTalk from '../Card/LiveTalk';
-import { GlobalsContext } from '../../context';
 import { useUpcomingTalks } from '../../routes/habitat/hooks';
 
 import 'react-multi-carousel/lib/styles.css';

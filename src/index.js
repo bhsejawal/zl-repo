@@ -1,11 +1,15 @@
 import { h } from 'preact';
+import { useEffect, useState } from 'preact/hooks';
 import { route, Router } from 'preact-router';
 import { Provider } from 'react-redux';
+import { loadStripe } from '@stripe/stripe-js';
 
 import { Grommet, Main, ResponsiveContext } from 'grommet';
 import { deepMerge } from 'grommet/utils';
 import { grommet } from 'grommet/themes';
 import AppLoader from 'Components/AppLoader';
+import { StripeContext } from 'Shared/context';
+
 import store from './redux/store';
 
 import { hasPermission } from './components/Authorize/index'
@@ -33,6 +37,7 @@ import PasswordReset from './routes/passwordReset';
 const customBreakpoints = deepMerge(grommet, zoolifeTheme);
 
 const App = () => {
+  const [stripe, setStripe] = useState(null);
   const verifyRoutePermission = ({ active }) => {
     const [{ props: { permission } }] = active;
 
@@ -42,39 +47,52 @@ const App = () => {
 
     route('/', true);
   }
+  const initializeStripe = async () => {
+    try {
+      setStripe(await loadStripe(process.env.PREACT_APP_STRIPE_PUBLIC_KEY));
+    } catch (err) {
+      console.error('Error loading Stripe', err.message);
+    }
+  }
+
+  useEffect(() => {
+    initializeStripe();
+  }, []);
 
   return (
     <Provider store={store}>
-      <Grommet full theme={customBreakpoints} >
-        <AppLoader />
-        <ResponsiveContext.Consumer>
-          {(size) => (
-            <Main fill={size === 'large'} width={{ max: "1650px" }} margin={{ horizontal: 'auto' }}>
-              <Router onChange={verifyRoutePermission}>
-                <Home path="/" exact />
-                <DesignSystem path="/design" />
-                <Signup path="/signup" />
-                <Login path="/login" />
-                <Login path="/login/token/:token" />
-                <PasswordReset path="/passwordReset" />
-                <AdminRouter path="/admin/:*" />
-                <Plans path="/plans" />
-                <Map path="/map" permission="map:view" />
-                <Profile path="/profile" permission="profile:edit" />
-                <Schedule path="/schedule" permission="schedule:view" />
-                <Favorite path="/favorite" permission="favorite:edit" />
+      <StripeContext.Provider value={{ stripe }} width={{ max: "1650px" }} margin={{ horizontal: 'auto' }}>
+        <Grommet full theme={customBreakpoints} >
+          <AppLoader />
+          <ResponsiveContext.Consumer>
+            {(size) => (
+              <Main fill={size === 'large'}>
+                <Router onChange={verifyRoutePermission}>
+                  <Home path="/" exact />
+                  <DesignSystem path="/design" />
+                  <Signup path="/signup" />
+                  <Login path="/login" />
+                  <Login path="/login/token/:token" />
+                  <PasswordReset path="/passwordReset" />
+                  <AdminRouter path="/admin/:*" />
+                  <Plans path="/plans" />
+                  <Map path="/map" permission="map:view" />
+                  <Profile path="/profile" permission="profile:edit" />
+                  <Schedule path="/schedule" permission="schedule:view" />
+                  <Favorite path="/favorite" permission="favorite:edit" />
 
-                {/* NOTE: Habitat and NotFound need to be at the end */}
-                <Habitat
-                  path="/:zooName/:habitatSlug"
-                  permission="habitat:view"
-                />
-                <NotFound path=":*" />
-              </Router>
-            </Main>
-          )}
-        </ResponsiveContext.Consumer>
-      </Grommet>
+                  {/* NOTE: Habitat and NotFound need to be at the end */}
+                  <Habitat
+                    path="/:zooName/:habitatSlug"
+                    permission="habitat:view"
+                  />
+                  <NotFound path=":*" />
+                </Router>
+              </Main>
+            )}
+          </ResponsiveContext.Consumer>
+        </Grommet>
+      </StripeContext.Provider>
     </Provider>
   );
 };

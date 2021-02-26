@@ -9,7 +9,7 @@ import {
 import { connect } from 'react-redux';
 import { createPortal } from 'preact/compat';
 
-import { GlobalsContext } from '../../../../context';
+import { GlobalsContext } from 'Shared/context';
 
 import { addUserInteraction } from '../../../../redux/actions';
 
@@ -160,7 +160,7 @@ const InteractiveAreaHandler = ({
       className={style.CursorArea}
       onDrop={onDrop}
       onDragOver={onDragOver}
-      onClick={onClickHandler}
+      onMouseDown={onClickHandler}
     >
       <div id="CursorsContainer" className={style.CursorsContainer} ref={containerRef}>
         <CursorPortal>

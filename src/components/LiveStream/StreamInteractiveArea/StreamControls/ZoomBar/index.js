@@ -11,7 +11,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus, faMinus } from '@fortawesome/pro-light-svg-icons';
 import { faSpinner } from '@fortawesome/pro-duotone-svg-icons';
 
-import { GlobalsContext } from '../../../../../context';
+import { GlobalsContext } from 'Shared/context';
 
 import style from './style.scss';
 

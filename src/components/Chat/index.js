@@ -3,7 +3,7 @@ import PubNub from 'pubnub';
 import { PubNubProvider } from 'pubnub-react';
 import { connect } from 'react-redux';
 
-import { ChatContext } from '../../context';
+import { ChatContext } from 'Shared/context';
 import { addMessages, clearMessages } from '../../redux/actions';
 
 import ChatContainer from './ChatContainer';

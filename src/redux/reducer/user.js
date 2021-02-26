@@ -11,11 +11,9 @@ const initialState = {
   sessionChecked: false,
   // This will be for Viewers
   subscription: {
-    isActive: true,
-    // daily/monthly
-    type: 'monthly',
+    active: true,
     // should be used for the Trial/track how long the user can watch the videos
-    expireDate: new Date(),
+    validUntil: new Date(),
   },
   username: null,
   // Valid: [guest, viewer, partner, host, admin]

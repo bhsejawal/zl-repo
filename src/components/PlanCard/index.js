@@ -13,24 +13,27 @@ import BenefitItem from './BenefitItem';
 import style from './style.scss';
 
 const PlanCard = ({
+  planId,
+  priceId,
   planName,
   planPrice,
   planType,
   planCurrency,
   color,
-  amountOff,
+  discount,
+  checkoutHandler,
   benefits = [],
 }) => (
   <Grommet>
     <Box pad="xxsmall" style={{ position: 'relative' }}>
-      {amountOff && (
+      {discount && (
         <Box
           background="#368185"
           align="center"
           justify="center"
           className={style.discountTag}
         >
-          <Text weight="900" size="14px">{`${amountOff}%`}</Text>
+          <Text weight="900" size="14px">{`${discount}`}</Text>
           <Text size="12px" weight="400">discount</Text>
         </Box>
       )}
@@ -56,7 +59,7 @@ const PlanCard = ({
                 color="white"
                 style={{ fontSize: '36px', lineHeight: '28px', fontWeight: '900' }}
               >
-                {planPrice}
+                {planPrice / 100}
               </Text>
               <Text alignSelf="end" style={{ lineHeight: '14px' }} color="white">
                 {planCurrency}
@@ -68,7 +71,7 @@ const PlanCard = ({
               alignSelf="center"
               color="white"
             >
-              {planType}
+              {`/${planType}`}
             </Text>
           </Box>
 
@@ -81,7 +84,7 @@ const PlanCard = ({
             ))}
           </Box>
           <Box align="center" justify="end" direction="column" pad="xsmall" margin={{ vertical: '16px' }}>
-            <Button variant="primary" onClick={() => console.log(`clicked ${planName}, proceed with checkout`)} alignSelf="end">
+            <Button variant="primary" onClick={() => checkoutHandler(planId, priceId)} alignSelf="end">
               <span>Select</span>
             </Button>
           </Box>

@@ -19,8 +19,8 @@ const canEditHabitat = () => {
 }
 
 const isSubscriptionActive = () => {
-  const { user: { subscription: { isSubscriptionActive } } } = store.getState();
-  return isSubscriptionActive;
+  const { user: { subscription: { active } } } = store.getState();
+  return active;
 }
 
 const rules = {
@@ -32,6 +32,7 @@ const rules = {
     dynamic: {
       "habitat:view": isSubscriptionActive,
       "map:view": isSubscriptionActive,
+      'checkout:plans': !isSubscriptionActive,
     },
   },
   partner: {

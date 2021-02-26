@@ -2,7 +2,7 @@ import { useState, useContext, useCallback } from 'preact/hooks'
 
 import { connect } from 'react-redux';
 
-import { ChatContext } from '../../../../context';
+import { ChatContext } from 'Shared/context';
 
 import EmoteInput from '../EmoteInput';
 

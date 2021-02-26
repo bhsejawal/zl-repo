@@ -5,7 +5,7 @@ import { faCamera } from '@fortawesome/pro-solid-svg-icons';
 
 import RoundButton from 'Components/RoundButton';
 
-import { GlobalsContext } from '../../../../../context';
+import { GlobalsContext } from 'Shared/context';
 
 import style from './style.scss';
 
