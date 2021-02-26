@@ -19,6 +19,9 @@ import { setHabitat, unsetHabitat } from './actions';
 
 import style from './style.scss';
 
+const maxStreamWidth = 1280;
+const maxStreamHeight = 720;
+
 const Habitat = ({
   streamKey,
   matches: { zooName, habitatSlug },
@@ -46,8 +49,9 @@ const Habitat = ({
 
   const sideBarWidth = 84;
   const chatWidth = 285;
-  const streamWidth = windowWidth - sideBarWidth - chatWidth;
-  const height = streamWidth * 0.5625;
+  const calcStreamWidth = windowWidth - sideBarWidth - chatWidth;
+  const streamWidth = calcStreamWidth > maxStreamWidth ? maxStreamWidth : calcStreamWidth;
+  const height = streamWidth * 0.5625 > maxStreamHeight ? maxStreamHeight : streamWidth * 0.5625;
 
   // TODO: there's a minor problem with this approach which should be fixed
   // curretnly when loading changes to "false", habitat data is still not there

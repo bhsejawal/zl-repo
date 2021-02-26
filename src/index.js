@@ -49,7 +49,7 @@ const App = () => {
         <AppLoader />
         <ResponsiveContext.Consumer>
           {(size) => (
-            <Main fill={size === 'large'}>
+            <Main fill={size === 'large'} width={{ max: "1650px" }} margin={{ horizontal: 'auto' }}>
               <Router onChange={verifyRoutePermission}>
                 <Home path="/" exact />
                 <DesignSystem path="/design" />
