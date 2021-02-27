@@ -3,6 +3,7 @@ import {
   REMOVE_USER_INTERACTION,
   TOGGLE_IS_STREAM_PLAYING,
   TOGGLE_SHOW_EMOJI_BASKET,
+  SHOW_SNAPSHOT_SHARE_POPUP,
 } from '../types';
 
 const mockEmojis = [
@@ -56,6 +57,7 @@ const initialState = {
   channelId: '58347159',
   interactionState: {
     showEmojiBasket: false,
+    showSnapshotShare: true,
     isStreamPlaying: false,
   },
 };
@@ -91,6 +93,16 @@ export default (state = initialState, { type, payload }) => {
         interactionState: {
           ...state.interactionState,
           isStreamPlaying: !state.interactionState.isStreamPlaying,
+        },
+      }
+    }
+    case SHOW_SNAPSHOT_SHARE_POPUP: {
+      const { show } = payload
+      return {
+        ...state,
+        interactionState: {
+          ...state.interactionState,
+          showSnapshotShare: show,
         },
       }
     }

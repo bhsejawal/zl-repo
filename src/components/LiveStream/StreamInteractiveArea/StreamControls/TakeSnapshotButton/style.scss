@@ -1,5 +1,8 @@
-.takeSnapshotBtn svg {
-  transform: translateX(-50%) translateY(calc(-50% - 1px));
-  font-size: 18px;
-}
+.takeSnapshotContainer {
+  position: relative;
 
+  > button svg {
+    transform: translateX(-50%) translateY(calc(-50% - 1px));
+    font-size: 18px;
+  }
+}

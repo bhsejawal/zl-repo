@@ -6,6 +6,7 @@ import {
   TOGGLE_SHOW_EMOJI_BASKET,
   ADD_MESSAGES,
   CLEAR_MESSAGES,
+  SHOW_SNAPSHOT_SHARE_POPUP,
 } from './types';
 
 const DEFAULT_INTERACTION_TIMEOUT = 3000;
@@ -51,4 +52,9 @@ export const addMessages = (messages) => (dispatch) => {
 
 export const clearMessages = () => ({
   type: CLEAR_MESSAGES,
+});
+
+export const showSnapshotShare = (show) => ({
+  type: SHOW_SNAPSHOT_SHARE_POPUP,
+  payload: { show },
 });

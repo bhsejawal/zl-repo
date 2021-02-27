@@ -2,10 +2,10 @@ import { h } from 'preact';
 import { useContext } from 'preact/hooks';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCamera } from '@fortawesome/pro-solid-svg-icons';
+import { GlobalsContext } from 'Shared/context';
 
 import RoundButton from 'Components/RoundButton';
-
-import { GlobalsContext } from 'Shared/context';
+import ShareContainer from './ShareContainer';
 
 import style from './style.scss';
 
@@ -17,15 +17,17 @@ const TakeSnapshotButton = () => {
   };
 
   return (
-    <RoundButton
-      onClick={clickHandler}
-      className={style.takeSnapshotBtn}
-      width="35"
-      backgroundColor="#76A6F2"
-      color="white"
-    >
-      <FontAwesomeIcon icon={faCamera} />
-    </RoundButton>
+    <div className={style.takeSnapshotContainer}>
+      <RoundButton
+        onClick={clickHandler}
+        width="35"
+        backgroundColor="#76A6F2"
+        color="white"
+      >
+        <FontAwesomeIcon icon={faCamera} />
+      </RoundButton>
+      <ShareContainer />
+    </div>
   );
 };
 
