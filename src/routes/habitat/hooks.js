@@ -37,7 +37,6 @@ export const useUpcomingTalks = (habitatId) => {
         camera,
       }) => ({
         _id,
-        // TODO: convert to current timezone
         startTime: parseISO(startTime),
         profileImage: habitat?.profileImage,
         link: `/${habitat?.zoo?.slug}/${habitat?.slug}`,

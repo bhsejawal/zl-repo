@@ -82,7 +82,12 @@ const EditModal = ({
             justify="between"
           >
             <Text margin={{ left: 'small' }}>Edit Text</Text>
-            <Button onClick={onClose} icon={<FontAwesomeIcon icon={faTimes} />} />
+            <Button
+              plain
+              margin="small"
+              onClick={onClose}
+              icon={<FontAwesomeIcon size="lg" icon={faTimes} />}
+            />
           </Box>
 
           <Box flex overflow="auto" pad="xsmall">
