@@ -12,6 +12,7 @@ import { buildURL } from 'Shared/fetch';
 import Header from 'Components/Header';
 import HabitatCard from 'Components/HabitatCard';
 import Loader from 'Components/async/Loader';
+import NoContentFallback from 'Components/NoContentFallback';
 
 import { useIsInitiallyLoaded, useWindowResize } from '../../hooks';
 
@@ -141,6 +142,10 @@ const Favorite = () => {
               />
             </Box>
           ))}
+
+          {loaded && !error && habitats.length === 0 && (
+            <NoContentFallback text="You dont have any favourites yet." />
+          )}
         </Box>
       </Main>
     </>

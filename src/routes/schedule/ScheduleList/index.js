@@ -9,7 +9,7 @@ import useFetch from 'use-http'
 
 import { API_BASE_URL } from 'Shared/fetch';
 import ScheduleItem from './ScheduleItem';
-import NoScheduleFallback from './NoScheduleFallback';
+import NoContentFallback from '../../../components/NoContentFallback';
 
 const ScheduleList = ({ animals, zoos, date }) => {
   const {
@@ -56,7 +56,12 @@ const ScheduleList = ({ animals, zoos, date }) => {
   }
 
   if (response.status === 200 && !loading && !schedules.length) {
-    return (<NoScheduleFallback />)
+    return (
+      <NoContentFallback
+        text="Sorry! There aren’t any talks available."
+        subText="Please try broadening your search."
+      />
+    )
   }
 
   return (
