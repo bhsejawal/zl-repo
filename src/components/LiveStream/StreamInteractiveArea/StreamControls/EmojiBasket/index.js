@@ -37,7 +37,7 @@ const EmojiBasket = ({ emojis, showEmojiBasket, toggleShowEmojiBasketAction }) =
 
   const onDragEnd = () => draggedElRef.current.remove();
 
-  if (!showEmojiBasket) {
+  if (!showEmojiBasket || !emojis) {
     return null;
   }
 
@@ -87,7 +87,8 @@ const EmojiBasket = ({ emojis, showEmojiBasket, toggleShowEmojiBasketAction }) =
 };
 
 export default connect(({
-  mainStream: { emojis, interactionState: { showEmojiBasket } },
+  mainStream: { interactionState: { showEmojiBasket } },
+  habitat: { habitatInfo: { emojiDrops: emojis = []}},
 }) => ({ emojis, showEmojiBasket }), {
   toggleShowEmojiBasketAction: toggleShowEmojiBasket,
 })(EmojiBasket);

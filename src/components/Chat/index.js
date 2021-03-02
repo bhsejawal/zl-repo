@@ -11,7 +11,7 @@ import ChatContainer from './ChatContainer';
 let pubnub;
 
 const Chat = ({
-  channelId,
+  habitatId,
   userId,
   animal,
   color,
@@ -27,12 +27,12 @@ const Chat = ({
   }, [addMessagesAction]);
 
   const handleFetchedMessages = useCallback((status, response) => {
-    if (status.statusCode === 200 && response.channels[channelId]) {
-      const messages = response.channels[channelId];
+    if (status.statusCode === 200 && response.channels[habitatId]) {
+      const messages = response.channels[habitatId];
       const messagesList = messages.map(({ message}) => message);
       addMessagesAction(messagesList)
     }
-  }, [channelId, addMessagesAction]);
+  }, [habitatId, addMessagesAction]);
 
   useEffect(() => {
     if (isConnectedToPubnub) {
@@ -43,7 +43,7 @@ const Chat = ({
   }, [isConnectedToPubnub, addMessagesAction, addMessageListener])
 
   useEffect(() => {
-    if (channelId && animal && color && userId && username) {
+    if (habitatId && animal && color && userId && username) {
       pubnub = new PubNub({
         publishKey: process.env.PREACT_APP_PUBNUB_PUBLISH_KEY,
         subscribeKey: process.env.PREACT_APP_PUBNUB_SUBSCRIPTION_KEY,
@@ -51,23 +51,16 @@ const Chat = ({
         autoNetworkDetection: true,
       });
 
-      pubnub.subscribe({ channels: [channelId], withPresence: true });
+      pubnub.subscribe({ channels: [habitatId], withPresence: true });
 
       pubnub.fetchMessages({
-        channels: [channelId],
+        channels: [habitatId],
         count: 10,
       }, handleFetchedMessages);
 
-      pubnub.objects.setUUIDMetadata({
-        data: {
-          name: username,
-          custom: { animal, color },
-        },
-      });
-
       setIsConnectedToPubnub(true);
     }
-  }, [channelId, animal, color, userId, username, handleFetchedMessages])
+  }, [habitatId, animal, color, userId, username, handleFetchedMessages])
 
   useEffect(() => () => {
     if (pubnub) {
@@ -76,7 +69,7 @@ const Chat = ({
       clearMessagesAction();
       setIsConnectedToPubnub(false);
     }
-  }, [clearMessagesAction, channelId, addMessageListener]);
+  }, [clearMessagesAction, habitatId, addMessageListener]);
 
   if (!isConnectedToPubnub) {
     return null;
@@ -93,23 +86,19 @@ const Chat = ({
 
 export default connect(({
   user: {
-    viewer: {
-      // not sure what type of userId is this
-      // TODO: maybe we should use mongodb _id for this
-      userId,
-    },
+    userId,
     profile: {
       animalIcon: animal,
       color,
       nickname: username,
     },
   },
-  mainStream: { channelId },
+  habitat: { habitatInfo: { _id: habitatId } },
 }) => ({
   userId,
   animal,
   color,
-  channelId,
+  habitatId,
   username,
 }), {
   addMessagesAction: addMessages,

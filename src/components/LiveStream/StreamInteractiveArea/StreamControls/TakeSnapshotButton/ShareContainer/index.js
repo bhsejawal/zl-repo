@@ -214,7 +214,7 @@ const ShareContainer = ({ userId, show, showSnapshotShareAction }) => {
 
 export default connect(
   ({
-    user: { viewer: { userId } },
+    user: { userId },
     mainStream: { interactionState: { showSnapshotShare } },
   }) => ({ userId, show: showSnapshotShare }),
   { showSnapshotShareAction: showSnapshotShare },

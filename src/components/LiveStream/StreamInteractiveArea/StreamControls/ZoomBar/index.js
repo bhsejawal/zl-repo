@@ -22,7 +22,7 @@ const initialZoomState = {
 
 const ZOOM_LEVELS = [100, 80, 60, 40, 20, 0];
 
-const ZoomBar = ({ userId, channelId }) => {
+const ZoomBar = ({ userId, habitatId }) => {
   const { socket } = useContext(GlobalsContext);
   const [zoomInfo, setZoomInfo] = useState(initialZoomState);
   const [isLoading, setIsLoading] = useState(false);
@@ -57,12 +57,12 @@ const ZoomBar = ({ userId, channelId }) => {
     socket.emit('setZoom', {
       zoom: requestedZoom,
       userId,
-      channelId,
+      habitatId,
     });
 
     setZoomInfo({ currentZoom, isLoading: true, requestedZoom });
     setTimeout(() => setIsLoading(false), 3000);
-  }, [channelId, userId, socket]);
+  }, [habitatId, userId, socket]);
 
   return (
     <div ref={wrapperRef} className={classnames(style.zoomWrapper)}>
@@ -114,5 +114,5 @@ const ZoomBar = ({ userId, channelId }) => {
 };
 
 export default connect((
-  { user: { viewer: { userId } }, mainStream: { channelId }},
-) => ({ userId, channelId }))(ZoomBar);
+  { user: { userId }, habitat: { habitatInfo: { _id: habitatId } }},
+) => ({ userId, habitatId }))(ZoomBar);

@@ -2,6 +2,7 @@ import { h } from 'preact';
 import { useEffect } from 'preact/hooks';
 import { connect } from 'react-redux';
 import useFetch from 'use-http';
+import { route } from 'preact-router';
 
 import { buildURL } from 'Shared/fetch';
 import LiveStream from 'Components/LiveStream';
@@ -24,6 +25,7 @@ const maxStreamHeight = 720;
 
 const Habitat = ({
   streamKey,
+  habitatId,
   matches: { zooName, habitatSlug },
   setHabitatAction,
   unsetHabitatAction,
@@ -36,12 +38,22 @@ const Habitat = ({
   );
 
   useEffect(() => {
-    if (loading) {
+    if (loading && habitatId) {
       unsetHabitatAction();
     } else if (response.ok) {
       setHabitatAction(response.data);
+    } else if (response.status === 404) {
+      route('/404', true);
     }
-  }, [loading, response, response.ok, response.data, setHabitatAction, unsetHabitatAction]);
+  }, [
+    loading,
+    habitatId,
+    response,
+    response.ok,
+    response.data,
+    setHabitatAction,
+    unsetHabitatAction,
+  ]);
 
   useEffect(() => () => {
     unsetHabitatAction();
@@ -98,9 +110,10 @@ export default connect(
     habitat: {
       habitatInfo: {
         camera: { streamKey } = {},
+        _id: habitatId,
       },
     },
-  }) => ({ streamKey }),
+  }) => ({ streamKey, habitatId }),
   {
     setHabitatAction: setHabitat,
     unsetHabitatAction: unsetHabitat,

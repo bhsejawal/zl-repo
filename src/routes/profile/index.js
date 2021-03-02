@@ -108,13 +108,13 @@ const IconItem = ({ icon, selected, onClick }) => (
   </button>
 );
 
-const Profile = ({ username, updateProfileAction }) => {
+const Profile = ({ updateProfileAction }) => {
   const pickerRef = useRef();
   const size = useContext(ResponsiveContext);
   const [isLoading, setIsLoading] = useState(true);
   const [color, setColor] = useState('#FFB145');
   const [icon, setIcon] = useState(animal1);
-  const [nickname, setNickname] = useState(username);
+  const [nickname, setNickname] = useState();
   const [errorMsg, setErrorMsg] = useState();
   const [isPickerOpen, setIsPickerOpen] = useState(false);
   const { width: pageWidth } = useWindowResize();
@@ -323,6 +323,6 @@ const Profile = ({ username, updateProfileAction }) => {
 };
 
 export default connect(
-  ({ user: { username } }) => ({ username }),
+  null,
   { updateProfileAction: updateProfile },
 )(Profile);

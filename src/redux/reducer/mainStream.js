@@ -54,7 +54,6 @@ const mockEmojis = [
 const initialState = {
   userInteractions: [],
   emojis: mockEmojis,
-  channelId: '58347159',
   interactionState: {
     showEmojiBasket: false,
     showSnapshotShare: true,

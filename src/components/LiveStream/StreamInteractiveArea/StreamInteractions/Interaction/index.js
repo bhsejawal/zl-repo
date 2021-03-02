@@ -83,4 +83,4 @@ const Click = ({
   return null;
 };
 
-export default connect(({ user: { viewer: { userId }}}) => ({ currentUserId: userId }))(Click);
+export default connect(({ user: { userId }}) => ({ currentUserId: userId }))(Click);

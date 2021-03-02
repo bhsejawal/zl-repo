@@ -9,7 +9,7 @@ import EmoteInput from '../EmoteInput';
 import style from './style.module.scss'
 
 const InputBox = ({
-  channelId,
+  habitatId,
   animal,
   username,
   color,
@@ -29,8 +29,8 @@ const InputBox = ({
       color,
       username,
     }
-    pubnub.publish({ channel: channelId, message }, () => { setInput('') });
-  }, [channelId, pubnub, animal, color, username]);
+    pubnub.publish({ channel: habitatId, message }, () => { setInput('') });
+  }, [habitatId, pubnub, animal, color, username]);
 
   const onKeyDownHandler = (evt) => {
     if (evt.key === 'Enter') {
@@ -61,7 +61,7 @@ const InputBox = ({
 }
 
 export default connect(({
-  mainStream: { channelId },
+  habitat: { habitatInfo: { _id: habitatId } },
   user: {
     profile: {
       animalIcon: animal,
@@ -70,7 +70,7 @@ export default connect(({
     },
   },
 }) => ({
-  channelId,
+  habitatId,
   username,
   color,
   animal,

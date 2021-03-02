@@ -1,13 +1,10 @@
 import { SET_USER_DATA, SET_USER_PROFILE, UNSET_USER_DATA } from "../types";
-import { generateUserData } from '../../helpers';
 
 import animal1 from '../../assets/profileIcons/animal1.svg';
 
-// mock data for test, will generate random user, color and animal on every load
-const initialViewer = generateUserData();
-
 const initialState = {
   logged: false,
+  userId: null,
   sessionChecked: false,
   // This will be for Viewers
   subscription: {
@@ -25,13 +22,10 @@ const initialState = {
   // This needs to be list of habitats that a Host can stream to
   // Should be undefined for Hosts
   habitats: ['mockCamID'],
-  // currently holding mock data. This should be stored in db
-  // TODO: this is deprecated - we need icon, color and nickname for all our users
-  // currently userId is used only from this object
-  viewer: initialViewer,
   // used to store icon, color and nickname,
   // and other UI user settings
   // NOTE: this is mock data, and it should always be set from UI before used
+  // TODO: We need to define what will be the profile data for admin, hosts, and zoo.
   profile: {
     color: '#FFB145',
     animalIcon: animal1,
@@ -41,7 +35,13 @@ const initialState = {
 
 export default (state = initialState, { type, payload }) => {
   if (type === SET_USER_DATA) {
-    const { username, permissions, role } = payload;
+    const {
+      username,
+      permissions,
+      role,
+      userId,
+      profile,
+    } = payload;
 
     return {
       ...state,
@@ -50,6 +50,8 @@ export default (state = initialState, { type, payload }) => {
       permissions,
       sessionChecked: true,
       logged: true,
+      userId,
+      profile: profile || initialState.profile,
     }
   }
 

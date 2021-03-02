@@ -26,7 +26,7 @@ const CursorPortal = ({ children }) => createPortal(children, document.body);
 
 const InteractiveAreaHandler = ({
   userId,
-  channelId,
+  habitatId,
   animal,
   color,
   emojis,
@@ -77,7 +77,7 @@ const InteractiveAreaHandler = ({
     const normalizedY = (clientY - topSpacing) / containerRef.current.offsetHeight;
 
     socket.emit('userClickedStream', {
-      room: channelId,
+      room: habitatId,
       userId,
       animal,
       color,
@@ -87,7 +87,7 @@ const InteractiveAreaHandler = ({
     });
 
     setCursorState(LOADING);
-  }, [socket, animal, channelId, color, userId, cursorState]);
+  }, [socket, animal, habitatId, color, userId, cursorState]);
 
   const availableEmojis = useMemo(
     () => emojis.reduce((acc, { items = [] } = {}) => [...acc, ...items], []),
@@ -113,7 +113,7 @@ const InteractiveAreaHandler = ({
       // This is under validation, so we're not supporting multiple
       // colors/animals yet
       socket.emit('userClickedStream', {
-        room: channelId,
+        room: habitatId,
         userId,
         token: '',
         normalizedX: x.toPrecision(3),
@@ -137,8 +137,7 @@ const InteractiveAreaHandler = ({
 
         socket.emit('emoji', {
           userId,
-          channelId,
-          // cameraId: '',
+          habitatId,
           path,
           x: x * 100,
           y: y * 100,
@@ -177,18 +176,18 @@ export default connect(({
   user: {
     // TODO: not sure what type of userId is this
     // maybe we should use mongodb _id here
-    viewer: { userId },
+    userId,
     profile: {
       animalIcon: animal,
       color,
     },
   },
-  mainStream: { channelId, emojis },
+  habitat: { habitatInfo: { _id: habitatId, emojiDrops: emojis = []} },
 }) => ({
   userId,
   animal,
   color,
-  channelId,
+  habitatId,
   emojis,
 }), {
   addUserInteractionAction: addUserInteraction,
