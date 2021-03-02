@@ -144,6 +144,16 @@ a {
   }
 }
 
+/*
+  Style that looks like grommet input
+  This is used mostly for number input since grommet doesn't have that
+*/
+.simpleInput {
+  border: 1px solid rgba(0, 0, 0, .33);
+  border-radius: 4px;
+  padding: 11px 6px 11px 11px;
+}
+
 .customScrollBar {
   overflow: auto;
   scrollbar-width: thin;

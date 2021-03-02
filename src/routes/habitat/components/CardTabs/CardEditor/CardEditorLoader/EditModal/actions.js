@@ -9,9 +9,14 @@ export const addCard = (card) => ({
   payload: { card },
 });
 
-export const updateCard = (id, tag, data) => ({
+export const updateCard = (id, tag, index, data) => ({
   type: UPDATE_HABITAT_CARD,
-  payload: { id, tag, data },
+  payload: {
+    id,
+    tag,
+    index,
+    data,
+  },
 });
 
 export const deleteCard = (id) => ({

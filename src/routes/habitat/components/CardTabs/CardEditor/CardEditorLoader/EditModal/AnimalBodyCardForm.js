@@ -124,6 +124,7 @@ const PartInputCard = memo(({
             <Heading margin={{ top: '0', bottom: '5px' }} level="5">Location (%):</Heading>
             <Box direction="row" justify="start">
               <input
+                className="simpleInput"
                 type="number"
                 style={{ width: '60px' }}
                 data-prop="x"
@@ -135,6 +136,7 @@ const PartInputCard = memo(({
               />
               &nbsp;
               <input
+                className="simpleInput"
                 type="number"
                 style={{ width: '60px' }}
                 data-prop="y"

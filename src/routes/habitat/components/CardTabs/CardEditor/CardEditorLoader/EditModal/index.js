@@ -101,6 +101,7 @@ const EditModal = ({
     data: cardData,
     tag: cardTag,
     type: cardType,
+    index: cardIndex = 1,
   } = {},
   habitatId,
   activeTab,
@@ -112,6 +113,7 @@ const EditModal = ({
   const formRef = useRef();
   const [type, setType] = useState(cardType);
   const [tag, setTag] = useState(cardTag || QUICK_LOOK);
+  const [index, setIndex] = useState(cardIndex);
   const [data, dispatchData] = useReducer(dataReducer, cardData);
   const [error, setError] = useState();
   const [deleteActive, setDeleteActive] = useState(false);
@@ -148,6 +150,7 @@ const EditModal = ({
             type,
             activeTab,
             tag,
+            index,
             { questionIds },
           );
           // eslint-disable-next-line no-underscore-dangle
@@ -156,7 +159,14 @@ const EditModal = ({
           addCardAction(createdCard);
         } else {
           // TODO: we need to read cameraId (or habitatId) from redux
-          const { card: createdCard } = await createCard(habitatId, type, activeTab, tag, data);
+          const { card: createdCard } = await createCard(
+            habitatId,
+            type,
+            activeTab,
+            tag,
+            index,
+            data,
+          );
           addCardAction(createdCard);
         }
 
@@ -172,12 +182,12 @@ const EditModal = ({
         if (type === QUIZ_CARD_TYPE) {
           const { questions } = data;
           const { questionIds } = await post('admin/trivia/questions', { questions });
-          await updateCardApi(cardId, tag, { questionIds });
+          await updateCardApi(cardId, tag, index, { questionIds });
           const cardData = await get(`cards/${cardId}/questions`);
-          updateCardAction(cardId, tag, cardData);
+          updateCardAction(cardId, tag, index, cardData);
         } else {
-          await updateCardApi(cardId, tag, data);
-          updateCardAction(cardId, tag, data);
+          await updateCardApi(cardId, tag, index, data);
+          updateCardAction(cardId, tag, index, data);
         }
 
         onClose();
@@ -326,6 +336,20 @@ const EditModal = ({
                         </div>
                       </Box>
                     )}
+
+                    <Box margin={{ bottom: '20px' }}>
+                      <Heading margin={{ top: '0', bottom: '5px' }} level="5">Card Index (order):</Heading>
+                      <Box direction="row" justify="start">
+                        <input
+                          className="simpleInput"
+                          type="number"
+                          style={{ width: '65px' }}
+                          value={index}
+                          min="0"
+                          onChange={({ target }) => setIndex(target.value)}
+                        />
+                      </Box>
+                    </Box>
 
                     {type === SINGLE_ICON_CARD_TYPE && (
                       <SingleIconCardForm

@@ -16,6 +16,7 @@ export default (state = initialState, { type, payload }) => {
   switch (type) {
     case SET_HABITAT_CARDS: {
       const { cards: items } = payload;
+      items.sort(({ index: i1 }, { index: i2 }) => i1 - i2);
       return { ...state, items };
     }
 
@@ -23,20 +24,32 @@ export default (state = initialState, { type, payload }) => {
       const { card } = payload;
       return {
         ...state,
-        items: [...state.items, card],
+        items: [...state.items, card]
+          .sort(({ index: i1 }, { index: i2 }) => i1 - i2),
       };
     }
 
     case UPDATE_HABITAT_CARD: {
-      const { id, tag, data } = payload;
+      const {
+        id,
+        tag,
+        index,
+        data,
+      } = payload;
+
       return {
         ...state,
-        items: state.items.map((card) => (
-          // eslint-disable-next-line no-underscore-dangle
-          card._id === id
-            ? { ...card, tag, data }
-            : card
-        )),
+        items: state.items
+          .map((card) => (
+            // eslint-disable-next-line no-underscore-dangle
+            card._id === id ? {
+              ...card,
+              tag,
+              index,
+              data,
+            } : card
+          ))
+          .sort(({ index: i1 }, { index: i2 }) => i1 - i2),
       }
     }
 
