@@ -90,6 +90,7 @@ const CardWrapper = ({ tag, noPadding, children }) => {
     <div
       className={style.card}
       style={{ backgroundColor: color, padding: noPadding && '0' }}
+      data-tag={tag}
     >
       {tag && (
         <span className={style.tag} style={{ backgroundColor: tagColor }}>

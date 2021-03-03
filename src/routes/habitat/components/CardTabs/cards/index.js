@@ -1,6 +1,12 @@
 import { h } from 'preact';
-import { useCallback, useEffect, useState } from 'preact/hooks';
 import { connect } from 'react-redux';
+import {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'preact/hooks';
 import useFetch from 'use-http';
 
 import { API_BASE_URL } from 'Shared/fetch';
@@ -32,7 +38,6 @@ import {
   CONSERVATION_CARD_TYPE,
   FOUR_ICONS_CARD_TYPE,
   ORIGIN_AND_HABITAT_CARD_TYPE,
-  QUICK_LOOK,
   QUIZ_CARD_TYPE,
   SINGLE_ICON_CARD_TYPE,
   SINGLE_VIDEO_CARD_TYPE,
@@ -46,15 +51,26 @@ const Cards = ({
   cards = [],
   activeTab,
   habitatId,
-  shortcut,
   setCardsAction,
 }) => {
-  const [activeShortcut, setActiveShortcut] = useState(QUICK_LOOK);
+  const cardsRef = useRef();
+  const [activeShortcut, setActiveShortcut] = useState();
   const [loading, setLoading] = useState(true);
   const { get } = useFetch(API_BASE_URL, {
     credentials: 'include',
     cachePolicy: 'no-cache',
   });
+
+  const availableShortcuts = useMemo(
+    () => Array.from(new Set(cards.map(({ tag }) => tag))),
+    [cards],
+  );
+
+  useEffect(() => {
+    if (!activeShortcut && cards.length > 0) {
+      setActiveShortcut(cards[0].tag);
+    }
+  }, [cards, activeShortcut]);
 
   useEffect(() => {
     const load = async () => {
@@ -87,18 +103,18 @@ const Cards = ({
     }
   }, [activeTab, get, habitatId, setCardsAction]);
 
-  useEffect(() => {
-    // TODO: guess we should scroll to the first cart that have tag === shortcut
-  }, [shortcut]);
-
   const onShortcutClick = useCallback(({ target }) => {
-    setActiveShortcut(target.dataset.value);
+    const { value } = target.dataset;
+    setActiveShortcut(value);
+    const selector = `[data-tag="${value}"]`;
+    const firstChild = cardsRef.current?.querySelectorAll(selector)?.[0];
+    firstChild.scrollIntoView({ behavior: 'smooth', inline: 'center' });
   }, [setActiveShortcut]);
 
   return (
     <>
       <div className={style.cards}>
-        <div>
+        <div ref={cardsRef}>
           {loading && (
             <Loader />
           )}
@@ -231,7 +247,11 @@ const Cards = ({
         </div>
       </div>
 
-      <Shortcuts active={activeShortcut} onClick={onShortcutClick} />
+      <Shortcuts
+        available={availableShortcuts}
+        active={activeShortcut}
+        onClick={onShortcutClick}
+      />
     </>
   );
 };
