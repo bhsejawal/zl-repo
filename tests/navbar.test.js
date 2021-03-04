@@ -6,7 +6,9 @@ import NavBar from '../src/components/NavBar';
 describe('Initial Test of the NavBar', () => {
   test('NavBar renders 4 nav items', () => {
     const context = shallow(<NavBar />);
+    console.log(context.debug())
 
-    expect(context.find('NavItem').length).toBe(4);
+    expect(context.find('NavItem').length).toBe(3);
+    expect(context.find('Invite').length).toBe(1);
   });
 });

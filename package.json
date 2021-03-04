@@ -89,6 +89,12 @@
     "preset": "jest-preset-preact",
     "setupFiles": [
       "<rootDir>/tests/__mocks__/setupTests.js"
-    ]
+    ],
+    "moduleNameMapper": {
+      "^Components(.*)$": "<rootDir>/src/components$1",
+      "^Cards(.*)$": "<rootDir>/src/routes/habitat/components/CardTabs/cards$1",
+      "^Assets(.*)$": "<rootDir>/src/assets$1",
+      "^Shared(.*)$": "<rootDir>/src/shared$1"
+    }
   }
 }

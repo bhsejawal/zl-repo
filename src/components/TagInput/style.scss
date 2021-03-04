@@ -1,0 +1,24 @@
+.tagText {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.input {
+  text-align: left;
+}
+
+.tagBtn {
+  max-width: 100%;
+  align-self: flex-start;
+
+  * {
+    color: var(--grey);
+  }
+}
+
+.values {
+  max-height: 100px;
+  overflow: auto;
+}

@@ -1,12 +1,8 @@
 import { h } from 'preact';
-import {
-  faHeart,
-  faMapMarkerAlt,
-  faShare,
-  faCalendarDay,
-} from '@fortawesome/pro-light-svg-icons';
+import { faHeart, faMapMarkerAlt, faCalendarDay } from '@fortawesome/pro-light-svg-icons';
 
 import NavItem from './NavItem';
+import Invite from './Invite';
 
 import style from './style.scss';
 
@@ -15,7 +11,7 @@ const NavBar = () => (
     <NavItem text="Map" url="/map" icon={faMapMarkerAlt} />
     <NavItem text="Talk Schedule" url="/schedule" icon={faCalendarDay} />
     <NavItem text="Favorites" url="/favorite" icon={faHeart} />
-    <NavItem text="Share" url="/" icon={faShare} />
+    <Invite />
   </div>
 );
 

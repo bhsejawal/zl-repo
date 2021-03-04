@@ -4,9 +4,14 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import style from './style.scss';
 
-const NavItem = ({ url, text, icon }) => (
+const NavItem = ({
+  url,
+  text,
+  icon,
+  onClick,
+}) => (
   <nav className={style.navItem}>
-    <Link href={url}>
+    <Link href={url} onClick={onClick}>
       <FontAwesomeIcon icon={icon} />
       <span>{text}</span>
     </Link>
