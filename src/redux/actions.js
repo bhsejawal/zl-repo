@@ -7,6 +7,7 @@ import {
   ADD_MESSAGES,
   CLEAR_MESSAGES,
   SHOW_SNAPSHOT_SHARE_POPUP,
+  SET_SESSION_CHECHED,
 } from './types';
 
 const DEFAULT_INTERACTION_TIMEOUT = 3000;
@@ -68,3 +69,5 @@ export const showSnapshotShare = (show) => ({
   type: SHOW_SNAPSHOT_SHARE_POPUP,
   payload: { show },
 });
+
+export const setUserSessionChecked = () => ({ type: SET_SESSION_CHECHED });

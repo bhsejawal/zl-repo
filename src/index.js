@@ -1,18 +1,16 @@
 import { h } from 'preact';
 import { useEffect, useState } from 'preact/hooks';
-import { route, Router } from 'preact-router';
+import { Router } from 'preact-router';
 import { Provider } from 'react-redux';
 import { loadStripe } from '@stripe/stripe-js';
 
 import { Grommet, Main, ResponsiveContext } from 'grommet';
 import { deepMerge } from 'grommet/utils';
 import { grommet } from 'grommet/themes';
-import AppLoader from 'Components/AppLoader';
 import { StripeContext } from 'Shared/context';
+import AuthGuard from 'Components/Authorize/AuthGuard';
 
 import store from './redux/store';
-
-import { hasPermission } from './components/Authorize/index'
 
 import zoolifeTheme from './grommetTheme';
 
@@ -38,24 +36,16 @@ const customBreakpoints = deepMerge(grommet, zoolifeTheme);
 
 const App = () => {
   const [stripe, setStripe] = useState(null);
-  const verifyRoutePermission = ({ active }) => {
-    const [{ props: { permission } }] = active;
-
-    if (!permission || hasPermission(permission)) {
-      return;
-    }
-
-    route('/', true);
-  }
-  const initializeStripe = async () => {
-    try {
-      setStripe(await loadStripe(process.env.PREACT_APP_STRIPE_PUBLIC_KEY));
-    } catch (err) {
-      console.error('Error loading Stripe', err.message);
-    }
-  }
 
   useEffect(() => {
+    const initializeStripe = async () => {
+      try {
+        setStripe(await loadStripe(process.env.PREACT_APP_STRIPE_PUBLIC_KEY));
+      } catch (err) {
+        console.error('Error loading Stripe', err.message);
+      }
+    };
+
     initializeStripe();
   }, []);
 
@@ -63,29 +53,49 @@ const App = () => {
     <Provider store={store}>
       <StripeContext.Provider value={{ stripe }} width={{ max: "1650px" }} margin={{ horizontal: 'auto' }}>
         <Grommet full theme={customBreakpoints} >
-          <AppLoader />
           <ResponsiveContext.Consumer>
             {(size) => (
               <Main fill={size === 'large'}>
-                <Router onChange={verifyRoutePermission}>
+                <Router>
                   <Home path="/" exact />
-                  <DesignSystem path="/design" />
                   <Signup path="/signup" />
                   <Login path="/login" />
                   <Login path="/login/token/:token" />
                   <PasswordReset path="/passwordReset" />
-                  <AdminRouter path="/admin/:*" />
                   <Plans path="/plans" />
-                  <Map path="/map" permission="map:view" />
-                  <Profile path="/profile" permission="profile:edit" />
-                  <Schedule path="/schedule" permission="schedule:view" />
-                  <Favorite path="/favorite" permission="favorite:edit" />
+
+                  <AuthGuard path="/map" permission="map:view">
+                    <Map />
+                  </AuthGuard>
+                  <AuthGuard path="/profile" permission="profile:edit">
+                    <Profile />
+                  </AuthGuard>
+                  <AuthGuard path="/schedule" permission="schedule:view">
+                    <Schedule />
+                  </AuthGuard>
+                  <AuthGuard path="/favorite" permission="favorite:edit">
+                    <Favorite />
+                  </AuthGuard>
+
+                  {/* display 404 instead of Unatuhorized message
+                      we don't want our viewers to know about this route
+                      and still redirect unauthenticated users to /login page
+                      this redirection is there not to confuse our admins */}
+                  <AuthGuard path="/admin/:*" adminOnly fallback={<NotFound />}>
+                    <AdminRouter />
+                  </AuthGuard>
+
+                  {/* TODO: we should consider removing this
+                      another option is to set ENV variable
+                      and have this route only in development */}
+                  <AuthGuard path="/design" adminOnly fallback={<NotFound />}>
+                    <DesignSystem />
+                  </AuthGuard>
 
                   {/* NOTE: Habitat and NotFound need to be at the end */}
-                  <Habitat
-                    path="/:zooName/:habitatSlug"
-                    permission="habitat:view"
-                  />
+                  <AuthGuard path="/:zooName/:habitatSlug" permission="habitat:view">
+                    <Habitat />
+                  </AuthGuard>
                   <NotFound path=":*" />
                 </Router>
               </Main>

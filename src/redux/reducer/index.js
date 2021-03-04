@@ -6,7 +6,6 @@ import chat from './chat';
 import habitat from '../../routes/habitat/reducer';
 import plans from '../../routes/plans/reducer';
 import schedule from '../../routes/schedule/reducer';
-import appLoader from '../../components/AppLoader/reducer';
 import map from '../../routes/map/reducer';
 import passwordReset from '../../routes/login/ResetModal/reducer';
 
@@ -18,6 +17,5 @@ export default combineReducers({
   plans,
   map,
   schedule,
-  appLoader,
   passwordReset,
 });

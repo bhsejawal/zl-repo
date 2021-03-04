@@ -1,4 +1,9 @@
-import { SET_USER_DATA, SET_USER_PROFILE, UNSET_USER_DATA } from "../types";
+import {
+  SET_SESSION_CHECHED,
+  SET_USER_DATA,
+  SET_USER_PROFILE,
+  UNSET_USER_DATA,
+} from '../types';
 
 import animal1 from '../../assets/profileIcons/animal1.svg';
 
@@ -15,7 +20,7 @@ const initialState = {
   username: null,
   // Valid: [guest, viewer, partner, host, admin]
   // Default value will be Guest once we go live
-  role: 'admin',
+  role: undefined,
   // This needs to be the zooId ONLY for Partners
   // IT needs to be undefined for Hosts
   zooId: 'torontozoo',
@@ -70,6 +75,13 @@ export default (state = initialState, { type, payload }) => {
     return {
       ...state,
       profile,
+    }
+  }
+
+  if (type === SET_SESSION_CHECHED) {
+    return {
+      ...state,
+      sessionChecked: true,
     }
   }
 
