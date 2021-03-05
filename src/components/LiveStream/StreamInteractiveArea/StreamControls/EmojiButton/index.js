@@ -2,9 +2,9 @@ import { connect } from 'react-redux';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGrinWink } from '@fortawesome/pro-solid-svg-icons';
 
-import { toggleShowEmojiBasket } from '../../../../../redux/actions';
+import RoundButton from 'Components/RoundButton';
 
-import RoundButton from '../../../../RoundButton';
+import { toggleShowEmojiBasket } from '../../../../../redux/actions';
 
 import style from './style.scss';
 

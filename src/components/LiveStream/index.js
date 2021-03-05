@@ -39,7 +39,7 @@ const Stream = forwardRef(({
     }
   }, [socket, userId])
 
-  const streamStatus = useWebRTCStream(streamId, passedRef || videoRef, logStreamStatus);
+  const streamStatus = useWebRTCStream(streamId, passedRef || videoRef, 'viewer', logStreamStatus);
 
   return (
     <div

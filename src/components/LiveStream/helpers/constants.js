@@ -10,6 +10,7 @@ export const wsMessages = Object.freeze({
   INITIALIZING: 'initializing',
   PLAY_STARTED: 'play_started',
   PLAY_FINISHED: 'play_finished',
+  PUBLISH_STARTED: 'publish_started',
   PUBLISH_FINISHED: 'publish_finished',
 });
 

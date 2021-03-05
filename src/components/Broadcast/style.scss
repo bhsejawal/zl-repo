@@ -1,0 +1,31 @@
+.test {
+  height: 22px;
+}
+
+.online,
+.online:hover {
+  background: #F5696B !important;
+}
+
+.offline {
+  background: #24412B;
+}
+
+input,
+select {
+  font-size: 12px;
+  border-radius: 4px;
+  padding: 5px;
+  width: 100%;
+  flex-grow: 1;
+  border: 2px solid #CDCDCD;
+  color: #757575;
+}
+
+
+.controlContainer {
+  position: absolute;
+  left: 6px;
+  top: 6px;
+  z-index: 3;
+}

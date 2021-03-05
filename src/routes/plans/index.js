@@ -41,7 +41,6 @@ const Plans = ({ plans, setPlansAction }) => {
   }, [get, setPlansAction]);
 
   const checkoutHandler = useCallback(async (planId, priceId) => {
-    console.log(planId, priceId);
     try {
       const session = await post(`/checkout/${planId}/${priceId}`);
       if (!stripe?.redirectToCheckout) {

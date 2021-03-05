@@ -33,8 +33,8 @@ const PlanCard = ({
           justify="center"
           className={style.discountTag}
         >
-          <Text weight="900" size="14px">{`${discount}`}</Text>
-          <Text size="12px" weight="400">discount</Text>
+          <Text weight={900} size="14px">{`${discount}`}</Text>
+          <Text size="12px" weight={400}>discount</Text>
         </Box>
       )}
       <Card background={{ color: 'white' }} width={{ min: '200px', max: '200px' }} >

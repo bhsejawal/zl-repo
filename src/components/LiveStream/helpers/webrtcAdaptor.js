@@ -1,4 +1,5 @@
 /* eslint-disable import/prefer-default-export */
+import adapter from 'webrtc-adapter';
 import { PeerStats } from './peerStats';
 
 export class WebRTCAdaptor {
@@ -21,12 +22,23 @@ export class WebRTCAdaptor {
     this.roomTimerId = -1;
     this.isWebSocketTriggered = false;
     this.webSocketAdaptor = null;
-    this.isPlayMode = true;
+    this.isPlayMode = false;
     this.debug = false;
     this.composedStream = new MediaStream();
     this.publishMode = "camera";
     // defaulting with video and audio false as we want view only exp for now
-    this.mediaConstraints = { video: false, audio: false };
+    this.mediaConstraints = {
+      video: {
+        width: 640,
+        height: 360,
+        aspectRatio: 1,
+      },
+      audio: {
+        echoCancellation: true,
+      },
+      aspectRatio: 1,
+    };
+
     this.videoContainer = null;
     this.candidateTypes = ["udp", "tcp"];
     this.desktopStream = null;
@@ -45,16 +57,6 @@ export class WebRTCAdaptor {
     }
 
     this.isInitialized = true;
-    this.localVideo = document.getElementById(this.localVideoId);
-
-    // It should be compatible with previous version
-    if (this.mediaConstraints.video === "camera") {
-      this.publishMode = "camera";
-    } else if (this.mediaConstraints.video === "screen") {
-      this.publishMode = "screen";
-    } else if (this.mediaConstraints.video === "screen+camera") {
-      this.publishMode = "screen+camera";
-    }
 
     if (!("WebSocket" in window)) {
       console.log("WebSocket not supported.");
@@ -73,6 +75,191 @@ export class WebRTCAdaptor {
         }, true)
       }
     }
+  }
+
+  publish(streamId, token) {
+    // If it started with playOnly mode and wants to publish now
+    let jsCmd = {};
+    if (this.localStream == null) {
+      this.navigatorUserMedia(this.mediaConstraints, ((stream) => {
+        this.gotStream(stream);
+        jsCmd = {
+          command: 'publish',
+          streamId,
+          token,
+          video: this.localStream.getVideoTracks().length > 0,
+          audio: this.localStream.getAudioTracks().length > 0,
+        };
+        this.webSocketAdaptor.send(JSON.stringify(jsCmd));
+      }), false);
+    } else {
+      jsCmd = {
+        command: 'publish',
+        streamId,
+        token,
+        video: this.localStream.getVideoTracks().length > 0,
+        audio: this.localStream.getAudioTracks().length > 0,
+      };
+    }
+    this.webSocketAdaptor.send(JSON.stringify(jsCmd));
+  }
+
+  setAudioInputSource(streamId, mediaConstraints, onEndedCallback) {
+    this.navigatorUserMedia(
+      mediaConstraints,
+      (stream) => this.updateAudioTrack(stream, streamId, mediaConstraints, onEndedCallback),
+      true,
+    );
+  }
+
+  changeBandwidth(bandwidth, streamId) {
+    let errorDefinition = '';
+
+    const videoSender = this.getVideoSender(streamId);
+
+    if (videoSender != null) {
+      const parameters = videoSender.getParameters();
+
+      if (!parameters.encodings) {
+        parameters.encodings = [{}];
+      }
+
+      if (bandwidth === 'unlimited') {
+        delete parameters.encodings[0].maxBitrate;
+      } else {
+        parameters.encodings[0].maxBitrate = bandwidth * 1000;
+      }
+
+      return videoSender.setParameters(parameters);
+    }
+
+    errorDefinition = 'Video sender not found to change bandwidth. Streaming may not be active';
+    return Promise.reject(errorDefinition);
+  }
+
+  async navigatorUserMedia(mediaConstraints, callback) {
+    try {
+      const userMedia = await navigator.mediaDevices.getUserMedia(mediaConstraints);
+      callback(userMedia);
+    } catch (err) {
+      if (err.name === 'NotFoundError') {
+        this.getDevices();
+      } else {
+        this.callbackError(err.name, err.message);
+      }
+    }
+  }
+
+  async getDevices() {
+    try {
+      const devices = await navigator.mediaDevices.enumerateDevices();
+      const deviceArray = [];
+
+      let checkAudio = false;
+
+      const hasDefaultDevice = {
+        videoinput: false,
+        audioinput: false,
+      };
+
+      devices.forEach((device) => {
+        const { kind } = device;
+
+        if (['audioinput', 'videoinput'].includes(kind)) {
+          const isSelected = !hasDefaultDevice[kind];
+
+          if (!hasDefaultDevice[kind]) {
+            hasDefaultDevice[kind] = true;
+          }
+
+          // eslint-disable-next-line no-param-reassign
+          device.selected = isSelected;
+          deviceArray.push(device);
+
+          if (device.kind === 'audioinput') {
+            checkAudio = true;
+          }
+        }
+      });
+
+      this.callback('available_devices', deviceArray);
+
+      if (!checkAudio && this.localStream === null) {
+        console.log('Audio input not found');
+        console.log('Retrying to get user media without audio');
+        this.openStream({ video: true, audio: false }, this.mode);
+      }
+    } catch (err) {
+      console.error(`Cannot get devices -> error name: ${err.name} : ${err.message}`);
+    }
+  }
+
+  openStream(mediaConstraints) {
+    this.mediaConstraints = mediaConstraints;
+    let audioConstraint = false;
+    if (typeof mediaConstraints.audio !== 'undefined' && mediaConstraints.audio !== false) {
+      audioConstraint = mediaConstraints.audio;
+    }
+
+    if (typeof mediaConstraints.video !== 'undefined') {
+      this.getUserMedia(mediaConstraints, audioConstraint);
+    } else {
+      console.error('MediaConstraint video is not defined');
+      this.callbackError('media_constraint_video_not_defined');
+    }
+  }
+
+  getUserMedia(mediaConstraints, audioConstraint, streamId) {
+    this.navigatorUserMedia(
+      mediaConstraints,
+      ((stream) => this.prepareStreamTracks(mediaConstraints, audioConstraint, stream, streamId)),
+      true,
+    );
+  }
+
+  turnOffLocalSources() {
+    this.localStream.getTracks().forEach((track) => track.stop());
+  }
+
+  prepareStreamTracks(mediaConstraints, audioConstraint, stream) {
+    // this trick, getting audio and video separately, make us add or remove tracks on the fly
+    const audioTrack = stream.getAudioTracks();
+
+    if (audioTrack.length > 0 && this.publishMode === 'camera') {
+      audioTrack[0].stop();
+      stream.removeTrack(audioTrack[0]);
+    }
+
+    if (audioConstraint !== 'undefined' && audioConstraint) {
+      const mediaAudioContraint = { audio: audioConstraint };
+      this.navigatorUserMedia(mediaAudioContraint, (audioStream) => {
+        stream.addTrack(audioStream.getAudioTracks()[0]);
+        this.gotStream(stream);
+      }, true);
+    }
+  }
+
+  getVideoSender(streamId) {
+    let videoSender = null;
+    if (
+      (adapter.browserDetails.browser === 'chrome' || (adapter.browserDetails.browser === 'firefox' || (adapter.browserDetails.browser === 'safari' && adapter.browserDetails.version >= 64)))
+      && 'RTCRtpSender' in window
+      && 'setParameters' in window.RTCRtpSender.prototype
+    ) {
+      if (this.remotePeerConnection[streamId] != null) {
+        const senders = this.remotePeerConnection[streamId].getSenders();
+
+        // eslint-disable-next-line no-plusplus
+        for (let i = 0; i < senders.length; i++) {
+          if (senders[i].track != null && senders[i].track.kind === 'video') {
+            videoSender = senders[i];
+            break;
+          }
+        }
+      }
+    }
+
+    return videoSender;
   }
 
   joinRoom(roomName, streamId) {
@@ -190,9 +377,98 @@ export class WebRTCAdaptor {
     this.webSocketAdaptor.send(JSON.stringify(jsCmd));
   }
 
+  switchVideoCameraCapture(streamId, deviceId) {
+    const videoTrack = this.localStream.getVideoTracks()[0];
+
+    if (videoTrack) {
+      videoTrack.stop();
+    } else {
+      console.warn('There is no video track in local stream');
+    }
+
+    this.publishMode = 'camera';
+
+    if (typeof deviceId !== 'undefined') {
+      this.mediaConstraints.video = { deviceId, width: 640, height: 360 };
+    }
+    this.setVideoCameraSource(streamId, this.mediaConstraints, null, true, deviceId);
+  }
+
+  setVideoCameraSource(streamId, mediaConstraints, onEndedCallback, stopDesktop) {
+    this.navigatorUserMedia(mediaConstraints, (stream) => {
+      this.updateVideoTrack(stream, streamId, mediaConstraints, onEndedCallback, stopDesktop);
+      this.updateAudioTrack(stream, streamId, mediaConstraints, onEndedCallback);
+    }, true);
+  }
+
+  updateLocalVideoStream(stream, onEndedCallback, stopDesktop) {
+    if (stopDesktop && this.desktopStream != null) {
+      this.desktopStream.getVideoTracks()[0].stop();
+    }
+
+    const videoTrack = this.localStream.getVideoTracks()[0];
+    this.localStream.removeTrack(videoTrack);
+    videoTrack.stop();
+    this.localStream.addTrack(stream.getVideoTracks()[0]);
+    this.videoContainer.srcObject = this.localStream;
+
+    if (onEndedCallback != null) {
+      // eslint-disable-next-line no-param-reassign
+      stream.getVideoTracks()[0].onended = (event) => onEndedCallback(event);
+    }
+  }
+
+  switchAudioInputSource(streamId, deviceId) {
+    const audioTrack = this.localStream.getAudioTracks()[0];
+
+    if (audioTrack) {
+      audioTrack.stop();
+    } else {
+      console.warn('There is no audio track in local stream');
+    }
+
+    if (typeof deviceId !== 'undefined') {
+      this.mediaConstraints.audio = { deviceId, echoCancellation: true };
+    }
+
+    this.setAudioInputSource(streamId, this.mediaConstraints, null, true, deviceId);
+  }
+
+  updateAudioTrack(stream, streamId, onEndedCallback) {
+    if (this.remotePeerConnection[streamId] != null) {
+      const audioTrackSender = this.remotePeerConnection[streamId].getSenders().find((s) => s.track.kind === 'audio');
+
+      if (audioTrackSender) {
+        audioTrackSender.replaceTrack(stream.getAudioTracks()[0]).then(() => {
+          this.updateLocalAudioStream(stream, onEndedCallback);
+        }).catch((error) => {
+          console.error(error.name);
+        });
+      } else {
+        console.error('AudioTrackSender is undefined or null');
+      }
+    } else {
+      this.updateLocalAudioStream(stream, onEndedCallback);
+    }
+  }
+
+  updateLocalAudioStream(stream, onEndedCallback) {
+    const audioTrack = this.localStream.getAudioTracks()[0];
+    this.localStream.removeTrack(audioTrack);
+    audioTrack.stop();
+
+    this.localStream.addTrack(stream.getAudioTracks()[0]);
+    this.videoContainer.srcObject = this.localStream;
+
+    if (onEndedCallback !== null) {
+      // eslint-disable-next-line no-param-reassign
+      stream.getAudioTracks()[0].onended = (event) => onEndedCallback(event);
+    }
+  }
+
   gotStream(stream) {
     this.localStream = stream;
-    this.localVideo.srcObject = stream;
+    this.videoContainer.srcObject = stream;
 
     if (this.webSocketAdaptor == null || this.webSocketAdaptor.isConnected() === false) {
       this.restartSocket()
@@ -208,7 +484,7 @@ export class WebRTCAdaptor {
         videoTrackSender.replaceTrack(stream.getVideoTracks()[0]).then(() => {
           this.updateLocalVideoStream(stream, onEndedCallback, stopDesktop);
         }).catch((error) => {
-          console.log(error.name);
+          console.error(error.name);
         });
       } else {
         console.error("VideoTrackSender is undefined or null");
@@ -219,11 +495,11 @@ export class WebRTCAdaptor {
   }
 
   onTrack(event, streamId) {
-    if (this.remoteVideoContainer != null) {
-      // this.remoteVideoContainer.srcObject = event.streams[0];
-      if (this.remoteVideoContainer.srcObject !== event.streams[0]) {
+    if (this.videoContainer != null) {
+      // this.videoContainer.srcObject = event.streams[0];
+      if (this.videoContainer.srcObject !== event.streams[0]) {
         // eslint-disable-next-line prefer-destructuring
-        this.remoteVideoContainer.srcObject = event.streams[0];
+        this.videoContainer.srcObject = event.streams[0];
         if (this.debug) {
           console.log('Received remote stream');
         }
@@ -617,9 +893,7 @@ export class WebRTCAdaptor {
     }
   }
 
-  startPublishing(idOfStream) {
-    const streamId = idOfStream;
-
+  startPublishing(streamId) {
     this.initPeerConnection(streamId, "publish");
 
     this.remotePeerConnection[streamId].createOffer(this.sdp_constraints)

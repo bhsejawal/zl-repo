@@ -41,7 +41,7 @@ const ScheduleItem = ({
       <Box direction="row">
         <HabitatImage image={habitatImage} />
         <Box justify="center" margin={{ left: 'medium' }}>
-          <Text size="xlarge" weight="900">{animal}</Text>
+          <Text size="xlarge" weight={900}>{animal}</Text>
           {/* We need to load this from the habitats */}
           <Text size="16px" margin={{ top: 'small' }}>
             These birds are full of personality! Learn more about them with our programs:
@@ -52,7 +52,7 @@ const ScheduleItem = ({
         {liveTalks.map((liveTalk) => (
           <Box pad="small" flex="grow" margin={{ top: 'small' }}>
             <Box height="xsmall" className={style.textBox}>
-              <Text size="large" weight="900">{liveTalk.title}</Text>
+              <Text size="large" weight={900}>{liveTalk.title}</Text>
               <Paragraph margin={{ top: 'small' }}>
                 {liveTalk.description}
               </Paragraph>

@@ -11,6 +11,7 @@ import Carousel from 'react-multi-carousel';
 import { formatDistanceToNow } from 'date-fns';
 
 import { GlobalsContext } from 'Shared/context';
+import Broadcast from 'Components/Broadcast';
 
 import Tag from '../Tag';
 import Card from '../Card';
@@ -91,6 +92,7 @@ const ScheduleCarousel = ({ habitatId }) => {
             },
           }}
         >
+          <Broadcast />
           {streamId && <LiveTalk streamId={streamId} />}
 
           {list.map(({

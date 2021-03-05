@@ -110,12 +110,13 @@ if (typeof window !== 'undefined') {
 export const removeWebRTCAdaptor = (streamId) => {
   if (webRTCMap.has(streamId)) {
     const adaptor = webRTCMap.get(streamId);
+    adaptor.turnOffLocalSources();
     adaptor.closePeerConnections();
     webRTCMap.delete(streamId);
   }
 }
 
-export const initWebRTCAdaptor = (streamId, videoContainer, callback, callbackError) => {
+export const initWebRTCAdaptor = (streamId, videoContainer, mode, callback, callbackError) => {
   if (webRTCMap.has(streamId)) {
     const adaptor = webRTCMap.get(streamId);
     adaptor.closePeerConnections();
@@ -123,12 +124,18 @@ export const initWebRTCAdaptor = (streamId, videoContainer, callback, callbackEr
   }
 
   const adaptor = new WebRTCAdaptor({
-    remoteVideoContainer: videoContainer,
+    videoContainer,
     callback,
+    debug: true,
     callbackError,
+    isPlayMode: mode === 'viewer',
     webSocketAdaptor: websocketConnection,
     restartSocket: initializeSocketConnection,
   });
   webRTCMap.set(streamId, adaptor);
+  if (websocketConnection) {
+    adaptor.init();
+    adaptor.callback('initialized');
+  }
   return adaptor;
 };
