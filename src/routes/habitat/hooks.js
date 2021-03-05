@@ -30,19 +30,22 @@ export const useUpcomingTalks = (habitatId) => {
         return;
       }
 
-      const list = response.data.events.map(({
-        _id,
-        startTime,
-        habitat,
-        camera,
-      }) => ({
-        _id,
-        startTime: parseISO(startTime),
-        profileImage: habitat?.profileImage,
-        link: `/${habitat?.zoo?.slug}/${habitat?.slug}`,
-        description: habitat?.description,
-        isStreamLive: camera.cameraStatus !== 'off',
-      }));
+      const now = new Date();
+      const list = response.data.events
+        .map(({
+          _id,
+          startTime,
+          habitat,
+          camera,
+        }) => ({
+          _id,
+          startTime: parseISO(startTime),
+          profileImage: habitat?.profileImage,
+          link: `/${habitat?.zoo?.slug}/${habitat?.slug}`,
+          description: habitat?.description,
+          isStreamLive: camera.cameraStatus !== 'off',
+        }))
+        .filter(({ startTime, isStreamLive }) => startTime > now || isStreamLive);
 
       setUpcoming(list)
       setLoading(false);
