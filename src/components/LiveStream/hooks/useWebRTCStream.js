@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'preact/hooks';
+import { useState, useEffect, useRef } from 'preact/hooks';
 import { initWebRTCAdaptor, removeWebRTCAdaptor } from '../helpers';
 import { wsMessages } from '../helpers/constants';
 
@@ -15,9 +15,22 @@ const {
 let webRTCAdaptor;
 
 // eslint-disable-next-line import/prefer-default-export
-export const useWebRTCStream = (streamId, videoContainer) => {
+export const useWebRTCStream = (streamId, videoContainer, logStatsFn) => {
   const [streamStatus, setStreamStatus] = useState(CLOSED);
   const [isWebsocketConnected, setIsWebsocketConnected] = useState(false);
+  const intervalRef = useRef(null);
+
+  useEffect(() => {
+    intervalRef.current = setInterval(
+      () => {
+        if (streamStatus === PLAY_STARTED && logStatsFn) {
+          logStatsFn(webRTCAdaptor.getStreamStats(streamId));
+        }
+      },
+      30000,
+    );
+    return () => clearInterval(intervalRef.current);
+  }, [streamId, logStatsFn, streamStatus])
 
   useEffect(() => {
     if (
@@ -30,6 +43,7 @@ export const useWebRTCStream = (streamId, videoContainer) => {
       webRTCAdaptor = initWebRTCAdaptor(streamId, videoContainer.current, (info) => {
         if (info === INITIALIZED) {
           webRTCAdaptor.play(streamId);
+          webRTCAdaptor.enableStats(streamId);
           setStreamStatus(PLAY_STARTED);
           setIsWebsocketConnected(true);
         }

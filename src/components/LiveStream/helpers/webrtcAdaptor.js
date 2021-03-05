@@ -631,6 +631,10 @@ export class WebRTCAdaptor {
       });
   }
 
+  getStreamStats(streamId) {
+    return this.remotePeerConnectionStats[streamId];
+  }
+
   getStats(streamId) {
     if (this.debug) {
       console.log(`peerstatsgetstats = ${this.remotePeerConnectionStats[streamId]}`);
@@ -774,8 +778,6 @@ export class WebRTCAdaptor {
 
       this.remotePeerConnectionStats[streamId].videoJitterAverageDelay = videoJitterAverageDelay;
       this.remotePeerConnectionStats[streamId].audioJitterAverageDelay = audioJitterAverageDelay;
-
-      this.callback("updated_stats", this.remotePeerConnectionStats[streamId]);
     });
   }
 

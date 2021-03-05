@@ -1,8 +1,11 @@
 import { h } from 'preact';
-import { useRef } from 'preact/hooks';
+import { useRef, useContext, useCallback } from 'preact/hooks';
 import { forwardRef } from 'preact/compat';
+import { connect } from 'react-redux';
 
 import Loader from 'Components/async/Loader';
+
+import { GlobalsContext } from 'Shared/context';
 
 import StreamInteractiveArea from './StreamInteractiveArea';
 import VideoControls from '../VideoControls';
@@ -21,10 +24,22 @@ const Stream = forwardRef(({
   streamId,
   interactive,
   customControls,
+  userId,
 }, passedRef) => {
   const videoRef = useRef();
   const containerRef = useRef(null);
-  const streamStatus = useWebRTCStream(streamId, passedRef || videoRef);
+  const { socket } = useContext(GlobalsContext);
+
+  const logStreamStatus = useCallback((data) => {
+    if (data.startTime && data.streamId) {
+      socket.emit('logWebrtcStats', {
+        userId,
+        ...data,
+      })
+    }
+  }, [socket, userId])
+
+  const streamStatus = useWebRTCStream(streamId, passedRef || videoRef, logStreamStatus);
 
   return (
     <div
@@ -70,4 +85,4 @@ const Stream = forwardRef(({
   );
 });
 
-export default Stream;
+export default connect(({ user: { userId }}) => ({ userId }))(Stream);
