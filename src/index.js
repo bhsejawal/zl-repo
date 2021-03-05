@@ -31,6 +31,7 @@ import Profile from './routes/profile';
 import Favorite from './routes/favorite';
 import NotFound from './routes/notFound';
 import PasswordReset from './routes/passwordReset';
+import Account from './routes/account';
 
 const customBreakpoints = deepMerge(grommet, zoolifeTheme);
 
@@ -75,6 +76,9 @@ const App = () => {
                   </AuthGuard>
                   <AuthGuard path="/favorite" permission="favorite:edit">
                     <Favorite />
+                  </AuthGuard>
+                  <AuthGuard path="/account" permission="profile:edit">
+                    <Account />
                   </AuthGuard>
 
                   {/* display 404 instead of Unatuhorized message

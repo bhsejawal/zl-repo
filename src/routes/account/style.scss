@@ -1,0 +1,98 @@
+.label {
+  font-size: 16px;
+  font-weight: 400;
+  color: var(--charcoalLight);
+  width: 250px;
+  position: relative;
+
+  .note {
+    position: absolute;
+    z-index: -1;
+    top: 35px;
+    left: 0;
+  }
+}
+
+.inputContainer {
+  width: calc(100% - 250px);
+
+  .inputWrapper {
+    position: relative;
+
+    button {
+      position: absolute;
+      right: 0;
+      bottom: 5px;
+      background: transparent;
+      border: 0;
+      color: #757575;
+      font-size: 22px;
+      width: 40px;
+      padding: 0;
+    }
+  }
+
+  input {
+    width: 100%;
+    border-width: 0 0 2px 0;
+    border-color: #c3d9da;
+    color: var(--grey);
+    font-size: 20px;
+    line-height: 28px;
+    font-weight: 900;
+
+    &:not(.errorBorder):focus {
+      border-color: #368185;
+      color: var(--charcoal);
+    }
+
+    &.errorBorder {
+      border-color: #FFCCD2FF;
+
+      &:focus {
+        border-color: var(--pink);
+        color: var(--charcoal);
+      }
+    }
+  }
+
+  .errorSection {
+    font-size: 12px;
+    min-height: 24px;
+    width: 100%;
+    text-align: left;
+
+    &.active {
+      color: var(--redDark);
+    }
+  }
+}
+
+.tabs > div:first-child {
+  padding: 20px;
+  justify-content: left;
+
+  button {
+    padding-top: 5px;
+
+    span {
+      font-size: 16px;
+    }
+  }
+}
+
+.updateButton {
+  min-width: 160px;
+
+  &:not(:disabled) {
+    background-color: #477652;
+  }
+}
+
+.passwordResetButton {
+  background-color: transparent;
+  border: 0;
+  color: inherit;
+  text-decoration: underline;
+  cursor: pointer;
+}

@@ -88,7 +88,7 @@ const PasswordReset = ({ token, logged }) => {
                 className={classnames({[style.errorBorder]: passwordError})}
               />
               <button type="button" onClick={() => setShowPassword(!showPassword)}>
-                <FontAwesomeIcon icon={showPassword ? faEyeSlash : faEye} />
+                <FontAwesomeIcon icon={showPassword ? faEye : faEyeSlash } />
               </button>
             </div>
             <div
@@ -111,7 +111,7 @@ const PasswordReset = ({ token, logged }) => {
                 className={classnames({[style.errorBorder]: passwordConfError})}
               />
               <button type="button" onClick={() => setShowPasswordConf(!showPasswordConf)}>
-                <FontAwesomeIcon icon={showPasswordConf ? faEyeSlash : faEye} />
+                <FontAwesomeIcon icon={showPasswordConf ? faEye : faEyeSlash } />
               </button>
             </div>
             <div className={classnames(style.errorSection, {

@@ -122,7 +122,7 @@ const Signup = ({ logged, setUserDataAction }) => {
                 onChange={onPasswordChange}
               />
               <button type="button" onClick={() => setShowPassword(!showPassword)}>
-                <FontAwesomeIcon icon={showPassword ? faEyeSlash : faEye} />
+                <FontAwesomeIcon icon={showPassword ? faEye : faEyeSlash } />
               </button>
             </div>
             <div

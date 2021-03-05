@@ -1,0 +1,47 @@
+$animationTime: .3s;
+
+.accordionContainer {
+  box-shadow: 0 4px 10px rgba(0, 0, 0, .15);
+  border-radius: 10px;
+  overflow: hidden;
+
+  .header {
+    position: relative;
+    width: 100%;
+    min-height: 70px;
+    background: transparent;
+    border: 0;
+    padding: 0 50px;
+    text-align: left;
+    cursor: pointer;
+  }
+
+  .icon {
+    position: absolute;
+    right: 54px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 20px;
+    color: var(--charcoalLight);
+    transition: $animationTime ease-in-out all;
+  }
+
+  .body {
+    border-top: 1px solid transparent;
+    max-height: 0;
+    transition: $animationTime ease-in-out all;
+  }
+
+  &.expand {
+
+    .body {
+      transform: scaleY(1);
+      border-color: #DFDFDF;
+      max-height: 500px;
+    }
+
+    .icon {
+      transform: translateY(-50%) rotateZ(180deg);
+    }
+  }
+}

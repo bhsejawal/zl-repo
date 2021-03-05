@@ -17,6 +17,7 @@ const initialState = {
     // should be used for the Trial/track how long the user can watch the videos
     validUntil: new Date(),
   },
+  email: null,
   username: null,
   // Valid: [guest, viewer, partner, host, admin]
   // Default value will be Guest once we go live
@@ -41,6 +42,7 @@ const initialState = {
 export default (state = initialState, { type, payload }) => {
   if (type === SET_USER_DATA) {
     const {
+      email,
       username,
       permissions,
       role,
@@ -51,6 +53,7 @@ export default (state = initialState, { type, payload }) => {
     return {
       ...state,
       role,
+      email,
       username,
       permissions,
       sessionChecked: true,

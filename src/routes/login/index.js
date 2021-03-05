@@ -101,7 +101,7 @@ const Login = ({
                 onChange={onPasswordChange}
               />
               <button type="button" onClick={() => setShowPassword(!showPassword)}>
-                <FontAwesomeIcon icon={showPassword ? faEyeSlash : faEye} />
+                <FontAwesomeIcon icon={showPassword ? faEye : faEyeSlash } />
               </button>
             </div>
             <div className={classnames(style.errorSection, {[style.active]: hasError})}>

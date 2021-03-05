@@ -144,7 +144,10 @@ const Favorite = () => {
           ))}
 
           {loaded && !error && habitats.length === 0 && (
-            <NoContentFallback text="You dont have any favourites yet." />
+            <NoContentFallback
+              text="Add your favorite animal habitats here for easy access."
+              subText="Favorite by tapping the heart on the photo icon in any habitat. "
+            />
           )}
         </Box>
       </Main>
