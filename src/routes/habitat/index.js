@@ -17,6 +17,7 @@ import StreamProfile from './components/StreamProfile';
 
 import { useWindowResize } from '../../hooks';
 import { setHabitat, unsetHabitat } from './actions';
+import { generateTitle } from '../../helpers';
 
 import style from './style.scss';
 
@@ -26,6 +27,7 @@ const maxStreamHeight = 720;
 const Habitat = ({
   streamKey,
   habitatId,
+  animal,
   matches: { zooName, habitatSlug },
   setHabitatAction,
   unsetHabitatAction,
@@ -40,7 +42,7 @@ const Habitat = ({
   useEffect(() => {
     if (loading && habitatId) {
       unsetHabitatAction();
-    } else if (response.ok) {
+    } else if (response.ok && response.data) {
       setHabitatAction(response.data);
     } else if (response.status === 404) {
       route('/404', true);
@@ -58,6 +60,12 @@ const Habitat = ({
   useEffect(() => () => {
     unsetHabitatAction();
   }, [unsetHabitatAction]);
+
+  useEffect(() => {
+    if (animal) {
+      document.title = generateTitle(`${animal} - Habitat`);
+    }
+  }, [animal]);
 
   const sideBarWidth = 84;
   const chatWidth = 285;
@@ -111,9 +119,14 @@ export default connect(
       habitatInfo: {
         camera: { streamKey } = {},
         _id: habitatId,
+        animal,
       },
     },
-  }) => ({ streamKey, habitatId }),
+  }) => ({
+    streamKey,
+    habitatId,
+    animal,
+  }),
   {
     setHabitatAction: setHabitat,
     unsetHabitatAction: unsetHabitat,

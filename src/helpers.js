@@ -13,3 +13,5 @@ export const passwordRegex = /^(?=.*[a-zA-Z])(?=.*[0-9])(?!.*\s).{8,50}$/gm;
 
 export const iOSDevice = () => !!navigator.platform.match(/iPhone|iPod|iPad/);
 export const androidDevice = () => !!navigator.userAgent.match(/Android/i);
+
+export const generateTitle = (part) => (part ? `${part} | Zoolife` : 'Zoolife');
