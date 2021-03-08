@@ -64,7 +64,7 @@ const List = forwardRef(({ children }, ref) => {
     const { width } = itemsRef.current.getBoundingClientRect();
     const nodesWidth = Array.from(itemsRef.current.childNodes)
       .map((child) => child.getBoundingClientRect().width)
-      .reduce((acc = 0, cur) => acc + cur);
+      .reduce((acc, cur) => acc + cur, 0);
 
     if (width >= nodesWidth) {
       setLayout(STRETCH);

@@ -37,6 +37,10 @@ const VideoControls = forwardRef(({}, ref) => {
   const [isPlaying, setIsPlaying] = useState(true);
   const [isMuted, setIsMuted] = useState(true);
   const [volume, setVolume] = useState(1);
+  // TODO: we need to refactor this
+  // there are a lot of references passed between different components
+  // and this is receiving a reference that's not a video element
+  // so the "video.play()"" is throwing errors
   const video = ref.current;
 
   useEffect(() => {

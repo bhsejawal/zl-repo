@@ -914,7 +914,7 @@ export class WebRTCAdaptor {
       console.log(`peerstatsgetstats = ${this.remotePeerConnectionStats[streamId]}`);
     }
 
-    this.remotePeerConnection[streamId].getStats(null).then((stats) => {
+    this.remotePeerConnection[streamId]?.getStats(null).then((stats) => {
       let bytesReceived = -1;
       let videoPacketsLost = -1;
       let audioPacketsLost = -1;

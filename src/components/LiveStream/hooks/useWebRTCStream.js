@@ -67,39 +67,44 @@ export const useWebRTCStream = (streamId, videoContainer, mode, logStatsFn) => {
       && streamStatus === CLOSED
     ) {
       setStreamStatus(INITIALIZING);
-      webRTCAdaptor = initWebRTCAdaptor(streamId, videoContainer.current, mode, (info, data) => {
-        if (info === INITIALIZED) {
-          if (mode === 'viewer') {
-            webRTCAdaptor.play(streamId);
-            webRTCAdaptor.enableStats(streamId);
-            setStreamStatus(PLAY_STARTED);
-          } else {
-            setStreamStatus(INITIALIZED);
+      webRTCAdaptor = initWebRTCAdaptor(
+        streamId,
+        videoContainer.current,
+        mode,
+        function callback(info, data) {
+          if (info === INITIALIZED) {
+            if (mode === 'viewer') {
+              this.play(streamId);
+              this.enableStats(streamId);
+              setStreamStatus(PLAY_STARTED);
+            } else {
+              setStreamStatus(INITIALIZED);
+            }
+            setIsWebsocketConnected(true);
           }
-          setIsWebsocketConnected(true);
-        }
 
-        if (info === 'available_devices') {
-          setAvailableDevices(data);
-        }
+          if (info === 'available_devices') {
+            setAvailableDevices(data);
+          }
 
-        if (info === PUBLISH_STARTED) {
-          setStreamStatus(PUBLISH_STARTED);
-        }
+          if (info === PUBLISH_STARTED) {
+            setStreamStatus(PUBLISH_STARTED);
+          }
 
-        if ([
-          CLOSED,
-          PLAY_FINISHED,
-          PUBLISH_FINISHED,
-        ].includes(info)) {
-          setStreamStatus(CLOSED);
-        }
-      },
-      (error) => {
-        setStreamStatus(ERROR);
-        // some of the possible errors, NotFoundError, SecurityError,PermissionDeniedError
-        console.error(`error callback: ${JSON.stringify(error)}`, streamId);
-      });
+          if ([
+            CLOSED,
+            PLAY_FINISHED,
+            PUBLISH_FINISHED,
+          ].includes(info)) {
+            setStreamStatus(CLOSED);
+          }
+        },
+        (error) => {
+          setStreamStatus(ERROR);
+          // some of the possible errors, NotFoundError, SecurityError,PermissionDeniedError
+          console.error(`error callback: ${JSON.stringify(error)}`, streamId);
+        },
+      );
     }
   }, [streamId, videoContainer, isWebsocketConnected, mode, streamStatus]);
 

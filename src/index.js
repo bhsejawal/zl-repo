@@ -4,6 +4,7 @@ import {
   useEffect,
   useRef,
   useState,
+  useErrorBoundary,
 } from 'preact/hooks';
 import { Router } from 'preact-router';
 import { Provider } from 'react-redux';
@@ -46,6 +47,11 @@ const customBreakpoints = deepMerge(grommet, zoolifeTheme);
 const App = () => {
   const [stripe, setStripe] = useState(null);
   const ga4Ref = useRef();
+
+  useErrorBoundary((err) => {
+    console.error(err);
+    // TODO: log this somewhere (sentry, logRocket, or GA)
+  });
 
   useEffect(() => {
     const initializeGa = async () => {
