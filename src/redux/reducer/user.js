@@ -5,8 +5,6 @@ import {
   UNSET_USER_DATA,
 } from '../types';
 
-import animal1 from '../../assets/profileIcons/animal1.svg';
-
 const initialState = {
   logged: false,
   userId: null,
@@ -30,13 +28,7 @@ const initialState = {
   habitats: ['mockCamID'],
   // used to store icon, color and nickname,
   // and other UI user settings
-  // NOTE: this is mock data, and it should always be set from UI before used
-  // TODO: We need to define what will be the profile data for admin, hosts, and zoo.
-  profile: {
-    color: '#FFB145',
-    animalIcon: animal1,
-    nickname: 'placeholderNickname',
-  },
+  profile: undefined,
 };
 
 export default (state = initialState, { type, payload }) => {

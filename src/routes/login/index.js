@@ -19,6 +19,7 @@ import style from './style.scss';
 
 const Login = ({
   logged,
+  profile,
   setUserDataAction,
   setShowModalAction,
   token, // from URL
@@ -30,10 +31,14 @@ const Login = ({
   const [showPassword, setShowPassword] = useState(false);
 
   useEffect(() => {
-    if (logged) {
+    if (logged && profile) {
       route('/', true);
+    } else if (logged) {
+      // users who have not followed the regular signup process
+      // do not have profile set, redirecting them to generate one
+      route('/profile', true);
     }
-  }, [logged]);
+  }, [logged, profile]);
 
   useEffect(() => {
     if (token) {
@@ -130,7 +135,7 @@ const Login = ({
 };
 
 export default connect(
-  ({ user: { logged } }) => ({ logged }),
+  ({ user: { logged, profile } }) => ({ logged, profile }),
   {
     setUserDataAction: setUserData,
     setShowModalAction: showModal,

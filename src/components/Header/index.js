@@ -17,7 +17,7 @@ const HeaderComponent = () => (
     </div>
     <NavBar />
     <div className={style.userImageSection}>
-      <Link href="/profile">
+      <Link href="/account">
         <AnimalIcon />
       </Link>
     </div>

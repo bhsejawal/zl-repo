@@ -1,15 +1,22 @@
 import { h } from 'preact';
 import { connect } from 'react-redux';
+import { route } from 'preact-router';
 
 import style from './style.scss';
 
 const AnimalIcon = ({
+  logged,
   animalIcon,
   color,
   width = 30,
 }) => {
   if (!animalIcon) {
-    // TODO: display loading indicator maybe if this is possible
+    if (!logged) {
+      return null
+    }
+    // If profile is not defined and header is being shown, redirect user to the
+    // account page to set it up
+    route('/profile', true);
     return null;
   }
 
@@ -24,5 +31,5 @@ const AnimalIcon = ({
 }
 
 export default connect(
-  ({ user: { profile: { animalIcon, color } } }) => ({ animalIcon, color }),
+  ({ user: { profile: { animalIcon, color } = {}, logged } }) => ({ animalIcon, color, logged }),
 )(AnimalIcon);

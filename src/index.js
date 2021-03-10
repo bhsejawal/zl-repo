@@ -101,7 +101,9 @@ const App = () => {
                   <Login path="/login" title="Log In" />
                   <Login path="/login/token/:token" title="Log In" />
                   <PasswordReset path="/passwordReset" title="Reset Password" />
-                  <Plans path="/plans" title="Subscription Plans" />
+                  <AuthGuard path="/plans" permission="checkout:plans" title="Plans">
+                    <Plans />
+                  </AuthGuard>
 
                   <AuthGuard path="/map" permission="map:view" title="Map">
                     <Map />
