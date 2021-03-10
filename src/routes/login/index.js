@@ -53,6 +53,12 @@ const Login = ({
       const url = buildURL('/admin/users/login');
       const { user } = await post(url, { email, password });
       setUserDataAction(user);
+      try {
+        localStorage.setItem('returningUser', true);
+      } catch (err) {
+        console.warn('Local storage is not available.');
+        console.error(err);
+      }
     } catch (err) {
       console.error('Error while user logging in', err);
       if (err.statusCode === 401) {

@@ -1,13 +1,13 @@
 import { cloneElement, h, toChildArray } from 'preact';
-import { route } from 'preact-router';
 import { useEffect, useMemo, useState } from 'preact/hooks';
 import { connect } from 'react-redux';
 import { buildURL } from 'Shared/fetch';
 import { Box, Text, Heading } from 'grommet';
-import useFetch from 'use-http';
+import useFetch, { Provider as UseFetchProvider } from 'use-http';
 
-import { setUserData, setUserSessionChecked } from '../../redux/actions';
+import { setUserData, setUserSessionChecked, unsetUserData } from '../../redux/actions';
 import { hasPermission } from '.';
+import { authRedirect } from './helpers';
 
 import style from './style.scss';
 
@@ -18,13 +18,10 @@ const AuthGuard = ({
   adminOnly,
   // display fallback component if user is not authorized
   fallback,
-  // user will be redirected to this path if he's not authenticated
-  // it's determined by calling the server from this component
-  // if you don't want user to be redirected, set this to null
-  redirectPath = '/login',
   children,
   setUserDataAction,
   setSessionChechedAction,
+  unsetUserDataAction,
   // we need to pass this to children
   // because we'll have props added by preact router or some other parent
   ...props
@@ -40,24 +37,44 @@ const AuthGuard = ({
     { credentials: 'include', cachePolicy: 'no-cache' },
   );
 
+  const useFetchOptions = useMemo(() => ({
+    interceptors: {
+      response: async ({ response }) => {
+        if (response.status === 401) {
+          unsetUserDataAction();
+          authRedirect();
+        }
+        return response;
+      },
+    },
+  }), [unsetUserDataAction]);
+
   useEffect(() => {
     const loadUserData = async () => {
       if (!sessionChecked) {
         await get();
+
         if (response.ok) {
           setUserDataAction(response.data);
-        } else if (response.status === 401 && redirectPath) {
-          route(redirectPath, true);
-        } else if (response.status !== 401) {
-          setError(true);
+        } else if (response.status === 401) {
+          authRedirect();
+          unsetUserDataAction();
         } else {
+          setError(true);
           setSessionChechedAction();
         }
       }
     };
 
     loadUserData();
-  }, [get, redirectPath, response, sessionChecked, setSessionChechedAction, setUserDataAction]);
+  }, [
+    get,
+    response,
+    sessionChecked,
+    setSessionChechedAction,
+    setUserDataAction,
+    unsetUserDataAction,
+  ]);
 
   if ((!adminOnly && !permission) || (adminOnly && permission)) {
     throw new Error('AuthGuard expects either "adminOnly" or "permission" prop.');
@@ -76,11 +93,13 @@ const AuthGuard = ({
 
   const mappedChildren = toChildArray(children)
     .map((child) => child && cloneElement(child, props));
-  if (sessionChecked && role === 'admin' && adminOnly) {
-    return mappedChildren;
-  }
-  if (sessionChecked && !adminOnly && authorized) {
-    return mappedChildren;
+  if ((sessionChecked && role === 'admin' && adminOnly)
+    || (sessionChecked && !adminOnly && authorized)) {
+    return (
+      <UseFetchProvider options={useFetchOptions}>
+        {mappedChildren}
+      </UseFetchProvider>
+    );
   }
 
   if (sessionChecked && !authorized) {
@@ -106,5 +125,6 @@ export default connect(
   {
     setUserDataAction: setUserData,
     setSessionChechedAction: setUserSessionChecked,
+    unsetUserDataAction: unsetUserData,
   },
 )(AuthGuard);

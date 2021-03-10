@@ -43,7 +43,7 @@ const url = buildURL('/habitats/favorite');
 
 const Favorite = () => {
   const { width } = useWindowResize();
-  const [{ habitats }, dispatch] = useReducer(reducer, { habitats: [] });
+  const [{ habitats = [] }, dispatch] = useReducer(reducer, {});
   const { loading, error, get } = useFetch(url, {
     credentials: 'include',
     cachePolicy: 'no-cache',

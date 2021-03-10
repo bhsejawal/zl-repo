@@ -16,7 +16,7 @@ const ScheduleList = ({ animals, zoos, date }) => {
     get,
     response,
     loading,
-  } = useFetch(API_BASE_URL);
+  } = useFetch(API_BASE_URL, { credentials: 'include' });
 
   const [schedules, setSchedules] = useState([]);
 

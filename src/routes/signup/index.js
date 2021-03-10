@@ -63,6 +63,12 @@ const Signup = ({ logged, setUserDataAction }) => {
         setServerError();
         setUserDataAction(user);
         route('/profile', true);
+        try {
+          localStorage.setItem('returningUser', true);
+        } catch (err) {
+          console.warn('Local storage is not available.');
+          console.error(err);
+        }
       }
     } catch (err) {
       console.error(err);

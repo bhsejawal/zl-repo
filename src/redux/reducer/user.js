@@ -61,6 +61,7 @@ export default (state = initialState, { type, payload }) => {
       role: initialState.role,
       permissions: initialState.permissions,
       username: initialState.username,
+      logged: initialState.logged,
       sessionChecked: false,
     }
   }

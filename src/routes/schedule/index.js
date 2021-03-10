@@ -24,7 +24,7 @@ const Schedule = ({ setFilterOptionsAction }) => {
     get,
     loading,
     error,
-  } = useFetch(API_BASE_URL);
+  } = useFetch(API_BASE_URL, { credentials: 'include' });
   const size = useContext(ResponsiveContext);
 
   const getFilterOptions = useCallback(async () => {

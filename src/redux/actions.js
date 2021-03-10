@@ -8,6 +8,7 @@ import {
   CLEAR_MESSAGES,
   SHOW_SNAPSHOT_SHARE_POPUP,
   SET_SESSION_CHECHED,
+  UNSET_USER_DATA,
 } from './types';
 
 const DEFAULT_INTERACTION_TIMEOUT = 3000;
@@ -73,3 +74,4 @@ export const showSnapshotShare = (show) => ({
 });
 
 export const setUserSessionChecked = () => ({ type: SET_SESSION_CHECHED });
+export const unsetUserData = () => ({ type: UNSET_USER_DATA });
