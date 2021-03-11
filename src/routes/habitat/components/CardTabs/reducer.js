@@ -1,3 +1,4 @@
+import { pick } from 'lodash-es';
 import { MEET } from './constants';
 import {
   ADD_HABITAT_CARD,
@@ -7,25 +8,41 @@ import {
   DELETE_HABITAT_CARD,
 } from './types';
 
+const cardSort = ({ index: i1 }, { index: i2 }) => (i1 - i2);
+
+const updateFamilyCards = (state, cards) => (
+  state.activeTab === MEET
+    ? cards.filter((card) => (card?.data?.name)).map(({ data }) => pick(data, ['name', 'img', 'dateOfBirth']))
+    : state.familyCards
+);
+
 const initialState = {
   items: [],
+  familyCards: [],
   activeTab: MEET,
 };
 
 export default (state = initialState, { type, payload }) => {
   switch (type) {
     case SET_HABITAT_CARDS: {
-      const { cards: items } = payload;
-      items.sort(({ index: i1 }, { index: i2 }) => i1 - i2);
-      return { ...state, items };
+      const { cards } = payload;
+      const items = cards.sort(cardSort);
+
+      return {
+        ...state,
+        items,
+        familyCards: updateFamilyCards(state, items),
+      };
     }
 
     case ADD_HABITAT_CARD: {
       const { card } = payload;
+      const items = [...state.items, card].sort(cardSort);
+
       return {
         ...state,
-        items: [...state.items, card]
-          .sort(({ index: i1 }, { index: i2 }) => i1 - i2),
+        items,
+        familyCards: updateFamilyCards(state, items),
       };
     }
 
@@ -37,27 +54,31 @@ export default (state = initialState, { type, payload }) => {
         data,
       } = payload;
 
+      const items = state.items.map((card) => (
+        // eslint-disable-next-line no-underscore-dangle
+        card._id === id ? {
+          ...card,
+          tag,
+          index,
+          data,
+        } : card
+      )).sort(cardSort);
+
       return {
         ...state,
-        items: state.items
-          .map((card) => (
-            // eslint-disable-next-line no-underscore-dangle
-            card._id === id ? {
-              ...card,
-              tag,
-              index,
-              data,
-            } : card
-          ))
-          .sort(({ index: i1 }, { index: i2 }) => i1 - i2),
+        items,
+        familyCards: updateFamilyCards(state, items),
       }
     }
 
     case DELETE_HABITAT_CARD: {
       const { id } = payload;
+      const items = state.items.filter(({ _id }) => _id !== id);
+
       return {
         ...state,
-        items: state.items.filter(({ _id }) => _id !== id),
+        items,
+        familyCards: updateFamilyCards(state, items),
       };
     }
 

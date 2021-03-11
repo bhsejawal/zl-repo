@@ -1,42 +1,40 @@
 import { h } from 'preact';
-import { useCallback, useRef } from 'preact/hooks';
 import { connect } from 'react-redux';
+import { formatDistanceToNow, parseISO } from 'date-fns';
 
+import { useCallback, useRef } from 'preact/hooks';
 import List from 'Components/List';
 import Member from './member';
 
-const Members = ({ familyMembers = [] }) => {
+const Members = ({ familyCards }) => {
   const listRef = useRef();
   const loadedImagesRef = useRef(0);
 
   const onImgLoad = useCallback(() => {
     loadedImagesRef.current += 1;
-    if (loadedImagesRef.current === familyMembers.length) {
+    if (loadedImagesRef.current === familyCards.length) {
       listRef.current.updateLayout();
     }
-  }, [familyMembers]);
+  }, [familyCards]);
 
   return (
     <List ref={listRef}>
-      {familyMembers.map(({
-        _id,
+      {familyCards.map(({
         name,
-        age,
-        profileImg,
+        dateOfBirth,
+        img,
       }, ind) => (
         <Member
-          key={_id}
+          key={`${img}-${name}-${dateOfBirth}`}
           index={ind}
           name={name}
-          age={age}
-          profileImg={profileImg}
+          age={formatDistanceToNow(parseISO(dateOfBirth))}
+          profileImg={img}
           onLoad={onImgLoad}
         />
       ))}
     </List>
-  )
+  );
 };
 
-export default connect(
-  ({ habitat: { habitatInfo: { familyMembers } } }) => ({ familyMembers }),
-)(Members);
+export default connect(({ habitat: { cards: { familyCards } } }) => ({ familyCards }))(Members);
