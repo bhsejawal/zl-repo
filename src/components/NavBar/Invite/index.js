@@ -3,7 +3,7 @@ import { useCallback, useState } from 'preact/hooks';
 import { Suspense, lazy } from 'preact/compat';
 import { faShare } from '@fortawesome/pro-light-svg-icons';
 
-import FallbackLoader from 'Components/FallbackLoader';
+import LoaderModal from 'Components/async/LoaderModal';
 import NavItem from '../NavItem';
 
 const InviteModal = lazy(() => import('./Modal'));
@@ -25,7 +25,7 @@ const Invite = () => {
       <NavItem text="Invite" icon={faShare} onClick={onClick} />
 
       {open && (
-        <Suspense fallback={<FallbackLoader />}>
+        <Suspense fallback={<LoaderModal />}>
           <InviteModal onClose={onClose} />
         </Suspense>
       )}

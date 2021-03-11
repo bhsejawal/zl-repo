@@ -75,7 +75,7 @@ const CalendarLoader = ({ habitatId }) => {
   }, [events]);
 
   if (loading) {
-    return <Loader height="450px" />
+    return <Loader height="485px" />
   }
 
   if (error) {
@@ -87,7 +87,7 @@ const CalendarLoader = ({ habitatId }) => {
   }
 
   return (
-    <Suspense fallback={<Loader height="450px" />}>
+    <Suspense fallback={<Loader height="485px" />}>
       <Calendar schedules={schedules} />
     </Suspense>
   )

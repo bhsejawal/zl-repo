@@ -116,7 +116,7 @@ const Cards = ({
       <div className={style.cards}>
         <div ref={cardsRef}>
           {loading && (
-            <Loader />
+            <Loader width="100%" />
           )}
 
           {!loading && (

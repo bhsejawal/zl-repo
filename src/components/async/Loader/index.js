@@ -1,31 +1,31 @@
-import { Layer, Box } from 'grommet';
-import Lottie from 'react-lottie-player';
-import loader from '../../../assets/loader.json';
+import { Box } from 'grommet';
 
-const Loader = ({ height = '100%' }) => (
-  <Box justify="center" align="center" fill>
+import Lottie from 'react-lottie-player';
+
+import greenLoader from 'Assets/loader.json';
+import whiteLoader from 'Assets/whiteLoader.json';
+
+const loaders = {
+  white: whiteLoader,
+  default: greenLoader,
+}
+
+const Loader = ({
+  fill,
+  variant = 'default',
+  height = '200px',
+  width = '200px',
+}) => (
+  <Box justify="center" align="center" fill={fill} >
     <Lottie
       loop
       play
-      animationData={loader}
-      style={{ height }}
-  />
+      animationData={loaders[variant]}
+      direction={-1}
+      style={{ height, width }}
+      speed={1.5}
+    />
   </Box>
 );
 
 export default Loader;
-
-export const LoaderOverlay = ({ showLoader, full, height = '100%' }) => {
-  if (!showLoader) {
-    return null;
-  }
-
-  return (
-    <Layer
-     animation="fadeIn"
-     full={full}
-    >
-      <Loader height={height} />
-    </Layer>
-  );
-};

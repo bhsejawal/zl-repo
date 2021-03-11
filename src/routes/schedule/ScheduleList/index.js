@@ -7,6 +7,8 @@ import {
 import { connect } from 'react-redux';
 import useFetch from 'use-http'
 
+import Loader from 'Components/async/Loader';
+
 import { API_BASE_URL } from 'Shared/fetch';
 import ScheduleItem from './ScheduleItem';
 import NoContentFallback from '../../../components/NoContentFallback';
@@ -49,9 +51,8 @@ const ScheduleList = ({ animals, zoos, date }) => {
   }, [animals, zoos, date, getSchedule])
 
   if (loading) {
-    // TODO: #176855073 - Custom Loader component
     return (
-      <div>Loading...</div>
+      <Loader variant="white" height="100%" fill />
     )
   }
 

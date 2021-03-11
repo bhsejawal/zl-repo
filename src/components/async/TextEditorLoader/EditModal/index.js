@@ -41,10 +41,10 @@ const EditModal = ({
   );
 
   const error = useMemo(() => {
-    if (value.text.length < minLen) {
+    if (value?.text?.length < minLen) {
       return `Minimum for this field is ${minLen} characters`;
     }
-    if (value.text.length > maxLen) {
+    if (value?.text?.length > maxLen) {
       return `Maximum for this field is ${maxLen} characters`;
     }
     return undefined;

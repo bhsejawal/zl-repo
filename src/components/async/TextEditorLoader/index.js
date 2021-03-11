@@ -1,7 +1,7 @@
 import { h } from 'preact';
 import { Suspense, lazy } from 'preact/compat';
 
-import Loader from 'Components/async/Loader';
+import LoaderModal from 'Components/async/LoaderModal';
 
 const EditModal = lazy(() => import('./EditModal'));
 
@@ -21,7 +21,7 @@ const TextEditorLoader = ({
   }
 
   return (
-    <Suspense fallback={<Loader />}>
+    <Suspense fallback={<LoaderModal />}>
       <EditModal
         initialText={initialText}
         postToUrl={postToUrl}

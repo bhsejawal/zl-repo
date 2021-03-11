@@ -1,5 +1,7 @@
 import { h } from 'preact';
 import { shallow } from 'enzyme';
+import 'jest-canvas-mock';
+
 import NavBar from '../src/components/NavBar';
 // See: https://github.com/preactjs/enzyme-adapter-preact-pure
 
