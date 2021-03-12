@@ -12,7 +12,7 @@ const canEditZoo = () => {
 const canEditHabitat = () => {
   const {
     user: { habitats },
-    habitat: { habitatInfo: { habitatId } },
+    habitat: { habitatInfo: { _id: habitatId } },
   } = store.getState();
 
   return habitats.includes(habitatId);
@@ -47,13 +47,16 @@ const rules = {
       "habitat:edit-album": canEditZoo,
       "habitat:edit-schedule": canEditZoo,
       "habitat:broadcast": canEditZoo,
-      "habitat:edit-overlay": canEditZoo,
+      // TODO: do we need to separate buttons
+      // or one permission is enough for all 3 items
+      "habitat:edit-stream": canEditZoo,
     },
   },
   host: {
     static: ['habitat:view', 'map:view', 'profile:edit', 'favorite:edit'],
     dynamic: {
       "habitat:broadcast": canEditHabitat,
+      "habitat:edit-stream": canEditHabitat,
     },
   },
 };

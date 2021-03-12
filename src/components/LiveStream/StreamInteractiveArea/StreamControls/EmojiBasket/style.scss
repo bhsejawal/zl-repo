@@ -1,7 +1,4 @@
 .emojiContainer {
-  position: absolute;
-  left: 60px;
-  bottom: 0%;
   max-height: 75vh;
   min-width: 180px;
   max-width: 220px;
@@ -118,7 +115,7 @@
     }
 
     img {
-      max-height: 100%;
+      height: 100%;
     }
   }
 }

@@ -4,7 +4,7 @@ import {
   Layer,
   Box,
   Form,
-  Text,
+  Heading,
   Button,
 } from 'grommet';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -81,12 +81,14 @@ const EditModal = ({
             elevation="small"
             justify="between"
           >
-            <Text margin={{ left: 'small' }}>Edit Image</Text>
+            <Heading level="2" margin={{ vertical: 'medium', horizontal: 'large' }}>
+              Edit Image
+            </Heading>
             <Button
               plain
-              margin="small"
+              margin="medium"
               onClick={onClose}
-              icon={<FontAwesomeIcon size="lg" icon={faTimes} />}
+              icon={<FontAwesomeIcon size="2x" icon={faTimes} />}
             />
           </Box>
 

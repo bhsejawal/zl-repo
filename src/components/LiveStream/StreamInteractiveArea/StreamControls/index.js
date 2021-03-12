@@ -13,7 +13,7 @@ const StreamControls = ({ position = 'left' }) => (
       <ZoomBar />
       <TakeSnapshotButton />
       <EmojiButton />
-      <EmojiBasket />
+      <EmojiBasket className={style.emojiContainer} />
     </div>
   </div>
 );

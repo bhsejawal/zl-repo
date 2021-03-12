@@ -41,7 +41,6 @@ const TwoVideosCardForm = forwardRef(({
         <Heading margin={{ top: '0', bottom: '5px' }} level="5">Video 1:</Heading>
         <ImageSelector
           required
-          prop="video1Url"
           url={video1Url}
           ref={video1SelectorRef}
           placeholder="https://"
@@ -49,7 +48,6 @@ const TwoVideosCardForm = forwardRef(({
             acceptedFormats: ['mp4'],
             maxFileSize: 3_000_000,
           }}
-          onBlur={onInputChange}
           onChange={onVideo1Change}
         />
       </Box>
@@ -76,7 +74,6 @@ const TwoVideosCardForm = forwardRef(({
         <Heading margin={{ top: '0', bottom: '5px' }} level="5">Video 2:</Heading>
         <ImageSelector
           required
-          prop="video2Url"
           url={video2Url}
           ref={video2SelectorRef}
           placeholder="https://"
@@ -84,7 +81,6 @@ const TwoVideosCardForm = forwardRef(({
             acceptedFormats: ['mp4'],
             maxFileSize: 3_000_000,
           }}
-          onBlur={onInputChange}
           onChange={onVideo2Change}
         />
       </Box>

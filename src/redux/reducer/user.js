@@ -25,7 +25,7 @@ const initialState = {
   zooId: 'torontozoo',
   // This needs to be list of habitats that a Host can stream to
   // Should be undefined for Hosts
-  habitats: ['mockCamID'],
+  habitats: [],
   // used to store icon, color and nickname,
   // and other UI user settings
   profile: undefined,
@@ -33,24 +33,13 @@ const initialState = {
 
 export default (state = initialState, { type, payload }) => {
   if (type === SET_USER_DATA) {
-    const {
-      email,
-      username,
-      permissions,
-      role,
-      userId,
-      profile,
-    } = payload;
+    const { profile } = payload;
 
     return {
       ...state,
-      role,
-      email,
-      username,
-      permissions,
+      ...payload,
       sessionChecked: true,
       logged: true,
-      userId,
       profile: profile || initialState.profile,
     }
   }

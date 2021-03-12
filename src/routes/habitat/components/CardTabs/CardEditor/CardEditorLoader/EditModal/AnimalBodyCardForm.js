@@ -202,7 +202,6 @@ const PartInputCard = memo(({
 const AnimalBodyCardForm = forwardRef(({
   img,
   parts,
-  onInputChange,
   onDataChange,
 }, ref) => {
   const imgSelectorRef = useRef();
@@ -275,7 +274,6 @@ const AnimalBodyCardForm = forwardRef(({
         <Heading margin={{ top: '0', bottom: '5px' }} level="5">Photo:</Heading>
         <ImageSelector
           required
-          prop="img"
           url={img}
           ref={imgSelectorRef}
           placeholder="https://"
@@ -286,7 +284,6 @@ const AnimalBodyCardForm = forwardRef(({
             aspectRatio: '1:1',
             maxFileSize: 100_000,
           }}
-          onBlur={onInputChange}
           onChange={onImgChange}
         />
       </Box>

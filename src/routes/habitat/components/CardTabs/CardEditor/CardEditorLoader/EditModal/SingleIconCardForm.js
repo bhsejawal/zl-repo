@@ -107,7 +107,6 @@ const SingleIconCardForm = forwardRef(({
         <Heading margin={{ top: '0', bottom: '5px' }} level="5">Icon:</Heading>
         <ImageSelector
           required
-          prop="img"
           url={img}
           ref={imgSelectorRef}
           placeholder="https://"
@@ -115,7 +114,6 @@ const SingleIconCardForm = forwardRef(({
             acceptedFormats: ['svg', 'jpg', 'jpeg', 'png'],
             maxFileSize: 20_000,
           }}
-          onBlur={onInputChange}
           onChange={onImgChange}
         />
       </Box>

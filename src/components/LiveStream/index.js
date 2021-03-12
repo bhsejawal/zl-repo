@@ -6,12 +6,13 @@ import { connect } from 'react-redux';
 import Loader from 'Components/async/Loader';
 
 import { GlobalsContext } from 'Shared/context';
+import { hasPermission } from 'Components/Authorize';
 
 import StreamInteractiveArea from './StreamInteractiveArea';
 import VideoControls from '../VideoControls';
+import AdminButton from './AdminButton';
 
 import { useWebRTCStream } from './hooks/useWebRTCStream';
-
 import { wsMessages } from './helpers/constants';
 
 import style from './style.scss';
@@ -60,9 +61,13 @@ const Stream = forwardRef(({
         style={{ width, height }}
       />
 
-      {streamStatus === PLAY_STARTED
-      && interactive
-      && <StreamInteractiveArea width={width} height={height} parentRef={containerRef} />}
+      {streamStatus === PLAY_STARTED && interactive && (
+        <StreamInteractiveArea
+          width={width}
+          height={height}
+          parentRef={containerRef}
+        />
+      )}
 
       {![ERROR, PLAY_STARTED].includes(streamStatus) && (
         // TODO: Add fallback message/image for error when design team provide us
@@ -81,6 +86,8 @@ const Stream = forwardRef(({
         </div>
       )}
       {customControls && <VideoControls ref={passedRef || videoRef} />}
+
+      {(interactive && hasPermission('habitat:edit-stream')) && <AdminButton />}
     </div>
   );
 });

@@ -13,20 +13,11 @@ import {
 
 const DEFAULT_INTERACTION_TIMEOUT = 3000;
 
-export const setUserData = ({
-  email,
-  username,
-  role,
-  _id,
-  profile,
-}) => ({
+export const setUserData = ({ _id: userId, ...rest}) => ({
   type: SET_USER_DATA,
   payload: {
-    email,
-    username,
-    role,
-    userId: _id,
-    profile,
+    userId,
+    ...rest,
   },
 });
 

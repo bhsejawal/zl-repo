@@ -11,6 +11,7 @@ import {
   Form,
   FormField,
   TextArea,
+  Heading,
 } from 'grommet';
 import useFetch from 'use-http';
 
@@ -81,16 +82,18 @@ const EditModal = ({
             elevation="small"
             justify="between"
           >
-            <Text margin={{ left: 'small' }}>Edit Text</Text>
+            <Heading level="2" margin={{ vertical: 'medium', horizontal: 'large' }}>
+              Edit Text
+            </Heading>
             <Button
               plain
-              margin="small"
+              margin="medium"
               onClick={onClose}
-              icon={<FontAwesomeIcon size="lg" icon={faTimes} />}
+              icon={<FontAwesomeIcon size="2x" icon={faTimes} />}
             />
           </Box>
 
-          <Box flex overflow="auto" pad="xsmall">
+          <Box flex overflow="auto" pad="medium">
             <FormField name="text">
               <TextArea name={TEXT_INPUT} type="text" />
             </FormField>

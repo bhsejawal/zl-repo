@@ -71,7 +71,6 @@ const SingleVideoCardForm = forwardRef(({
         <Heading margin={{ top: '0', bottom: '5px' }} level="5">Video:</Heading>
         <ImageSelector
           required
-          prop="videoUrl"
           url={videoUrl}
           ref={videoSelectorRef}
           placeholder="https://"
@@ -79,7 +78,6 @@ const SingleVideoCardForm = forwardRef(({
             acceptedFormats: ['mp4'],
             maxFileSize: 5_000_000,
           }}
-          onBlur={onInputChange}
           onChange={onVideoChange}
         />
       </Box>

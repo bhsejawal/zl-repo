@@ -1,8 +1,21 @@
-import { SET_HABITAT, SET_HABITAT_LIKED, UNSET_HABITAT } from './types';
+import {
+  SET_HABITAT_PROPS,
+  SET_HABITAT,
+  SET_HABITAT_LIKED,
+  UNSET_HABITAT,
+} from './types';
 
 export const setHabitat = ({ habitat }) => ({
   type: SET_HABITAT,
-  payload: { habitat },
+  payload: {
+    habitat: {
+      ...habitat,
+      streamKey: habitat.streamKey
+        || habitat?.camera?.channelSettings?.[0]?.streamKey,
+      hostStreamKey: habitat.hostStreamKey
+        || habitat.camera?.channelSettings?.[0]?.hostKey,
+    },
+  },
 });
 
 export const setHabitatLiked = (isLiked) => ({
@@ -11,3 +24,8 @@ export const setHabitatLiked = (isLiked) => ({
 });
 
 export const unsetHabitat = () => ({ type: UNSET_HABITAT });
+
+export const setHabitatProps = (payload) => ({
+  type: SET_HABITAT_PROPS,
+  payload,
+});

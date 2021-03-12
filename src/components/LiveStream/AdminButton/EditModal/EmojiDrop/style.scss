@@ -1,0 +1,20 @@
+.tabSelector {
+  font-size: 20px;
+  font-weight: bold;
+  padding: 10px;
+}
+
+.tabIcon {
+  margin-bottom: 50px;
+}
+
+.emojiIcon {
+  margin-bottom: 20px;
+}
+
+.emojiBasket {
+  filter: drop-shadow(0px 4px 10px rgba(0, 0, 0, .25));
+  transform: scale(1.6);
+  pointer-events: none;
+}
+

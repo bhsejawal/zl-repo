@@ -1,3 +1,4 @@
 export const SET_HABITAT = 'SET_HABITAT';
 export const UNSET_HABITAT = 'UNSET_HABITAT';
 export const SET_HABITAT_LIKED = 'SET_HABITAT_LIKED';
+export const SET_HABITAT_PROPS = 'SET_HABITAT_PROPS';

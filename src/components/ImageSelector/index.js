@@ -44,8 +44,6 @@ const ImageSelector = forwardRef(({
   url,
   placeholder,
   required,
-  // used to recognize which property is being changed by the parent
-  prop,
   // preview image ref that we can used to validate resolution
   previewRef,
   constraints: {
@@ -55,6 +53,8 @@ const ImageSelector = forwardRef(({
     aspectRatio,
     acceptedFormats = [],
   } = {},
+  className,
+  style: styleProp,
   onChange,
 }, ref) => {
   const [isLoading, setIsLoading] = useState();
@@ -299,10 +299,9 @@ const ImageSelector = forwardRef(({
   };
 
   return (
-    <div>
+    <div className={className} style={styleProp}>
       {label && <Heading margin={{ top: '0', bottom: '5px' }} level="5">{label}</Heading>}
       <TextInput
-        data-prop={prop}
         placeholder={placeholder}
         value={url}
         onBlur={onBlur}

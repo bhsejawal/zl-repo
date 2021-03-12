@@ -1,6 +1,26 @@
 export default {
   checkBox: {
     size: '20px',
+    color: {
+      light: 'toggle-knob',
+    },
+    toggle: {
+      size: '42px',
+      color: {
+        light: 'toggle-knob',
+      },
+      knob: {
+        extend: {
+          width: '16px',
+          height: '16px',
+          top: '0',
+          backgroundColor: 'var(--white)',
+        },
+      },
+      extend: ({ checked }) => `
+        background-color: ${checked ? 'var(--blue);' : 'var(--mediumGrey)'}
+      `,
+    },
   },
   global: {
     colors: {
@@ -23,6 +43,7 @@ export default {
       'light-1': '#FFFFFF',
       'light-2': '#EBEBEB',
       'light-3': '#CDCDCD',
+      'toggle-knob': 'white',
     },
     focus: {
       border: {

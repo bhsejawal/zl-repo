@@ -129,12 +129,10 @@ const ThreeIconsCardForm = forwardRef(({
         <Heading margin={{ top: '0', bottom: '5px' }} level="5">Icon:</Heading>
         <ImageSelector
           required
-          prop="img1"
           url={img1}
           ref={img1Ref}
           placeholder="https://"
           constraints={{ acceptedFormats: ['svg'] }}
-          onBlur={onInputChange}
           onChange={onImg1Change}
         />
       </Box>
@@ -160,12 +158,10 @@ const ThreeIconsCardForm = forwardRef(({
       <Box margin={{ bottom: '20px' }}>
         <Heading margin={{ top: '0', bottom: '5px' }} level="5">Icon:</Heading>
         <ImageSelector
-          prop="img2"
           url={img2}
           ref={img2Ref}
           placeholder="https://"
           constraints={{ acceptedFormats: ['svg'] }}
-          onBlur={onInputChange}
           onChange={onImg2Change}
         />
       </Box>
@@ -191,12 +187,10 @@ const ThreeIconsCardForm = forwardRef(({
       <Box margin={{ bottom: '20px' }}>
         <Heading margin={{ top: '0', bottom: '5px' }} level="5">Icon:</Heading>
         <ImageSelector
-          prop="img3"
           url={img3}
           ref={img3Ref}
           placeholder="https://"
           constraints={{ acceptedFormats: ['svg'] }}
-          onBlur={onInputChange}
           onChange={onImg3Change}
         />
       </Box>

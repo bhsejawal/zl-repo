@@ -138,12 +138,10 @@ const FourIconsCardForm = forwardRef(({
         <Heading margin={{ top: '0', bottom: '5px' }} level="5">Icon 1:</Heading>
         <ImageSelector
           required
-          prop="img1"
           url={img1}
           ref={img1Ref}
           placeholder="https://"
           constraints={{ acceptedFormats: ['svg'] }}
-          onBlur={onInputChange}
           onChange={onImg1Change}
         />
       </Box>
@@ -169,12 +167,10 @@ const FourIconsCardForm = forwardRef(({
         <Heading margin={{ top: '0', bottom: '5px' }} level="5">Icon 2:</Heading>
         <ImageSelector
           required
-          prop="img2"
           url={img2}
           ref={img2Ref}
           placeholder="https://"
           constraints={{ acceptedFormats: ['svg'] }}
-          onBlur={onInputChange}
           onChange={onImg2Change}
         />
       </Box>
@@ -200,12 +196,10 @@ const FourIconsCardForm = forwardRef(({
         <Heading margin={{ top: '0', bottom: '5px' }} level="5">Icon 3:</Heading>
         <ImageSelector
           required
-          prop="img3"
           url={img3}
           ref={img3Ref}
           placeholder="https://"
           constraints={{ acceptedFormats: ['svg'] }}
-          onBlur={onInputChange}
           onChange={onImg3Change}
         />
       </Box>
@@ -231,12 +225,10 @@ const FourIconsCardForm = forwardRef(({
         <Heading margin={{ top: '0', bottom: '5px' }} level="5">Icon 4:</Heading>
         <ImageSelector
           required
-          prop="img4"
           url={img4}
           ref={img4Ref}
           placeholder="https://"
           constraints={{ acceptedFormats: ['svg'] }}
-          onBlur={onInputChange}
           onChange={onImg4Change}
         />
       </Box>

@@ -1,0 +1,27 @@
+$btn-size: 40px;
+
+.btn {
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  transform: translateY(-50%);
+  width: $btn-size;
+  height: $btn-size;
+  border-radius: 100%;
+  background-color: var(--blue);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.icon {
+  margin-right: 12px;
+  color: var(--blue);
+}
+
+.item {
+
+  > div {
+    align-items: center;
+  }
+}
