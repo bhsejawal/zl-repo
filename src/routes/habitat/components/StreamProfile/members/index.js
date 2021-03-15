@@ -1,9 +1,8 @@
 import { h } from 'preact';
 import { connect } from 'react-redux';
-import { formatDistanceToNow, parseISO } from 'date-fns';
-
 import { useCallback, useRef } from 'preact/hooks';
 import List from 'Components/List';
+import { formatAge } from '../../../../../helpers';
 import Member from './member';
 
 const Members = ({ familyCards }) => {
@@ -28,7 +27,7 @@ const Members = ({ familyCards }) => {
           key={`${img}-${name}-${dateOfBirth}`}
           index={ind}
           name={name}
-          age={formatDistanceToNow(parseISO(dateOfBirth))}
+          age={formatAge(dateOfBirth)}
           profileImg={img}
           onLoad={onImgLoad}
         />

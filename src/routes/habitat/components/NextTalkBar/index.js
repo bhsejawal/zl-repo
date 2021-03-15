@@ -26,6 +26,7 @@ const NextTalkBar = ({ height, width }) => {
       // TODO: we should format it to a shorter value ('days' -> 'd', 'minutes' -> 'm)
       text: startTime > now && `starts in ${formatDistanceToNow(startTime)}`,
       isLive: startTime <= now && isStreamLive,
+      startTime,
       ...rest,
     })),
     [upcoming],
@@ -56,6 +57,9 @@ const NextTalkBar = ({ height, width }) => {
             <div className={style.listWrapper}>
               {list.map(({
                 _id,
+                animal,
+                startTime,
+                zoo,
                 isLive,
                 text,
                 profileImage,
@@ -63,12 +67,15 @@ const NextTalkBar = ({ height, width }) => {
               }) => (
                 <Card
                   key={_id}
+                  scheduleId={_id}
+                  animal={animal}
+                  zoo={zoo}
+                  startTime={startTime}
                   live={isLive}
                   header={isLive ? <Tag label="LIVE" /> : text}
                   description={description}
                   image={profileImage}
                   roundImage
-                  onClick={() => console.log('Remind Me')}
                 />
               ))}
             </div>

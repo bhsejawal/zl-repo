@@ -120,6 +120,14 @@ a {
   background: linear-gradient(270deg, #EBEBEB 0%, #CDCDCD 100%);
   border-radius: 100px;
   background-size: 1200px 100%;
+  color: transparent !important;
+  border: transparent !important;
+  pointer-events: none;
+
+  :disabled:hover {
+    color: transparent;
+  }
+
 }
 
 .simpleSelect {

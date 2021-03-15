@@ -36,6 +36,7 @@ const ScheduleCarousel = ({ habitatId }) => {
       // TODO: we should format it to a shorter value ('days' -> 'd', 'minutes' -> 'm)
       text: startTime > now && `starts in ${formatDistanceToNow(startTime)}`,
       isLive: startTime <= now && isStreamLive,
+      startTime,
       ...rest,
     })),
     [upcoming],
@@ -97,6 +98,9 @@ const ScheduleCarousel = ({ habitatId }) => {
 
           {list.map(({
             _id,
+            animal,
+            startTime,
+            zoo,
             isLive,
             text,
             profileImage,
@@ -104,11 +108,14 @@ const ScheduleCarousel = ({ habitatId }) => {
           }) => (
             <Card
               key={_id}
+              scheduleId={_id}
+              animal={animal}
+              zoo={zoo}
+              startTime={startTime}
               live={isLive}
               header={isLive ? <Tag label="LIVE" /> : text}
               description={description}
               image={profileImage}
-              onClick={() => console.log('Remind Me')}
             />
           ))}
         </Carousel>

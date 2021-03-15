@@ -34,11 +34,14 @@ export const useUpcomingTalks = (habitatId) => {
       const list = response.data.events
         .map(({
           _id,
+          zoo,
           startTime,
           habitat,
           camera,
         }) => ({
           _id,
+          zoo,
+          animal: habitat?.animal,
           startTime: parseISO(startTime),
           profileImage: habitat?.profileImage,
           link: `/${habitat?.zoo?.slug}/${habitat?.slug}`,

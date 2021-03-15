@@ -1,3 +1,5 @@
+import { formatDistanceToNow, parseISO } from "date-fns";
+
 export const isValidUrl = (url) => {
   try {
     return !!(new URL(url.startsWith('/')
@@ -15,3 +17,7 @@ export const iOSDevice = () => !!navigator.platform.match(/iPhone|iPod|iPad/);
 export const androidDevice = () => !!navigator.userAgent.match(/Android/i);
 
 export const generateTitle = (part) => (part ? `${part} | Zoolife` : 'Zoolife');
+
+export const formatAge = (dateOfBirth) => formatDistanceToNow(parseISO(dateOfBirth))
+  .replace('over', '')
+  .trim();

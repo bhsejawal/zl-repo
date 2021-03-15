@@ -1,6 +1,5 @@
 import { h } from 'preact';
-import { formatDistanceToNow, parseISO } from 'date-fns';
-
+import { formatAge } from '../../../../../../helpers';
 import CardWrapper from '../components/CardWrapper';
 
 import style from './style.scss';
@@ -25,7 +24,7 @@ const AnimalProfileCard = ({
         <p className={style.subtitle}>
           {sex}
           {', '}
-          {formatDistanceToNow(parseISO(dateOfBirth))}
+          {formatAge(dateOfBirth)}
           {' '}
           old
         </p>
