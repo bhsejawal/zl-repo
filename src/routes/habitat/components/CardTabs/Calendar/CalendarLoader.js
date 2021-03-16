@@ -36,7 +36,12 @@ const CalendarLoader = ({ habitatId }) => {
     return buildURL(`/schedules?${params}`);
   }, [habitatId]);
 
-  const { loading, error, data: { events = [] } = {} } = useFetch(url, null, []);
+  const { loading, error, data: { events = [] } = {} } = useFetch(
+    url,
+    { credentials: 'include', cachePolicy: 'no-cache' },
+    [],
+  );
+
   const schedules = useMemo(() => {
     const items = [];
 
