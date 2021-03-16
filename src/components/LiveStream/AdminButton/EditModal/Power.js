@@ -78,9 +78,7 @@ const Power = ({ cameraId }) => {
 
   if (loading) {
     return (
-      <Box pad="xlarge" alignContent="center" justify="center">
-        <Loader />
-      </Box>
+      <Loader fill />
     );
   }
 

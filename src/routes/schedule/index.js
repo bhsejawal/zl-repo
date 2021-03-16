@@ -53,7 +53,7 @@ const Schedule = ({ setFilterOptionsAction }) => {
     <>
       <Header />
       <Main pad={{ top: '60px' } }>
-        {loading && <Loader height="50%" />}
+        {loading && <Loader fill />}
         {!loading && (
           <>
             <Box direction="row" pad="medium" align="center" height="xsmall">

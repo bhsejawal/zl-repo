@@ -105,7 +105,7 @@ const Favorite = () => {
           direction="row"
           justify={width < 850 ? 'center' : 'start' }
         >
-          {!loaded && <Loader width="100%" variant="white" />}
+          {!loaded && <Loader fill color="white" />}
 
           {error && (
             <Box fill justify="center" align="center">

@@ -52,7 +52,7 @@ const ScheduleList = ({ animals, zoos, date }) => {
 
   if (loading) {
     return (
-      <Loader variant="white" height="100%" fill />
+      <Loader color="white" fill />
     )
   }
 
