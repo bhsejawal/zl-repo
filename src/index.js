@@ -109,7 +109,7 @@ const App = () => {
                     <Map />
                   </AuthGuard>
                   <AuthGuard path="/profile" permission="profile:edit" title="Profile">
-                    <Profile />
+                    <Profile step />
                   </AuthGuard>
                   <AuthGuard path="/schedule" permission="schedule:view" title="Talk Schedule">
                     <Schedule />

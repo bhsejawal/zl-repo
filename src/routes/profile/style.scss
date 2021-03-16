@@ -1,6 +1,54 @@
 @import "../../style/media-query.scss";
 
+// width threshold is based ONLY on the design not devices
+$widthThreshold: 800px;
 $circle-size: 40px;
+
+.container {
+  width: 100%;
+  height: 100%;
+
+  .wrapper {
+    max-width: 1200px;
+    height: 100%;
+    display: flex;
+    align-self: center;
+  }
+}
+
+.step .wrapper {
+  margin: auto;
+  height: auto;
+}
+
+.pickSection {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-basis: 525px;
+  padding: 40px;
+}
+
+.divider {
+  background-color: #EBEBEB;
+  width: 1px;
+}
+
+.characterSection {
+  display: flex;
+  flex-grow: 1;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
+
+  > div {
+    width: 500px;
+
+    @media screen and (max-width: 1000px) {
+      width: auto;
+    }
+  }
+}
 
 .circleItem {
   width: $circle-size;
@@ -69,12 +117,52 @@ $circle-size: 40px;
     position: absolute;
     top: 0;
     right: 0;
+    border: 0;
+    padding: 6px 6px 0 0;
+    line-height: initial;
+
+    svg {
+      font-size: 20px;
+      color: var(--charcoal);
+    }
   }
 
   p {
     margin-top: 0;
     font-size: 14px;
     text-align: left;
+  }
+}
+
+@media screen and (max-width: #{$widthThreshold}) {
+
+  .wrapper {
+    flex-direction: column-reverse;
+  }
+
+  .pickSection {
+    flex-basis: 100%;
+  }
+
+  .divider {
+    display: none;
+  }
+
+  .characterSection {
+    text-align: center;
+
+    > div {
+      max-width: unset;
+    }
+
+    input,
+    label {
+      text-align: center;
+    }
+
+    button {
+      margin: auto;
+    }
   }
 }
 

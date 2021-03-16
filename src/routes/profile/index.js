@@ -44,15 +44,15 @@ import animal13 from '../../assets/profileIcons/animal13.svg';
 import animal14 from '../../assets/profileIcons/animal14.svg';
 import animal15 from '../../assets/profileIcons/animal15.svg';
 
-import { useIsInitiallyLoaded, useOnClickOutside, useWindowResize } from '../../hooks';
+import { useIsInitiallyLoaded, useOnClickOutside } from '../../hooks';
 import { getUser, updateUser } from './api';
 import grommetTheme from '../../grommetTheme';
 import { updateProfile } from './actions';
 
-import "react-colorful/dist/index.css";
+import 'react-colorful/dist/index.css';
+import accountPageStyle from '../account/style.scss';
 import style from './style.scss';
 
-const twoColMinSize = 1020;
 const colors = [
   '#FFB145',
   '#FF8A00',
@@ -108,7 +108,15 @@ const IconItem = ({ icon, selected, onClick }) => (
   </button>
 );
 
-const Profile = ({ updateProfileAction }) => {
+const background = {
+  image: `url('${backgroundImg}')`,
+  size: 'unset',
+  position: 'bottom left',
+  repeat: 'no-repeat',
+  attachment: 'fixed',
+};
+
+const Profile = ({ step, updateProfileAction }) => {
   const pickerRef = useRef();
   const size = useContext(ResponsiveContext);
   const [isLoading, setIsLoading] = useState(true);
@@ -117,7 +125,6 @@ const Profile = ({ updateProfileAction }) => {
   const [nickname, setNickname] = useState();
   const [errorMsg, setErrorMsg] = useState();
   const [isPickerOpen, setIsPickerOpen] = useState(false);
-  const { width: pageWidth } = useWindowResize();
   const isCustomColor = useMemo(() => !colors.includes(color), [color]);
   const isInitiallyLoaded = useIsInitiallyLoaded(isLoading);
 
@@ -158,12 +165,19 @@ const Profile = ({ updateProfileAction }) => {
     setNickname(target.value);
   };
 
-  const onEnter = async () => {
+  const onClickHandler = async () => {
     try {
+      if (nickname.match(/\s/)) {
+        setErrorMsg('Nickname cannot have spaces');
+        return;
+      }
       setIsLoading(true);
       await updateUser(color, icon, nickname);
       updateProfileAction(color, icon, nickname);
-      route('/map');
+
+      if (step) {
+        route('/map');
+      }
     } catch (err) {
       console.error(err);
       if (err.body?.error) {
@@ -187,35 +201,15 @@ const Profile = ({ updateProfileAction }) => {
 
   return (
     <Box
-      height="100vh"
-      overflow="auto"
-      background={{
-        image: `url('${backgroundImg}')`,
-        size: 'unset',
-        position: 'bottom left',
-        repeat: 'no-repeat',
-        attachment: 'fixed',
-      }}
+      className={classnames(style.container, { [style.step]: step })}
+      background={background}
     >
-      <Grommet style={{ margin: 'auto' }} theme={grommetTheme}>
-        <Box
-          pad={{
-            vertical: 'large',
-            // we need this padding on small screens where we put our content in 2 columns
-            // to prevent overlap with bottom left image
-            bottom: pageWidth <= twoColMinSize ? '170px' : undefined,
-          }}
-          justify="center"
-          direction="row"
-          wrap="reverse"
-          align="center"
-        >
-          <Box
-            pad={{
-              vertical: 'medium',
-              horizontal: (pageWidth > twoColMinSize + 280 ? "xlarge" : 'large'),
-            }}
-          >
+      <Grommet
+        theme={grommetTheme}
+        className={style.wrapper}
+      >
+        <div className={style.pickSection}>
+          <Box>
             <Box>
               <Text margin={{ bottom: 'small' }}>
                 Pick your favourite colour:
@@ -281,19 +275,19 @@ const Profile = ({ updateProfileAction }) => {
               </Grid>
             </Box>
           </Box>
-
-          <Box
-            border={pageWidth > twoColMinSize ? 'left' : undefined}
-            pad={{ horizontal: (pageWidth > twoColMinSize + 280 ? "xlarge" : 'large') }}
-            margin={{ bottom: pageWidth < twoColMinSize ? '50px' : undefined }}
-          >
-            <Heading size="20px" level="4" color="var(--grey)" margin={{ bottom: 'xsmall', top: '0' }}>
-              Step 2 of 2
-            </Heading>
+        </div>
+        <div className={style.divider} />
+        <div className={style.characterSection}>
+          <Box>
+            {step && (
+              <Heading size="20px" level="4" color="var(--grey)" margin={{ bottom: 'xsmall', top: '0' }}>
+                Step 2 of 2
+              </Heading>
+            )}
             <Heading size="45px" level="1" margin={{ top: '0' }}>
-              Create your character:
+              {step ? 'Create your character:' : 'My Character:'}
             </Heading>
-            <Text size="16px">This is how the ZooLife community will see you.</Text>
+            <Text size="16px">This is how the Zoolife community will see you.</Text>
 
             <div className={style.largeImgWrapper}>
               {isInitiallyLoaded && (
@@ -310,13 +304,14 @@ const Profile = ({ updateProfileAction }) => {
 
             <Box align="start" margin={{ top: 'small' }}>
               <PrimaryButton
+                className={!step ? accountPageStyle.updateButton : undefined}
                 loading={isLoading}
-                label="Enter ZooLife!"
-                onClick={onEnter}
+                label={step ? 'Enter ZooLife!' : 'Save Changes'}
+                onClick={onClickHandler}
               />
             </Box>
           </Box>
-        </Box>
+        </div>
       </Grommet>
     </Box>
   );

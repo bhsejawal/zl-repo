@@ -16,6 +16,7 @@ import useFetch from 'use-http';
 import { buildURL } from 'Shared/fetch';
 
 import grommetTheme from '../../grommetTheme';
+import Profile from '../profile';
 import EmailSection from './MyAccount/EmailSection';
 import PasswordSection from './MyAccount/PasswordSection';
 
@@ -94,10 +95,12 @@ const Account = ({ profile }) => {
           </Box>
 
           <Tab title="My Character">
-            <Box pad="medium">My Character Tab</Box>
+            <Box fill border={{color: '#DFDFDF', size: '1px', side: 'top'}}>
+              <Profile />
+            </Box>
           </Tab>
           <Tab title="Account Info" flex="grow">
-            <Box border={{color: '#DFDFDF', size: '1px', side: 'top'}}>
+            <Box fill border={{color: '#DFDFDF', size: '1px', side: 'top'}}>
               <Box
                 pad={{vertical: '20px', top: '20px', bottom: '40px'}}
                 width={{max: '885px'}}
