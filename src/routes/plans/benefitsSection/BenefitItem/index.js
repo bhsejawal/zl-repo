@@ -7,14 +7,15 @@ import {
 const BenefitItem = ({ icon, text }) => (
   <Box
     direction="row"
-    margin={{ bottom: '30px'}}
     justify="center"
     align="center"
   >
     <Image src={icon} style={{ width: '28px', maxHeight: '28px' }} />
-    <Text margin={{ left: 'medium' }} responsive size="medium">
-      {text}
-    </Text>
+    <Box flex="grow" fill justify="center">
+      <Text margin={{ left: 'medium' }} responsive size="12px">
+        {text}
+      </Text>
+    </Box>
   </Box>
 );
 

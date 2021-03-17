@@ -1,7 +1,6 @@
 import { useContext } from 'preact/hooks';
 import {
   Box,
-  Heading,
   ResponsiveContext,
   Grid,
 } from 'grommet';
@@ -17,22 +16,18 @@ const ZoolifeBenefits = () => {
   const size = useContext(ResponsiveContext);
   const isLargeScreen = size === 'large';
 
-  const gridSettings = isLargeScreen ? ['auto'] : ['auto', 'auto'];
+  const gridSettings = isLargeScreen ? ['auto', 'auto', 'auto', 'auto'] : ['auto', 'auto'];
 
   return (
     <Box
       background="#09474A"
-      fill
-      basis={isLargeScreen ? '1/4' : 'full'}
-      pad={{ horizontal: "medium", vertical: isLargeScreen ? "large" : 'medium' }}
+      pad="medium"
       align="center"
     >
-      <Heading level="3" responsive>What you get:</Heading>
       <Grid
         columns={gridSettings}
-        gap="medium"
-        margin={{ top: '30px' }}
-        style={{ maxWidth: isLargeScreen ? "380px" : null }}
+        gap="large"
+        pad={{ horizontal: 'medium' }}
       >
         <BenefitItem
           text="Live Zookeeper Q&amp;As every hour, every day"

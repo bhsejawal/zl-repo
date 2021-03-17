@@ -72,11 +72,11 @@ const Plans = ({ plans, setPlansAction }) => {
           margin={{ top: '60px' }}
           fill={['medium', 'large'].includes(size)}
           responsive
-          direction={ isLargeScreen ? 'row' : 'column' }
+          direction="column"
         >
           <Box
             fill
-            basis={isLargeScreen ? '3/4' : 'full'}
+            basis="full"
             background={{
               image: `url(${background})`,
               size: 'contain',
@@ -85,11 +85,11 @@ const Plans = ({ plans, setPlansAction }) => {
               attachment: 'fixed',
             }}
             >
-            <Box pad={{ vertical: "large", horizontal: "15%" }}>
-              <Heading level={1} textAlign="center" fill>
+            <Box pad={{ vertical: "large", horizontal: "35%" }}>
+              <Heading level={1} textAlign="center" fill size="25px">
                 Explore more #zoolife
               </Heading>
-              <Text textAlign="center">
+              <Text textAlign="center" size="16px">
                 50% of your ticket directly funds conservation
                 &amp; animal care efforts led by our AZA-accredited partners.
               </Text>
