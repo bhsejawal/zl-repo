@@ -30,7 +30,7 @@ const HabitatMap = ({ habitats, setMapDataAction, setHabitatAction }) => {
   return (
     <div className={style.map}>
       <div className={style.wrapper}>
-        {habitats.filter(({ hidden }) => !hidden).map(({
+        {habitats.filter(({ hidden, mapPosition }) => !hidden && mapPosition).map(({
           _id,
           online,
           liveTalk,
