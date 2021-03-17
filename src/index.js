@@ -90,11 +90,11 @@ const App = () => {
 
   return (
     <Provider store={store}>
-      <StripeContext.Provider value={{ stripe }} width={{ max: "1650px" }} margin={{ horizontal: 'auto' }}>
+      <StripeContext.Provider value={{ stripe }}>
         <Grommet full theme={customBreakpoints} >
           <ResponsiveContext.Consumer>
             {(size) => (
-              <Main fill={size === 'large'}>
+              <Main fill={size === 'large'} width={{ max: "1650px" }} margin={{ horizontal: 'auto' }}>
                 <Router onChange={onRouteChange}>
                   <Home path="/" exact />
                   <Signup path="/signup" title="Sign Up" />
