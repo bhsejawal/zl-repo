@@ -32,7 +32,7 @@ const Stream = forwardRef(({
   const { socket } = useContext(GlobalsContext);
 
   const logStreamStatus = useCallback((data) => {
-    if (data.startTime && data.streamId) {
+    if (data?.startTime && data?.streamId) {
       socket.emit('logWebrtcStats', {
         userId,
         ...data,
@@ -40,7 +40,7 @@ const Stream = forwardRef(({
     }
   }, [socket, userId])
 
-  const streamStatus = useWebRTCStream(streamId, passedRef || videoRef, 'viewer', logStreamStatus);
+  const { streamStatus } = useWebRTCStream(streamId, passedRef || videoRef, 'viewer', logStreamStatus);
 
   return (
     <div

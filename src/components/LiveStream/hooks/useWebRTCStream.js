@@ -60,6 +60,21 @@ export const useWebRTCStream = (streamId, videoContainer, mode, logStatsFn) => {
   );
 
   useEffect(() => {
+    const onPlayHandler = () => setStreamStatus(PLAY_STARTED);
+    const htmlVideoContainer = videoContainer?.current;
+
+    if (htmlVideoContainer) {
+      htmlVideoContainer.addEventListener('play', onPlayHandler);
+    }
+
+    return () => {
+      if (htmlVideoContainer) {
+        htmlVideoContainer.removeEventListener('play', onPlayHandler);
+      }
+    }
+  }, [videoContainer]);
+
+  useEffect(() => {
     if (
       streamId
       && videoContainer.current
@@ -76,7 +91,6 @@ export const useWebRTCStream = (streamId, videoContainer, mode, logStatsFn) => {
             if (mode === 'viewer') {
               this.play(streamId);
               this.enableStats(streamId);
-              setStreamStatus(PLAY_STARTED);
             } else {
               setStreamStatus(INITIALIZED);
             }

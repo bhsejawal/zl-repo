@@ -26,4 +26,14 @@
     opacity: .8;
     border-radius: 5px;
   }
+
+  // Hide the Video Loader
+  video::-webkit-media-controls {
+    visibility: hidden;
+  }
+
+  // keep video controls
+  video::-webkit-media-controls-enclosure {
+    visibility: visible;
+  }
 }

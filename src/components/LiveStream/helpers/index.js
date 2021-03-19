@@ -126,14 +126,15 @@ export const initWebRTCAdaptor = (streamId, videoContainer, mode, callback, call
   const adaptor = new WebRTCAdaptor({
     videoContainer,
     callback,
-    debug: true,
+    debug: false,
     callbackError,
     isPlayMode: mode === 'viewer',
     webSocketAdaptor: websocketConnection,
     restartSocket: initializeSocketConnection,
   });
   webRTCMap.set(streamId, adaptor);
-  if (websocketConnection) {
+
+  if (websocketConnection.connected) {
     adaptor.init();
     adaptor.callback('initialized');
   }

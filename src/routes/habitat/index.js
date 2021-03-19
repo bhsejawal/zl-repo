@@ -117,7 +117,7 @@ export default connect(
   ({
     habitat: {
       habitatInfo: {
-        camera: { streamKey } = {},
+        streamKey,
         _id: habitatId,
         animal,
       },

@@ -4,7 +4,6 @@ import {
   useEffect,
   useMemo,
   useRef,
-  useState,
 } from "preact/hooks";
 import { connect } from 'react-redux';
 import Carousel from 'react-multi-carousel';
@@ -21,12 +20,10 @@ import { useUpcomingTalks } from '../../routes/habitat/hooks';
 import 'react-multi-carousel/lib/styles.css';
 import style from './style.scss';
 
-const STREAM_ID = '318257983413724778354144'; // temp
 const now = new Date();
 
-const ScheduleCarousel = ({ habitatId }) => {
+const ScheduleCarousel = ({ habitatId, hostStreamKey, isHostStreamOn }) => {
   const { socket } = useContext(GlobalsContext);
-  const [streamId, setStreamId] = useState(STREAM_ID);
   const ref = useRef();
 
   // eslint-disable-next-line no-unused-vars
@@ -42,13 +39,13 @@ const ScheduleCarousel = ({ habitatId }) => {
     [upcoming],
   );
 
-  const liveTalkEnable = (id) => {
-    setStreamId(id);
+  const liveTalkEnable = () => {
+    // change data on redux
     ref.current.goToSlide(0);
   }
 
   const liveTalkDisable = () => {
-    setStreamId();
+    // change data on redux
   }
 
   useEffect(() => {
@@ -94,7 +91,7 @@ const ScheduleCarousel = ({ habitatId }) => {
           }}
         >
           <Broadcast />
-          {streamId && <LiveTalk streamId={streamId} />}
+          {hostStreamKey && isHostStreamOn && <LiveTalk streamId={hostStreamKey} />}
 
           {list.map(({
             _id,
@@ -124,6 +121,8 @@ const ScheduleCarousel = ({ habitatId }) => {
   );
 };
 
-export default connect(
-  ({ habitat: { habitatInfo: { _id: habitatId } } }) => ({ habitatId }),
-)(ScheduleCarousel);
+export default connect((
+  { habitat: { habitatInfo: { _id: habitatId, hostStreamKey, isHostStreamOn } } },
+) => (
+  { habitatId, hostStreamKey, isHostStreamOn }
+))(ScheduleCarousel);
