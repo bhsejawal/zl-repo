@@ -23,9 +23,9 @@ const Menu = () => {
           icon={false}
           label={<FontAwesomeIcon icon={faBars} />}
           items={[
-            { label: 'Test 1', onClick: () => route('/admin/test') },
-            { label: 'Test 2', onClick: () => route('/admin/test/something') },
-            { label: 'Test 3', onClick: () => route('/admin/random/something') },
+            { label: 'Users', onClick: () => route('/admin/users') },
+            { label: 'Zoos', onClick: () => route('/admin/zoos') },
+            { label: 'Habitats', onClick: () => route('/admin/habitats') },
           ]}
         />
       </Grommet>
