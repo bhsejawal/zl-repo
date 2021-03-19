@@ -17,3 +17,12 @@
     margin-right: auto;
   }
 }
+
+.nextBtn {
+  display: flex;
+  align-items: center;
+
+  &[disabled] {
+    opacity: .3;
+  }
+}
