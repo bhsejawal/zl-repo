@@ -3,7 +3,6 @@ import { useCallback, useEffect, useReducer } from 'preact/hooks';
 import {
   Box,
   Heading,
-  Main,
   Text,
 } from 'grommet';
 import useFetch from 'use-http';
@@ -79,7 +78,7 @@ const Favorite = () => {
   return (
     <>
       <Header />
-      <Main height={{ min: '100vh' }} pad={{ top: '60px' }}>
+      <Box pad={{ top: '60px' }} flex="grow">
         <Box
           direction="row"
           align="center"
@@ -143,13 +142,15 @@ const Favorite = () => {
           ))}
 
           {loaded && !error && habitats.length === 0 && (
-            <NoContentFallback
-              text="Add your favorite animal habitats here for easy access."
-              subText="Favorite by tapping the heart on the photo icon in any habitat. "
-            />
+            <Box fill flex="grow" justify="center">
+              <NoContentFallback
+                text="Add your favorite animal habitats here for easy access."
+                subText="Favorite by tapping the heart on the photo icon in any habitat. "
+              />
+            </Box>
           )}
         </Box>
-      </Main>
+      </Box>
     </>
   );
 };

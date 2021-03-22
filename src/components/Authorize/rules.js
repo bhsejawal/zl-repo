@@ -30,9 +30,9 @@ const rules = {
   viewer: {
     static: ['profile:edit', 'favorite:edit'],
     dynamic: {
-      "habitat:view": isSubscriptionActive,
-      "map:view": isSubscriptionActive,
-      'checkout:plans': !isSubscriptionActive,
+      'habitat:view': isSubscriptionActive,
+      'map:view': isSubscriptionActive,
+      'checkout:plans': () => !(isSubscriptionActive()),
     },
   },
   partner: {

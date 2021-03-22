@@ -1,9 +1,11 @@
 import { route } from 'preact-router';
 
 // eslint-disable-next-line import/prefer-default-export
-export const authRedirect = () => {
+export const authRedirect = (path) => {
   try {
-    if (localStorage.getItem('returningUser')) {
+    if (path) {
+      route(path, true);
+    } else if (localStorage.getItem('returningUser')) {
       route('/login', true);
     } else {
       route('/', true);

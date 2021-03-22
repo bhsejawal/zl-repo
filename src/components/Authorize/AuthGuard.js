@@ -14,11 +14,13 @@ import style from './style.scss';
 const AuthGuard = ({
   permission,
   role,
+  active,
   sessionChecked,
   adminOnly,
   // display fallback component if user is not authorized
   fallback,
   children,
+  redirectTo,
   setUserDataAction,
   setSessionChechedAction,
   unsetUserDataAction,
@@ -30,7 +32,7 @@ const AuthGuard = ({
   const authorized = useMemo(
     () => hasPermission(permission),
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [permission, sessionChecked],
+    [permission, sessionChecked, active],
   );
   const { get, response } = useFetch(
     buildURL('/admin/users/user'),
@@ -103,6 +105,10 @@ const AuthGuard = ({
   }
 
   if (sessionChecked && !authorized) {
+    if (redirectTo) {
+      return authRedirect(redirectTo);
+    }
+
     return fallback || (
       <Box fill justify="center" align="center">
         <Heading level="1">Uh oh!</Heading>
@@ -121,7 +127,13 @@ const AuthGuard = ({
 };
 
 export default connect(
-  ({ user: { role, sessionChecked } }) => ({ role, sessionChecked }),
+  ({
+    user: {
+      role,
+      sessionChecked,
+      subscription: { active },
+    },
+  }) => ({ role, sessionChecked, active }),
   {
     setUserDataAction: setUserData,
     setSessionChechedAction: setUserSessionChecked,

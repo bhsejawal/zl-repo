@@ -1,7 +1,6 @@
 import useFetch from 'use-http'
 import { useEffect, useCallback, useContext } from 'preact/hooks';
 import {
-  Main,
   Box,
   Heading,
   ResponsiveContext,
@@ -52,11 +51,11 @@ const Schedule = ({ setFilterOptionsAction }) => {
   return (
     <>
       <Header />
-      <Main pad={{ top: '60px' } }>
+      <Box pad={{ top: '60px' }} flex="grow">
         {loading && <Loader fill />}
         {!loading && (
           <>
-            <Box direction="row" pad="medium" align="center" height="xsmall">
+            <Box direction="row" pad="medium" align="center">
               <Heading
                 margin="none"
                 size={size === 'large' ? 'small' : '20px'}
@@ -73,7 +72,7 @@ const Schedule = ({ setFilterOptionsAction }) => {
                 <ZooFilter />
               </Box>
             </Box>
-            <Box fill>
+            <Box flex="grow">
               <Box
                 flex="grow"
                 style={{ background: '#09474A'}}
@@ -85,7 +84,7 @@ const Schedule = ({ setFilterOptionsAction }) => {
             </Box>
           </>
         )}
-      </Main>
+      </Box>
     </>
   );
 }

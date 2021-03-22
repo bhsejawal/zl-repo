@@ -34,7 +34,6 @@ const Plans = ({ plans, setPlansAction }) => {
     loading,
     error,
   } = useFetch(API_BASE_URL, { cachePolicy: 'no-cache', credentials: 'include' });
-
   const fetchPlans = useCallback(async () => {
     const plans = await get('/products');
     setPlansAction(plans);
@@ -60,23 +59,19 @@ const Plans = ({ plans, setPlansAction }) => {
     fetchPlans();
   }, [fetchPlans])
 
-  if (loading) {
-  }
-
   return (
     <>
       <Header />
-      {loading && <Loader />}
+      {loading && <Loader fill />}
       {!loading && !error && (
         <Box
           margin={{ top: '60px' }}
-          fill={['medium', 'large'].includes(size)}
-          responsive
           direction="column"
+          height={{min: 'unset'}}
+          flex="grow"
         >
           <Box
-            fill
-            basis="full"
+            flex="grow"
             background={{
               image: `url(${background})`,
               size: 'contain',

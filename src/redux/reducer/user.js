@@ -2,6 +2,7 @@ import {
   SET_SESSION_CHECHED,
   SET_USER_DATA,
   SET_USER_PROFILE,
+  UPDATE_SUBSCRIPTION_DATA,
   UNSET_USER_DATA,
 } from '../types';
 
@@ -11,9 +12,8 @@ const initialState = {
   sessionChecked: false,
   // This will be for Viewers
   subscription: {
-    active: true,
-    // should be used for the Trial/track how long the user can watch the videos
-    validUntil: new Date(),
+    active: null,
+    validUntil: null,
   },
   email: null,
   username: null,
@@ -33,14 +33,19 @@ const initialState = {
 
 export default (state = initialState, { type, payload }) => {
   if (type === SET_USER_DATA) {
-    const { profile } = payload;
+    const { profile, subscriptionStatus: subscription = {}, ...rest } = payload;
 
     return {
       ...state,
-      ...payload,
+      ...rest,
       sessionChecked: true,
       logged: true,
       profile: profile || initialState.profile,
+      subscription: {
+        ...state.subscription,
+        ...subscription,
+        active: subscription.validUntil && new Date(subscription.validUntil) > new Date(),
+      },
     }
   }
 
@@ -67,6 +72,16 @@ export default (state = initialState, { type, payload }) => {
     return {
       ...state,
       sessionChecked: true,
+    }
+  }
+
+  if (type === UPDATE_SUBSCRIPTION_DATA) {
+    return {
+      ...state,
+      subscription: {
+        ...state.subscription,
+        ...payload,
+      },
     }
   }
 

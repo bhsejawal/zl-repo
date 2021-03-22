@@ -5,6 +5,7 @@ import {
   startOfDay,
 } from 'date-fns';
 import { connect } from 'react-redux';
+import { Box } from 'grommet';
 import useFetch from 'use-http'
 
 import Loader from 'Components/async/Loader';
@@ -58,10 +59,12 @@ const ScheduleList = ({ animals, zoos, date }) => {
 
   if (response.status === 200 && !loading && !schedules.length) {
     return (
-      <NoContentFallback
-        text="Sorry! There aren’t any talks available."
-        subText="Please try broadening your search."
-      />
+      <Box flex="grow" justify="center">
+        <NoContentFallback
+          text="Sorry! There aren’t any talks available."
+          subText="Please try broadening your search."
+        />
+      </Box>
     )
   }
 

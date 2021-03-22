@@ -1,7 +1,7 @@
 @import "../../style/media-query";
 
 .map {
-  min-height: 100%;
+  flex-grow: 1;
   width: 100%;
 
   .content {

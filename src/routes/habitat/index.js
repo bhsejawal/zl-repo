@@ -28,6 +28,7 @@ const Habitat = ({
   streamKey,
   habitatId,
   animal,
+  activeSubscription,
   matches: { zooName, habitatSlug },
   setHabitatAction,
   unsetHabitatAction,
@@ -66,6 +67,12 @@ const Habitat = ({
       document.title = generateTitle(`${animal} - Habitat`);
     }
   }, [animal]);
+
+  useEffect(() => {
+    if (!activeSubscription) {
+      route('/plans');
+    }
+  }, [activeSubscription]);
 
   const sideBarWidth = 84;
   const chatWidth = 285;
@@ -122,10 +129,12 @@ export default connect(
         animal,
       },
     },
+    user: { subscription: { active }},
   }) => ({
     streamKey,
     habitatId,
     animal,
+    activeSubscription: active,
   }),
   {
     setHabitatAction: setHabitat,
