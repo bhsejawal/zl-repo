@@ -55,7 +55,7 @@ const Chat = ({ height, width, habitatId }) => {
     const { habitat } = events.find(({ habitat: { _id } }) => _id === nextId);
     // eslint-disable-next-line no-underscore-dangle
     sessionStorage.setItem(sessionStorageKey, habitat._id);
-    route(`/${habitat.zoo.slug}/${habitat.slug}`);
+    route(`/h/${habitat.zoo.slug}/${habitat.slug}`);
   };
 
   return (

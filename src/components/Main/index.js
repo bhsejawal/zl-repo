@@ -77,10 +77,10 @@ const Main = ({ onRouteChange, isTrial }) => {
           <DesignSystem />
         </AuthGuard>
 
-        {/* NOTE: Habitat and NotFound need to be at the end */}
-        <AuthGuard path="/:zooName/:habitatSlug" permission="habitat:view" skipTitle redirectTo="/plans">
+        <AuthGuard path="/h/:zooName/:habitatSlug" permission="habitat:view" skipTitle redirectTo="/plans">
           <Habitat />
         </AuthGuard>
+        {/* NOTE: NotFound need to be at the end */}
         <NotFound path=":*" />
       </Router>
       <TimeBar path={path} />

@@ -44,7 +44,7 @@ export const useUpcomingTalks = (habitatId) => {
           animal: habitat?.animal,
           startTime: parseISO(startTime),
           profileImage: habitat?.profileImage,
-          link: `/${habitat?.zoo?.slug}/${habitat?.slug}`,
+          link: `/h/${habitat?.zoo?.slug}/${habitat?.slug}`,
           description: habitat?.description,
           isStreamLive: camera.cameraStatus !== 'off',
         }))

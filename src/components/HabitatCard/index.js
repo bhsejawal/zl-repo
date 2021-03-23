@@ -62,7 +62,7 @@ const HabitatCard = ({
       <p>{description || "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s"}</p>
 
       <div className={classnames(style.buttons, { [style.favorite]: onFavoriteClick })}>
-        <Link href={encodeURI(`/${zooSlug}/${slug}`)}>
+        <Link href={encodeURI(`/h/${zooSlug}/${slug}`)}>
           <Button primary label="Enter Habitat" size="large" />
         </Link>
         {onFavoriteClick && (
