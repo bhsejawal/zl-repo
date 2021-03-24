@@ -1,3 +1,36 @@
 .loading {
   pointer-events: none;
 }
+
+button.floatingButton {
+  background: linear-gradient(180deg, #FFDCEE 62.5%, #FEDFC9 100%);
+  border: 0;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, .25);
+  color: #081B0C;
+  font-size: 20px;
+  border-radius: 50px;
+  width: fit-content;
+  padding: 10px 20px 10px 10px;
+
+  &:hover {
+    color: #535353;
+  }
+
+  &:active,
+  &:focus {
+    opacity: 1;
+    color: rgba(83, 83, 83, .8);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, .25);
+  }
+
+  .wrapper {
+    position: relative;
+
+    svg {
+      position: absolute;
+      right: 0;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+  }
+}

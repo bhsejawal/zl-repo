@@ -1,4 +1,7 @@
-import { Button } from 'grommet';
+import { Button, ResponsiveContext, Box } from 'grommet';
+import { useContext } from 'preact/hooks';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faChevronRight } from '@fortawesome/pro-regular-svg-icons';
 import classnames from 'classnames';
 
 import style from './style.scss';
@@ -56,3 +59,28 @@ export const OutlineButton = ({
     {...args}
   />
 );
+
+export const FloatingButton = ({
+  className,
+  ...args
+}) => {
+  const size = useContext(ResponsiveContext);
+  const isMobile = ['xsmall', 'small'].includes(size);
+
+  return (
+    <Button
+      className={classnames(className, style.floatingButton)}
+      label={
+        <Box
+          className={style.wrapper}
+          pad={{vertical: isMobile ? '8px' : '18px', horizontal: isMobile ? '20px' : '80px'}}
+        >
+          <span>{isMobile ? 'Start' : 'Try Zoolife Free'}</span>
+          <FontAwesomeIcon icon={faChevronRight} style={{fontSize: isMobile ? '14px' : '25px'}} />
+        </Box>
+      }
+      /* eslint-disable-next-line react/jsx-props-no-spreading */
+      {...args}
+    />
+  );
+};
