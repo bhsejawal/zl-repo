@@ -8,7 +8,6 @@ const BenefitItem = ({ benefit }) => (
     <Text
       margin={{ top: '10px' }}
       weight="bold"
-      color=""
       size="16px"
       style={{ fontSize: '16px', lineHeight: "18px" }}
     >

@@ -6,9 +6,8 @@ import {
   Text,
   Box,
 } from 'grommet';
-
+import classnames from 'classnames';
 import Button from '../Button';
-import BenefitItem from './BenefitItem';
 
 import style from './style.scss';
 
@@ -21,11 +20,15 @@ const PlanCard = ({
   planCurrency,
   color,
   discount,
-  checkoutHandler,
-  benefits = [],
+  onClickHandler,
+  disabled,
+  currentPlan,
+  buttonLabel = 'Select',
+  benefitTitle,
+  benefitText,
 }) => (
   <Grommet>
-    <Box pad="xxsmall" style={{ position: 'relative' }}>
+    <Box pad="xxsmall" className={classnames(style.planCard, { [style.currentPlan]: currentPlan })}>
       {discount && (
         <Box
           background="#368185"
@@ -78,14 +81,29 @@ const PlanCard = ({
         </CardHeader>
         <CardBody height={{ min: '150px', max: '150px'}}>
           <Box margin={{ top: 'xsmall' }} align="center" justify="center" flex="grow">
-            {benefits.map((benefit, index) => (
-              // eslint-disable-next-line react/no-array-index-key
-              <BenefitItem key={index} benefit={benefit} />
-            ))}
+            <Text
+              margin={{ top: '10px' }}
+              size="12px"
+              style={{ lineHeight: "18px" }}
+            >
+              {benefitTitle}
+            </Text>
+            <Text
+              size="16px"
+              style={{ lineHeight: "22px" }}
+            >
+              {benefitText}
+            </Text>
+
           </Box>
           <Box align="center" justify="end" direction="column" pad="xsmall" margin={{ vertical: '16px' }}>
-            <Button variant="primary" onClick={() => checkoutHandler(planId, priceId)} alignSelf="end">
-              <span>Select</span>
+            <Button
+              variant="primary"
+              onClick={() => onClickHandler(planId, priceId)}
+              alignSelf="end"
+              disabled={disabled}
+            >
+              <span>{buttonLabel}</span>
             </Button>
           </Box>
         </CardBody>

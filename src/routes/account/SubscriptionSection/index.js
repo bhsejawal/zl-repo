@@ -1,25 +1,22 @@
 import { useContext } from 'preact/hooks';
+
 import {
   Box,
   Heading,
   Text,
   ResponsiveContext,
 } from 'grommet';
-import Header from 'Components/Header';
-import SubscriptionManager from 'Components/SubscriptionManager';
-
 import background from 'Assets/plansBackground.png';
 
+import SubscriptionManager from 'Components/SubscriptionManager';
 import ZoolifeBenefits from 'Components/Benefits';
 
-const Plans = () => {
+const SubscriptionSection = () => {
   const size = useContext(ResponsiveContext);
 
   return (
     <>
-      <Header />
       <Box
-        margin={{ top: '60px' }}
         fill={['medium', 'large'].includes(size)}
         responsive
         direction="column"
@@ -35,9 +32,9 @@ const Plans = () => {
             attachment: 'fixed',
           }}
         >
-          <Box pad={{ vertical: "large", horizontal: "35%" }}>
-            <Heading level={1} textAlign="center" fill size="25px">
-              Explore more #zoolife
+          <Box pad={{ vertical: "large", horizontal: "25%" }}>
+            <Heading level={1} textAlign="center" fill size="25px" weight={700}>
+              Manage Subscription
             </Heading>
             <Text textAlign="center" size="16px">
               50% of your ticket directly funds conservation
@@ -49,7 +46,7 @@ const Plans = () => {
         <ZoolifeBenefits />
       </Box>
     </>
-  );
+  )
 };
 
-export default Plans;
+export default SubscriptionSection;

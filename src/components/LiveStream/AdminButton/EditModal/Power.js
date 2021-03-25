@@ -53,7 +53,6 @@ const Power = ({ cameraId }) => {
       setStreamStatus(data.cameraStatus === 'on');
       setHostVideoStatus(vivValue === 'on');
     }
-    console.log(data)
   }, [data]);
 
   const onStreamToggle = async () => {

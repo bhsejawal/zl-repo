@@ -22,6 +22,7 @@ import Account from '../../routes/account';
 import NotFound from '../../routes/notFound';
 import DesignSystem from '../../routes/designSystem';
 import Habitat from '../../routes/habitat';
+import CancelSubscription from '../../routes/cancelSubscription';
 
 import style from './style.scss';
 
@@ -79,6 +80,10 @@ const Main = ({ onRouteChange, isTrial }) => {
 
         <AuthGuard path="/h/:zooName/:habitatSlug" permission="habitat:view" skipTitle redirectTo="/plans">
           <Habitat />
+        </AuthGuard>
+
+        <AuthGuard path="/cancelSubscription" permission="subscription:cancel" title="Cancel Subscritpion" redirectTo="/plans">
+          <CancelSubscription />
         </AuthGuard>
         {/* NOTE: NotFound need to be at the end */}
         <NotFound path=":*" />

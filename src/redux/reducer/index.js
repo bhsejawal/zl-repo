@@ -4,7 +4,7 @@ import mainStream from './mainStream';
 import user from './user';
 import chat from './chat';
 import habitat from '../../routes/habitat/reducer';
-import plans from '../../routes/plans/reducer';
+import plans from './plans';
 import schedule from '../../routes/schedule/reducer';
 import map from '../../routes/map/reducer';
 import passwordReset from '../../routes/login/ResetModal/reducer';

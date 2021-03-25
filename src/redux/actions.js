@@ -9,10 +9,14 @@ import {
   SHOW_SNAPSHOT_SHARE_POPUP,
   SET_SESSION_CHECHED,
   UNSET_USER_DATA,
+  SET_SUBSCRIPTION_DATA,
+  SET_PLANS,
   UPDATE_SUBSCRIPTION_DATA,
 } from './types';
 
 const DEFAULT_INTERACTION_TIMEOUT = 3000;
+
+export const setSubscriptionData = (payload) => ({ type: SET_SUBSCRIPTION_DATA, payload });
 
 export const setUserData = ({ _id: userId, ...rest}) => ({
   type: SET_USER_DATA,
@@ -67,6 +71,11 @@ export const showSnapshotShare = (show) => ({
 
 export const setUserSessionChecked = () => ({ type: SET_SESSION_CHECHED });
 export const unsetUserData = () => ({ type: UNSET_USER_DATA });
+
+export const setPlans = (plans) => ({
+  type: SET_PLANS,
+  payload: { plans },
+})
 
 export const updateSubscription = (payload) => ({
   type: UPDATE_SUBSCRIPTION_DATA,

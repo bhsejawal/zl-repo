@@ -33,6 +33,7 @@ const rules = {
       'habitat:view': isSubscriptionActive,
       'map:view': isSubscriptionActive,
       'checkout:plans': () => !(isSubscriptionActive()),
+      'subscription:cancel': isSubscriptionActive,
     },
   },
   partner: {

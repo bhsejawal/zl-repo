@@ -4,6 +4,7 @@ import {
   SET_USER_PROFILE,
   UPDATE_SUBSCRIPTION_DATA,
   UNSET_USER_DATA,
+  SET_SUBSCRIPTION_DATA,
 } from '../types';
 
 const initialState = {
@@ -32,8 +33,25 @@ const initialState = {
 };
 
 export default (state = initialState, { type, payload }) => {
+  if (type === SET_SUBSCRIPTION_DATA) {
+    const { validUntil } = payload;
+
+    const validUntilDate = validUntil ? new Date(validUntil) : null;
+    return {
+      ...state,
+      subscription: {
+        ...state.subscription,
+        ...payload,
+        validUntil: validUntilDate,
+      },
+
+    }
+  }
   if (type === SET_USER_DATA) {
     const { profile, subscriptionStatus: subscription = {}, ...rest } = payload;
+    const { validUntil } = subscription;
+
+    const validUntilDate = validUntil ? new Date(validUntil) : null;
 
     return {
       ...state,
@@ -45,6 +63,7 @@ export default (state = initialState, { type, payload }) => {
         ...state.subscription,
         ...subscription,
         active: subscription.validUntil && new Date(subscription.validUntil) > new Date(),
+        validUntil: validUntilDate,
       },
     }
   }
