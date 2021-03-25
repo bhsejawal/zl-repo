@@ -1,4 +1,5 @@
 import { h } from 'preact';
+import { useEffect, useState } from 'preact/hooks';
 import { Text } from 'grommet';
 import { parseISO } from 'date-fns';
 import DateTimePicker from 'react-datetime-picker'
@@ -6,16 +7,19 @@ import DateTimePicker from 'react-datetime-picker'
 import Header from 'Components/Header';
 import AdminTable from 'Components/AdminTable';
 import { SELECT } from 'Components/AdminTable/constants';
-import { useMemo, useState } from 'preact/hooks';
 
 const minDate = new Date();
 
 const EditValidUntil = ({ subscriptionStatus }) => {
-  const date = useMemo(
-    () => (subscriptionStatus?.validUntil ? parseISO(subscriptionStatus?.validUntil) : new Date()),
-    [subscriptionStatus?.validUntil],
-  )
-  const [value, setValue] = useState(date);
+  const [value, setValue] = useState();
+
+  useEffect(() => {
+    setTimeout(() => {
+      setValue(subscriptionStatus?.validUntil
+        ? parseISO(subscriptionStatus?.validUntil)
+        : new Date());
+    }, 50);
+  }, [subscriptionStatus?.validUntil]);
 
   return (
     <DateTimePicker
