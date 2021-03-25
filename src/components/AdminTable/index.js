@@ -14,9 +14,10 @@ import {
   Heading,
   Button,
   Main,
+  Pagination,
 } from 'grommet';
 import { deepMerge } from 'grommet/utils';
-import { debounce } from 'lodash-es';
+import { get as lodashGet, debounce } from 'lodash-es';
 import useFetch from 'use-http';
 
 import { buildURL } from 'Shared/fetch';
@@ -27,7 +28,8 @@ import grommetTheme from '../../grommetTheme';
 import ItemModal from './ItemModal';
 import DeleteModal from './DeleteModal';
 import DataTableWrapper from './DataTableWrapper';
-import Pagination from './Pagination';
+import DisableModal from './disableEnableModals/DisableModal';
+import EnableModal from './disableEnableModals/EnableModal';
 
 const theme = deepMerge(grommetTheme, {
   button: {
@@ -59,6 +61,7 @@ const AdminTable = ({
   pageSize = 20,
   minWidth = '1000px',
   serverPath,
+  deleteDisabled = false,
   columns: columnsProp,
   responseTransform,
 }) => {
@@ -68,6 +71,8 @@ const AdminTable = ({
   const [newModalOpen, setNewModalOpen] = useState();
   const [editModalOpen, setEditModalOpen] = useState();
   const [deleteModalOpen, setDeleteModalOpen] = useState();
+  const [disableModalOpen, setDisableModalOpen] = useState();
+  const [enableModalOpen, setEnableModalOpen] = useState();
   const [errorModalOpen, setErrorModalOpen] = useState();
   const [loadingDisableEnable, setLoadingDisableEnable] = useState();
   const [{ sortField, sortOrder }, setSort] = useState({});
@@ -88,20 +93,33 @@ const AdminTable = ({
   }, [page, pageSize, sortField, sortOrder, searchEntries]);
 
   const columns = useMemo(() => {
-    const cols = columnsProp.map(({ title, property, ...colProps }) => ({
-      header: <Text size="large">{title}</Text>,
-      render: function Cell(item) {
-        return (
-          <Text size="large" style={{ opacity: item.disabled ? '.3' : undefined }}>
-            {item[property]}
-          </Text>
-        );
-      },
-      search: true,
-      sort: true,
-      property,
-      ...colProps,
-    }));
+    const cols = columnsProp
+      .filter(({ hiddenOnTable }) => !hiddenOnTable)
+      .map(({
+        title,
+        property,
+        render: renderProp,
+        ...colProps
+      }) => ({
+        header: <Text size="large">{title}</Text>,
+        render: function Cell(item) {
+          return renderProp ? (
+            <div style={{ opacity: item.disabled ? '.5' : undefined }}>
+              {renderProp(item)}
+            </div>
+          ) : (
+            <div style={{ opacity: item.disabled ? '.5' : undefined }}>
+              <Text size="large">
+                {lodashGet(item, property)}
+              </Text>
+            </div>
+          );
+        },
+        search: true,
+        sort: true,
+        property,
+        ...colProps,
+      }));
 
     if (!selectDisabled) {
       cols.unshift({
@@ -141,7 +159,10 @@ const AdminTable = ({
   useEffect(() => {
     if (transformedData) {
       hadDataRef.current = true;
+      // eslint-disable-next-line no-underscore-dangle
+      setSelected(transformedData.find(({ _id }) => _id === selected?._id));
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [transformedData]);
 
   useEffect(() => {
@@ -185,9 +206,7 @@ const AdminTable = ({
       throw new Error(error || 'Something went wrong. Please try again.');
     }
 
-    const responseData = responseTransform(await get());
-    // eslint-disable-next-line no-underscore-dangle
-    setSelected(responseData?.find(({ _id }) => _id === selected._id));
+    await get();
     setLoadingDisableEnable(false);
   };
 
@@ -205,9 +224,7 @@ const AdminTable = ({
       throw new Error(error || 'Something went wrong. Please try again.');
     }
 
-    const responseData = responseTransform(await get());
-    // eslint-disable-next-line no-underscore-dangle
-    setSelected(responseData?.find(({ _id }) => _id === selected._id));
+    await get();
     setLoadingDisableEnable(false);
   };
 
@@ -223,7 +240,7 @@ const AdminTable = ({
 
   const onItemEdit = async (item) => {
     // eslint-disable-next-line no-underscore-dangle
-    await patch(`${selected._id}?v=${selected.__v}`, item);
+    await patch(`${selected._id}?v=${selected.__v || 0}`, item);
     if (!response.ok) {
       const { error } = response.data;
       throw new Error(error || 'Something went wrong. Please try again.');
@@ -274,18 +291,22 @@ const AdminTable = ({
               size="large"
               label="Enable"
               loading={loadingDisableEnable}
-              onClick={onRestore}
+              onClick={() => setEnableModalOpen(true)}
             />
           )}
 
-          <SecondaryButton
-            key="delete"
-            disabled={!selected}
-            size="large"
-            loading={!selected?.disabled && loadingDisableEnable}
-            label={selected?.disabled ? 'Delete' : 'Disable'}
-            onClick={selected?.disabled ? toggleDeleteModal : onDisable}
-          />
+          {(!deleteDisabled || !selected?.disabled) && (
+            <SecondaryButton
+              key="delete"
+              disabled={!selected}
+              size="large"
+              loading={!selected?.disabled && loadingDisableEnable}
+              label={selected?.disabled ? 'Delete' : 'Disable'}
+              onClick={selected?.disabled
+                ? toggleDeleteModal
+                : () => setDisableModalOpen(true)}
+            />
+          )}
 
           <Button
             secondary
@@ -320,27 +341,31 @@ const AdminTable = ({
 
         {!(error && !transformedData && !hadDataRef.current) && (
           <>
-            <Box overflow="auto">
+            <Box overflow="auto" border="bottom">
               <Grommet theme={theme} width={{ min: minWidth }}>
-                <DataTableWrapper
-                  columns={columns}
-                  loading={loading}
-                  data={transformedData}
-                  pageSize={pageSize}
-                  onSearch={onSearch}
-                  onSort={onSort}
-                  onClickRow={selectDisabled ? undefined : onRowClick}
-                />
+                <Box pad={{ bottom: 'small' }}>
+                  <DataTableWrapper
+                    columns={columns}
+                    loading={loading}
+                    data={transformedData}
+                    pageSize={pageSize}
+                    onSearch={onSearch}
+                    onSort={onSort}
+                    onClickRow={selectDisabled ? undefined : onRowClick}
+                  />
+                </Box>
               </Grommet>
             </Box>
 
             <Box align="end" pad={{ top: 'small' }} height={{ min: '36px' }}>
-              {/* TODO: replace with Grommet pagination when it gets released */}
-              <Pagination
-                onChange={setPage}
-                page={page}
-                totalPages={data?.pages ?? 0}
-              />
+              {data?.pages > 1 && (
+                <Pagination
+                  page={page}
+                  step={pageSize}
+                  numberItems={data?.total ?? 0}
+                  onChange={({ page: newPage }) => setPage(newPage)}
+                />
+              )}
             </Box>
           </>
         )}
@@ -372,6 +397,22 @@ const AdminTable = ({
           item={selected}
           onClose={toggleDeleteModal}
           onDelete={onDelete}
+        />
+      )}
+
+      {disableModalOpen && (
+        <DisableModal
+          entity={singularEntity}
+          onClose={() => setDisableModalOpen(false)}
+          onConfirm={onDisable}
+        />
+      )}
+
+      {enableModalOpen && (
+        <EnableModal
+          entity={singularEntity}
+          onClose={() => setEnableModalOpen(false)}
+          onConfirm={onRestore}
         />
       )}
 

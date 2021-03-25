@@ -11,7 +11,7 @@ const Description = ({ habitatId, description = '' }) => (
   <div className={style.desc}>
     <FontAwesomeIcon icon={faShieldCheck} size="2x" color="var(--turquoiseLight)" />
     <TextEditor
-      postToUrl={`/admin/habitats/${habitatId}`}
+      postToUrl={`/admin/habitats/${habitatId}/prop`}
       textProp="description"
       initialText={description}
       minLen={50}

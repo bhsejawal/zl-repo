@@ -24,7 +24,7 @@ const Menu = () => {
           label={<FontAwesomeIcon icon={faBars} />}
           items={[
             { label: 'Users', onClick: () => route('/admin/users') },
-            { label: 'Zoos', onClick: () => route('/admin/zoos') },
+            { label: 'Partners', onClick: () => route('/admin/partners') },
             { label: 'Habitats', onClick: () => route('/admin/habitats') },
           ]}
         />

@@ -10,10 +10,77 @@ import {
 } from 'grommet';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronDown, faTimes } from '@fortawesome/pro-solid-svg-icons';
-import { useMemo, useState } from 'preact/hooks';
-import { pick } from 'lodash-es';
+import { useEffect, useMemo, useState } from 'preact/hooks';
+import { pick, get } from 'lodash-es';
+
 import { PrimaryButton } from 'Components/Buttons';
-import { SELECT, TEXT } from './constants';
+import { SELECT, TEXT_AUTOCOMPLETE, TEXT } from './constants';
+
+// TODO: we should replace this with Select when Grommet issue is fixed
+const AutocompleteTextInput = ({
+  required,
+  postProperty,
+  value: valueProp,
+  selectValues,
+}) => {
+  const initialSuggestions = useMemo(() => selectValues.map(({ label }) => label), [selectValues]);
+  const [suggestions, setSuggestions] = useState(initialSuggestions);
+  const [error, setError] = useState();
+  const initialValue = useMemo(
+    () => selectValues.find(({ label }) => label === valueProp)?.value,
+    [],
+  );
+  const [mappedVal, setMappedVal] = useState(initialValue || '');
+  const [label, setLabel] = useState(valueProp);
+
+  const onChange = ({ target }) => {
+    setSuggestions(initialSuggestions.filter(
+      (v) => v.toLowerCase().includes(target.value.toLowerCase()),
+    ));
+    const { value: val } = selectValues
+      .find(({ label }) => label === target.value) || {};
+    setMappedVal(val || '');
+    setLabel(target.value);
+  };
+
+  const onAutocompleteSelect = (value) => {
+    const { value: val } = selectValues
+      .find(({ label }) => label === value) || {};
+    setMappedVal(val || '');
+    setLabel(value);
+  };
+
+  useEffect(() => {
+    if (!mappedVal && required) {
+      setError(true);
+    } else {
+      setError(false);
+    }
+  }, [mappedVal, required]);
+
+  return (
+    <div>
+      <TextInput
+        hidden
+        required={required}
+        name={postProperty}
+        value={mappedVal}
+      />
+      <TextInput
+        required={required}
+        value={label}
+        onChange={onChange}
+        onSuggestionSelect={({ suggestion }) => onAutocompleteSelect(suggestion)}
+        suggestions={suggestions}
+      />
+      {error && (
+        <Box pad="small">
+          <Text color="status-error">Invalid value. Please select an item from the list.</Text>
+        </Box>
+      )}
+    </div>
+  );
+};
 
 const ItemModal = ({
   item,
@@ -42,7 +109,7 @@ const ItemModal = ({
       ...values,
       [name]: value,
     });
-  }
+  };
 
   const onSubmit = async (evt) => {
     evt.preventDefault();
@@ -52,7 +119,9 @@ const ItemModal = ({
     }
 
     const formEntries = Array.from(new FormData(evt.target).entries())
-      .filter(([key]) => editableColumns.some(({ property }) => property === key));
+      .filter(([key]) => editableColumns.some(
+        ({ postProperty, property }) => (postProperty === key || property === key),
+      ));
     const itemData = Object.fromEntries(formEntries);
 
     try {
@@ -94,9 +163,14 @@ const ItemModal = ({
       </Box>
 
       <Form onSubmit={onSubmit}>
-        <Box pad={{ vertical: 'medium', horizontal: 'large' }}>
+        <Box
+          overflow="auto"
+          height={{ max: 'calc(100vh - 200px)' }}
+          pad={{ vertical: 'medium', horizontal: 'large' }}
+        >
           {editableColumns.map(({
             property,
+            postProperty,
             title,
             required = true,
             type = TEXT,
@@ -112,7 +186,7 @@ const ItemModal = ({
                 <TextInput
                   required={required}
                   name={property}
-                  value={values[property]}
+                  value={get(values, property)}
                   onChange={onInputChange}
                 />
               )}
@@ -126,8 +200,8 @@ const ItemModal = ({
                   >
                     {selectValues.map(({ label, value }, ind) => (
                       <option
-                        selected={values[property]
-                          ? value === values[property]
+                        selected={get(values, property)
+                          ? value === get(values, property)
                           : ind === 0}
                         value={value}
                       >
@@ -138,6 +212,15 @@ const ItemModal = ({
 
                   <FontAwesomeIcon icon={faChevronDown} color="var(--blue)" />
                 </div>
+              )}
+
+              {!editRender && type === TEXT_AUTOCOMPLETE && (
+                <AutocompleteTextInput
+                  postProperty={postProperty || property}
+                  required={required}
+                  selectValues={selectValues}
+                  value={get(values, property)}
+                />
               )}
 
               {editRender && editRender(values)}

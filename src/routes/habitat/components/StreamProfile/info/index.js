@@ -73,7 +73,7 @@ const Info = ({
       <div className={style.profileImgWrapper}>
         <ImageEditor
           initialImgUrl={profileImage}
-          postToUrl={`/admin/habitats/${habitatId}`}
+          postToUrl={`/admin/habitats/${habitatId}/prop`}
           imageProp="profileImage"
           editBtnPosition={{ right: '50px', top: '10px' }}
           constraints={{
@@ -103,7 +103,7 @@ const Info = ({
 
       <div>
         <TextEditor
-          postToUrl={`/admin/habitats/${habitatId}`}
+          postToUrl={`/admin/habitats/${habitatId}/prop`}
           textProp="animal"
           minLen={10}
           maxLen={80}
