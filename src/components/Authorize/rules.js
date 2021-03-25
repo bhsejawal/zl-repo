@@ -27,7 +27,7 @@ const rules = {
   guest: {
     static: ['checkout:plans'],
   },
-  viewer: {
+  user: {
     static: ['profile:edit', 'favorite:edit'],
     dynamic: {
       'habitat:view': isSubscriptionActive,
@@ -35,6 +35,9 @@ const rules = {
       'checkout:plans': () => !(isSubscriptionActive()),
       'subscription:cancel': isSubscriptionActive,
     },
+  },
+  vip: {
+    static: ['profile:edit', 'favorite:edit', 'habitat:view', 'map:view'],
   },
   partner: {
     static: ['habitat:view', 'map:view', 'profile:edit', 'favorite:edit'],

@@ -18,7 +18,7 @@ const initialState = {
   },
   email: null,
   username: null,
-  // Valid: [guest, viewer, partner, host, admin]
+  // Valid: [guest, user, vip, partner, host, admin]
   // Default value will be Guest once we go live
   role: undefined,
   // This needs to be the zooId ONLY for Partners
