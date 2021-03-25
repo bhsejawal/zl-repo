@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import { useEffect, useState } from 'preact/hooks';
 import { PrimaryButton } from 'Components/Buttons';
 import { updateSubscription } from '../../redux/actions';
+import { getDeviceType } from '../../helpers';
 
 import style from './style.scss';
 
@@ -16,6 +17,10 @@ const TimeBar = ({
 }) => {
   const [time, setTime] = useState(null);
   const isPlanPage = path === '/plans';
+
+  const isMobileDevice = getDeviceType() === 'phone';
+  const text = isMobileDevice ? 'to access your free trial.' : 'left in your free trial.';
+  const ctaText = time === null && isPlanPage ? 'Select a pass to continue exploring!' : 'Want more?';
 
   useEffect(() => {
     if (validUntil) {
@@ -51,7 +56,7 @@ const TimeBar = ({
     return () => clearTimeout(timeout);
   }, [isTrial, time, updateSubscriptionAction, validUntil]);
 
-  if (!isTrial) {
+  if (!isTrial || path === 'signup') {
     return null;
   }
 
@@ -63,16 +68,27 @@ const TimeBar = ({
       align="center"
       justify="center"
     >
-      <Text size="20px" className={style.text}>
-        <span>You Have &nbsp;</span>
-        <Text size="25px" color="#f38e25">{time ? time.toISOString().slice(14, 19) : '00:00'}</Text>
-        <span>&nbsp; left in your free trial.&nbsp;</span>
-        {
-          time === null && isPlanPage
-            ? <span>Select a pass to continue exploring!</span>
-            : <span>Want more?</span>
-        }
-        {!(isPlanPage && !time) && (
+      <Text size="16px" className={style.text}>
+        {((time && isMobileDevice) || !isMobileDevice) && (
+          <>
+            <span>You Have &nbsp;</span>
+            <Text size="20px" weight={700}>
+              {time ? time.toISOString().slice(14, 19) : '00:00'}
+              &nbsp;
+            </Text>
+            <span>{text}</span>
+          </>
+        )}
+        {!time && isMobileDevice && (
+          <Text size="16px">Check your inbox to explore Zoolife</Text>
+        )}
+        {!isMobileDevice && (
+          <span>
+            &nbsp;
+            {ctaText}
+          </span>
+        )}
+        {!(isPlanPage && !time) && !isMobileDevice && (
           <PrimaryButton
             margin={{left: '15px'}}
             size="small"

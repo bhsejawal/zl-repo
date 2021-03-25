@@ -8,6 +8,7 @@ import useFetch, { Provider as UseFetchProvider } from 'use-http';
 import { setUserData, setUserSessionChecked, unsetUserData } from '../../redux/actions';
 import { hasPermission } from '.';
 import { authRedirect } from './helpers';
+import { getDeviceType } from '../../helpers';
 
 import style from './style.scss';
 
@@ -17,6 +18,8 @@ const AuthGuard = ({
   active,
   sessionChecked,
   adminOnly,
+  guestOnly,
+  phoneOnly,
   // display fallback component if user is not authorized
   fallback,
   children,
@@ -29,6 +32,7 @@ const AuthGuard = ({
   ...props
 }) => {
   const [error, setError] = useState();
+
   const authorized = useMemo(
     () => hasPermission(permission),
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -44,12 +48,14 @@ const AuthGuard = ({
       response: async ({ response }) => {
         if (response.status === 401) {
           unsetUserDataAction();
-          authRedirect();
+          if (!guestOnly) {
+            authRedirect();
+          }
         }
         return response;
       },
     },
-  }), [unsetUserDataAction]);
+  }), [unsetUserDataAction, guestOnly]);
 
   useEffect(() => {
     const loadUserData = async () => {
@@ -59,8 +65,10 @@ const AuthGuard = ({
         if (response.ok) {
           setUserDataAction(response.data);
         } else if (response.status === 401) {
-          authRedirect();
           unsetUserDataAction();
+          if (!guestOnly) {
+            authRedirect();
+          }
         } else {
           setError(true);
           setSessionChechedAction();
@@ -76,10 +84,14 @@ const AuthGuard = ({
     setSessionChechedAction,
     setUserDataAction,
     unsetUserDataAction,
+    guestOnly,
   ]);
 
-  if ((!adminOnly && !permission) || (adminOnly && permission)) {
-    throw new Error('AuthGuard expects either "adminOnly" or "permission" prop.');
+  if ((!adminOnly && !permission && !guestOnly && !phoneOnly)
+  || (adminOnly && permission && !guestOnly && !phoneOnly)) {
+    throw new Error('AuthGuard expects either "adminOnly", "permission", "phoneOnly", "guestOnly" prop.');
+  } else if (adminOnly && guestOnly) {
+    throw new Error('AuthGuard should receive either Admin Only OR Guest Only');
   }
 
   if (error) {
@@ -95,8 +107,12 @@ const AuthGuard = ({
 
   const mappedChildren = toChildArray(children)
     .map((child) => child && cloneElement(child, props));
+
   if ((sessionChecked && role === 'admin' && adminOnly)
-    || (sessionChecked && !adminOnly && authorized)) {
+    || (sessionChecked && !adminOnly && authorized)
+    || (sessionChecked && role === 'guest' && guestOnly)
+    || (sessionChecked && phoneOnly && getDeviceType() === 'phone' && authorized)
+  ) {
     return (
       <UseFetchProvider options={useFetchOptions}>
         {mappedChildren}

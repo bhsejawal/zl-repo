@@ -20,7 +20,7 @@ const initialState = {
   username: null,
   // Valid: [guest, user, vip, partner, host, admin]
   // Default value will be Guest once we go live
-  role: undefined,
+  role: null,
   // This needs to be the zooId ONLY for Partners
   // IT needs to be undefined for Hosts
   zooId: 'torontozoo',
@@ -71,11 +71,11 @@ export default (state = initialState, { type, payload }) => {
   if (type === UNSET_USER_DATA) {
     return {
       ...state,
-      role: initialState.role,
+      role: 'guest',
       permissions: initialState.permissions,
       username: initialState.username,
       logged: initialState.logged,
-      sessionChecked: false,
+      sessionChecked: true,
     }
   }
 

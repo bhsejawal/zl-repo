@@ -1,38 +1,51 @@
 import { h } from 'preact';
-import { useEffect, useState } from 'preact/hooks';
+import { useState, useContext } from 'preact/hooks';
 import { route } from 'preact-router';
 import { connect } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faEyeSlash } from "@fortawesome/pro-solid-svg-icons";
-import { Heading} from 'grommet';
+import {
+  Heading,
+  Image,
+  Box,
+  Text,
+  CheckBox,
+  Anchor,
+  ResponsiveContext,
+} from 'grommet';
 import { buildURL, post } from 'Shared/fetch';
 import classnames from 'classnames';
-import SocialLoginButton from 'Components/SocialLoginButton';
+import SocialLoginBar from 'Components/SocialLoginBar';
+import logo from 'Assets/zoolife.svg';
+import Button from 'Components/Button';
 
 import { setUserData } from '../../redux/actions';
-import { emailRegex, passwordRegex } from '../../helpers';
-import Button from '../../components/Button';
+import { emailRegex, passwordRegex, getDeviceType } from '../../helpers';
+
+import Layout from '../../layouts/LoginSignup';
 
 import style from '../login/style.scss';
 
-const Signup = ({ logged, setUserDataAction }) => {
+const TERMS_VERSION = process.env.PREACT_APP_TERMS_VERSION ?? 1;
+
+const Signup = ({ setUserDataAction }) => {
+  const size = useContext(ResponsiveContext);
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
   const [serverError, setServerError] = useState();
   const [emailError, setEmailError] = useState();
   const [passwordError, setPasswordError] = useState();
   const [showPassword, setShowPassword] = useState(false);
+  const [isTermsAccepted, setIsTermsAccepted] = useState(false);
+  const [termsError, setTermsError] = useState();
 
-  useEffect(() => {
-    if (logged) {
-      route('/', true);
-    }
-  }, [logged]);
+  const isLargeScreen = size === 'large';
 
   const onSubmit = async (evt) => {
     evt.preventDefault();
     setPasswordError();
     setEmailError();
+    setTermsError();
 
     if (!email.match(emailRegex)) {
       setEmailError('Invalid email');
@@ -44,14 +57,26 @@ const Signup = ({ logged, setUserDataAction }) => {
       return;
     }
 
+    if (!isTermsAccepted) {
+      setTermsError('Please agree to Zoolife\'s Terms & Privacy to continue.');
+      return;
+    }
+
     try {
       const url = buildURL('/users/signup');
+      const origin = getDeviceType();
+      const termsVersion = TERMS_VERSION;
       const {
         user,
         passwordError,
         emailError,
         error,
-      } = await post(url, { email, password });
+      } = await post(url, {
+        email,
+        password,
+        origin,
+        termsVersion,
+      });
 
       if (passwordError) {
         setPasswordError(error);
@@ -62,7 +87,13 @@ const Signup = ({ logged, setUserDataAction }) => {
       } else if (user) {
         setServerError();
         setUserDataAction(user);
-        route('/profile', true);
+
+        if (origin === 'phone') {
+          route('/mobile', true);
+        } else {
+          route('/profile', true);
+        }
+
         try {
           localStorage.setItem('returningUser', true);
         } catch (err) {
@@ -91,68 +122,103 @@ const Signup = ({ logged, setUserDataAction }) => {
   };
 
   return (
-    <div className={style.login}>
-      <div className={style.image}>
-        <img src="https://s3.ca-central-1.amazonaws.com/zl.brizi.tech/assets/LoginMap.png" alt="" />
-      </div>
-      <div className={style.formWrapper}>
-        <Heading margin={{top: '30px', bottom: '5px'}} level="4" color="var(--grey)">Step 1 of 2</Heading>
-        <Heading margin={{top: '0', bottom: '32px'}} level="1">
-          <span>Try</span>
-          <img src="https://s3.ca-central-1.amazonaws.com/zl.brizi.tech/assets/loginZoolifeLogo.svg" alt="" />
-        </Heading>
-        <form onSubmit={onSubmit}>
-          <div className={style.inputContainer}>
-            <span className={style.label}>Your Email:</span>
-            <div className={style.inputWrapper}>
-              <input
-                name="email"
-                placeholder="Email"
-                value={email}
-                onChange={onEmailChange}
-                className={classnames({[style.errorBorder]: emailError})}
+    <Layout>
+      <>
+        {isLargeScreen && (
+          <Heading margin={{top: '30px', bottom: '5px'}} level="4" color="var(--grey)">Step 1 of 2</Heading>
+        )}
+        <Box direction="row" align="center" height="40px" margin={{ top: !isLargeScreen ? 'xlarge' : ''}}>
+          <Text size="xxlarge" responsive>
+            Try
+          </Text>
+          <Box pad={{ horizontal: '10px'}} justify="center">
+            <Image src={logo} alt="" />
+          </Box>
+          <Text size="xxlarge" responsive>
+            free
+          </Text>
+        </Box>
+        <Box fill="horizontal" margin={{ top: 'medium' }}>
+          <form onSubmit={onSubmit}>
+            <div className={style.inputContainer}>
+              <span className={style.label}>Your Email:</span>
+              <div className={style.inputWrapper}>
+                <input
+                  name="email"
+                  placeholder="Email"
+                  value={email}
+                  onChange={onEmailChange}
+                  className={classnames({[style.errorBorder]: emailError})}
+                />
+              </div>
+              <div className={classnames(style.errorSection, {[style.active]: emailError})}>
+                {emailError}
+              </div>
+            </div>
+            <div className={style.inputContainer}>
+              <span className={style.label}>Your Password:</span>
+              <div className={style.inputWrapper}>
+                <input
+                  type={showPassword ? 'text' : 'password'}
+                  name="password"
+                  placeholder="Password"
+                  value={password}
+                  onChange={onPasswordChange}
+                />
+                <button type="button" onClick={() => setShowPassword(!showPassword)}>
+                  <FontAwesomeIcon icon={showPassword ? faEye : faEyeSlash } />
+                </button>
+              </div>
+              <div
+                className={classnames(style.errorSection, {
+                  [style.active]: passwordError || serverError,
+                })}
+              >
+                {serverError || 'Use a minimum of 8 characters with at least 1 number and 1 character'}
+              </div>
+            </div>
+            <Box margin={{ top: 'medium' }} className={classnames("customCheckbox", { error: termsError })}>
+              <CheckBox
+                label={(
+                  <Box>
+                    <Text>
+                      I agree to Zoolife&apos;s&nbsp;
+                      <Anchor>Terms</Anchor>
+                      &nbsp;&amp;&nbsp;
+                      <Anchor>Privacy</Anchor>
+                    </Text>
+                  </Box>
+                )}
+                checked={isTermsAccepted}
+                onChange={(event) => setIsTermsAccepted(event.target.checked)}
               />
-            </div>
-            <div className={classnames(style.errorSection, {[style.active]: emailError})}>
-              {emailError}
-            </div>
-          </div>
-          <div className={style.inputContainer}>
-            <span className={style.label}>Your Password:</span>
-            <div className={style.inputWrapper}>
-              <input
-                type={showPassword ? 'text' : 'password'}
-                name="password"
-                placeholder="Password"
-                value={password}
-                onChange={onPasswordChange}
-              />
-              <button type="button" onClick={() => setShowPassword(!showPassword)}>
-                <FontAwesomeIcon icon={showPassword ? faEye : faEyeSlash } />
-              </button>
-            </div>
-            <div
-              className={classnames(style.errorSection, {
-                [style.active]: passwordError || serverError,
-              })}
-            >
-              {serverError || 'Use a minimum of 8 characters with at least 1 number and 1 character'}
-            </div>
-          </div>
-          <Button className={style.submitBtn} submit variant="primary">Submit</Button>
-          <br />
+              <div className={classnames(style.errorSection, {[style.active]: termsError})}>
+                {termsError}
+              </div>
+            </Box>
+            <Button submit variant="primary">Get Started!</Button>
+            <br />
+          </form>
+        </Box>
+        <Box>
           <div className={style.separator}>
             <hr />
             <span>or</span>
             <hr />
           </div>
-        </form>
-        <div className={style.socialLogin}>
-          <SocialLoginButton variant="facebook" />
-          <SocialLoginButton variant="google" />
-        </div>
-      </div>
-    </div>
+        </Box>
+        <SocialLoginBar />
+        <Box margin={{ top: 'medium' }}>
+          <Text>
+            By using social signup, I agree to&nbsp;
+            <Anchor>Terms</Anchor>
+            &nbsp;&amp;&nbsp;
+            <Anchor>Privacy</Anchor>
+          </Text>
+        </Box>
+
+      </>
+    </Layout>
   );
 };
 

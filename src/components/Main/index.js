@@ -1,4 +1,4 @@
-import { Router } from 'preact-router';
+import { Router, route } from 'preact-router';
 import { Main as MainContainer } from 'grommet';
 import { useState } from 'preact/hooks';
 import { connect } from 'react-redux';
@@ -22,27 +22,52 @@ import Account from '../../routes/account';
 import NotFound from '../../routes/notFound';
 import DesignSystem from '../../routes/designSystem';
 import Habitat from '../../routes/habitat';
+import RedirectPage from '../../routes/redirectPage';
 import CancelSubscription from '../../routes/cancelSubscription';
+
+import { getDeviceType } from '../../helpers';
 
 import style from './style.scss';
 
+const mobileRoutes = ['/', '/signup', '/mobile', '/login']
 const Main = ({ onRouteChange, isTrial }) => {
   const [path, setPath] = useState();
 
   const routerChangeHandler = (props) => {
     const { url } = props;
-    onRouteChange(props);
-    setPath(url);
+
+    if (getDeviceType() === 'phone' && !mobileRoutes.includes(url)) {
+      route('/mobile', true);
+      setPath('/mobile');
+    } else {
+      onRouteChange(props);
+      setPath(url);
+    }
   }
 
   return (
-    <MainContainer className={classnames(style.main, {[style.timeBarSpace]: isTrial})} width={{ max: "1650px" }} margin={{ horizontal: 'auto' }}>
+    <MainContainer
+      className={classnames(style.main, {[style.timeBarSpace]: isTrial})}
+      width={{ max: "1650px", min: "350px" }}
+      margin={{ horizontal: 'auto' }}
+    >
       <Router onChange={routerChangeHandler}>
         <Home path="/" exact />
-        <Signup path="/signup" title="Sign Up" />
-        <Login path="/login" title="Log In" />
-        <Login path="/login/token/:token" title="Log In" />
+
+        <AuthGuard path="/login" guestOnly title="Log In" redirectTo="/">
+          <Login />
+        </AuthGuard>
+
+        <AuthGuard path="/signup" guestOnly title="Sign In" redirectTo="/">
+          <Signup />
+        </AuthGuard>
+
+        <AuthGuard path="/login/token/:token" title="Log In" redirectTo="/">
+          <Login />
+        </AuthGuard>
+
         <PasswordReset path="/passwordReset" title="Reset Password" />
+
         <AuthGuard path="/plans" permission="checkout:plans" title="Plans">
           <Plans />
         </AuthGuard>
@@ -80,6 +105,10 @@ const Main = ({ onRouteChange, isTrial }) => {
 
         <AuthGuard path="/h/:zooName/:habitatSlug" permission="habitat:view" skipTitle redirectTo="/plans">
           <Habitat />
+        </AuthGuard>
+
+        <AuthGuard path="/mobile" phoneOnly title="Our animals are too big" redirectTo="/" permission="redirect:view">
+          <RedirectPage />
         </AuthGuard>
 
         <AuthGuard path="/cancelSubscription" permission="subscription:cancel" title="Cancel Subscritpion" redirectTo="/plans">

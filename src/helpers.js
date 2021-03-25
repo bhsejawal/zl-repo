@@ -16,6 +16,19 @@ export const passwordRegex = /^(?=.*[a-zA-Z])(?=.*[0-9])(?!.*\s).{8,50}$/gm;
 export const iOSDevice = () => !!navigator.platform.match(/iPhone|iPod|iPad/);
 export const androidDevice = () => !!navigator.userAgent.match(/Android/i);
 
+export const getDeviceType = () => {
+  const ua = navigator.userAgent;
+  if (/(tablet|ipad|playbook|silk)|(android(?!.*mobi))/i.test(ua)) {
+    return "tablet";
+  }
+
+  if (/Mobile|iP(hone|od)|Android|BlackBerry|IEMobile|Kindle|Silk-Accelerated|(hpw|web)OS|Opera M(obi|ini)/.test(ua)) {
+    return "phone";
+  }
+
+  return "desktop";
+};
+
 export const generateTitle = (part) => (part ? `${part} | Zoolife` : 'Zoolife');
 
 export const formatAge = (dateOfBirth) => formatDistanceToNow(parseISO(dateOfBirth))

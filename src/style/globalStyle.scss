@@ -164,3 +164,46 @@ a {
     border: 2px solid transparent;
   }
 }
+
+.customCheckbox {
+
+  &.error {
+
+    >label>div>div {
+      border-color: var(--redDark);
+    }
+  }
+
+
+  >label {
+    outline: none !important;
+    border-radius: 5px;
+
+    div>div {
+      background-color: #EBEBEB;
+      border-color: #EBEBEB;
+    }
+
+    &:hover {
+
+      div>div {
+        border-color: #5260DD !important;
+        background-color: white;
+
+      }
+    }
+
+    &[checked="true"] {
+
+      div > div {
+        background: #5260DD !important;
+        border-color: #5260DD;
+
+        svg {
+          stroke: white !important;
+          color: white !important;
+        }
+      }
+    }
+  }
+}

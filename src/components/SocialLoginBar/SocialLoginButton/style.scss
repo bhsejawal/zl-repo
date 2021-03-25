@@ -16,6 +16,16 @@
   align-items: center;
   text-decoration: none;
 
+  &.roundButton {
+    height: fit-content;
+    width: fit-content;
+    min-width: auto;
+
+    span {
+      display: none;
+    }
+  }
+
   img {
     width: 20px;
   }

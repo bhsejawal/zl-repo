@@ -23,24 +23,29 @@ const isSubscriptionActive = () => {
   return active;
 }
 
+const isTrial = () => {
+  const { user: { subscription: { productId } } } = store.getState();
+  return productId === 'TRIAL';
+}
+
 const rules = {
   guest: {
-    static: ['checkout:plans'],
+    static: ['checkout:plans', 'signup:view', 'login:view'],
   },
   user: {
-    static: ['profile:edit', 'favorite:edit'],
+    static: ['profile:edit', 'favorite:edit', 'redirect:view'],
     dynamic: {
       'habitat:view': isSubscriptionActive,
       'map:view': isSubscriptionActive,
-      'checkout:plans': () => !(isSubscriptionActive()),
+      'checkout:plans': isTrial,
       'subscription:cancel': isSubscriptionActive,
     },
   },
   vip: {
-    static: ['profile:edit', 'favorite:edit', 'habitat:view', 'map:view'],
+    static: ['profile:edit', 'favorite:edit', 'habitat:view', 'map:view', 'redirect:view'],
   },
   partner: {
-    static: ['habitat:view', 'map:view', 'profile:edit', 'favorite:edit'],
+    static: ['habitat:view', 'map:view', 'profile:edit', 'favorite:edit', 'redirect:view'],
     dynamic: {
       "zoo:edit-timezone": canEditZoo,
       "zoo:edit-location": canEditZoo,
@@ -57,7 +62,7 @@ const rules = {
     },
   },
   host: {
-    static: ['habitat:view', 'map:view', 'profile:edit', 'favorite:edit'],
+    static: ['habitat:view', 'map:view', 'profile:edit', 'favorite:edit', 'redirect:view'],
     dynamic: {
       "habitat:broadcast": canEditHabitat,
       "habitat:edit-stream": canEditHabitat,

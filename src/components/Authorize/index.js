@@ -5,10 +5,10 @@ import rules from "./rules";
 export const hasPermission = (action) => {
   const { user: { role } } = store.getState();
 
-  // other alternative is to have all roles as static
-  // on the rules file under admin
   if (role === 'admin') {
-    return true;
+    // Admin users should not see login and signup if they're logged in
+    // This avoid flashing content when checking for guestOnly role
+    return ['signup:view', 'login:view'].includes(role);
   }
 
   const permissions = rules[role];
