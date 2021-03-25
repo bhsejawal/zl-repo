@@ -2,6 +2,7 @@ import { createRef, h } from 'preact';
 import { connect } from 'react-redux';
 import {
   useCallback,
+  useEffect,
   useMemo,
   useReducer,
   useRef,
@@ -49,7 +50,7 @@ const emojiDropsReducer = (tabs, { type, payload = {} }) => {
     case ADD_TAB: {
       return [
         ...tabs,
-        { icon: '', items: [] },
+        { icon: '', items: ['', '', '', '', '', '', '', ''] },
       ]
     }
 
@@ -86,6 +87,13 @@ const EmojiDrop = ({
     () => (emojiDrops[activeTabInd] || {}),
     [emojiDrops, activeTabInd],
   );
+
+  useEffect(() => {
+    if (emojiDrops.length === 0) {
+      dispatch({ type: ADD_TAB });
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const tabMenuItems = useMemo(() => emojiDrops.map((_tab, ind) => ({
     label: `Emoji Tab ${ind + 1}`,
@@ -220,8 +228,8 @@ const EmojiDrop = ({
                 <ImageSelector
                   required
                   label={`Emoji ${ind + 1}`}
-                  url={emojiItems[ind] ?? ''}
-                  ref={emojiItemRefs[ind]}
+                  url={emojiItems?.[ind] ?? ''}
+                  ref={emojiItemRefs?.[ind]}
                   constraints={imageConstraints}
                   className={style.emojiIcon}
                   onChange={onEmojiItemChange(ind)}

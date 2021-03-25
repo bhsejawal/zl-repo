@@ -24,7 +24,7 @@ export const EmojiBasketNoRedux = ({
   const [basketInd, setBasketInd] = useState(0);
 
   const emojiItems = useMemo(
-    () => (emojis[basketInd]?.items || []),
+    () => (emojis[basketInd]?.items.filter((item) => !!item) || []),
     [basketInd, emojis],
   );
 
