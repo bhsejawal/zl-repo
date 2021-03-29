@@ -4,7 +4,7 @@ import classnames from 'classnames';
 import { connect } from 'react-redux';
 import { FormDown, FormUp } from 'grommet-icons';
 
-import Button from 'Components/Button';
+import { PrimaryButton, OutlineButton } from 'Components/Buttons';
 
 import { setAnimalFilter, toggleAnimalFilter } from '../../actions';
 
@@ -67,8 +67,8 @@ const AnimalFilter = ({
         />
         <hr className={style.divider} />
         <Box direction="row" justify="between">
-          <Button variant="outline" size="xs" onClick={onClearHandler}>Clear</Button>
-          <Button variant="secondary" size="xs" onClick={() => setAnimalFilterAction(selectedAnimals)}>Save</Button>
+          <OutlineButton onClick={onClearHandler} size="small" label="Clear" style={{minWidth: '50px', padding: '3px 10px'}} />
+          <PrimaryButton onClick={() => setAnimalFilterAction(selectedAnimals)} size="small" label="Save" style={{minWidth: '50px', padding: '3px 10px'}} />
         </Box>
       </Box>
     }

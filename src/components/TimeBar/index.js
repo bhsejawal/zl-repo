@@ -91,7 +91,7 @@ const TimeBar = ({
         {!(isPlanPage && !time) && !isMobileDevice && (
           <PrimaryButton
             margin={{left: '15px'}}
-            size="small"
+            size="medium"
             label={isPlanPage && time ? 'Back to Trial' : 'Select a Plan'}
             onClick={() => route(isPlanPage && time ? '/map' : '/plans')}
           />

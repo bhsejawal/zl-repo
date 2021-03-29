@@ -1,23 +1,53 @@
 .btn {
-  font-family: Avenir;
+  font-size: 16px;
   background-color: transparent;
   border: 0;
   cursor: pointer;
   border-bottom: 3px solid transparent;
-  color: #757575;
+  color: var(--grey);
   padding: 5px 0;
 
-  &:hover {
-    color: #535353;
-  }
-
+  &:hover,
   &:active {
-    color: #2E2D2D;
+    color: var(--charcoalLight);
   }
 
   &.active {
-    border-bottom: 3px solid var(--blue);
+    border-bottom-color: var(--blue);
     color: var(--blue);
+  }
+
+  &.active:not(.oneColor) {
+
+    &:nth-child(1) {
+      border-bottom-color: var(--blueMediumDark);
+      color: var(--blueMediumDark);
+    }
+
+    &:nth-child(2) {
+      border-bottom-color: var(--coral);
+      color: var(--coral);
+    }
+
+    &:nth-child(3) {
+      border-bottom-color: var(--moss);
+      color: var(--moss);
+    }
+
+    &:nth-child(4) {
+      border-bottom-color: var(--lavender);
+      color: var(--lavender);
+    }
+
+    &:nth-child(5) {
+      border-bottom-color: var(--mossMedium);
+      color: var(--mossMedium);
+    }
+
+    &:nth-child(6) {
+      border-bottom-color: var(--purple);
+      color: var(--purple);
+    }
   }
 }
 

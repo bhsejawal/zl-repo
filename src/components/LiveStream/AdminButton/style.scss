@@ -1,6 +1,6 @@
 $btn-size: 40px;
 
-.btn {
+.adminButton {
   position: absolute;
   top: 50%;
   right: 10px;
@@ -8,7 +8,7 @@ $btn-size: 40px;
   width: $btn-size;
   height: $btn-size;
   border-radius: 100%;
-  background-color: var(--blue);
+  background-color: var(--blueDark);
   display: flex;
   align-items: center;
   justify-content: center;

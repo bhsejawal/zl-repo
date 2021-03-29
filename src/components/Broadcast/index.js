@@ -19,7 +19,7 @@ import { connect } from 'react-redux';
 
 import { useWebRTCStream } from 'Components/LiveStream/hooks/useWebRTCStream';
 import RoundButton from 'Components/RoundButton';
-import Button from 'Components/Button';
+import { PrimaryButton } from 'Components/Buttons';
 import PreviewTag from './PreviewTag';
 import LiveTag from './LiveTag';
 
@@ -187,15 +187,13 @@ const Broadcast = ({ hostStreamKey }) => {
               </Box>
             </Box>
             <Box margin={{ top: "xsmall" }} pad={{ horizontal: "small" }} basis="2/3" alignSelf="end">
-              <Button
-                variant="primary"
-                size="sm"
+              <PrimaryButton
+                size="medium"
+                label={`${isBroadcasting ? 'End Stream' : 'Go Live'}`}
                 onClick={() => toggleBroadcast(!isBroadcasting)}
                 className={isBroadcasting ? style.online : style.offline}
                 disabled={!selectedAudioDevice || !selectedVideoDevice}
-              >
-                {`${isBroadcasting ? 'End Stream' : 'Go Live'}`}
-              </Button>
+              />
             </Box>
           </Box>
         </Drop>

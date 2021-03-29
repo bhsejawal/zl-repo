@@ -1,6 +1,6 @@
 .liveTalktBar {
   position: relative;
-  background: var(--turquoise);
+  background: var(--hunterGreenMediumLight);
 }
 
 .liveTalkExpandButton {
@@ -10,12 +10,17 @@
   display: flex;
   justify-content: space-between;
   color: white;
-  padding: 10px 10px 5px 22px;
-  margin-bottom: 5px;
+  padding: 10px 4px 5px;
+  margin-bottom: 6px;
   font-size: 12px;
   line-height: 18px;
   align-items: center;
   cursor: pointer;
+  white-space: nowrap;
+
+  svg {
+    font-size: 8px;
+  }
 }
 
 .content {
@@ -47,9 +52,6 @@
     }
 
     span {
-      font-weight: 500;
-      font-size: 8px;
-      line-height: 19px;
       margin-top: 5px;
       color: white;
     }
@@ -61,7 +63,7 @@
 }
 
 .expandBar {
-  background: var(--turquoise);
+  background: var(--hunterGreenMediumLight);
   position: absolute;
   left: 0;
   top: 0;

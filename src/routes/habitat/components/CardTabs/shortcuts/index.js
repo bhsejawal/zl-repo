@@ -15,6 +15,7 @@ const Shortcuts = ({ available = [], active, onClick }) => (
           active={active === tag}
           value={tag}
           onClick={onClick}
+          oneColor
         >
           {tag}
         </ToggleButton>
@@ -28,7 +29,7 @@ const Shortcuts = ({ available = [], active, onClick }) => (
     {/* hidden placeholder just to occupy space and prevent page jumping */}
     {available.length === 0 && (
       <ToggleButton
-        className={classnames(style.shortcutBtn, style.disabled)}
+        className={classnames(style.shortcutBtn, style.disabled )}
         value=""
         onClick={onClick}
       >

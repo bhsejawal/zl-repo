@@ -9,9 +9,13 @@ const ToggleButton = ({
   value,
   className,
   onClick,
+  oneColor,
 }) => (
   <button
-    className={classnames(style.btn, className, { [style.active]: active })}
+    className={classnames(style.btn, className, {
+      [style.active]: active,
+      [style.oneColor]: oneColor,
+    })}
     type="button"
     data-value={value}
     onClick={onClick}

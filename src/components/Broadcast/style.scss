@@ -4,11 +4,12 @@
 
 .online,
 .online:hover {
-  background: #F5696B !important;
+  background: var(--red) !important;
+  color: white;
 }
 
 .offline {
-  background: #24412B;
+  background: var(--lightGrey);
 }
 
 input,

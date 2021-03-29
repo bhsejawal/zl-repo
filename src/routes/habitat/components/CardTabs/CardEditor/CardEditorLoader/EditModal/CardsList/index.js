@@ -19,7 +19,7 @@ import OriginAndHabitatCard from 'Cards/OriginAndHabitatCard';
 import AnimalBodyCard from 'Cards/AnimalBodyCard';
 import QuizCard from 'Cards/QuizCard';
 
-import { SecondaryButton } from 'Components/Buttons';
+import { PrimaryButton } from 'Components/Buttons';
 import {
   tag as singleIconCardTag,
   type as singleIconCardType,
@@ -163,16 +163,14 @@ const CardsList = ({ activeTab, onContinue }) => {
       <Heading textAlign="center" alignSelf="center" margin={{ top: '0', bottom: '0' }} level="2">
         Add Card
       </Heading>
-      <Text size="16px" textAlign="center" margin="middle">
-        Select a template to customize.
-      </Text>
+      <Text size="xlarge" textAlign="center">Select a template to customize.</Text>
 
       <Box flex="grow" width={{ max: '1190px' }}>
         <List ref={listRef}>
           {activeTab === INFO && (
             // eslint-disable-next-line jsx-a11y/click-events-have-key-events
             <div className={style.item} role="button" tabIndex="0" onClick={onSingleIconCardClick}>
-              <Text size="20px" margin="small" textAlign="center">Single Icon</Text>
+              <Text size="xlarge" margin="small" textAlign="center">Single Icon</Text>
               {/* eslint-disable-next-line react/jsx-props-no-spreading */}
               <SingleIconCard {...singleIconCardData} tag={singleIconCardTag} />
               <Box pad="small">
@@ -184,7 +182,7 @@ const CardsList = ({ activeTab, onContinue }) => {
           {activeTab === INFO && (
             // eslint-disable-next-line jsx-a11y/click-events-have-key-events
             <div className={style.item} role="button" tabIndex="0" onClick={onThreeIconsCardClick}>
-              <Text size="20px" margin="small" textAlign="center">Three Icons</Text>
+              <Text size="xlarge" margin="small" textAlign="center">Three Icons</Text>
               {/* eslint-disable-next-line react/jsx-props-no-spreading */}
               <ThreeIconsCard {...threeIconsCardData} tag={threeIconsCardTag} />
               <Box pad="small">
@@ -196,7 +194,7 @@ const CardsList = ({ activeTab, onContinue }) => {
           {activeTab === INFO && (
             // eslint-disable-next-line jsx-a11y/click-events-have-key-events
             <div className={style.item} role="button" tabIndex="0" onClick={onFourIconsCardClick}>
-              <Text size="20px" margin="small" textAlign="center">Four Icons</Text>
+              <Text size="xlarge" margin="small" textAlign="center">Four Icons</Text>
               {/* eslint-disable-next-line react/jsx-props-no-spreading */}
               <FourIconsCard {...fourIconsCardData} tag={fourIconsCardTag} />
               <Box pad="small">
@@ -208,7 +206,7 @@ const CardsList = ({ activeTab, onContinue }) => {
           {activeTab === MEET && (
             // eslint-disable-next-line jsx-a11y/click-events-have-key-events
             <div className={style.item} role="button" tabIndex="0" onClick={onAnimalProfileCardClick}>
-              <Text size="20px" margin="small" textAlign="center">Animal Profile</Text>
+              <Text size="xlarge" margin="small" textAlign="center">Animal Profile</Text>
               {/* eslint-disable-next-line react/jsx-props-no-spreading */}
               <AnimalProfileCard {...animalProfileCardData} tag={animalProfileCardTag} />
               <Box pad="small">
@@ -220,7 +218,7 @@ const CardsList = ({ activeTab, onContinue }) => {
           {activeTab === INFO && (
             // eslint-disable-next-line jsx-a11y/click-events-have-key-events
             <div className={style.item} role="button" tabIndex="0" onClick={onConservationCardClick}>
-              <Text size="20px" margin="small" textAlign="center">Conservation</Text>
+              <Text size="xlarge" margin="small" textAlign="center">Conservation</Text>
               {/* eslint-disable-next-line react/jsx-props-no-spreading */}
               <ConservationCard {...conservationCardData} tag={conservationCardTag} />
               <Box pad="small">
@@ -232,7 +230,7 @@ const CardsList = ({ activeTab, onContinue }) => {
           {(activeTab === INFO || activeTab === MEET) && (
             // eslint-disable-next-line jsx-a11y/click-events-have-key-events
             <div className={style.item} role="button" tabIndex="0" onClick={onTwoVideosCardClick}>
-              <Text size="20px" margin="small" textAlign="center">Two Videos</Text>
+              <Text size="xlarge" margin="small" textAlign="center">Two Videos</Text>
               {/* eslint-disable-next-line react/jsx-props-no-spreading */}
               <TwoVideosCard {...twoVideosCardData} tag={twoVideosCardTag} />
               <Box pad="small">
@@ -244,7 +242,7 @@ const CardsList = ({ activeTab, onContinue }) => {
           {/* this type of card is available on all tabs */}
           {/* eslint-disable-next-line jsx-a11y/click-events-have-key-events */}
           <div className={style.item} role="button" tabIndex="0" onClick={onSingleVideoCardClick}>
-            <Text size="20px" margin="small" textAlign="center">Single Video</Text>
+            <Text size="xlarge" margin="small" textAlign="center">Single Video</Text>
             {/* eslint-disable-next-line react/jsx-props-no-spreading */}
             <SingleVideoCard {...singleVideoCardData} tag={singleVideoCardTag} />
             <Box pad="small">
@@ -255,7 +253,7 @@ const CardsList = ({ activeTab, onContinue }) => {
           {activeTab === INFO && (
             // eslint-disable-next-line jsx-a11y/click-events-have-key-events
             <div className={style.item} role="button" tabIndex="0" onClick={onOriginAndHabitatCardClick}>
-              <Text size="20px" margin="small" textAlign="center">Origin And Habitat</Text>
+              <Text size="xlarge" margin="small" textAlign="center">Origin And Habitat</Text>
               {/* eslint-disable-next-line react/jsx-props-no-spreading */}
               <OriginAndHabitatCard {...originAndHabitatCardData} tag={originAndHabitatCardTag} />
               <Box pad="small">
@@ -267,7 +265,7 @@ const CardsList = ({ activeTab, onContinue }) => {
           {activeTab === BODY && (
             // eslint-disable-next-line jsx-a11y/click-events-have-key-events
             <div className={style.item} role="button" tabIndex="0" onClick={onAnimalBodyCardClick}>
-              <Text size="20px" margin="small" textAlign="center">Animal Body</Text>
+              <Text size="xlarge" margin="small" textAlign="center">Animal Body</Text>
               {/* eslint-disable-next-line react/jsx-props-no-spreading */}
               <AnimalBodyCard {...animalBodyCardData} tag={animalBodyCardTag} />
               <Box pad="small">
@@ -279,7 +277,7 @@ const CardsList = ({ activeTab, onContinue }) => {
           {activeTab === QUIZ && (
             // eslint-disable-next-line jsx-a11y/click-events-have-key-events
             <div className={style.item} role="button" tabIndex="0" onClick={onQuizCardClick}>
-              <Text size="20px" margin="small" textAlign="center">Quiz</Text>
+              <Text size="xlarge" margin="small" textAlign="center">Quiz</Text>
               {/* eslint-disable-next-line react/jsx-props-no-spreading */}
               <QuizCard {...quizCardData} />
               <Box pad="small">
@@ -291,7 +289,7 @@ const CardsList = ({ activeTab, onContinue }) => {
       </Box>
 
       <Box border="top" pad="medium" align="center">
-        <SecondaryButton
+        <PrimaryButton
           disabled={!selectedType}
           label="Continue"
           onClick={onContinueBtnClick}

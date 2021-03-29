@@ -75,7 +75,7 @@ const Schedule = ({ setFilterOptionsAction }) => {
             <Box flex="grow">
               <Box
                 flex="grow"
-                style={{ background: '#09474A'}}
+                style={{ background: 'var(--hunterGreenMediumLight)'}}
                 pad={{ horizontal: 'xlarge', vertical: 'medium' }}
                 align="center"
               >

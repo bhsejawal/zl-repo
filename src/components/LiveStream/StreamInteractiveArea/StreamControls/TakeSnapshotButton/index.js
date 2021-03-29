@@ -20,8 +20,8 @@ const TakeSnapshotButton = () => {
     <div className={style.takeSnapshotContainer}>
       <RoundButton
         onClick={clickHandler}
-        width="35"
-        backgroundColor="#76A6F2"
+        width="36"
+        backgroundColor="var(--blueDark)"
         color="white"
       >
         <FontAwesomeIcon icon={faCamera} />

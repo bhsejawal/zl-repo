@@ -3,12 +3,12 @@ $cardWidth: 240px;
 .card {
   display: block;
   width: $cardWidth;
-  height: 140px;
+  min-height: 140px;
+  height: min-content;
   margin: auto;
 
   .wrapper {
     width: $cardWidth;
-    height: 140px;
     background-color: white;
     border-radius: 5px;
     display: flex;
@@ -96,7 +96,7 @@ $cardWidth: 240px;
   .bottomSection {
     position: absolute;
     padding: 5px 15px;
-    background-color: var(--turquoiseLight);
+    background-color: var(--hunterGreenMediumLight);
     font-weight: 500;
     font-size: 10px;
     line-height: 16px;

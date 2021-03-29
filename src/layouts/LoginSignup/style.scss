@@ -50,7 +50,7 @@
       bottom: 0;
       background: transparent;
       border: 0;
-      color: #757575;
+      color: var(--grey);
       font-size: 22px;
       width: 40px;
       padding: 0;
@@ -72,7 +72,7 @@
     }
 
     &.errorBorder {
-      border-color: var(--redDark);
+      border-color: var(--red);
     }
   }
 }
@@ -89,7 +89,7 @@
   }
 
   &.active {
-    color: var(--redDark);
+    color: var(--red);
   }
 }
 

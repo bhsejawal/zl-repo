@@ -25,8 +25,8 @@ const Plans = () => {
         direction="column"
       >
         <Box
-          fill
-          basis="full"
+          height={{ min: 'unset' }}
+          flex="grow"
           background={{
             image: `url(${background})`,
             size: 'contain',

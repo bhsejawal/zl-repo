@@ -6,18 +6,20 @@ import style from './style.scss';
 
 const getRandomColor = () => {
   const borderColors = [
-    '--oceanBlue',
-    '--blue',
-    '--lightBlue',
-    '--redDark',
-    '--pink',
-    '--lightPink',
-    '--deepPink',
-    '--brightPink',
-    '--deepCoral',
-    '--coral',
-    '--deepYellow',
-    '--yellow',
+    '--blueMediumLight',
+    '--coralLight',
+    '--lavenderLight',
+    '--mossLight',
+    '--hunterGreenLight',
+    '--blueMediumDark',
+    '--purpleMedium',
+    '--mossMedium',
+    '--hunterGreenMediumLight',
+    '--oliveMedium',
+    '--blueLight',
+    '--purpleLight',
+    '--coralMedium',
+    '--olive',
   ];
 
   return borderColors[Math.floor(Math.random() * borderColors.length)];
@@ -25,11 +27,11 @@ const getRandomColor = () => {
 
 const getColor = (ind) => {
   const colors = [
-    '--yellow',
-    '--sage',
-    '--lightBlue',
-    '--pink',
-    '--coral',
+    '--blueMediumLight',
+    '--coralLight',
+    '--lavenderLight',
+    '--mossLight',
+    '--hunterGreenLight',
   ];
 
   return ind < colors.length ? colors[ind] : getRandomColor();
@@ -46,13 +48,17 @@ const Member = ({
 
   return (
     <div className={style.member}>
-      <img
-        className={style.profileImg}
-        src={profileImg}
-        alt={name}
-        style={{ borderColor: `var(${color})` }}
-        onLoad={onLoad}
-      />
+      <div className={style.imageWrapper} style={{ borderColor: `var(${color})` }}>
+        <div>
+          <img
+            className={style.profileImg}
+            src={profileImg}
+            alt={name}
+            onLoad={onLoad}
+          />
+        </div>
+      </div>
+
       <p className={style.text}>
         {name}
         ,

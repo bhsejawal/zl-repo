@@ -99,7 +99,7 @@ const Favorite = () => {
         <Box
           wrap
           pad={{ horizontal: 'large', vertical: 'medium' }}
-          background="var(--turquoise)"
+          background="var(--hunterGreenMediumLight)"
           flex="grow"
           direction="row"
           justify={width < 850 ? 'center' : 'start' }

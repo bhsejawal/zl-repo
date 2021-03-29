@@ -21,14 +21,14 @@ import style from './style.scss';
 
 const tabsTheme = {
   tab: {
-    active: { color: '#507EDE' },
-    hover: { color: '#757575' },
-    color: '#757575',
-    disabled: { color: '#507EDE' },
+    active: { color: 'var(--blueMediumDark)' },
+    hover: { color: 'var(--grey)' },
+    color: 'var(--grey)',
+    disabled: { color: 'var(--blueMediumDark)' },
     border: {
       color: 'transparent',
-      active: { color: '#507EDE' },
-      hover: { color: '#757575' },
+      active: { color: 'var(--blueMediumDark)' },
+      hover: { color: 'var(--grey)' },
     },
   },
 };

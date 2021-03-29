@@ -16,7 +16,7 @@
   z-index: -1;
   position: absolute;
   content: "Current Pass";
-  background-color: #477652;
+  background-color: var(--hunterGreenMediumLight);
   height: calc(100% + 24px);
   width: calc(100% + 12px);
   padding-top: 2px;

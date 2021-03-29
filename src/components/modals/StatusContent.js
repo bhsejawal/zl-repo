@@ -35,7 +35,7 @@ const StatusContent = ({ type = 'success', text, onClose }) => (
           <FontAwesomeIcon
             icon={faCheckCircle}
             size="8x"
-            color="var(--limeGreen)"
+            color="var(--hunterGreenMediumLight)"
           />
           <Heading level="3">Success!</Heading>
         </>
@@ -45,7 +45,7 @@ const StatusContent = ({ type = 'success', text, onClose }) => (
           <FontAwesomeIcon
             icon={faTimesCircle}
             size="8x"
-            color="var(--redDark)"
+            color="var(--red)"
           />
           <Heading level="3">Uh oh!</Heading>
         </>

@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 
 import { buildURL } from 'Shared/fetch';
 import Header from 'Components/Header';
-import Button from 'Components/Button';
+import { PrimaryButton } from 'Components/Buttons';
 import Dialog from 'Components/modals/Dialog';
 import Loader from 'Components/async/LoaderModal';
 import background from 'Assets/plansBackground.png';
@@ -62,13 +62,7 @@ const CancelSubscription = ({ setSubscriptionDataAction }) => {
           <Text textAlign="center" fill size="45px">[insert typeform]</Text>
         </Box>
         <Box width="small" alignSelf="center">
-          <Button
-            variant="primary"
-            onClick={cancelSubscription}
-            alignSelf="end"
-          >
-            Cancel
-          </Button>
+          <PrimaryButton alignSelf="end" label="Cancel" onClick={cancelSubscription} />
         </Box>
       </Box>
       {showDialog && (

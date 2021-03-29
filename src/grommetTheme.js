@@ -2,12 +2,12 @@ export default {
   checkBox: {
     size: '20px',
     color: {
-      light: 'toggle-knob',
+      light: 'white',
     },
     toggle: {
       size: '42px',
       color: {
-        light: 'toggle-knob',
+        light: 'white',
       },
       knob: {
         extend: {
@@ -24,26 +24,7 @@ export default {
   },
   global: {
     colors: {
-      brand: '#368185',
-      'accent-1': '#2F64B8',
-      'accent-2': '#5260DD',
-      'accent-3': '#76A6F2',
-      'accent-4': '#BF3D3F',
-      'accent-5': '#F5696B',
-      'accent-6': '#F9A3A4',
-      'accent-7': '#CE5BB5',
-      'accent-8': '#FFA8EC',
-      'accent-9': '#DC6128',
-      'accent-10': '#FF9665',
-      'accent-11': '#F38D00',
-      'accent-12': '#FFB145',
-      'dark-1': '#2E2D2D',
-      'dark-2': '#535353',
-      'dark-3': '#757575',
-      'light-1': '#FFFFFF',
-      'light-2': '#EBEBEB',
-      'light-3': '#CDCDCD',
-      'toggle-knob': 'white',
+      brand: 'var(--blueMediumLight)',
     },
     focus: {
       border: {
@@ -73,7 +54,7 @@ export default {
       },
     },
     font: {
-      family: "Avenir, Arial, Roboto, Helvetica Neue, sans-serif",
+      family: "Arial, sans-serif, Roboto, Helvetica Neue",
       size: "16px",
       lineHeight: "22px",
     },
@@ -84,39 +65,56 @@ export default {
         medium: {
           size: '45px',
           height: '52px',
+          maxWidth: '100%',
         },
       },
       2: {
         medium: {
           size: '35px',
           height: '42px',
+          maxWidth: '100%',
         },
       },
       3: {
         medium: {
           size: '25px',
           height: '32px',
+          maxWidth: '100%',
         },
       },
       4: {
         medium: {
           size: '20px',
           height: '28px',
+          maxWidth: '100%',
+        },
+      },
+      5: {
+        medium: {
+          size: '16px',
+          height: '26px',
+          maxWidth: '100%',
         },
       },
       6: {
         medium: {
-          size: '13px',
-          height: '18px',
+          size: '15px',
+          height: '25px',
         },
       },
     },
   },
   text: {
+    font: 'Arial', // recheck
     // "Body" in Figma
-    large: {
+    xlarge: {
       size: '16px',
       height: '22px',
+    },
+    // "Subhead" in Figma
+    large: {
+      size: '13px',
+      height: '18px',
     },
     // "Caption" in Figma
     medium: {
@@ -131,46 +129,36 @@ export default {
   },
   button: {
     default: {
-      color: 'var(--blue)',
+      color: 'var(--charcoal)',
       background: {
         color: 'var(--white)',
       },
       border: {
         width: '1.5px',
-        color: 'var(--blue)',
+        color: '#9BB7F1',
       },
       font: {
         weight: 'bold',
       },
     },
     primary: {
-      color: 'var(--white)',
+      color: 'var(--charcoal)',
       background: {
-        color: 'var(--turquoiseLight)',
-      },
-      extend: {
-        color: '#fff',
-      },
-      font: {
-        weight: 'bold',
-      },
-    },
-    secondary: {
-      color: 'var(--white)',
-      background: {
-        color: 'var(--blue)',
+        color: 'var(--blueMediumLight)',
       },
       font: {
         weight: 'bold',
       },
     },
     disabled: {
-      primary: {
+      default: {
+        color: 'var(--grey)',
         background: {
-          color: 'var(--lightGrey)',
+          color: 'white',
         },
       },
-      secondary: {
+      primary: {
+        color: 'var(--grey)',
         background: {
           color: 'var(--lightGrey)',
         },
@@ -178,43 +166,57 @@ export default {
       border: {
         color: 'var(--lightGrey)',
       },
-      color: '#757575',
+      color: 'var(--grey)',
       opacity: '1',
     },
     size: {
       large: {
         pad: {
-          vertical: '11.5px',
+          vertical: '11px',
+          horizontal: '20px',
+        },
+      },
+      medium: {
+        pad: {
+          vertical: '7px',
+          horizontal: '20px',
         },
       },
       small: {
         pad: {
-          vertical: '7px',
+          vertical: '3px',
+          horizontal: '16px',
         },
       },
     },
     hover: {
       default: {
-        color: '#29569B',
         border: {
-          color: '#29569B',
+          color: '#376CDE',
         },
       },
       primary: {
+        color: 'var(--hunterGreenDark)',
         background: {
-          color: '#2B7377',
+          color: 'var(--blueLight)',
         },
-      },
-      secondary: {
-        background: {
-          color: '#4856D0',
+        extend: {
+          '&:active': {
+            backgroundColor: 'var(--blueMediumLight)',
+          },
         },
       },
     },
     extend: {
-      '&:focus': {
+      '&:active': {
         opacity: '0.8',
       },
+      borderRadius: '50px',
+    },
+  },
+  menu: {
+    extend: {
+      minHeight: '30px',
     },
   },
 };

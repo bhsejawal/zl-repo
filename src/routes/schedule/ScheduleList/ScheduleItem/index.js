@@ -9,7 +9,7 @@ import {
 } from 'grommet';
 import { format } from 'date-fns';
 
-import Button from 'Components/Button';
+import { PrimaryButton } from 'Components/Buttons';
 
 import HabitatImage from './HabitatImage';
 
@@ -59,9 +59,10 @@ const ScheduleItem = ({
             </Box>
             <Grid gap ="xsmall" margin={{ top: "medium"}} height="xxsmall" columns={['auto', 'auto', 'auto']} rows="xxsmall">
               {liveTalk.sessions.map((session) => (
-                <Button size="sm" variant="primary" className={style.sessionButton}>
-                  {format(Date.parse(session.startTime), 'HH:mm aa')}
-                </Button>
+                <PrimaryButton
+                  label={format(Date.parse(session.startTime), 'HH:mm aa')}
+                  className={style.sessionButton}
+                />
               ))}
             </Grid>
           </Box>

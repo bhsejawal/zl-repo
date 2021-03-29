@@ -32,7 +32,7 @@ const Partners = () => {
       </Box>
       <Box align="center" margin={{ top: 'medium' }}>
         <Grid
-          columns={ size === 'xsmall' ? ['auto', 'auto'] : ['auto', 'auto', 'auto', 'auto']}
+          columns={ ['xsmall', 'small', 'medium'].includes(size) ? ['auto', 'auto'] : ['auto', 'auto', 'auto', 'auto']}
           gap="40px"
           margin="small"
         >

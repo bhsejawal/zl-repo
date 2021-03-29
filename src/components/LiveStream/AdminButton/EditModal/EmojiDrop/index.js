@@ -10,7 +10,6 @@ import {
 } from 'preact/hooks';
 import {
   Box,
-  Button,
   Heading,
   Menu,
   Text,
@@ -21,7 +20,7 @@ import { range } from 'lodash-es';
 import useFetch from 'use-http';
 
 import ImageSelector from 'Components/ImageSelector';
-import { SecondaryButton } from 'Components/Buttons';
+import { PrimaryButton, OutlineButton } from 'Components/Buttons';
 import { EmojiBasketNoRedux } from 'Components/LiveStream/StreamInteractiveArea/StreamControls/EmojiBasket';
 import { buildURL } from 'Shared/fetch';
 import { setHabitatProps } from '../../../../../routes/habitat/actions';
@@ -170,15 +169,12 @@ const EmojiDrop = ({
             ?
           </Heading>
           <Box direction="row" justify="center">
-            <Button
+            <OutlineButton
               label="Go Back"
-              size="large"
               margin={{ right: '10px' }}
               onClick={() => setDeleteTabActive(false)}
             />
-            <Button
-              secondary
-              size="large"
+            <PrimaryButton
               label="Delete"
               onClick={onDeleteTab}
             />
@@ -191,23 +187,21 @@ const EmojiDrop = ({
           <Box width="600px" pad="medium">
             <Box height={{ min: 'auto' }} direction="row" justify="evenly" align="center">
               <Menu
-                size="large"
+                size="medium"
                 icon={<FontAwesomeIcon icon={faChevronDown} />}
                 label={`Emoji Tab ${activeTabInd + 1}`}
                 items={tabMenuItems}
               />
 
               <Box width="300px" justify="between" direction="row">
-                <Button
-                  secondary
-                  size="large"
+                <PrimaryButton
+                  size="medium"
                   label="Delete Tab"
                   onClick={() => setDeleteTabActive(true)}
                 />
-                <Button
+                <OutlineButton
                   onClick={onAddTab}
-                  secondary
-                  size="large"
+                  size="medium"
                   label="Add Tab"
                 />
               </Box>
@@ -267,9 +261,8 @@ const EmojiDrop = ({
                 </Box>
               )}
 
-              <SecondaryButton
+              <PrimaryButton
                 loading={loading}
-                size="large"
                 label="Publish"
                 onClick={onPublish}
               />

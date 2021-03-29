@@ -1,9 +1,32 @@
+button {
+  line-height: initial !important;
+
+  &:disabled {
+    cursor: not-allowed;
+  }
+}
+
 .loading {
   pointer-events: none;
 }
 
+.large {
+  min-width: 160px;
+  min-height: 45px;
+}
+
+.medium {
+  min-width: 130px;
+  min-height: 30px;
+}
+
+.small {
+  min-width: 60px;
+  min-height: 25px;
+}
+
 button.floatingButton {
-  background: linear-gradient(180deg, #FFDCEE 62.5%, #FEDFC9 100%);
+  background: var(--lavenderGradient);
   border: 0;
   box-shadow: 0 4px 20px rgba(0, 0, 0, .25);
   color: #081B0C;
@@ -13,7 +36,7 @@ button.floatingButton {
   padding: 10px 20px 10px 10px;
 
   &:hover {
-    color: #535353;
+    color: var(--charcoalLight);
   }
 
   &:active,
@@ -25,6 +48,7 @@ button.floatingButton {
 
   .wrapper {
     position: relative;
+    white-space: nowrap;
 
     svg {
       position: absolute;

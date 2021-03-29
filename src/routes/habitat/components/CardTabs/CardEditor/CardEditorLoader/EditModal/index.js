@@ -16,7 +16,7 @@ import {
   Heading,
   Grommet,
 } from 'grommet';
-import { OutlineButton, SecondaryButton } from 'Components/Buttons';
+import { OutlineButton, PrimaryButton } from 'Components/Buttons';
 import classnames from 'classnames';
 import useFetch from 'use-http';
 
@@ -265,7 +265,7 @@ const EditModal = ({
                     margin={{ right: '10px' }}
                     onClick={() => setDeleteActive(false)}
                   />
-                  <SecondaryButton primary label="Delete" onClick={onDelete} />
+                  <PrimaryButton label="Delete" onClick={onDelete} />
                 </Box>
                 <Box margin="medium">
                   {error && (
@@ -590,7 +590,7 @@ const EditModal = ({
                         onClick={() => setDeleteActive(true)}
                       />
                     )}
-                    <SecondaryButton
+                    <PrimaryButton
                       style={{minWidth: cardData && 'calc((100%/2) - 5px)'}}
                       label="Publish"
                       onClick={onPublish}

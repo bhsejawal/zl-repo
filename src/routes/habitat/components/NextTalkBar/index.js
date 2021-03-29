@@ -1,9 +1,9 @@
 import { h } from 'preact';
 import { useState, useRef, useMemo } from 'preact/hooks';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faGreaterThan, faLessThan } from '@fortawesome/pro-light-svg-icons';
 import { faSpinner, faTimes } from '@fortawesome/pro-solid-svg-icons';
-import { Box } from 'grommet';
+import { faChevronLeft, faChevronRight } from '@fortawesome/pro-regular-svg-icons';
+import { Box, Text } from 'grommet';
 import { formatDistanceToNow } from 'date-fns';
 import classnames from 'classnames';
 
@@ -24,7 +24,7 @@ const NextTalkBar = ({ height, width }) => {
   const list = useMemo(
     () => upcoming.map(({ startTime, isStreamLive, ...rest }) => ({
       // TODO: we should format it to a shorter value ('days' -> 'd', 'minutes' -> 'm)
-      text: startTime > now && `starts in ${formatDistanceToNow(startTime)}`,
+      text: startTime > now && formatDistanceToNow(startTime).replace('about ', ''),
       isLive: startTime <= now && isStreamLive,
       startTime,
       ...rest,
@@ -51,8 +51,8 @@ const NextTalkBar = ({ height, width }) => {
         <>
           <div className={classnames(style.expandBar, 'customScrollBar', {[style.active]: expand})}>
             <button type="button" className={style.liveTalkExpandButton} onClick={() => setExpand(!expand)}>
-              <span>Talk</span>
-              <FontAwesomeIcon icon={faLessThan} />
+              <Text size="medium">Live Talks</Text>
+              <FontAwesomeIcon icon={faChevronLeft} />
             </button>
             <div className={style.listWrapper}>
               {list.map(({
@@ -72,7 +72,7 @@ const NextTalkBar = ({ height, width }) => {
                   zoo={zoo}
                   startTime={startTime}
                   live={isLive}
-                  header={isLive ? <Tag label="LIVE" /> : text}
+                  header={isLive ? <Tag label="LIVE" varient="online" /> : text}
                   description={description}
                   image={profileImage}
                   roundImage
@@ -83,8 +83,8 @@ const NextTalkBar = ({ height, width }) => {
 
           <div className={style.content}>
             <button type="button" className={style.liveTalkExpandButton} onClick={() => setExpand(!expand)}>
-              <span>Talk</span>
-              <FontAwesomeIcon icon={faGreaterThan} />
+              <Text size="medium">Live Talks</Text>
+              <FontAwesomeIcon icon={faChevronRight} />
             </button>
             <ul>
               {list.map(({
@@ -98,9 +98,7 @@ const NextTalkBar = ({ height, width }) => {
                   {/* eslint-disable-next-line no-script-url */}
                   <a href={link || 'javascript:void(0)'}>
                     <img src={profileImage} alt="" />
-                    <span>
-                      {isLive ? <Tag label="LIVE NOW" /> : text}
-                    </span>
+                    <Text size="small" weight={700}>{isLive ? <Tag label="LIVE" varient="light" /> : text}</Text>
                   </a>
                 </li>
               ))}

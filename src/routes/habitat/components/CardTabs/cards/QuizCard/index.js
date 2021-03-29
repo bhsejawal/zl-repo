@@ -11,6 +11,7 @@ import { PrimaryButton } from 'Components/Buttons';
 import gorilla from 'Assets/gorilla.png';
 
 import CardWrapper from '../components/CardWrapper';
+import { QUIZ_CARD_TYPE } from '../../constants';
 
 import style from './style.scss';
 
@@ -84,7 +85,7 @@ const QuizCard = ({
   };
 
   return (
-    <CardWrapper>
+    <CardWrapper tag={QUIZ_CARD_TYPE} hideTag>
       <div className={style.wrapper}>
         <div className={style.top}>
           <Heading level="4" margin="0" className={style.title}>
@@ -104,7 +105,7 @@ const QuizCard = ({
             <div className={style.status}>
               {/* TODO: replace with animal photo when we have habitat info */}
               <img className={style.animal} src={gorilla} alt="animal" />
-              <Heading level="1" color="var(--turquoise)" margin={{ bottom: 'small' }}>
+              <Heading level="1" color="var(--hunterGreenMediumLight)" margin={{ bottom: 'small' }}>
                 {`${correctAnswers}/${questions.length}`}
               </Heading>
               <p>Thanks for learning about gorillas with ZooLife!</p>

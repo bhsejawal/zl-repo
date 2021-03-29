@@ -17,7 +17,7 @@ import { buildURL, post } from 'Shared/fetch';
 import classnames from 'classnames';
 import SocialLoginBar from 'Components/SocialLoginBar';
 import logo from 'Assets/zoolife.svg';
-import Button from 'Components/Button';
+import { PrimaryButton } from 'Components/Buttons';
 
 import { setUserData } from '../../redux/actions';
 import { emailRegex, passwordRegex, getDeviceType } from '../../helpers';
@@ -196,7 +196,7 @@ const Signup = ({ setUserDataAction }) => {
                 {termsError}
               </div>
             </Box>
-            <Button submit variant="primary">Get Started!</Button>
+            <PrimaryButton type="submit" label="Get Started!" />
             <br />
           </form>
         </Box>

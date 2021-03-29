@@ -27,8 +27,9 @@ const AdminButton = () => {
 
       <Menu
         plain
-        className={style.btn}
+        className={style.adminButton}
         dropAlign={{ right: 'left' }}
+        dropProps={{ margin: '0 0 0 -10px' }}
         icon={<FontAwesomeIcon icon={faCog} size="lg" color="white" />}
         items={[{
           className: style.item,

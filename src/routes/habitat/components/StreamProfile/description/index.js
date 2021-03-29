@@ -9,7 +9,7 @@ import style from './style.scss';
 
 const Description = ({ habitatId, description = '' }) => (
   <div className={style.desc}>
-    <FontAwesomeIcon icon={faShieldCheck} size="2x" color="var(--turquoiseLight)" />
+    <FontAwesomeIcon icon={faShieldCheck} size="2x" color="var(--hunterGreen)" />
     <TextEditor
       postToUrl={`/admin/habitats/${habitatId}/prop`}
       textProp="description"

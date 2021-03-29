@@ -7,7 +7,7 @@ import {
   Image,
   Text,
 } from 'grommet';
-import { PrimaryButton } from 'Components/Buttons';
+import { SecondaryButton } from 'Components/Buttons';
 
 const AvatarSection = () => {
   const size = useContext(ResponsiveContext);
@@ -40,8 +40,7 @@ const AvatarSection = () => {
             Take part in the daily life of 9 animal families from around the world.
           </Text>
           <Box alignSelf="start" margin={{ top: '50px' }}>
-            <PrimaryButton
-              size="large"
+            <SecondaryButton
               label="Meet the Animals"
               type="button"
               onClick={() => route('/signup')}

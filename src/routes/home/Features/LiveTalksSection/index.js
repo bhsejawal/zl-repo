@@ -6,7 +6,7 @@ import {
   Heading,
   Text,
 } from 'grommet';
-import { PrimaryButton } from 'Components/Buttons';
+import { SecondaryButton } from 'Components/Buttons';
 
 const LiveTalksSection = () => {
   const size = useContext(ResponsiveContext);
@@ -55,8 +55,7 @@ const LiveTalksSection = () => {
             Join daily keeper talks and interactive Q&amp;As with animal experts and naturalists.
           </Text>
           <Box alignSelf="start" margin={{ vertical: 'xlarge' }}>
-            <PrimaryButton
-              size="large"
+            <SecondaryButton
               label="Join a Live Q&amp;A"
               type="button"
               onClick={() => route('/signup')}

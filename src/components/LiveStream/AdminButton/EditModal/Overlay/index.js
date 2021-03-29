@@ -5,7 +5,7 @@ import { Box, Heading, Text } from 'grommet';
 import useFetch from 'use-http';
 
 import ImageSelector from 'Components/ImageSelector';
-import { SecondaryButton } from 'Components/Buttons';
+import { PrimaryButton } from 'Components/Buttons';
 import { buildURL } from 'Shared/fetch';
 import { setHabitatProps } from '../../../../../routes/habitat/actions';
 
@@ -103,10 +103,8 @@ const Overlay = ({
                 </Text>
               </Box>
             )}
-
-            <SecondaryButton
+            <PrimaryButton
               loading={loading}
-              size="large"
               label="Publish"
               onClick={onPublish}
             />

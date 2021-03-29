@@ -1,14 +1,11 @@
 import { h } from 'preact';
 import { connect } from 'react-redux';
 import { useEffect, useMemo } from 'preact/hooks';
-import { faSpinner } from '@fortawesome/pro-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { Box } from 'grommet';
 import classnames from 'classnames';
 import useFetch from 'use-http';
 import { buildURL } from 'Shared/fetch';
 import { setUserData } from '../../redux/actions';
-import Button from '../Button';
+import { OutlineButton } from '../Buttons';
 
 import style from './style.scss';
 
@@ -82,20 +79,19 @@ const Card = ({
         <div className={style.content}>
           <div className={classnames(style.header, { shimmer: loading })}>{header}</div>
           <div className={classnames(style.description, { shimmer: loading })}>{description}</div>
-          <Button
+          <OutlineButton
             onClick={onCLickHandler(scheduleId)}
             disabled={isReminded}
             className={classnames({ shimmer: loading })}
             variant={live ? 'secondary' : 'outline'} size="xs"
           >
-            {sendingReminder && !loading && (
-              <Box pad={{horizontal: '20px', vertical: '3px'}}>
-                <FontAwesomeIcon icon={faSpinner} spin style={{fontSize: '16px'}} />
-              </Box>
-            )}
-            {!sendingReminder && error && 'Try Again!'}
-            {!sendingReminder && !error && 'Remind me'}
-          </Button>
+            <OutlineButton
+              size="medium"
+              label={!sendingReminder && (error ? 'Try Again!' : 'Remind me')}
+              margin={{top: '10px'}}
+              loading={sendingReminder && !loading}
+            />
+          </OutlineButton>
         </div>
         <div className={style.image}>
           <img src={image} alt="" className={classnames({ [style.round]: roundImage })} />

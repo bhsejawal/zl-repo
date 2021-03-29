@@ -12,7 +12,7 @@ import { faTimes } from '@fortawesome/free-solid-svg-icons';
 import useFetch from 'use-http';
 
 import { buildURL } from 'Shared/fetch';
-import { SecondaryButton } from 'Components/Buttons';
+import { PrimaryButton } from 'Components/Buttons';
 import ImageSelector from '../../../ImageSelector';
 
 import style from './style.scss';
@@ -121,7 +121,7 @@ const EditModal = ({
             direction="row"
             align="center"
           >
-            <SecondaryButton loading={loading} type="submit" label="Save" />
+            <PrimaryButton loading={loading} type="submit" label="Save" />
           </Box>
         </Form>
       </Box>

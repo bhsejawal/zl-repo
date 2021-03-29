@@ -99,7 +99,6 @@ const DeleteModal = ({
 
         <Box pad={{ vertical: 'medium', horizontal: 'large' }} align="end">
           <PrimaryButton
-            size="large"
             label="Delete"
             type="submit"
             loading={loading}

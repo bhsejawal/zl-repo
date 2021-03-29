@@ -1,7 +1,7 @@
 import { h } from 'preact';
 import { useCallback, useState } from 'preact/hooks';
 import { Suspense, lazy } from 'preact/compat';
-import { faShare } from '@fortawesome/pro-light-svg-icons';
+import { faShare } from '@fortawesome/pro-solid-svg-icons';
 
 import LoaderModal from 'Components/async/LoaderModal';
 import NavItem from '../NavItem';

@@ -3,12 +3,12 @@ import { useCallback } from 'preact/hooks';
 import { connect } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
-  faCalendarStar,
   faInfoCircle,
   faPaw,
+  faCalendarStar,
   faPuzzlePiece,
   faUsers,
-} from '@fortawesome/pro-solid-svg-icons';
+} from '@fortawesome/pro-regular-svg-icons';
 
 import { setActiveTab } from '../actions';
 import {

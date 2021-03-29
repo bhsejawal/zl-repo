@@ -110,7 +110,7 @@ const ScheduleCarousel = ({ habitatId, hostStreamKey, isHostStreamOn }) => {
               zoo={zoo}
               startTime={startTime}
               live={isLive}
-              header={isLive ? <Tag label="LIVE" /> : text}
+              header={isLive ? <Tag label="LIVE" varient="online" /> : text}
               description={description}
               image={profileImage}
             />

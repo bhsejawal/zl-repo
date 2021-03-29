@@ -16,11 +16,17 @@ import {
   Calendar,
   DropButton,
   Button,
+  Grommet,
 } from 'grommet';
 
 import style from '../style.scss';
 import { setDateFilter, toggleDateFilter } from '../../actions';
+import grommetTheme from "../../../../grommetTheme";
 
+const calendarTheme = {
+  // we need to clear the buttons global style to not impact the next/prev buttons
+  global: { ...grommetTheme.global },
+}
 const CalendarFilter = ({
   date,
   showDateFilter,
@@ -73,13 +79,15 @@ const CalendarFilter = ({
               }}
               className={style.filterBox}
             >
-              <Calendar
-                daysOfWeek
-                date={format(date, "yyyy-MM-dd")}
-                fill={false}
-                onSelect={handleDateSelection}
-                bounds={availableDates}
-              />
+              <Grommet theme={calendarTheme}>
+                <Calendar
+                  daysOfWeek
+                  date={format(date, "yyyy-MM-dd")}
+                  fill={false}
+                  onSelect={handleDateSelection}
+                  bounds={availableDates}
+                />
+              </Grommet>
             </Box>
           }
           className={classnames(

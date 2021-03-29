@@ -52,7 +52,7 @@ const HabitatMap = ({ habitats, setMapDataAction, setHabitatAction }) => {
           </div>
         ))}
 
-        <img src="https://s3.ca-central-1.amazonaws.com/zl.brizi.tech/assets/map.png" alt="" />
+        <img src="https://zl-brizi-tv.s3.ca-central-1.amazonaws.com/assets/zoolifeMap.png" alt="" />
       </div>
     </div>
   )

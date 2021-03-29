@@ -2,7 +2,7 @@ import { h } from 'preact';
 import { useMemo, useState } from 'preact/hooks';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTimes } from '@fortawesome/pro-solid-svg-icons';
-import { SecondaryButton } from 'Components/Buttons';
+import { PrimaryButton } from 'Components/Buttons';
 import {
   Layer,
   Box,
@@ -113,7 +113,7 @@ const EditModal = ({
             direction="row"
             align="center"
           >
-            <SecondaryButton loading={loading} type="submit" label="Save" />
+            <PrimaryButton loading={loading} type="submit" label="Save" />
           </Box>
         </Form>
       </Box>

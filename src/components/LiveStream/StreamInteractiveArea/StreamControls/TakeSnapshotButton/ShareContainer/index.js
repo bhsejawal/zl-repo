@@ -125,14 +125,14 @@ const ShareContainer = ({ userId, show, showSnapshotShareAction }) => {
 
   return (
     <Box width={{max: '245px', min: '245px'}} className={style.shareContainer}>
-      <Box background="var(--turquoise)">
+      <Box background="var(--hunterGreenMediumLight)">
         <button onClick={closeHandler} type="button" className={style.close}>
           <FontAwesomeIcon icon={faTimes} />
         </button>
         {showMainContent && (
           <>
             <Box height={{min: '25px'}}>
-              <Heading textAlign="center" margin="auto" level="6">Here&apos;s your photo</Heading>
+              <Heading color="white" textAlign="center" margin="auto" level="6">Here&apos;s your photo</Heading>
             </Box>
             <img src={snapshotData.snapshot} alt="" />
             <Box height={{min: '25px'}} justify="center" alignContent="center" direction="row" className={style.shareButtons}>

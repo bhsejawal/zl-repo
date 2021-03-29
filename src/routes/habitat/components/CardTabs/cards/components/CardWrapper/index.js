@@ -9,43 +9,53 @@ import {
   CONSERVATION,
   BEHAVIOR,
   FAMILY_LIFE,
+  QUIZ_CARD_TYPE,
 } from '../../../constants';
 
 import style from './style.scss';
 
-const CardWrapper = ({ tag, noPadding, children }) => {
+const CardWrapper = ({
+  tag,
+  noPadding,
+  children,
+  hideTag, // Tags corresponds to specific colors, some cards don't have tags
+}) => {
   const color = useMemo(() => {
     switch (tag) {
       case QUICK_LOOK: {
-        return 'var(--lightBlue)';
+        return 'var(--blueMediumLight)';
       }
 
       case FOOD_AND_DIET: {
-        return 'var(--sage)';
+        return 'var(--hunterGreenLight)';
       }
 
       case ORIGIN_AND_HABITAT: {
-        return 'var(--coral)';
+        return 'var(--coralLight)';
       }
 
       case THE_ANIMAL_BODY: {
-        return 'var(--lightBlue)';
+        return 'var(--oliveMedium)';
       }
 
       case CONSERVATION: {
-        return 'var(--yellow)';
+        return 'var(--mossLight)';
       }
 
       case BEHAVIOR: {
-        return 'var(--brightPink)';
+        return 'var(--lavenderLight)';
       }
 
       case FAMILY_LIFE: {
-        return 'var(--pink)';
+        return 'var(--hunterGreenLight)';
+      }
+
+      case QUIZ_CARD_TYPE: {
+        return 'var(--hunterGreenLight)';
       }
 
       default: {
-        return 'var(--lightBlue)';
+        return 'var(--blueMediumLight)';
       }
     }
   }, [tag]);
@@ -53,35 +63,39 @@ const CardWrapper = ({ tag, noPadding, children }) => {
   const tagColor = useMemo(() => {
     switch (tag) {
       case QUICK_LOOK: {
-        return 'var(--oceanBlue)';
+        return 'var(--blueMediumDark)';
       }
 
       case FOOD_AND_DIET: {
-        return '#1C7B76';
+        return 'var(--hunterGreenMediumLight)';
       }
 
       case ORIGIN_AND_HABITAT: {
-        return 'var(--deepCoral)';
+        return 'var(--coralMedium)';
       }
 
       case THE_ANIMAL_BODY: {
-        return '#3C6EBD';
+        return 'var(--hunterGreen)';
       }
 
       case CONSERVATION: {
-        return 'var(--deepYellow)';
+        return 'var(--mossMedium)';
       }
 
       case BEHAVIOR: {
-        return 'var(--deepPink)';
+        return 'var(--lavenderMedium)';
       }
 
       case FAMILY_LIFE: {
-        return 'var(--darkRed)';
+        return 'var(--hunterGreenMediumLight)';
+      }
+
+      case QUIZ_CARD_TYPE: {
+        return 'var(--hunterGreenMediumDark))';
       }
 
       default: {
-        return 'var(--sage)';
+        return 'var(--blueMediumDark)';
       }
     }
   }, [tag]);
@@ -92,7 +106,7 @@ const CardWrapper = ({ tag, noPadding, children }) => {
       style={{ backgroundColor: color, padding: noPadding && '0' }}
       data-tag={tag}
     >
-      {tag && (
+      {tag && !hideTag && (
         <span className={style.tag} style={{ backgroundColor: tagColor }}>
           {tag}
         </span>

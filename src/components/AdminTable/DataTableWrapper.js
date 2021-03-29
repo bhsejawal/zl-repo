@@ -36,7 +36,7 @@ const DataTableWrapper = ({
       >
         {/* This component is currently not present. We'll need to wait for the next release */}
         {/* <Spinner /> */}
-        <Text weight="bold">Loading ...</Text>
+        <Text weight={900}>Loading ...</Text>
       </Box>
     )}
   />

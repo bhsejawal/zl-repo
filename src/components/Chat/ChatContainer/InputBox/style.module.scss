@@ -1,6 +1,6 @@
 .inputBox {
   display: flex;
-  background-color: #037164;;
+  background-color: var(--hunterGreenMediumLight);
   padding: 10px;
 
   .inputContainer {
@@ -28,14 +28,14 @@
 .SendButton {
   padding: 10px;
   margin-left: 10px;
-  color: #FFFFFF;
-  background: rgba(212, 27, 44, 1);
+  color: black;
+  background: white;
   border-radius: 100px;
   display: flex;
   justify-content: center;
   align-items: center;
-  border: 0px;
+  border: 0;
   height: 34px;
-  outline: none;
+  cursor: pointer;
 }
 

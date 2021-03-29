@@ -12,8 +12,8 @@ const EmojiButton = ({ toggleShowEmojiBasketAction }) => (
   <RoundButton
     onClick={toggleShowEmojiBasketAction}
     className={style.emojiButton}
-    width="35"
-    backgroundColor="#fc639b"
+    width="36"
+    backgroundColor="var(--purple)"
     color="white"
   >
     <FontAwesomeIcon icon={faGrinWink} />

@@ -1,14 +1,15 @@
 import classnames from 'classnames';
+import { Text } from 'grommet';
 
 import style from './style.scss';
 
 const Tag = ({
   label,
-  varient, // liveTalk, online, offline
+  varient, // online, light, offline
 }) => (
-  <div className={classnames(style.tag, style[varient])}>
+  <Text size="small" weight="700" className={classnames(style.tag, style[varient])}>
     {label}
-  </div>
+  </Text>
 );
 
 export default Tag;

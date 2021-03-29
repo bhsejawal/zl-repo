@@ -93,7 +93,7 @@ export const EmojiBasketNoRedux = ({
             <button
               key={icon}
               type="button"
-              className={classnames(style.tabButton, { active: ind === basketInd })}
+              className={classnames(style.tabButton, { [style.active]: ind === basketInd })}
               onClick={() => setBasketInd(ind)}
             >
               <img src={icon} alt={`tab ${ind + 1}`} />

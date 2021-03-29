@@ -20,9 +20,10 @@ const ZoolifeBenefits = () => {
 
   return (
     <Box
-      background="#09474A"
+      background="var(--hunterGreenMediumLight)"
       pad="medium"
       align="center"
+      height={{ min: 'unset' }}
     >
       <Grid
         columns={gridSettings}

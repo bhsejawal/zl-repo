@@ -15,7 +15,7 @@ import {
 
 import { buildURL, post } from 'Shared/fetch';
 import SocialLoginBar from 'Components/SocialLoginBar';
-import Button from 'Components/Button';
+import { PrimaryButton } from 'Components/Buttons';
 import logo from 'Assets/zoolife.svg';
 
 import PasswordResetModal from './ResetModal';
@@ -24,7 +24,7 @@ import Layout from '../../layouts/LoginSignup';
 import { setUserData } from '../../redux/actions';
 import { emailRegex } from '../../helpers';
 
-import {showModal, validateToken} from './ResetModal/actions';
+import { showModal, validateToken } from './ResetModal/actions';
 
 import style from './style.scss';
 
@@ -176,7 +176,10 @@ const Login = ({
                 Forgot password?
               </Anchor>
             </Box>
-            <Button submit variant="primary">Get Started</Button>
+            <PrimaryButton
+              label="Get Started"
+              type="submit"
+            />
             <Box margin={{ vertical: "large" }}>
               <Text>
                 Don&apos;t have an account?&nbsp;

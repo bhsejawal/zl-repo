@@ -1,5 +1,6 @@
 import { h } from 'preact';
 import { connect } from 'react-redux';
+import { Heading, Text } from 'grommet';
 
 import Header from 'Components/Header';
 import HabitatMap from './HabitatMap'
@@ -14,10 +15,10 @@ const Map = ({ activeHabitat }) => (
       <div className={style.content}>
         <div className={style.description}>
           <div>
-            <h1>Explore the animal kingdom.</h1>
-            <p>
+            <Heading level="1">Explore the animal kingdom.</Heading>
+            <Text size="xlarge">
               Visit animals in their habitats, all over the world. Start by selecting an animal!
-            </p>
+            </Text>
           </div>
           <div>
             {activeHabitat && (

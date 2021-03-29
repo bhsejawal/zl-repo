@@ -1,5 +1,5 @@
 import { h } from 'preact';
-import { faHeart, faMapMarkerAlt, faCalendarDay } from '@fortawesome/pro-light-svg-icons';
+import { faHeart, faMapMarkerAlt, faCalendarDay } from '@fortawesome/pro-solid-svg-icons';
 
 import NavItem from './NavItem';
 import Invite from './Invite';

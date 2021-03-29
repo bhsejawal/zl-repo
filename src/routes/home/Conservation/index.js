@@ -21,7 +21,7 @@ const HeroSection = () => {
         alignContent="center"
         basis="1/2"
         pad={{ horizontal: '10%', vertical: direction === 'row' ? '0%' : '10%' }}>
-        <Heading textAlign="start" level="2">
+        <Heading textAlign="start" level="2" margin={{ top: '0' }}>
           Support the conservation movement with your purchase.
         </Heading>
         <Text textAlign="start" size="18px">
@@ -31,7 +31,6 @@ const HeroSection = () => {
         </Text>
         <Box alignSelf="start" margin={{ top: '50px' }}>
           <PrimaryButton
-            size="large"
             label="I want to help"
             type="button"
             onClick={() => route('/signup')}

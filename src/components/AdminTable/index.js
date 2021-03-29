@@ -21,7 +21,7 @@ import { get as lodashGet, debounce } from 'lodash-es';
 import useFetch from 'use-http';
 
 import { buildURL } from 'Shared/fetch';
-import { SecondaryButton } from 'Components/Buttons';
+import { PrimaryButton, OutlineButton } from 'Components/Buttons';
 import ErrorModal from 'Components/modals/Error';
 
 import grommetTheme from '../../grommetTheme';
@@ -286,7 +286,7 @@ const AdminTable = ({
         <Heading level="3">{pluralEntity}</Heading>
         <Box direction="row" gap="medium" align="center">
           {selected?.disabled && (
-            <SecondaryButton
+            <OutlineButton
               key="restore"
               size="large"
               label="Enable"
@@ -296,10 +296,9 @@ const AdminTable = ({
           )}
 
           {(!deleteDisabled || !selected?.disabled) && (
-            <SecondaryButton
+            <PrimaryButton
               key="delete"
               disabled={!selected}
-              size="large"
               loading={!selected?.disabled && loadingDisableEnable}
               label={selected?.disabled ? 'Delete' : 'Disable'}
               onClick={selected?.disabled
@@ -308,17 +307,13 @@ const AdminTable = ({
             />
           )}
 
-          <Button
-            secondary
+          <OutlineButton
             disabled={!selected}
-            size="large"
             label="Edit"
             onClick={toggleEditModal}
           />
 
-          <Button
-            primary
-            size="large"
+          <PrimaryButton
             label="Add New"
             onClick={toggleNewModal}
           />

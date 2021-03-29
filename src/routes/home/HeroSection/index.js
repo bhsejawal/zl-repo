@@ -1,12 +1,8 @@
 import { route } from 'preact-router';
 import { useContext } from 'preact/hooks';
-import {
-  ResponsiveContext,
-  Box,
-  Heading,
-} from 'grommet';
+import { ResponsiveContext, Box, Heading } from 'grommet';
 
-import { PrimaryButton } from 'Components/Buttons';
+import { SecondaryButton } from 'Components/Buttons';
 
 const HeroSection = () => {
   const size = useContext(ResponsiveContext);
@@ -22,8 +18,7 @@ const HeroSection = () => {
             top zoos, hosted by nature experts.
           </Heading>
           <Box alignSelf="center">
-            <PrimaryButton
-              size="large"
+            <SecondaryButton
               label="Meet the Animals"
               type="button"
               onClick={() => route('/signup')}
@@ -33,7 +28,6 @@ const HeroSection = () => {
         <Box basis="1/2" justify="center" alignContent="center">
           <video autoPlay muted loop controls={false} >
             <source src="https://zl-brizi-tv.s3.ca-central-1.amazonaws.com/assets/landing/s1.webm" type="video/webm" />
-            <source src="https://zl-brizi-tv.s3.ca-central-1.amazonaws.com/assets/landing/s1.mov" type="video/mov" />
             <source src="https://zl-brizi-tv.s3.ca-central-1.amazonaws.com/assets/landing/s1.mp4" type="video/mp4" />
             Your browser does not support the video tag.
           </video>

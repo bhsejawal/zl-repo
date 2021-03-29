@@ -1,10 +1,7 @@
 import { h } from 'preact';
 import { route } from 'preact-router';
-import {
-  Grommet,
-  Main,
-  Box,
-} from 'grommet';
+import { Grommet, Main, Box } from 'grommet';
+import { merge } from 'lodash-es';
 
 import { FloatingButton } from 'Components/Buttons';
 
@@ -89,6 +86,33 @@ const websiteTheme = {
       },
     },
   },
+  button: merge(grommetTheme.button, {
+    secondary: {
+      color: 'var(--white)',
+      background: {
+        color: 'var(--hunterGreen)',
+      },
+      font: {
+        weight: 'bold',
+      },
+    },
+    hover: {
+      secondary: {
+        color: 'white',
+        background: {
+          color: 'var(--hunterGreenMediumLight)',
+        },
+      },
+    },
+    extend: {
+      '&:active': {
+        opacity: '0.8',
+      },
+      width: 'fit-content',
+      minWidth: '228px',
+      fontSize: '20px',
+    },
+  }),
 };
 
 const Home = () => (

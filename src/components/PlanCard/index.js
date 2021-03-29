@@ -1,5 +1,4 @@
 import {
-  Grommet,
   Card,
   CardBody,
   CardHeader,
@@ -7,7 +6,7 @@ import {
   Box,
 } from 'grommet';
 import classnames from 'classnames';
-import Button from '../Button';
+import { PrimaryButton } from '../Buttons';
 
 import style from './style.scss';
 
@@ -27,7 +26,7 @@ const PlanCard = ({
   benefitTitle,
   benefitText,
 }) => (
-  <Grommet>
+  <div>
     <Box pad="xxsmall" className={classnames(style.planCard, { [style.currentPlan]: currentPlan })}>
       {discount && (
         <Box
@@ -96,20 +95,18 @@ const PlanCard = ({
             </Text>
 
           </Box>
-          <Box align="center" justify="end" direction="column" pad="xsmall" margin={{ vertical: '16px' }}>
-            <Button
-              variant="primary"
-              onClick={() => onClickHandler(planId, priceId)}
-              alignSelf="end"
+          <Box justify="end" direction="column" pad="xsmall" margin={{ vertical: '16px' }}>
+            <PrimaryButton
+              alignSelf="center"
               disabled={disabled}
-            >
-              <span>{buttonLabel}</span>
-            </Button>
+              label={buttonLabel}
+              onClick={() => onClickHandler(planId, priceId)}
+            />
           </Box>
         </CardBody>
       </Card>
     </Box>
-  </Grommet>
+  </div>
 )
 
 export default PlanCard;

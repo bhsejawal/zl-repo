@@ -11,13 +11,13 @@
   width: 16px;
   height: 16px;
   border-radius: 100%;
-  border: 2px solid var(--lightBlue);
+  border: 2px solid var(--blue);
   background-color: transparent;
   cursor: pointer;
 
   &.selected {
     border: 0;
-    background-color: var(--yellow);
+    background-color: #FFB145;
     pointer-events: none;
   }
 }

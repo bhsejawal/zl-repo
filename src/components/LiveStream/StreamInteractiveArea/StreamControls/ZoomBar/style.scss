@@ -1,6 +1,6 @@
 .zoomWrapper {
   width: 36px;
-  background: rgba(9, 71, 74, .9);
+  background: var(--hunterGreenMediumDark);
   border-radius: 30px;
   box-sizing: border-box;
   pointer-events: all;
@@ -29,7 +29,7 @@
   .iconWrapper {
     border-radius: 100%;
     color: white;
-    background: rgba(70, 142, 146, 1);
+    background: var(--hunterGreenMediumLight);
     width: 30px;
     height: 30px;
     display: flex;
@@ -82,7 +82,7 @@
     .dot {
       height: 8px;
       width: 8px;
-      background: #468E92;
+      background: var(--hunterGreenLight);
       border-radius: 50%;
       display: inline-block;
     }

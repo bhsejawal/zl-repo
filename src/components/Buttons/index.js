@@ -2,14 +2,21 @@ import { Button, ResponsiveContext, Box } from 'grommet';
 import { useContext } from 'preact/hooks';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronRight } from '@fortawesome/pro-regular-svg-icons';
+import { faSpinner } from '@fortawesome/pro-solid-svg-icons';
 import classnames from 'classnames';
 
 import style from './style.scss';
 
-const getLabel = (loading, label) => (loading && typeof loading === 'boolean' && 'Loading...')
-  || (loading && typeof loading === 'string' && loading)
-  || label;
+const getLabel = (loading, label) => {
+  if (loading && typeof loading === 'boolean') {
+    return <FontAwesomeIcon icon={faSpinner} spin style={{verticalAlign: 'middle', fontSize: '16px'}} />;
+  }
+  if (loading && typeof loading === 'string') {
+    return loading;
+  }
 
+  return label;
+}
 export const PrimaryButton = ({
   loading,
   label,
@@ -20,13 +27,14 @@ export const PrimaryButton = ({
   <Button
     primary
     size={size}
-    className={classnames(className, { [style.loading]: loading })}
+    className={classnames(className, style[size], { [style.loading]: loading })}
     label={getLabel(loading, label)}
     /* eslint-disable-next-line react/jsx-props-no-spreading */
     {...args}
   />
 );
 
+// currently used only for landing page
 export const SecondaryButton = ({
   loading,
   label,
@@ -37,7 +45,7 @@ export const SecondaryButton = ({
   <Button
     secondary
     size={size}
-    className={classnames(className, { [style.loading]: loading })}
+    className={classnames(className, style[size], { [style.loading]: loading })}
     label={getLabel(loading, label)}
     /* eslint-disable-next-line react/jsx-props-no-spreading */
     {...args}
@@ -53,7 +61,7 @@ export const OutlineButton = ({
 }) => (
   <Button
     size={size}
-    className={classnames(className, { [style.loading]: loading })}
+    className={classnames(className, style[size], { [style.loading]: loading })}
     label={getLabel(loading, label)}
     /* eslint-disable-next-line react/jsx-props-no-spreading */
     {...args}

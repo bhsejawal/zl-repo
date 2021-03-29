@@ -1,38 +1,57 @@
 :root {
-  // Primary
-  --turquoise: #09474A;
-  --turquoiseLight: #368185;
-  --sage: #76ADAA;
+  //Primary
+  --hunterGreenDark: #081B0C; // Hunter Green/1
+  --hunterGreenMediumDark: #122717; // Hunter Green/2
+  --hunterGreen: #24412B; // Hunter Green/3
+  --hunterGreenMediumLight: #477652; // Hunter Green/4
+  --hunterGreenLight: #92C59E; // Hunter Green/5
+
+  --blueDark: #376CDE; // Blue/1
+  --blueMediumDark: #507EDE; // Blue/2
+  --blue: #7396DF; // Blue/3
+  --blueMediumLight: #9BB7F1; // Blue/4
+  --blueLight: #C5D8FF; // Blue/5
 
   // Accent
-  --oceanBlue: #2F64B8;
-  --blue: #5260DD;
-  --lightBlue: #76A6F2;
-  --redDark: #BF3D3F;
-  --pink: #F5696B;
-  --lightPink: #F9A3A4;
-  --deepPink: #CE5BB5;
-  --brightPink: #FFA8EC;
-  --deepCoral: #DC6128;
-  --coral: #FF9665;
-  --deepYellow: #F38D00;
-  --yellow: #FFB145;
-  --limeGreen: #C1E000;
+  --purple: #3B499C; // Purple/1
+  --purpleMedium: #505DAA; //Purple/2
+  --purpleLight: #C7CEF6; //Purple/4
+
+  --moss: #52662D; // Moss/1
+  --mossMedium: #90AA61; // Moss/2
+  --mossLight: #CBDFA6; // Moss/3
+
+  --olive: #8B9045; // Olive/1
+  --oliveMedium: #CDD565; // Olive/2
+  --oliveLight: #F8FEA4; // Olive/3
+
+  --lavender: #71475D; // Lavendar/1
+  --lavenderMedium: #B4849D; // Lavendar/2
+  --lavenderLight: #FFDCEE; // Lavendar/3
+
+  --coral: #C56622; // Coral/1
+  --coralMedium: #F18C43; // Coral/2
+  --coralLight: #FFB682; // Coral/3
+
+  // System
+  --red: #BF3D3F; // Red/5
+  --pink: #DC3D7D; // Pink
 
   // Grey scale
-  --charcoal: #2E2D2D;
-  --charcoalLight: #535353;
-  --grey: #535353;
-  --mediumGrey: #CDCDCD;
-  --lightGrey: #EBEBEB;
-  --white: #FFFFFF;
+  --charcoal: #2E2D2D; // Charcoal/1
+  --charcoalLight: #535353; // Charcoal/2
+  --grey: #757575; // Charcoal/3
+  --mediumGrey: #CDCDCD; // Charcoal/4
+  --lightGrey: #EBEBEB; // Charcoal/5
+  --white: #FFFFFF; // Light Grey
 
-  --headerHeight: 60px
+  --headerHeight: 60px;
+  --lavenderGradient: linear-gradient(180deg, var( --lavenderLight) 62.5%, #FEDFC9 100%);
 }
 
 html,
 body {
-  font-family: "Avenir", "Arial", "Roboto", "Helvetica Neue", sans-serif;
+  font-family: "Arial", "Helvetica Neue", sans-serif;
   font-weight: normal;
   font-size: 16px;
   line-height: 22px;
@@ -41,7 +60,7 @@ body {
   padding: 0;
   margin: 0;
   background: #FAFAFA;
-  color: var(--charcoal);
+  color: black;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -63,6 +82,11 @@ a {
   line-height: 16px;
   text-decoration-line: underline;
   color: var(--charcoalLight);
+
+  &.small {
+    font-size: 13px;
+    line-height: 13px;
+  }
 
   &:hover:not(:disabled) {
     color: var(--charcoal);
@@ -156,7 +180,7 @@ a {
   &::-webkit-scrollbar-thumb {
     background-color: #FFFFFF;
     border-radius: 20px;
-    border: 2px solid var(--turquoise);
+    border: 2px solid var(--hunterGreenMediumLight);
   }
 
   &.grey::-webkit-scrollbar-thumb {
@@ -170,7 +194,7 @@ a {
   &.error {
 
     >label>div>div {
-      border-color: var(--redDark);
+      border-color: var(--red);
     }
   }
 
