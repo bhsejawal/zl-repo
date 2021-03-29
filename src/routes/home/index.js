@@ -1,17 +1,21 @@
 import { h } from 'preact';
-import Header from 'Components/Header';
 import { route } from 'preact-router';
 import {
   Grommet,
-  Heading,
   Main,
   Box,
 } from 'grommet';
-import { PrimaryButton, FloatingButton } from 'Components/Buttons';
+
+import { FloatingButton } from 'Components/Buttons';
+
+import Header from './Header';
+import HeroSection from './HeroSection';
+import Partners from './Partners';
+import Conservation from './Conservation';
+import Features from './Features';
+
 import grommetTheme from '../../grommetTheme';
-
-import style from './style.scss';
-
+// TODO: move this to its own file and import it;
 const websiteTheme = {
   ...grommetTheme,
   heading: {
@@ -89,67 +93,20 @@ const websiteTheme = {
 
 const Home = () => (
   <Grommet theme={websiteTheme}>
-    <div className={style.home}>
+    <Main width={{ max: "1650px", min: "350px" }} margin={{ horizontal: 'auto' }}>
       <Header />
-      <Main fill pad={{top: 'var(--headerHeight)', bottom: '40px'}}>
-        <Box className={style.twoSides} background={{color: '#9BB7F1'}}>
-          <Box justify="center" alignContent="center" pad="30px" height={{min: '400px'}}>
-            <Heading textAlign="center" level="1" margin="0">Explore nature, from home.</Heading>
-            <Heading textAlign="center" level="4" margin="30px auto 60px">
-              Incredible animal experiences from the world&apos;s
-              top zoos, hosted by nature experts.
-            </Heading>
-
-            <PrimaryButton
-              size="large"
-              label="Meet the Animals"
-              type="submit"
-              onClick={() => route('/signup')}
-            />
-          </Box>
-          <video autoPlay muted loop playsInline>
-            <source src="https://zl-brizi-tv.s3.ca-central-1.amazonaws.com/assets/landing/s1.webm" type="video/webm" />
-            <source src="https://zl-brizi-tv.s3.ca-central-1.amazonaws.com/assets/landing/s1.mov" type="video/mov" />
-            <source src="https://zl-brizi-tv.s3.ca-central-1.amazonaws.com/assets/landing/s1.mp4" type="video/mp4" />
-            Your browser does not support the video tag.
-          </video>
-        </Box>
-
-        <Box background="linear-gradient(180deg, #FFDCEE 0%, #FEDFD0 100%)">
-          <Heading textAlign="center" level="4" margin="18px">50% of your purchase funds animal care & conservation.</Heading>
-        </Box>
-
-        <Box
-          style={{position: 'relative'}}
-          height={{min: '604px'}}
-          justify="center"
-          background={{image: 'url(https://zl-brizi-tv.s3.ca-central-1.amazonaws.com/assets/landing/s2_bg.png)'}}
-        >
-          {/* This button will to float across page on scroll */}
-          <FloatingButton
-            onClick={() => route('/signup')}
-            style={{ position: 'absolute', top: '20px', right: '20px'}}
-          />
-          <Box alignSelf="center" width={{max: '700px'}}>
-            <Heading textAlign="center" level="2" margin="18px">
-              Live 24/7 from accredited zoos, animal sanctuaries and
-              rehabilitation centers worldwide.
-            </Heading>
-          </Box>
-
-          <div className={style.partners}>
-            <div>
-              <div><img src="https://zl-brizi-tv.s3.ca-central-1.amazonaws.com/assets/landing/s2_pacific.png" alt="" /></div>
-              <div><img src="https://zl-brizi-tv.s3.ca-central-1.amazonaws.com/assets/landing/s2_toronto_zoo.png" alt="" /></div>
-            </div>
-            <div>
-              <div><img src="https://zl-brizi-tv.s3.ca-central-1.amazonaws.com/assets/landing/s2_orana.png" alt="" /></div>
-              <div><img src="https://zl-brizi-tv.s3.ca-central-1.amazonaws.com/assets/landing/s2_coming_soon.png" alt="" /></div>
-            </div>
-          </div>
-        </Box>
-      </Main>
-    </div>
+      <Box fill pad={{top: 'var(--headerHeight)'}}>
+        <HeroSection />
+        <Partners />
+        <Conservation />
+        <Features />
+      </Box>
+      {/* This will need to float around the screen */}
+      <FloatingButton
+        onClick={() => route('/signup')}
+        style={{ position: 'fixed', bottom: '20px', right: '20px'}}
+      />
+    </Main>
   </Grommet>
 );
 
