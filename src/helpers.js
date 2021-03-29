@@ -17,6 +17,10 @@ export const iOSDevice = () => !!navigator.platform.match(/iPhone|iPod|iPad/);
 export const androidDevice = () => !!navigator.userAgent.match(/Android/i);
 
 export const getDeviceType = () => {
+  if (typeof window === 'undefined') {
+    return 'desktop';
+  }
+
   const ua = navigator.userAgent;
   if (/(tablet|ipad|playbook|silk)|(android(?!.*mobi))/i.test(ua)) {
     return "tablet";
