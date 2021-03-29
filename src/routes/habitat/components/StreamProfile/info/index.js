@@ -21,7 +21,7 @@ const Info = ({
   habitatId,
   animal,
   profileImage,
-  zooName,
+  zooLogo,
   zooSlug,
   isLiked,
   setLikedAction,
@@ -114,11 +114,13 @@ const Info = ({
 
         <p className={style.zooNameWrapper}>
           at
-          {' '}
+          &nbsp;
           {/* TODO: we need to agree on this routing path */}
           {/* maybe we could use `/z/${zooName}` */}
           {/* if we go with only `/${zooName}` we would need to do much more work to handle 404 */}
-          <Link href={`/zoo/${zooSlug}`}>{zooName}</Link>
+          <Link href={`/zoo/${zooSlug}`}>
+            <img src={zooLogo} alt="logo" />
+          </Link>
         </p>
       </div>
     </div>
@@ -133,14 +135,14 @@ export default connect(
         animal,
         profileImage,
         isLiked,
-        zoo: { name: zooName, slug: zooSlug } = {},
+        zoo: { logo: zooLogo, slug: zooSlug } = {},
       },
     },
   }) => ({
     habitatId,
     animal,
     profileImage,
-    zooName,
+    zooLogo,
     zooSlug,
     isLiked,
   }),
