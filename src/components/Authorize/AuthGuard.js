@@ -2,13 +2,14 @@ import { cloneElement, h, toChildArray } from 'preact';
 import { useEffect, useMemo, useState } from 'preact/hooks';
 import { connect } from 'react-redux';
 import { buildURL } from 'Shared/fetch';
-import { Box, Text, Heading } from 'grommet';
 import useFetch, { Provider as UseFetchProvider } from 'use-http';
 
 import { setUserData, setUserSessionChecked, unsetUserData } from '../../redux/actions';
 import { hasPermission } from '.';
 import { authRedirect } from './helpers';
 import { getDeviceType } from '../../helpers';
+
+import ErrorPage from '../../layouts/ErrorPage';
 
 import style from './style.scss';
 
@@ -95,13 +96,12 @@ const AuthGuard = ({
   }
 
   if (error) {
-    // TODO: update UI when we have styling for this
     return (
-      <Box fill justify="center" align="center">
-        <Heading level="1">Uh oh!</Heading>
-        <Text size="large">Something went wrong.</Text>
-        <Text size="large">Please try again.</Text>
-      </Box>
+      <ErrorPage
+        error="500"
+        message="Oops! Something went wrong."
+        url={props.path}
+      />
     );
   }
 
@@ -126,11 +126,11 @@ const AuthGuard = ({
     }
 
     return fallback || (
-      <Box fill justify="center" align="center">
-        <Heading level="1">Uh oh!</Heading>
-        <Text size="large">You are not authorized to see this content.</Text>
-        <Text size="large">Please contact your administrator.</Text>
-      </Box>
+      <ErrorPage
+        error="403"
+        message="Sorry, you don&apos;t have access to this page."
+        url={props.path}
+      />
     );
   }
 

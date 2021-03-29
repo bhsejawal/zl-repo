@@ -8,7 +8,7 @@ export const hasPermission = (action) => {
   if (role === 'admin') {
     // Admin users should not see login and signup if they're logged in
     // This avoid flashing content when checking for guestOnly role
-    return ['signup:view', 'login:view'].includes(role);
+    return !['signup:view', 'login:view'].includes(role);
   }
 
   const permissions = rules[role];

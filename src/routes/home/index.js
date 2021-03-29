@@ -107,7 +107,7 @@ const Home = () => (
               onClick={() => route('/signup')}
             />
           </Box>
-          <video autoPlay muted loop>
+          <video autoPlay muted loop playsInline>
             <source src="https://zl-brizi-tv.s3.ca-central-1.amazonaws.com/assets/landing/s1.webm" type="video/webm" />
             <source src="https://zl-brizi-tv.s3.ca-central-1.amazonaws.com/assets/landing/s1.mov" type="video/mov" />
             <source src="https://zl-brizi-tv.s3.ca-central-1.amazonaws.com/assets/landing/s1.mp4" type="video/mp4" />

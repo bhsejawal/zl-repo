@@ -1,12 +1,12 @@
 import { h } from 'preact';
-import { Box, Heading, Text } from 'grommet';
+import ErrorPage from '../../layouts/ErrorPage';
 
-// TODO: implement when we have design
-const NotFound = () => (
-  <Box fill justify="center" align="center">
-    <Heading level="1">404</Heading>
-    <Text size="large">Page not found</Text>
-  </Box>
+const NotFound = ({ url }) => (
+  <ErrorPage
+    error="404"
+    message="Looks like this page couldn&apos;t be found."
+    url={url}
+  />
 );
 
 export default NotFound;
