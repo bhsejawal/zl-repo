@@ -8,6 +8,7 @@ import {
 } from 'preact/hooks';
 import { Provider } from 'react-redux';
 import { loadStripe } from '@stripe/stripe-js';
+import { config as faConfig } from "@fortawesome/fontawesome-svg-core";
 
 import { Grommet } from 'grommet';
 import { deepMerge } from 'grommet/utils';
@@ -19,12 +20,15 @@ import store from './redux/store';
 import zoolifeTheme from './grommetTheme';
 
 import { generateTitle } from './helpers';
-
-import './style/globalStyle.scss';
-
 import ga from './shared/ga';
 
+import './style/globalStyle.scss';
+import '@fortawesome/fontawesome-svg-core/styles.css';
+
 const customBreakpoints = deepMerge(grommet, zoolifeTheme);
+
+// we are manually loading FA css and this should prevent duplication
+faConfig.autoAddCss = false;
 
 const App = () => {
   const [stripe, setStripe] = useState(null);
