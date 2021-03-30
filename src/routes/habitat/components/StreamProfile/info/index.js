@@ -19,7 +19,7 @@ import style from './style.scss';
 
 const Info = ({
   habitatId,
-  animal,
+  title,
   profileImage,
   zooLogo,
   zooSlug,
@@ -104,10 +104,10 @@ const Info = ({
       <div>
         <TextEditor
           postToUrl={`/admin/habitats/${habitatId}/prop`}
-          textProp="animal"
-          minLen={10}
+          textProp="title"
+          minLen={3}
           maxLen={80}
-          initialText={animal}
+          initialText={title}
         >
           {(text) => <h4 className={style.name}>{text}</h4>}
         </TextEditor>
@@ -132,7 +132,7 @@ export default connect(
     habitat: {
       habitatInfo: {
         _id: habitatId,
-        animal,
+        title,
         profileImage,
         isLiked,
         zoo: { logo: zooLogo, slug: zooSlug } = {},
@@ -140,7 +140,7 @@ export default connect(
     },
   }) => ({
     habitatId,
-    animal,
+    title,
     profileImage,
     zooLogo,
     zooSlug,
