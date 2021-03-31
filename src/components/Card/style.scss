@@ -42,6 +42,7 @@ $cardWidth: 240px;
 
     img {
       max-width: 64px;
+      border-radius: 50%;
     }
   }
 }
@@ -116,8 +117,4 @@ $cardWidth: 240px;
   video:-webkit-media-controls-timeline {
     display: none;
   }
-}
-
-img.round {
-  border-radius: 50%;
 }

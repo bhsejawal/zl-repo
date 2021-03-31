@@ -20,7 +20,6 @@ const Card = ({
   onClick,
   live,
   loading,
-  roundImage,
   scheduledEvents,
   setUserDataAction,
 }) => {
@@ -94,7 +93,7 @@ const Card = ({
           </OutlineButton>
         </div>
         <div className={style.image}>
-          <img src={image} alt="" className={classnames({ [style.round]: roundImage })} />
+          <img src={image} alt="" />
         </div>
       </div>
     </div>

@@ -75,7 +75,6 @@ const NextTalkBar = ({ height, width }) => {
                   header={isLive ? <Tag label="LIVE" varient="online" /> : text}
                   description={description}
                   image={profileImage}
-                  roundImage
                 />
               ))}
             </div>
