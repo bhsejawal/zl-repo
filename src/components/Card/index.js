@@ -18,7 +18,6 @@ const Card = ({
   description,
   image,
   onClick,
-  live,
   loading,
   scheduledEvents,
   setUserDataAction,
@@ -82,15 +81,11 @@ const Card = ({
             onClick={onCLickHandler(scheduleId)}
             disabled={isReminded}
             className={classnames({ shimmer: loading })}
-            variant={live ? 'secondary' : 'outline'} size="xs"
-          >
-            <OutlineButton
-              size="medium"
-              label={!sendingReminder && (error ? 'Try Again!' : 'Remind me')}
-              margin={{top: '10px'}}
-              loading={sendingReminder && !loading}
-            />
-          </OutlineButton>
+            size="medium"
+            label={!sendingReminder && (error ? 'Try Again!' : 'Remind me')}
+            margin={{top: '10px'}}
+            loading={sendingReminder && !loading}
+          />
         </div>
         <div className={style.image}>
           <img src={image} alt="" />

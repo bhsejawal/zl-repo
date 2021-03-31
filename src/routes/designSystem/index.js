@@ -18,9 +18,9 @@ const DesignSystem = () => (
       <br />
       <Text size="medium" >Caption</Text>
       <br />
-      <Text size="10px" weight="700">Highlights</Text>
+      <Text size="10px" weight={700}>Highlights</Text>
       <br />
-      <Text size="small" weight="700">Sub-caption</Text>
+      <Text size="small" weight={700}>Sub-caption</Text>
       <br />
       <Link href="/design">Link Large</Link>
       <br />

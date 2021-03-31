@@ -7,7 +7,7 @@ const Tag = ({
   label,
   varient, // online, light, offline
 }) => (
-  <Text size="small" weight="700" className={classnames(style.tag, style[varient])}>
+  <Text size="small" weight={700} className={classnames(style.tag, style[varient])}>
     {label}
   </Text>
 );

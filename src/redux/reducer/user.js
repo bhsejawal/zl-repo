@@ -30,6 +30,7 @@ const initialState = {
   // used to store icon, color and nickname,
   // and other UI user settings
   profile: undefined,
+  isOnboarded: false,
 };
 
 export default (state = initialState, { type, payload }) => {

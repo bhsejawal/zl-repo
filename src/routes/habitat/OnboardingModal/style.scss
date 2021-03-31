@@ -1,0 +1,28 @@
+.onboarding {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background-color: rgba(46, 45, 45, .85);
+  z-index: 10;
+}
+
+button.replayButton {
+  border: 1.5px solid var(--blueMediumLight);
+  background-color: transparent !important;
+  color: white;
+
+  &:hover {
+    border: 1.5px solid var(--blueMediumLight);
+    background-color: rgba(255, 255, 255, .25) !important;
+  }
+}
+
+.buttonsWrapper {
+  position: absolute;
+  right: 0;
+  left: 0;
+  bottom: 17%;
+  z-index: 1;
+}

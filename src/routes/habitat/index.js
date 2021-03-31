@@ -14,6 +14,7 @@ import Chat from './components/Chat';
 import NextTalkBar from './components/NextTalkBar';
 import CardTabs from './components/CardTabs';
 import StreamProfile from './components/StreamProfile';
+import OnboardingModal from './OnboardingModal';
 
 import { useWindowResize } from '../../hooks';
 import { setHabitat, unsetHabitat } from './actions';
@@ -109,6 +110,7 @@ const Habitat = ({
           <CardTabs />
         </div>
       </div>
+      <OnboardingModal />
     </GlobalsContextProvider>
   );
 }
