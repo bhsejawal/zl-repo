@@ -10,6 +10,7 @@ import HeroSection from './HeroSection';
 import Partners from './Partners';
 import Conservation from './Conservation';
 import Features from './Features';
+import Overview from './Overview';
 
 import grommetTheme from '../../grommetTheme';
 // TODO: move this to its own file and import it;
@@ -35,7 +36,7 @@ const websiteTheme = {
           height: '36px',
         },
         medium: {
-          size: '30ppx',
+          size: '30px',
           height: '40px',
           maxWidth: 'unset',
         },
@@ -122,8 +123,9 @@ const Home = () => (
       <Box fill pad={{top: 'var(--headerHeight)'}}>
         <HeroSection />
         <Partners />
-        <Conservation />
+        <Overview />
         <Features />
+        <Conservation />
       </Box>
       {/* This will need to float around the screen */}
       <FloatingButton

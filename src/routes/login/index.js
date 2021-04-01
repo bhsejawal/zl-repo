@@ -44,7 +44,7 @@ const Login = ({
 
   useEffect(() => {
     if (logged && profile) {
-      route('/', true);
+      route('/map', true);
     } else if (logged) {
       // users who have not followed the regular signup process
       // do not have profile set, redirecting them to generate one
