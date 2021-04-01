@@ -28,7 +28,7 @@ const maxStreamHeight = 720;
 const Habitat = ({
   streamKey,
   habitatId,
-  animal,
+  title,
   matches: { zooName, habitatSlug },
   setHabitatAction,
   unsetHabitatAction,
@@ -63,10 +63,10 @@ const Habitat = ({
   }, [unsetHabitatAction]);
 
   useEffect(() => {
-    if (animal) {
-      document.title = generateTitle(`${animal} - Habitat`);
+    if (title) {
+      document.title = generateTitle(`${title} - Habitat`);
     }
-  }, [animal]);
+  }, [title]);
 
   const sideBarWidth = 84;
   const chatWidth = 285;
@@ -121,13 +121,13 @@ export default connect(
       habitatInfo: {
         streamKey,
         _id: habitatId,
-        animal,
+        title,
       },
     },
   }) => ({
     streamKey,
     habitatId,
-    animal,
+    title,
   }),
   {
     setHabitatAction: setHabitat,

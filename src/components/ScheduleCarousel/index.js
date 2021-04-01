@@ -95,7 +95,7 @@ const ScheduleCarousel = ({ habitatId, hostStreamKey, isHostStreamOn }) => {
 
           {list.map(({
             _id,
-            animal,
+            title,
             startTime,
             zoo,
             isLive,
@@ -106,7 +106,7 @@ const ScheduleCarousel = ({ habitatId, hostStreamKey, isHostStreamOn }) => {
             <Card
               key={_id}
               scheduleId={_id}
-              animal={animal}
+              title={title}
               zoo={zoo}
               startTime={startTime}
               live={isLive}

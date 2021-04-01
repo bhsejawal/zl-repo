@@ -11,7 +11,7 @@ import style from './style.scss';
 
 const Card = ({
   scheduleId,
-  animal,
+  title,
   zoo,
   startTime,
   header,
@@ -34,17 +34,17 @@ const Card = ({
   });
 
   const isReminded = useMemo(() => {
-    if (scheduleId || (animal && zoo && startTime)) {
+    if (scheduleId || (title && zoo && startTime)) {
       return scheduledEvents.some(({
         scheduleId: eventScheduleId,
-        animal: eventAnimal,
+        title: eventTitle,
         zoo: eventZoo,
         startTime: eventStart,
       }) => {
         const sameScheduleId = eventScheduleId === scheduleId;
         // in case we re-generate new schedules, IDs will be different therefore
         // we need to compare event other info to check if user already received a reminder
-        const sameEventInfo = animal === eventAnimal
+        const sameEventInfo = title === eventTitle
           && zoo === eventZoo
           && startTime.toISOString() === eventStart;
 
@@ -53,7 +53,7 @@ const Card = ({
     }
 
     return false;
-  }, [animal, scheduleId, scheduledEvents, startTime, zoo]);
+  }, [title, scheduleId, scheduledEvents, startTime, zoo]);
 
   useEffect(() => {
     if (error) {

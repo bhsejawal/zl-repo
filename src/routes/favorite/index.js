@@ -119,7 +119,7 @@ const Favorite = () => {
             slug,
             online,
             liveTalk,
-            animal: title,
+            title,
             zoo,
             description,
             wideImage: image,

@@ -41,7 +41,7 @@ export const useUpcomingTalks = (habitatId) => {
         }) => ({
           _id,
           zoo,
-          animal: habitat?.animal,
+          title: habitat?.title,
           startTime: parseISO(startTime),
           profileImage: habitat?.profileImage,
           link: `/h/${habitat?.zoo?.slug}/${habitat?.slug}`,

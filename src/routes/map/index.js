@@ -28,7 +28,7 @@ const Map = ({ activeHabitat }) => (
                 zooSlug={activeHabitat.zoo?.slug}
                 online={activeHabitat.online}
                 liveTalk={activeHabitat.liveTalk}
-                title={activeHabitat.animal}
+                title={activeHabitat.title}
                 description={activeHabitat.description}
                 image={activeHabitat.wideImage}
                 logo={activeHabitat.zoo?.logo}

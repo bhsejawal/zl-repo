@@ -57,7 +57,7 @@ const NextTalkBar = ({ height, width }) => {
             <div className={style.listWrapper}>
               {list.map(({
                 _id,
-                animal,
+                title,
                 startTime,
                 zoo,
                 isLive,
@@ -68,7 +68,7 @@ const NextTalkBar = ({ height, width }) => {
                 <Card
                   key={_id}
                   scheduleId={_id}
-                  animal={animal}
+                  title={title}
                   zoo={zoo}
                   startTime={startTime}
                   live={isLive}
