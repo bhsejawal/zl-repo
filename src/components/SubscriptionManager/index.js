@@ -17,7 +17,6 @@ import { loadStripe } from '@stripe/stripe-js/pure';
 import { buildURL } from 'Shared/fetch';
 import background from 'Assets/plansBackground.png';
 import PlanCard from 'Components/PlanCard';
-import ZoolifeBenefits from 'Components/Benefits';
 
 import { StripeContext } from 'Shared/context';
 
@@ -297,7 +296,6 @@ const SubscriptionSection = ({
             ))}
           </Box>
         </Box>
-        <ZoolifeBenefits />
       </Box>
       <UpdateSubscriptionDialog
         show={dialogSettings.show}

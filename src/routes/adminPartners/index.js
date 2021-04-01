@@ -33,7 +33,7 @@ const EditLogoRender = ({ logo: logoProp }) => {
             ref={imgRef}
             previewRef={previewImgRef}
             url={logo}
-            label="Habitat Photo"
+            label="Partner Photo"
             constraints={{
               // TODO: we need to review these
               maxResolution: 800,

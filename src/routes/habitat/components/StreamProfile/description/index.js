@@ -7,13 +7,13 @@ import TextEditor from 'Components/AdminEditWrappers/TextEditor';
 
 import style from './style.scss';
 
-const Description = ({ habitatId, description = '' }) => (
+const Description = ({ habitatId, conservationText = '' }) => (
   <div className={style.desc}>
     <FontAwesomeIcon icon={faShieldCheck} size="2x" color="var(--hunterGreen)" />
     <TextEditor
       postToUrl={`/admin/habitats/${habitatId}/prop`}
-      textProp="description"
-      initialText={description}
+      textProp="conservationText"
+      initialText={conservationText}
       minLen={50}
       maxLen={130}
     >
@@ -27,11 +27,11 @@ export default connect(
     habitat: {
       habitatInfo: {
         _id: habitatId,
-        description,
+        conservationText,
       },
     },
   }) => ({
     habitatId,
-    description,
+    conservationText,
   }),
 )(Description);

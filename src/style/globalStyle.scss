@@ -67,7 +67,7 @@ body {
 
 * {
   box-sizing: border-box;
-  outline: none;
+  outline: none !important;
 }
 
 h1,
@@ -234,4 +234,8 @@ a {
 
 .errorGradient {
   background: linear-gradient(180deg, #FFDCEE 23.96%, #FFD1AF 100%);
+}
+
+.full-height {
+  min-height: 100%;
 }
