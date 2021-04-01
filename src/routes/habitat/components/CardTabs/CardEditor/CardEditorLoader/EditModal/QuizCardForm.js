@@ -156,9 +156,9 @@ const QuestionCard = memo(({
 
         <div className="simpleSelect">
           <select data-prop="correctAnswer" onChange={onChangeHandler}>
-            <option value="1">1</option>
-            <option value="2">2</option>
-            {question.answer3 && <option value="3">3</option>}
+            <option value="1" selected={question.correctAnswer === 1}>1</option>
+            <option value="2" selected={question.correctAnswer === 2}>2</option>
+            {question.answer3 && <option value="3" selected={question.correctAnswer === 3}>3</option>}
           </select>
           <FontAwesomeIcon icon={faChevronDown} color="var(--blue)" />
         </div>

@@ -105,6 +105,7 @@ const EditModal = ({
   } = {},
   habitatId,
   activeTab,
+  canCreateQuizCard,
   onClose,
   addCardAction,
   updateCardAction,
@@ -202,7 +203,7 @@ const EditModal = ({
     try {
       setError(undefined);
       await deleteCardApi(cardId);
-      deleteCardAction(cardId);
+      deleteCardAction(cardId, cardType);
       onClose();
     } catch (err) {
       console.error(err);
@@ -251,7 +252,11 @@ const EditModal = ({
 
           <Box flex="grow" justify="center" align="center">
             {!data && (
-              <CardsList activeTab={activeTab} onContinue={onCardTypeSelect} />
+              <CardsList
+                activeTab={activeTab}
+                onContinue={onCardTypeSelect}
+                canCreateQuizCard={canCreateQuizCard}
+              />
             )}
 
             {deleteActive && (
@@ -620,6 +625,7 @@ export default connect(
     habitat: {
       cards: {
         activeTab,
+        canCreateQuizCard,
       },
       habitatInfo: {
         _id: habitatId,
@@ -628,6 +634,7 @@ export default connect(
   }) => ({
     activeTab,
     habitatId,
+    canCreateQuizCard,
   }),
   {
     addCardAction: addCard,

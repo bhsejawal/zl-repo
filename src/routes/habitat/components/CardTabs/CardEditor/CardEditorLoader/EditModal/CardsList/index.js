@@ -80,7 +80,7 @@ import {
 
 import style from './style.scss';
 
-const CardsList = ({ activeTab, onContinue }) => {
+const CardsList = ({ activeTab, canCreateQuizCard, onContinue }) => {
   // TODO: we'll need to render the list based on the tab
   const listRef = useRef();
   const [selectedType, setSelectedType] = useState();
@@ -274,7 +274,7 @@ const CardsList = ({ activeTab, onContinue }) => {
             </div>
           )}
 
-          {activeTab === QUIZ && (
+          {activeTab === QUIZ && canCreateQuizCard && (
             // eslint-disable-next-line jsx-a11y/click-events-have-key-events
             <div className={style.item} role="button" tabIndex="0" onClick={onQuizCardClick}>
               <Text size="xlarge" margin="small" textAlign="center">Quiz</Text>

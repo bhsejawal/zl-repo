@@ -19,7 +19,7 @@ export const updateCard = (id, tag, index, data) => ({
   },
 });
 
-export const deleteCard = (id) => ({
+export const deleteCard = (id, type) => ({
   type: DELETE_HABITAT_CARD,
-  payload: { id },
+  payload: { id, type },
 });

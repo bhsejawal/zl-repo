@@ -1,5 +1,5 @@
 import { pick } from 'lodash-es';
-import { MEET } from './constants';
+import { MEET, QUIZ_CARD_TYPE} from './constants';
 import {
   ADD_HABITAT_CARD,
   UPDATE_HABITAT_CARD,
@@ -20,6 +20,7 @@ const initialState = {
   items: [],
   familyCards: [],
   activeTab: MEET,
+  canCreateQuizCard: false,
 };
 
 export default (state = initialState, { type, payload }) => {
@@ -27,22 +28,26 @@ export default (state = initialState, { type, payload }) => {
     case SET_HABITAT_CARDS: {
       const { cards } = payload;
       const items = cards.sort(cardSort);
+      const canCreateQuizCard = !cards.some(({ type }) => type === QUIZ_CARD_TYPE);
 
       return {
         ...state,
         items,
         familyCards: updateFamilyCards(state, items),
+        canCreateQuizCard,
       };
     }
 
     case ADD_HABITAT_CARD: {
       const { card } = payload;
+      const { type } = card;
       const items = [...state.items, card].sort(cardSort);
 
       return {
         ...state,
         items,
         familyCards: updateFamilyCards(state, items),
+        canCreateQuizCard: state.canCreateQuizCard && !type === QUIZ_CARD_TYPE,
       };
     }
 
@@ -72,13 +77,14 @@ export default (state = initialState, { type, payload }) => {
     }
 
     case DELETE_HABITAT_CARD: {
-      const { id } = payload;
+      const { id, type } = payload;
       const items = state.items.filter(({ _id }) => _id !== id);
 
       return {
         ...state,
         items,
         familyCards: updateFamilyCards(state, items),
+        canCreateQuizCard: type === QUIZ_CARD_TYPE || state.canCreateQuizCard,
       };
     }
 
