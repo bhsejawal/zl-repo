@@ -6,11 +6,16 @@ import classnames from 'classnames';
 
 import style from './style.scss';
 
-const Accordion = ({ expanded, children, header }) => {
+const Accordion = ({
+  expanded,
+  children,
+  header,
+  className,
+}) => {
   const [expand, setExpand] = useState(expanded);
 
   return (
-    <div className={classnames(style.accordionContainer, { [style.expand]: expand })}>
+    <div className={classnames(style.accordionContainer, className, { [style.expand]: expand })}>
       <button type="button" className={style.header} onClick={() => setExpand(!expand)}>
         <FontAwesomeIcon
           icon={faChevronDown}

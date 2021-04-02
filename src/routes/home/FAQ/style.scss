@@ -1,0 +1,39 @@
+.FAQ {
+  background-color: var(--blueMediumLight);
+  padding: 170px 0;
+
+  h2 {
+    text-align: center;
+    margin-bottom: 80px;
+  }
+
+  .accordion {
+    box-shadow: none;
+    border-radius: 10px;
+    overflow: hidden;
+    max-width: 850px;
+    width: 80vw;
+    margin: 0 auto 20px;
+
+    button {
+      padding-right: 0;
+    }
+
+    // body
+    button + div {
+      border-top: 0;
+      padding-left: 50px;
+    }
+
+    svg:first-child {
+      background-color: black;
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      padding: 8px;
+      color: white;
+      position: absolute;
+      left: 0;
+    }
+  }
+}

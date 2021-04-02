@@ -11,6 +11,7 @@ import Partners from './Partners';
 import Conservation from './Conservation';
 import Features from './Features';
 import Overview from './Overview';
+import FAQ from './FAQ';
 
 import grommetTheme from '../../grommetTheme';
 // TODO: move this to its own file and import it;
@@ -126,6 +127,7 @@ const Home = () => (
         <Overview />
         <Features />
         <Conservation />
+        <FAQ />
       </Box>
       {/* This will need to float around the screen */}
       <FloatingButton
