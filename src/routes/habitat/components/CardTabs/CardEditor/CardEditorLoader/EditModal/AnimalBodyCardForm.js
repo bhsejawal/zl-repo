@@ -13,7 +13,6 @@ import {
   Button,
   Text,
   TextArea,
-  TextInput,
 } from 'grommet';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrashAlt } from '@fortawesome/pro-regular-svg-icons';
@@ -151,19 +150,20 @@ const PartInputCard = memo(({
 
           <Box margin={{ bottom: '20px' }}>
             <Heading margin={{ top: '0', bottom: '5px' }} level="5">Title:</Heading>
-            <TextInput
-              reverse
-              value={part.title}
-              data-prop="title"
-              onChange={onChangeHandler}
-              maxLength="20"
-              icon={(
-                <span style={{ color: errors?.title && 'var(--red)' }}>
-                  {part.title?.length ?? 0}
-                  /20
-                </span>
-              )}
-            />
+            <div className={style.textAreaWrapper}>
+              <TextArea
+                value={part.title}
+                data-prop="title"
+                onChange={onChangeHandler}
+                maxLength="45"
+                rows="2"
+                className={style.textarea}
+              />
+              <span className={style.bottomRight}>
+                {part.title?.length ?? 0}
+                /45
+              </span>
+            </div>
             {errors?.title && (
               <Box>
                 <Text color="status-error">{errors?.title}</Text>

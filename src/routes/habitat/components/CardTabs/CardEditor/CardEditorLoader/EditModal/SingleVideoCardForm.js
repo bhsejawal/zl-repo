@@ -5,7 +5,6 @@ import {
   Box,
   Heading,
   TextArea,
-  TextInput,
 } from 'grommet';
 
 import ImageSelector from 'Components/ImageSelector';
@@ -34,19 +33,20 @@ const SingleVideoCardForm = forwardRef(({
     <>
       <Box margin={{ bottom: '20px' }}>
         <Heading margin={{ top: '0', bottom: '5px' }} level="5">Title:</Heading>
-        <TextInput
-          reverse
-          value={title}
-          data-prop="title"
-          onChange={onInputChange}
-          maxLength="20"
-          icon={(
-            <span>
-              {title?.length ?? 0}
-              /20
-            </span>
-          )}
-        />
+        <div className={style.textAreaWrapper}>
+          <TextArea
+            value={title}
+            data-prop="title"
+            onChange={onInputChange}
+            maxLength="45"
+            rows="2"
+            className={style.textarea}
+          />
+          <span className={style.bottomRight}>
+            {title?.length ?? 0}
+            /45
+          </span>
+        </div>
       </Box>
 
       <Box margin={{ bottom: '20px' }}>

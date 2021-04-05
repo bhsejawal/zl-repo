@@ -60,7 +60,7 @@ const ImageSelector = forwardRef(({
   const [isLoading, setIsLoading] = useState();
   const [errorMsg, setErrorMsg] = useState();
   const [errors, setErrors] = useState({});
-  const acceptedFormatsStr = acceptedFormats.join(',');
+  const acceptedFormatsStr = acceptedFormats.map((format) => `.${format}`).join(',');
 
   useEffect(() => setErrorMsg(undefined), [url]);
 
@@ -320,7 +320,7 @@ const ImageSelector = forwardRef(({
 
       <Box direction="row">
         <div className={style.uploadBtnWrapper}>
-          <input disabled={isLoading} onChange={onInputChange} type="file" name="file" />
+          <input disabled={isLoading} onChange={onInputChange} type="file" name="file" accept={acceptedFormatsStr} />
           <OutlineButton size="small" disabled={isLoading} label="Upload" margin={{ right: '5px' }} />
         </div>
 
