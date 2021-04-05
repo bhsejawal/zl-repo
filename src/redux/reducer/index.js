@@ -3,6 +3,7 @@ import { combineReducers } from "redux";
 import mainStream from './mainStream';
 import user from './user';
 import chat from './chat';
+import modals from './modals';
 import habitat from '../../routes/habitat/reducer';
 import plans from './plans';
 import schedule from '../../routes/schedule/reducer';
@@ -18,4 +19,5 @@ export default combineReducers({
   map,
   schedule,
   passwordReset,
+  modals,
 });

@@ -1,5 +1,6 @@
 import { h } from 'preact';
 import { useMemo, useRef, useState } from 'preact/hooks';
+import { Link } from 'preact-router';
 import { Box, Text } from 'grommet';
 import { format, parseISO } from 'date-fns';
 import useFetch from 'use-http';
@@ -22,9 +23,9 @@ const NameWithPhoto = ({
 }) => (
   <Box direction="row">
     <img className={style.tableImg} src={profileImage} alt="profile" />
-    <a href={`/h/${zoo?.slug}/${slug}`}>
+    <Link href={`/h/${zoo?.slug}/${slug}`}>
       <Text size="large">{title}</Text>
-    </a>
+    </Link>
   </Box>
 );
 

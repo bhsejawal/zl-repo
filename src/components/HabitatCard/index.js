@@ -1,6 +1,6 @@
 import { h } from 'preact';
-import { memo } from 'preact/compat';
 import { Link } from 'preact-router';
+import { connect } from 'react-redux';
 import { faCircle } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHeart } from '@fortawesome/pro-solid-svg-icons';
@@ -8,6 +8,7 @@ import { Button } from 'grommet';
 import classnames from 'classnames';
 
 import Tag from 'Components/Tag';
+import { openTermsModal } from 'Components/TermsAndConditions/actions';
 
 import zooPlaceholder from './zooPlaceholder.png';
 import wideImgPlaceholder from './wideImgPlaceholder.png';
@@ -45,37 +46,52 @@ const HabitatCard = ({
   logo,
   title,
   description,
+  termsAccepted,
   onFavoriteClick,
-}) => (
-  <div className={classnames(style.habitatCard, className)}>
-    <div className={style.header}>
-      <img src={image ?? wideImgPlaceholder} alt="" />
-      <div className={style.logo}>
-        <img src={logo ?? zooPlaceholder} alt="" />
+  openTermsModalAction,
+}) => {
+  const onHabitatClick = (evt) => {
+    if (!termsAccepted) {
+      evt.preventDefault();
+      evt.stopPropagation();
+      openTermsModalAction();
+    }
+  };
+
+  return (
+    <div className={classnames(style.habitatCard, className)}>
+      <div className={style.header}>
+        <img src={image ?? wideImgPlaceholder} alt="" />
+        <div className={style.logo}>
+          <img src={logo ?? zooPlaceholder} alt="" />
+        </div>
+        <div className={style.tag}>
+          <HabitatStatus online={online} liveTalk={liveTalk} />
+        </div>
       </div>
-      <div className={style.tag}>
-        <HabitatStatus online={online} liveTalk={liveTalk} />
+      <div className={style.body}>
+        <h3>{title}</h3>
+        <p>{description || "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s"}</p>
+
+        <div className={classnames(style.buttons, { [style.favorite]: onFavoriteClick })}>
+          <Link onClick={onHabitatClick} href={encodeURI(`/h/${zooSlug}/${slug}`)}>
+            <Button primary label="Enter Habitat" size="large" />
+          </Link>
+          {onFavoriteClick && (
+            <Button
+              onClick={() => onFavoriteClick(habitatId)}
+              margin={{ horizontal: 'small' }}
+            >
+              <FontAwesomeIcon icon={faHeart} color="var(--pink)" size="2x" />
+            </Button>
+          )}
+        </div>
       </div>
     </div>
-    <div className={style.body}>
-      <h3>{title}</h3>
-      <p>{description || "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s"}</p>
+  );
+};
 
-      <div className={classnames(style.buttons, { [style.favorite]: onFavoriteClick })}>
-        <Link href={encodeURI(`/h/${zooSlug}/${slug}`)}>
-          <Button primary label="Enter Habitat" size="large" />
-        </Link>
-        {onFavoriteClick && (
-          <Button
-            onClick={() => onFavoriteClick(habitatId)}
-            margin={{ horizontal: 'small' }}
-          >
-            <FontAwesomeIcon icon={faHeart} color="var(--pink)" size="2x" />
-          </Button>
-        )}
-      </div>
-    </div>
-  </div>
-);
-
-export default memo(HabitatCard)
+export default connect(
+  ({ user: { termsAccepted } = {} }) => ({ termsAccepted }),
+  { openTermsModalAction: openTermsModal },
+)(HabitatCard)

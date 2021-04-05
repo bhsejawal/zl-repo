@@ -18,6 +18,7 @@ import classnames from 'classnames';
 import SocialLoginBar from 'Components/SocialLoginBar';
 import logo from 'Assets/zoolife.svg';
 import { PrimaryButton } from 'Components/Buttons';
+import { openTermsModal } from 'Components/TermsAndConditions/actions';
 
 import { setUserData } from '../../redux/actions';
 import { emailRegex, passwordRegex, getDeviceType } from '../../helpers';
@@ -28,7 +29,7 @@ import style from '../login/style.scss';
 
 const TERMS_VERSION = process.env.PREACT_APP_TERMS_VERSION ?? 1;
 
-const Signup = ({ setUserDataAction }) => {
+const Signup = ({ setUserDataAction, openTermsModalAction }) => {
   const size = useContext(ResponsiveContext);
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
@@ -121,6 +122,11 @@ const Signup = ({ setUserDataAction }) => {
     }
   };
 
+  const onTermsAndPrivacyClick = (evt) => {
+    evt.preventDefault();
+    openTermsModalAction();
+  };
+
   return (
     <Layout>
       <>
@@ -183,9 +189,9 @@ const Signup = ({ setUserDataAction }) => {
                   <Box>
                     <Text>
                       I agree to Zoolife&apos;s&nbsp;
-                      <Anchor>Terms</Anchor>
+                      <Anchor onClick={onTermsAndPrivacyClick}>Terms</Anchor>
                       &nbsp;&amp;&nbsp;
-                      <Anchor>Privacy</Anchor>
+                      <Anchor onClick={onTermsAndPrivacyClick}>Privacy</Anchor>
                     </Text>
                   </Box>
                 )}
@@ -224,5 +230,8 @@ const Signup = ({ setUserDataAction }) => {
 
 export default connect(
   ({ user: { logged } }) => ({ logged }),
-  { setUserDataAction: setUserData },
+  {
+    setUserDataAction: setUserData,
+    openTermsModalAction: openTermsModal,
+  },
 )(Signup);

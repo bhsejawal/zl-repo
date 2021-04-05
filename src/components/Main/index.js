@@ -7,6 +7,7 @@ import classnames from 'classnames';
 import AdminRouter from 'Shared/AdminRouter';
 import TimeBar from 'Components/TimeBar';
 import AuthGuard from 'Components/Authorize/AuthGuard';
+import TermsAndConditions from 'Components/TermsAndConditions';
 
 // Code-splitting is automated for `routes` directory
 import PasswordReset from '../../routes/passwordReset';
@@ -117,7 +118,9 @@ const Main = ({ onRouteChange, isTrial }) => {
         {/* NOTE: NotFound need to be at the end */}
         <NotFound path=":*" />
       </Router>
+
       <TimeBar path={path} />
+      <TermsAndConditions />
     </MainContainer>
   )
 };

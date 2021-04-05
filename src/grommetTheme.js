@@ -21,6 +21,12 @@ export default {
         background-color: ${checked ? 'var(--blue);' : 'var(--mediumGrey)'}
       `,
     },
+    check: {
+      extend: ({ checked }) => `
+        background-color: ${checked ? 'var(--blueDark);' : 'transparent'};
+        ${checked ? 'border: 0;' : ''}
+      `,
+    },
   },
   global: {
     colors: {

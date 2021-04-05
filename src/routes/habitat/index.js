@@ -9,6 +9,7 @@ import LiveStream from 'Components/LiveStream';
 import GlobalsContextProvider from "Components/GlobalsContextProvider";
 import Header from 'Components/Header';
 import Loader from 'Components/async/Loader';
+import { openTermsModal } from 'Components/TermsAndConditions/actions';
 
 import Chat from './components/Chat';
 import NextTalkBar from './components/NextTalkBar';
@@ -29,9 +30,11 @@ const Habitat = ({
   streamKey,
   habitatId,
   title,
+  user,
   matches: { zooName, habitatSlug },
   setHabitatAction,
   unsetHabitatAction,
+  openTermsModalAction,
 }) => {
   const { width: windowWidth } = useWindowResize();
   const { loading, error, response } = useFetch(
@@ -39,6 +42,12 @@ const Habitat = ({
     { credentials: 'include', cachePolicy: 'no-cache' },
     [zooName, habitatSlug],
   );
+
+  useEffect(() => {
+    if (user && !user?.termsAccepted) {
+      openTermsModalAction(true);
+    }
+  }, [openTermsModalAction, user]);
 
   useEffect(() => {
     if (loading && habitatId) {
@@ -124,13 +133,16 @@ export default connect(
         title,
       },
     },
+    user,
   }) => ({
     streamKey,
     habitatId,
     title,
+    user,
   }),
   {
     setHabitatAction: setHabitat,
     unsetHabitatAction: unsetHabitat,
+    openTermsModalAction: openTermsModal,
   },
 )(Habitat);

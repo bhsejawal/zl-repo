@@ -27,6 +27,8 @@ import { HexColorPicker } from "react-colorful";
 import { PrimaryButton } from 'Components/Buttons';
 import classnames from 'classnames';
 
+import { openTermsModal } from 'Components/TermsAndConditions/actions';
+
 import backgroundImg from '../../assets/profileBackground.svg';
 import animal1 from '../../assets/profileIcons/animal1.svg';
 import animal2 from '../../assets/profileIcons/animal2.svg';
@@ -51,6 +53,7 @@ import { updateProfile } from './actions';
 
 import 'react-colorful/dist/index.css';
 import accountPageStyle from '../account/style.scss';
+
 import style from './style.scss';
 
 const colors = [
@@ -116,7 +119,12 @@ const background = {
   attachment: 'fixed',
 };
 
-const Profile = ({ step, updateProfileAction }) => {
+const Profile = ({
+  step,
+  user,
+  updateProfileAction,
+  openTermsModalAction,
+}) => {
   const pickerRef = useRef();
   const size = useContext(ResponsiveContext);
   const [isLoading, setIsLoading] = useState(true);
@@ -127,6 +135,12 @@ const Profile = ({ step, updateProfileAction }) => {
   const [isPickerOpen, setIsPickerOpen] = useState(false);
   const isCustomColor = useMemo(() => !colors.includes(color), [color]);
   const isInitiallyLoaded = useIsInitiallyLoaded(isLoading);
+
+  useEffect(() => {
+    if (user && !user?.termsAccepted) {
+      openTermsModalAction();
+    }
+  }, [user, openTermsModalAction]);
 
   useEffect(() => {
     setErrorMsg(undefined);
@@ -318,6 +332,9 @@ const Profile = ({ step, updateProfileAction }) => {
 };
 
 export default connect(
-  null,
-  { updateProfileAction: updateProfile },
+  ({ user }) => ({ user }),
+  {
+    updateProfileAction: updateProfile,
+    openTermsModalAction: openTermsModal,
+  },
 )(Profile);

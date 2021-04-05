@@ -1,3 +1,4 @@
+import { SET_TERMS_ACCEPTED } from 'Components/TermsAndConditions/types';
 import {
   SET_SESSION_CHECHED,
   SET_USER_DATA,
@@ -48,8 +49,14 @@ export default (state = initialState, { type, payload }) => {
 
     }
   }
+
   if (type === SET_USER_DATA) {
-    const { profile, subscriptionStatus: subscription = {}, ...rest } = payload;
+    const {
+      profile,
+      subscriptionStatus: subscription = {},
+      termsAcceptance,
+      ...rest
+    } = payload;
     const { validUntil } = subscription;
 
     const validUntilDate = validUntil ? new Date(validUntil) : null;
@@ -60,6 +67,8 @@ export default (state = initialState, { type, payload }) => {
       sessionChecked: true,
       logged: true,
       profile: profile || initialState.profile,
+      // TODO: implement versioning when we need it
+      termsAccepted: termsAcceptance.length !== 0,
       subscription: {
         ...state.subscription,
         ...subscription,
@@ -103,6 +112,13 @@ export default (state = initialState, { type, payload }) => {
         ...payload,
       },
     }
+  }
+
+  if (type === SET_TERMS_ACCEPTED) {
+    return {
+      ...state,
+      termsAccepted: true,
+    };
   }
 
   return state;
