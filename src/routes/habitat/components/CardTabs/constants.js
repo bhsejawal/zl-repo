@@ -27,6 +27,11 @@ export const ANIMAL_BODY_CARD_TYPE = 'ANIMAL_BODY_CARD_TYPE';
 export const QUIZ_CARD_TYPE = 'QUIZ_CARD_TYPE';
 
 // conservation status
-export const ENDANGERED = 'endangered';
 export const CRITICALLY_ENDANGERED = 'critically-endangered';
+export const DATA_DEFICIENT = 'data-deficient';
+export const ENDANGERED = 'endangered';
 export const EXTINCT_IN_THE_WILD = 'extinct-in-the-wild';
+export const EXTINCT = 'extinct';
+export const LEAST_CONCERNED = 'least-concerned';
+export const NEAR_THREATENED = 'near-threatened';
+export const VULNERABLE = 'vulnerable';

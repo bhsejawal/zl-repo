@@ -11,10 +11,31 @@ import {
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronDown } from '@fortawesome/pro-solid-svg-icons';
 
-import { CRITICALLY_ENDANGERED, ENDANGERED, EXTINCT_IN_THE_WILD } from '../../../constants';
+import {
+  CRITICALLY_ENDANGERED,
+  DATA_DEFICIENT,
+  ENDANGERED,
+  EXTINCT_IN_THE_WILD,
+  EXTINCT,
+  LEAST_CONCERNED,
+  NEAR_THREATENED,
+  VULNERABLE,
+} from '../../../constants';
+
 import { isValidUrl } from '../../../../../../../helpers';
 
 import style from './style.scss';
+
+const endangeredOptions = [
+  CRITICALLY_ENDANGERED,
+  DATA_DEFICIENT,
+  ENDANGERED,
+  EXTINCT_IN_THE_WILD,
+  EXTINCT,
+  LEAST_CONCERNED,
+  NEAR_THREATENED,
+  VULNERABLE,
+];
 
 const ConservationCardForm = forwardRef(({
   status,
@@ -58,16 +79,13 @@ const ConservationCardForm = forwardRef(({
   return (
     <>
       <div className="simpleSelect">
-        <select onChange={onInputChange} data-prop="status">
-          <option selected={status === ENDANGERED} value={ENDANGERED}>
-            Endangered
-          </option>
-          <option selected={status === CRITICALLY_ENDANGERED} value={CRITICALLY_ENDANGERED}>
-            Critically Endangered
-          </option>
-          <option selected={status === EXTINCT_IN_THE_WILD} value={EXTINCT_IN_THE_WILD}>
-            Extinct In The Wild
-          </option>
+        <select onChange={onInputChange} data-prop="status" className={style.capitalize}>
+          {endangeredOptions.map((option) => (
+            <option selected={status === option} value={option}>
+              {option.replace(/-/g, ' ')}
+            </option>
+
+          ))}
         </select>
 
         <FontAwesomeIcon icon={faChevronDown} color="var(--blue)" />
