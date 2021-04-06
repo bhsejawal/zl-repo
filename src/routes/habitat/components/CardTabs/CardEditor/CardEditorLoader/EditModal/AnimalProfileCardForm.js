@@ -9,14 +9,14 @@ import {
 } from 'preact/hooks';
 import {
   Box,
-  DateInput,
   Heading,
   TextArea,
   TextInput,
 } from 'grommet';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronDown } from '@fortawesome/pro-solid-svg-icons';
-
+import DatePicker from 'react-date-picker'
+import { parseISO } from 'date-fns';
 import ImageSelector from 'Components/ImageSelector';
 
 import style from './style.scss';
@@ -58,7 +58,7 @@ const AnimalProfileCardForm = forwardRef(({
   );
 
   const onDateChange = useCallback(
-    ({ value }) => onDataChange({ dateOfBirth: value }),
+    (value) => onDataChange({ dateOfBirth: value.toISOString() }),
     [onDataChange],
   );
 
@@ -132,10 +132,11 @@ const AnimalProfileCardForm = forwardRef(({
       </Box>
 
       <Box margin={{ bottom: '20px' }}>
-        <DateInput
-          format="mm/dd/yyyy"
-          value={dateOfBirth}
+        <DatePicker
+          format="MM/dd/yyyy"
+          value={parseISO(dateOfBirth)}
           onChange={onDateChange}
+          clearIcon={null}
         />
       </Box>
 
