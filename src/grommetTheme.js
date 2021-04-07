@@ -218,6 +218,7 @@ export default {
         opacity: '0.8',
       },
       borderRadius: '50px',
+      lineHeight: 'initial',
     },
   },
   menu: {

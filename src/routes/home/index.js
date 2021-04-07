@@ -12,6 +12,7 @@ import Conservation from './Conservation';
 import Features from './Features';
 import Overview from './Overview';
 import FAQ from './FAQ';
+import Testimonials from './Testimonials';
 
 import grommetTheme from '../../grommetTheme';
 // TODO: move this to its own file and import it;
@@ -127,13 +128,11 @@ const Home = () => (
         <Overview />
         <Features />
         <Conservation />
+        <Testimonials />
         <FAQ />
       </Box>
       {/* This will need to float around the screen */}
-      <FloatingButton
-        onClick={() => route('/signup')}
-        style={{ position: 'fixed', bottom: '20px', right: '20px'}}
-      />
+      <FloatingButton onClick={() => route('/signup')} />
     </Main>
   </Grommet>
 );

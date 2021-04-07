@@ -6,7 +6,7 @@ import {
   Heading,
   Text,
 } from 'grommet';
-import { SecondaryButton } from 'Components/Buttons';
+import { LandingSecondary } from 'Components/Buttons';
 
 const LiveTalksSection = () => {
   const size = useContext(ResponsiveContext);
@@ -55,11 +55,7 @@ const LiveTalksSection = () => {
             Join daily keeper talks and interactive Q&amp;As with animal experts and naturalists.
           </Text>
           <Box alignSelf="start" margin={{ vertical: 'xlarge' }}>
-            <SecondaryButton
-              label="Join a Live Q&amp;A"
-              type="button"
-              onClick={() => route('/signup')}
-            />
+            <LandingSecondary onClick={() => route('/signup')}>Join a Live Q&amp;A</LandingSecondary>
           </Box>
         </Box>
       </Box>

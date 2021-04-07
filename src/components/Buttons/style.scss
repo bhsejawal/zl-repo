@@ -1,5 +1,8 @@
+@import "../../style/media-query";
+
+
 button {
-  line-height: initial !important;
+  line-height: initial;
 
   &:disabled {
     cursor: not-allowed;
@@ -25,17 +28,59 @@ button {
   min-height: 25px;
 }
 
-button.floatingButton {
-  background: var(--lavenderGradient);
-  border: 0;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, .25);
-  color: #081B0C;
-  font-size: 20px;
+.landingPrimary,
+.landingSecondary,
+.floatingButton {
+  color: var(--hunterGreenDark);
+  padding: 20px 40px;
+  font-size: 18px;
+  line-height: 18px;
   border-radius: 50px;
+  border: 0;
   width: fit-content;
-  padding: 10px 20px 10px 10px;
+  cursor: pointer;
+  white-space: nowrap;
+
+  @media screen and (min-width: #{$tablet-portrait-width}) {
+    font-size: 20px;
+    line-height: 30px;
+  }
 
   &:hover {
+    opacity: .8;
+  }
+}
+
+.landingPrimary {
+  background-color: var(--blueMediumLight);
+
+  &:hover {
+    background-color: var(--blueLight);
+  }
+}
+
+.landingSecondary {
+  color: white;
+  background-color: var(--hunterGreen);
+
+  &:hover {
+    background-color: var(--hunterGreenMediumLight);
+  }
+}
+
+.floatingButton {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background: var(--lavenderGradient);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, .25);
+  font-size: 18px;
+  line-height: 18px;
+  padding: 18px 22px;
+  font-weight: bold;
+
+  &:hover {
+    opacity: 1;
     color: var(--charcoalLight);
   }
 
@@ -43,18 +88,47 @@ button.floatingButton {
   &:focus {
     opacity: 1;
     color: rgba(83, 83, 83, .8);
-    box-shadow: 0 4px 20px rgba(0, 0, 0, .25);
   }
 
   .wrapper {
     position: relative;
     white-space: nowrap;
 
+    span:before {
+      font-size: inherit;
+      line-height: inherit;
+      content: "Start";
+      margin-right: 18px;
+      vertical-align: middle;
+    }
+
     svg {
       position: absolute;
       right: 0;
       top: 50%;
       transform: translateY(-50%);
+      font-size: 12px;
+    }
+  }
+}
+
+@media screen and (min-width: #{$tablet-portrait-width}) {
+
+  .floatingButton {
+    min-width: 340px;
+    padding: 27px 34px;
+    font-size: 20px;
+    line-height: 30px;
+
+    .wrapper {
+
+      span:before {
+        content: "Try Zoolife Free";
+      }
+
+      svg {
+        font-size: 25px;
+      }
     }
   }
 }

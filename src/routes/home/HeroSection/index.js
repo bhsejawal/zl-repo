@@ -2,7 +2,7 @@ import { route } from 'preact-router';
 import { useContext } from 'preact/hooks';
 import { ResponsiveContext, Box, Heading } from 'grommet';
 
-import { SecondaryButton } from 'Components/Buttons';
+import { LandingSecondary } from 'Components/Buttons';
 
 const HeroSection = () => {
   const size = useContext(ResponsiveContext);
@@ -18,11 +18,7 @@ const HeroSection = () => {
             top zoos, hosted by nature experts.
           </Heading>
           <Box alignSelf="center">
-            <SecondaryButton
-              label="Meet the Animals"
-              type="button"
-              onClick={() => route('/signup')}
-            />
+            <LandingSecondary onClick={() => route('/signup')}>Meet the Animals</LandingSecondary>
           </Box>
         </Box>
         <Box basis="1/2" justify="center" alignContent="center">

@@ -8,7 +8,7 @@ import {
   Text,
 } from 'grommet';
 
-import { PrimaryButton } from 'Components/Buttons';
+import { LandingPrimary } from 'Components/Buttons';
 
 const HeroSection = () => {
   const size = useContext(ResponsiveContext);
@@ -30,11 +30,7 @@ const HeroSection = () => {
           `}
         </Text>
         <Box alignSelf="start" margin={{ top: '50px' }}>
-          <PrimaryButton
-            label="I want to help"
-            type="button"
-            onClick={() => route('/signup')}
-          />
+          <LandingPrimary onClick={() => route('/signup')}>I want to help</LandingPrimary>
         </Box>
       </Box>
       <Box basis="1/2" justify="center" alignContent="center">

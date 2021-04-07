@@ -1,0 +1,122 @@
+@import "../../../style/media-query";
+
+.testimonial {
+  padding: 20px;
+  background: white;
+  max-width: 256px;
+  margin: auto;
+
+  .quote {
+    width: 22px;
+    display: block;
+    margin-bottom: 20px;
+  }
+
+  div {
+    display: flex;
+    align-items: center;
+    margin-top: 22px;
+
+    img {
+      height: 42px;
+      margin-right: 15px;
+    }
+  }
+}
+
+.carousel {
+  max-width: 1174px;
+  margin: 40px auto 80px;
+  position: relative;
+  padding-bottom: 40px;
+}
+
+.testimonials {
+  background-image: url("https://zl-brizi-tv.s3.ca-central-1.amazonaws.com/assets/landing/s6_background.jpg");
+  background-size: cover;
+  padding-top: 40px;
+}
+
+.mission {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+
+  > div:first-child {
+    max-width: 520px;
+    margin-left: 70px;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+  }
+
+  h1 {
+    margin: 20px 0 10px;
+  }
+
+  button {
+    margin: 50px 0 210px 0;
+    position: relative;
+    z-index: 1;
+  }
+
+  .mountain {
+    max-width: 100%;
+    position: absolute;
+    bottom: 0;
+    right: 0;
+  }
+}
+
+.dots {
+  @media screen and (min-width: 1080px) {
+    display: none;
+  }
+
+  :global {
+
+    li {
+      display: flex;
+      align-items: center;
+      height: 27px;
+
+      &:not(.react-multi-carousel-dot--active) {
+        opacity: .5;
+      }
+
+      button {
+        border: 0;
+        background-color: white;
+        width: 6px;
+        height: 6px;
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 715px) {
+
+  .mission {
+    flex-direction: column;
+
+    > div:first-child {
+      margin: 0 40px;
+    }
+
+    button {
+      margin: 50px 0 0 0;
+    }
+
+    .mountain {
+      position: initial;
+      padding-left: 20px;
+    }
+  }
+}
+
+:global {
+
+  .react-multiple-carousel__arrow {
+    z-index: 1;
+  }
+}

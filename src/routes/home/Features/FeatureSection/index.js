@@ -6,7 +6,7 @@ import {
   Heading,
   Text,
 } from 'grommet';
-import { SecondaryButton } from 'Components/Buttons';
+import { LandingSecondary } from 'Components/Buttons';
 
 const FeatureSection = () => {
   const size = useContext(ResponsiveContext);
@@ -30,12 +30,7 @@ const FeatureSection = () => {
             Use audience-guided cameras to observe animals and expore habitats stunningly close.
           </Text>
           <Box alignSelf="start" margin={{ top: '50px' }}>
-            <SecondaryButton
-              size="large"
-              label="Explore a Habitat"
-              type="button"
-              onClick={() => route('/signup')}
-            />
+            <LandingSecondary onClick={() => route('/signup')}>Explore a Habitat</LandingSecondary>
           </Box>
         </Box>
       </Box>
