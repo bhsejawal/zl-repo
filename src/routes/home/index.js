@@ -1,6 +1,6 @@
 import { h } from 'preact';
 import { route } from 'preact-router';
-import { Grommet, Main, Box } from 'grommet';
+import { Grommet, Box } from 'grommet';
 import { merge } from 'lodash-es';
 
 import { FloatingButton } from 'Components/Buttons';
@@ -13,6 +13,7 @@ import Features from './Features';
 import Overview from './Overview';
 import FAQ from './FAQ';
 import Testimonials from './Testimonials';
+import Footer from './Footer';
 
 import grommetTheme from '../../grommetTheme';
 // TODO: move this to its own file and import it;
@@ -120,7 +121,7 @@ const websiteTheme = {
 
 const Home = () => (
   <Grommet theme={websiteTheme}>
-    <Main width={{ max: "1650px", min: "350px" }} margin={{ horizontal: 'auto' }}>
+    <Box width={{ max: "1650px", min: "350px" }} margin={{ horizontal: 'auto' }}>
       <Header />
       <Box fill pad={{top: 'var(--headerHeight)'}}>
         <HeroSection />
@@ -130,10 +131,11 @@ const Home = () => (
         <Conservation />
         <Testimonials />
         <FAQ />
+        <Footer />
       </Box>
       {/* This will need to float around the screen */}
       <FloatingButton onClick={() => route('/signup')} />
-    </Main>
+    </Box>
   </Grommet>
 );
 

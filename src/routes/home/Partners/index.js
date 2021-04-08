@@ -22,7 +22,7 @@ const Partners = () => {
     <Box
       height={{min: '604px'}}
       justify="center"
-      background={{image: 'url(https://zl-brizi-tv.s3.ca-central-1.amazonaws.com/assets/landing/s2_bg.png)'}}
+      background={{image: 'url(https://zl-brizi-tv.s3.ca-central-1.amazonaws.com/assets/landing/s2_bg.jpg)'}}
     >
       <Box alignSelf="center" width={{max: '700px'}}>
         <Heading textAlign="center" level="2" margin="18px">

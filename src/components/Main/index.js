@@ -1,5 +1,5 @@
 import { Router, route } from 'preact-router';
-import { Main as MainContainer } from 'grommet';
+import { Box } from 'grommet';
 import { useState } from 'preact/hooks';
 import { connect } from 'react-redux';
 
@@ -47,7 +47,7 @@ const Main = ({ onRouteChange, isTrial }) => {
   }
 
   return (
-    <MainContainer
+    <Box
       className={classnames(style.main, {[style.timeBarSpace]: isTrial})}
       width={{ max: "1650px", min: "350px" }}
       margin={{ horizontal: 'auto' }}
@@ -121,7 +121,7 @@ const Main = ({ onRouteChange, isTrial }) => {
 
       <TimeBar path={path} />
       <TermsAndConditions />
-    </MainContainer>
+    </Box>
   )
 };
 
