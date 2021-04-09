@@ -86,6 +86,7 @@ button {
   line-height: 18px;
   padding: 18px 22px;
   font-weight: bold;
+  z-index: 3;
 
   @media screen and (min-width: 1650px) {
     right: calc(50vw - (1650px / 2) + 60px);

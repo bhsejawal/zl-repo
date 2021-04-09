@@ -51,6 +51,7 @@ const Main = ({ onRouteChange, isTrial }) => {
       className={classnames(style.main, {[style.timeBarSpace]: isTrial})}
       width={{ max: "1650px", min: "350px" }}
       margin={{ horizontal: 'auto' }}
+      fill
     >
       <Router onChange={routerChangeHandler}>
         <Home path="/" exact />
