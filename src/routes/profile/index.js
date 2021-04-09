@@ -320,7 +320,7 @@ const Profile = ({
               <PrimaryButton
                 className={!step ? accountPageStyle.updateButton : undefined}
                 loading={isLoading}
-                label={step ? 'Enter ZooLife!' : 'Save Changes'}
+                label={step ? 'Enter Zoolife!' : 'Save Changes'}
                 onClick={onClickHandler}
               />
             </Box>

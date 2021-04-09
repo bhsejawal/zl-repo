@@ -54,10 +54,10 @@ const ZoomBar = ({ userId, habitatId }) => {
 
     setIsLoading(true);
 
-    socket.emit('setZoom', {
+    socket.emit('zl_setZoom', {
       zoom: requestedZoom,
       userId,
-      habitatId,
+      channelId: habitatId,
     });
 
     setZoomInfo({ currentZoom, isLoading: true, requestedZoom });

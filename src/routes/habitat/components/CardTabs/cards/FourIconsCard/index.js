@@ -1,4 +1,5 @@
 import { h } from 'preact';
+import { Text, Heading, Box } from 'grommet';
 
 import CardWrapper from '../components/CardWrapper';
 
@@ -7,7 +8,7 @@ import style from './style.scss';
 const Img = ({ src, text }) => (
   <div className={style.item}>
     <img src={src} alt="" />
-    <p className={style.text}>{text}</p>
+    <Text size="medium">{text}</Text>
   </div>
 );
 
@@ -44,10 +45,10 @@ const FourIconsCard = ({
         )}
       </div>
 
-      <div className={style.bottom}>
-        <h4 className={style.title}>{title}</h4>
-        <p className={style.text}>{text}</p>
-      </div>
+      <Box flex={{ grow: 2 }} align="center">
+        <Heading level="4" textAlign="center" margin={{ vertical: '0px' }}>{title}</Heading>
+        <Text size="large" textAlign="center" margin={{ top: '10px' }}>{text}</Text>
+      </Box>
     </div>
   </CardWrapper>
 );

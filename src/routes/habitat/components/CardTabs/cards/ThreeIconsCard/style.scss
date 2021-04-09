@@ -1,34 +1,18 @@
-.wrapper {
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-  align-items: center;
-  justify-content: center;
-
-  h4 {
-    margin: 10px;
-  }
-}
-
-.title {
-  font-size: 25px;
-  margin: 0 0 25px 0;
-  width: 100%;
-}
-
 .item {
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  font-size: 18px;
-  line-height: 18px;
-  margin: 15px;
+  margin: 10px;
+
+  &:first-of-type {
+    margin-top: 0;
+  }
+
+  &:not(:last-of-type) {
+    margin-bottom: 10px;
+  }
 
   img {
-    width: 40px;
-    height: 40px;
-    margin-right: 10px;
+    width: 60px;
+    height: 60px;
+    margin-right: 16px;
     border-radius: 100%;
   }
 

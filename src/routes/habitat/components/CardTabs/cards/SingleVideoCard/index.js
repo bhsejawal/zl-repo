@@ -1,5 +1,7 @@
 import { h } from 'preact';
 
+import { Heading, Text } from 'grommet';
+
 import CardWrapper from '../components/CardWrapper';
 import Video from '../components/Video';
 
@@ -16,8 +18,8 @@ const SingleVideoCard = ({
       <Video className={style.video} url={videoUrl} />
 
       <div className={style.bottom}>
-        {title && <h4 className={style.title}>{title}</h4>}
-        {text && <p className={style.text}>{text}</p>}
+        {title && <Heading level="4" color="white" textAlign="center" margin={{ bottom: '10px' }}>{title}</Heading>}
+        {text && <Text size="medium" color="white" textAlign="center">{text}</Text>}
       </div>
     </div>
   </CardWrapper>

@@ -20,6 +20,7 @@ const CardWrapper = ({
   noPadding,
   children,
   hideTag, // Tags corresponds to specific colors, some cards don't have tags
+  padding,
 }) => {
   const color = useMemo(() => {
     switch (tag) {
@@ -105,7 +106,7 @@ const CardWrapper = ({
   return (
     <div
       className={style.card}
-      style={{ backgroundColor: color, padding: noPadding && '0' }}
+      style={{ backgroundColor: color, padding: padding ?? (noPadding && '0') }}
       data-tag={tag}
     >
       {tag && !hideTag && (

@@ -1,5 +1,12 @@
 import { h } from 'preact';
-import { Button, Grommet } from 'grommet';
+import {
+  Grommet,
+  Heading,
+  Text,
+  Box,
+} from 'grommet';
+
+import { OutlineButton } from 'Components/Buttons';
 
 import criticallyEndangered from 'Assets/conservationCards/critically_endangered.png';
 import dataDeficient from 'Assets/conservationCards/data_deficient.png';
@@ -47,19 +54,23 @@ const ConservationCard = ({
   btnLink,
 }) => (
   <Grommet theme={grommetTheme}>
-    <CardWrapper tag={tag}>
-      <div className={style.wrapper}>
+    <CardWrapper tag={tag} padding="25px 0px">
+      <Box align="center" justify="center" fill>
         <img className={style.img} src={consevationImages[status]} alt="" />
 
-        <div className={style.middle}>
-          <h4 className={style.title}>{title}</h4>
-          <p className={style.text}>{text}</p>
-        </div>
-
-        <a target="_blank" rel="noopener noreferrer" href={btnLink}>
-          <Button primary className={style.btn} label={btnLabel} />
-        </a>
-      </div>
+        <Box align="center" pad={{ horizontal: '20px' }}>
+          <Heading level="4" textAlign="center" margin="20px 0px">{title}</Heading>
+          <Text size="large" textAlign="center" >{text}</Text>
+        </Box>
+        <Box margin={{ top: '18px' }}>
+          <a target="_blank" rel="noopener noreferrer" href={btnLink}>
+            <OutlineButton
+              label={btnLabel}
+              type="button"
+            />
+          </a>
+        </Box>
+      </Box>
     </CardWrapper>
   </Grommet>
 );

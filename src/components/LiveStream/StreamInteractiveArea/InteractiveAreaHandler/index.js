@@ -52,6 +52,13 @@ const InteractiveAreaHandler = ({
 
   useEffect(() => {
     if (socket) {
+      socket.emit('joinRoom', { room: habitatId, userId });
+    }
+    return () => socket.emit('leaveRoom', { room: habitatId });
+  }, [socket, habitatId, userId]);
+
+  useEffect(() => {
+    if (socket) {
       socket.on('propagateClick', (clickData) => addUserInteractionAction({ ...clickData }));
 
       //  type is here to support cross emotes from twitch, we can remove this later
@@ -76,7 +83,7 @@ const InteractiveAreaHandler = ({
     const normalizedX = (clientX - leftSpacing) / containerRef.current.offsetWidth;
     const normalizedY = (clientY - topSpacing) / containerRef.current.offsetHeight;
 
-    socket.emit('userClickedStream', {
+    socket.emit('zl_userClickedStream', {
       room: habitatId,
       userId,
       animal,
@@ -112,7 +119,7 @@ const InteractiveAreaHandler = ({
     if (type === 'cursorPin') {
       // This is under validation, so we're not supporting multiple
       // colors/animals yet
-      socket.emit('userClickedStream', {
+      socket.emit('zl_userClickedStream', {
         room: habitatId,
         userId,
         token: '',
@@ -135,9 +142,9 @@ const InteractiveAreaHandler = ({
           path,
         });
 
-        socket.emit('emoji', {
+        socket.emit('zl_emoji', {
           userId,
-          habitatId,
+          channelId: habitatId,
           path,
           x: x * 100,
           y: y * 100,

@@ -9,12 +9,13 @@ $img-size: 60px;
 }
 
 .top {
-  width: 80%;
+  width: 100%;
   padding: 30px 0;
   align-items: center;
   justify-content: center;
   display: flex;
   flex-wrap: wrap;
+  flex-grow: 1;
 }
 
 .bottom {
@@ -27,12 +28,6 @@ $img-size: 60px;
   font-size: 25px;
   margin: 0 0 10px 0;
   width: 100%;
-}
-
-.text {
-  font-size: 15px;
-  margin: 0;
-  line-height: 20px;
 }
 
 .item {

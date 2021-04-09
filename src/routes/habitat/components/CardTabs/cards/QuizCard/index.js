@@ -1,15 +1,14 @@
 import { h } from 'preact';
-import { Heading } from 'grommet';
+import { Heading, Text } from 'grommet';
 import { useEffect, useState } from 'preact/hooks';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheckCircle, faTimesCircle } from '@fortawesome/pro-solid-svg-icons';
 import useFetch from 'use-http';
 import classnames from 'classnames';
+import { connect } from 'react-redux';
 
 import { API_BASE_URL } from 'Shared/fetch';
 import { PrimaryButton } from 'Components/Buttons';
-import gorilla from 'Assets/gorilla.png';
-
 import CardWrapper from '../components/CardWrapper';
 import { QUIZ_CARD_TYPE } from '../../constants';
 
@@ -20,6 +19,7 @@ const QuizCard = ({
   correctAnswers: correctAnswersArg,
   questions = [],
   answers: answersArg = 0,
+  profileImage,
 }) => {
   const [answers, setAnswers] = useState(answersArg);
   const [selectedAnswerInd, setSelectedAnswerInd] = useState();
@@ -92,22 +92,22 @@ const QuizCard = ({
               ? 'Results'
               : `Question ${answers + 1} of ${questions.length}`}
           </Heading>
-          <p>
+          <Text size="large" textAlign="center">
             {isDone
               ? 'Here’s how you did:'
               : questions[answers].question}
-          </p>
+          </Text>
         </div>
 
         <div className={style.middle}>
           {isDone ? (
             <div className={style.status}>
               {/* TODO: replace with animal photo when we have habitat info */}
-              <img className={style.animal} src={gorilla} alt="animal" />
-              <Heading level="1" color="var(--hunterGreenMediumLight)" margin={{ bottom: 'small' }}>
+              <img className={style.animal} src={profileImage} alt="animal" />
+              <Heading level="1" color="var(--hunterGreenMediumLight)" margin={{ bottom: '20px' }}>
                 {`${correctAnswers}/${questions.length}`}
               </Heading>
-              <p>Thanks for learning about gorillas with ZooLife!</p>
+              <Text size="large" textAlign="center">Thanks for learning with Zoolife!</Text>
             </div>
           ) : (
             <>
@@ -119,13 +119,13 @@ const QuizCard = ({
                 type="button"
                 onClick={() => onClick(1)}
               >
-                <span>{questions[answers].answer1}</span>
+                <Text size="medium">{questions[answers].answer1}</Text>
                 <div className={style.circle}>
                   {correctAnswerInd && (
                     correctAnswerInd === 1 ? (
                       <FontAwesomeIcon icon={faCheckCircle} size="lg" color="var(--sage)" />
                     ) : (
-                      <FontAwesomeIcon icon={faTimesCircle} size="lg" color="var(--redDark)" />
+                      <FontAwesomeIcon icon={faTimesCircle} size="lg" color="var(--red)" />
                     )
                   )}
                 </div>
@@ -139,13 +139,13 @@ const QuizCard = ({
                 type="button"
                 onClick={() => onClick(2)}
               >
-                <span>{questions[answers].answer2}</span>
+                <Text size="medium">{questions[answers].answer2}</Text>
                 <div className={style.circle}>
                   {correctAnswerInd && (
                     correctAnswerInd === 2 ? (
                       <FontAwesomeIcon icon={faCheckCircle} size="lg" color="var(--sage)" />
                     ) : (
-                      <FontAwesomeIcon icon={faTimesCircle} size="lg" color="var(--redDark)" />
+                      <FontAwesomeIcon icon={faTimesCircle} size="lg" color="var(--red)" />
                     )
                   )}
                 </div>
@@ -160,13 +160,13 @@ const QuizCard = ({
                   type="button"
                   onClick={() => onClick(3)}
                 >
-                  <span>{questions[answers].answer3}</span>
+                  <Text size="medium">{questions[answers].answer3}</Text>
                   <div className={style.circle}>
                     {correctAnswerInd && (
                       correctAnswerInd === 3 ? (
                         <FontAwesomeIcon icon={faCheckCircle} size="lg" color="var(--sage)" />
                       ) : (
-                        <FontAwesomeIcon icon={faTimesCircle} size="lg" color="var(--redDark)" />
+                        <FontAwesomeIcon icon={faTimesCircle} size="lg" color="var(--red)" />
                       )
                     )}
                   </div>
@@ -182,6 +182,7 @@ const QuizCard = ({
               margin={{ vertical: 'medium' }}
               label="Retry Quiz"
               onClick={onRetry}
+              style={{ background: 'white' }}
             />
           ) : (
             <PrimaryButton
@@ -197,4 +198,6 @@ const QuizCard = ({
   );
 };
 
-export default QuizCard;
+export default connect(
+  ({ habitat: { habitatInfo: { profileImage } }}) => ({ profileImage }),
+)(QuizCard);

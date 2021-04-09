@@ -1,4 +1,6 @@
 import { h } from 'preact';
+import { Heading, Text } from 'grommet';
+
 import { formatAge } from '../../../../../../helpers';
 import CardWrapper from '../components/CardWrapper';
 
@@ -18,21 +20,21 @@ const AnimalProfileCard = ({
   <CardWrapper tag={tag} hideTag>
     <div className={style.wrapper}>
       <img className={style.img} src={img} alt="" />
-      <h4 className={style.name}>{name}</h4>
-      {title && <h5 className={style.title}>{title}</h5>}
+      <Heading level="4" margin={{ top: '20px', bottom: '0px' }}>{name}</Heading>
+      {title && <Text size="highlight" weight={700} style={{ letterSpacing: '.5px'}} margin={{ top: '5px'}}>{title}</Text>}
       {sex && dateOfBirth && (
-        <p className={style.subtitle}>
+        <Text size="small" margin={{ top: '5px'}}>
           {sex}
           {', '}
           {formatAge(dateOfBirth)}
           {' '}
           old
-        </p>
+        </Text>
       )}
       <ul className={style.list}>
-        {text1 && <li className={style.text}>{text1}</li>}
-        {text2 && <li className={style.text}>{text2}</li>}
-        {text3 && <li className={style.text}>{text3}</li>}
+        {text1 && <li><Text size="large">{text1}</Text></li>}
+        {text2 && <li><Text size="large">{text2}</Text></li>}
+        {text3 && <li><Text size="large">{text3}</Text></li>}
       </ul>
     </div>
   </CardWrapper>

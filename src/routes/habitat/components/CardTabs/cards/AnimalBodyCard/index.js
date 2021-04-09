@@ -1,6 +1,7 @@
 import { h } from 'preact';
 import { useEffect, useMemo, useState } from 'preact/hooks';
 import classnames from 'classnames';
+import { Heading, Text } from 'grommet';
 
 import CardWrapper from '../components/CardWrapper';
 
@@ -41,8 +42,8 @@ const AnimalBodyCard = ({
         </div>
 
         <div className={style.bottom}>
-          <h4 className={style.title}>{parts[selectedInd]?.title}</h4>
-          <p className={style.text}>{parts[selectedInd]?.text}</p>
+          <Heading level="4" margin="0px">{parts[selectedInd]?.title}</Heading>
+          <Text size="large" textAlign="center" margin={{ top: '10px' }}>{parts[selectedInd]?.text}</Text>
         </div>
       </div>
     </CardWrapper>

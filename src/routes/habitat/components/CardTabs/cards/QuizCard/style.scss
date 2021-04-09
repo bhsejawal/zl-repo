@@ -41,7 +41,7 @@
 .circle {
   width: 20px;
   height: 20px;
-  background-color: #EDEDED;
+  background-color: white;
   border-radius: 100%;
   flex-shrink: 0;
   display: flex;
@@ -60,6 +60,7 @@
   margin-top: 35px;
   position: relative;
   padding-top: 25px;
+  padding-bottom: 20px;
 }
 
 .animal {

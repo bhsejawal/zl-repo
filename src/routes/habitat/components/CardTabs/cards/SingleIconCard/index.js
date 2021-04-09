@@ -1,4 +1,5 @@
 import { h } from 'preact';
+import { Heading, Text, Box } from 'grommet';
 
 import CardWrapper from '../components/CardWrapper';
 
@@ -15,10 +16,10 @@ const SingleIconCard = ({
       <div className={style.top}>
         <img className={style.img} src={img} alt="" />
       </div>
-      <div className={style.bottom}>
-        <h4 className={style.title}>{title}</h4>
-        <p className={style.text}>{text}</p>
-      </div>
+      <Box flex="grow" justify="start" align="center">
+        <Heading level="4" margin={{ top: '0', bottom: '0'}} textAlign="center">{title}</Heading>
+        <Text size="large" textAlign="center" margin={{ top: '10px' }}>{text}</Text>
+      </Box>
     </div>
   </CardWrapper>
 );

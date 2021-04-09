@@ -132,6 +132,11 @@ export default {
       size: '10px',
       height: '16px',
     },
+    // "Highlight" in Figma
+    highlight: {
+      size: '10px',
+      height: '10px',
+    },
   },
   button: {
     default: {

@@ -1,4 +1,5 @@
 import { h } from 'preact';
+import { Text } from 'grommet';
 
 import CardWrapper from '../components/CardWrapper';
 import Video from '../components/Video';
@@ -12,13 +13,13 @@ const TwoVideosCard = ({
   video2Url,
   text2,
 }) => (
-  <CardWrapper tag={tag}>
+  <CardWrapper tag={tag} padding="20px 10px 10px">
     <div className={style.wrapper}>
       <Video url={video1Url} />
-      <p className={style.text}>{text1}</p>
+      <Text as="p" size="medium">{text1}</Text>
 
       <Video url={video2Url} />
-      <p className={style.text}>{text2}</p>
+      <Text as="p" size="medium">{text2}</Text>
     </div>
   </CardWrapper>
 );
