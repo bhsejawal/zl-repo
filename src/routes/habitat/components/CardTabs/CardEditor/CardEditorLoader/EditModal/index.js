@@ -70,6 +70,7 @@ import {
   ORIGIN_AND_HABITAT_CARD_TYPE,
   ANIMAL_BODY_CARD_TYPE,
   QUIZ_CARD_TYPE,
+  EMPTY_TAG,
 } from '../../../constants';
 import { SET_CARD_DATA, UPDATE_CARD_DATA } from './types';
 import grommetTheme from '../../../../../../../grommetTheme';
@@ -113,7 +114,7 @@ const EditModal = ({
 }) => {
   const formRef = useRef();
   const [type, setType] = useState(cardType);
-  const [tag, setTag] = useState(cardTag || QUICK_LOOK);
+  const [tag, setTag] = useState(cardTag || EMPTY_TAG);
   const [index, setIndex] = useState(cardIndex);
   const [data, dispatchData] = useReducer(dataReducer, cardData);
   const [error, setError] = useState();
@@ -154,7 +155,7 @@ const EditModal = ({
             index,
             { questionIds },
           );
-          // eslint-disable-next-line no-underscore-dangle
+
           const cardData = await get(`cards/${createdCard._id}/questions`);
           createdCard.data = cardData;
           addCardAction(createdCard);
@@ -288,11 +289,17 @@ const EditModal = ({
                   <Heading margin={{ bottom: '20px', top: '0', left: '50px' }} level="2">Edit Card</Heading>
 
                   <div className={classnames(style.form, 'customScrollBar grey')}>
-                    {type !== QUIZ_CARD_TYPE && (
+                    {![QUIZ_CARD_TYPE, ANIMAL_PROFILE_CARD_TYPE].includes(type) && (
                       <Box margin={{ bottom: '20px' }}>
                         <Heading margin={{ top: '0', bottom: '5px' }} level="5">Card Tag:</Heading>
                         <div className="simpleSelect">
                           <select onChange={onTagChange}>
+                            <option
+                              selected={tag === EMPTY_TAG}
+                              value={EMPTY_TAG}
+                            >
+                              Hide Tag
+                            </option>
                             <option
                               selected={tag === QUICK_LOOK}
                               value={QUICK_LOOK}

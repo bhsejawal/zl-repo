@@ -10,6 +10,7 @@ import {
   BEHAVIOR,
   FAMILY_LIFE,
   QUIZ_CARD_TYPE,
+  EMPTY_TAG,
 } from '../../../constants';
 
 import style from './style.scss';
@@ -38,7 +39,8 @@ const CardWrapper = ({
         return 'var(--oliveMedium)';
       }
 
-      case CONSERVATION: {
+      case CONSERVATION:
+      case EMPTY_TAG: {
         return 'var(--mossLight)';
       }
 

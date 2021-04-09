@@ -13,6 +13,7 @@ export const THE_ANIMAL_BODY = 'The Animal Body';
 export const CONSERVATION = 'Conservation';
 export const BEHAVIOR = 'Behavior';
 export const FAMILY_LIFE = 'Family Life';
+export const EMPTY_TAG = '';
 
 // card tabs
 export const SINGLE_ICON_CARD_TYPE = 'SINGLE_ICON_CARD_TYPE';

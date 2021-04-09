@@ -1,9 +1,9 @@
 import { subMonths } from "date-fns";
 
-import { ANIMAL_PROFILE_CARD_TYPE, CONSERVATION } from "../../constants";
+import { ANIMAL_PROFILE_CARD_TYPE, EMPTY_TAG } from "../../constants";
 import defaultAnimalImg from '../../../../../../assets/default-animal-card-img.png';
 
-export const tag = CONSERVATION;
+export const tag = EMPTY_TAG;
 export const type = ANIMAL_PROFILE_CARD_TYPE;
 export const data = {
   img: defaultAnimalImg,

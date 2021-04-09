@@ -1,6 +1,6 @@
-import { FOOD_AND_DIET, QUIZ_CARD_TYPE } from "../../constants";
+import { EMPTY_TAG, QUIZ_CARD_TYPE } from "../../constants";
 
-export const tag = FOOD_AND_DIET;
+export const tag = EMPTY_TAG;
 export const type = QUIZ_CARD_TYPE;
 export const data = {
   questions: [{

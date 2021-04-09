@@ -15,7 +15,7 @@ const AnimalProfileCard = ({
   text2,
   text3,
 }) => (
-  <CardWrapper tag={tag}>
+  <CardWrapper tag={tag} hideTag>
     <div className={style.wrapper}>
       <img className={style.img} src={img} alt="" />
       <h4 className={style.name}>{name}</h4>
