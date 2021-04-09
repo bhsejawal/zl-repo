@@ -9,7 +9,6 @@ import AdminTable from 'Components/AdminTable';
 import { SELECT } from 'Components/AdminTable/constants';
 
 const minDate = new Date();
-
 const EditValidUntil = ({ subscriptionStatus }) => {
   const [value, setValue] = useState();
 
@@ -24,8 +23,8 @@ const EditValidUntil = ({ subscriptionStatus }) => {
   return (
     <DateTimePicker
       name="subscriptionStatus.validUntil"
-      minDate={minDate}
       value={value}
+      minDate={parseISO(subscriptionStatus?.validUntil) || minDate}
       onChange={setValue}
     />
   );
