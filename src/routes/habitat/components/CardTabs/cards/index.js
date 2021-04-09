@@ -82,7 +82,6 @@ const Cards = ({
           // quiz cards have trivia question IDs in data which needs to be mapped
           // into questions, and we also need to map answers
           if (card.type === QUIZ_CARD_TYPE) {
-            // eslint-disable-next-line no-underscore-dangle
             const cardData = await get(`cards/${card._id}/questions`);
             // eslint-disable-next-line no-param-reassign
             card.data = cardData;
@@ -223,7 +222,6 @@ const Cards = ({
 
                 {card.type === QUIZ_CARD_TYPE && (
                   <QuizCard
-                    // eslint-disable-next-line no-underscore-dangle
                     cardId={card._id}
                     questions={card.data.questions}
                     answers={card.data.answers}

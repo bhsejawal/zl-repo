@@ -47,7 +47,6 @@ const QuestionCard = memo(({
       <CollapsibleCard
         className={className}
         style={propStyle}
-        // eslint-disable-next-line no-underscore-dangle
         key={question._id}
         label={label}
         onOpen={onOpen}
@@ -212,7 +211,6 @@ const questionsReducer = (questions, { type, payload = {} }) => {
       ]
     }
     case UPDATE_QUESTION: {
-      // eslint-disable-next-line no-underscore-dangle
       return questions.map((question) => (question._id === payload._id ? payload : question));
     }
     default: {

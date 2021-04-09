@@ -2,7 +2,8 @@
   align-self: center;
   margin-left: auto;
   display: flex;
-  overflow: hidden;
+  flex-grow: 1;
+  align-items: center;
 
   .wrapper {
     position: relative;
@@ -22,6 +23,7 @@
     transform: translate(-50%, -50%);
     border-radius: 50%;
     overflow: hidden;
+    cursor: pointer;
 
     a {
       display: block;
@@ -30,12 +32,6 @@
     img {
       width: 100%;
       height: auto;
-    }
-
-    button {
-      padding: 0;
-      border: 0;
-      cursor: pointer;
     }
 
     &.liveTalk {

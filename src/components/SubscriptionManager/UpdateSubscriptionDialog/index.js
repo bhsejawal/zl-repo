@@ -34,7 +34,6 @@ const UpdateSubscriptionDialog = ({
   const onConfirmHandler = async () => {
     try {
       let data;
-      console.log(action);
       if (action.toLowerCase() === 'renew') {
         data = await renewSubscription();
       } else {

@@ -37,7 +37,6 @@ const QuizCard = ({
     setSelectedAnswerInd(ind);
 
     const { correct: correctAnswerInd } = await post('v2/trivia/answer', {
-      // eslint-disable-next-line no-underscore-dangle
       questionId: questions[answers]._id,
       answer: ind,
     });

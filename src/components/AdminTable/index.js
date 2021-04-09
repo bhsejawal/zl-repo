@@ -124,7 +124,6 @@ const AdminTable = ({
     if (!selectDisabled) {
       cols.unshift({
         render: function SelectCell(item) {
-          // eslint-disable-next-line no-underscore-dangle
           return <RadioButton name="selected" checked={selected?._id === item?._id} />
         },
         sortable: false,
@@ -132,7 +131,6 @@ const AdminTable = ({
     }
 
     return cols;
-  // eslint-disable-next-line no-underscore-dangle
   }, [columnsProp, selectDisabled, selected?._id]);
 
   const {
@@ -159,7 +157,6 @@ const AdminTable = ({
   useEffect(() => {
     if (transformedData) {
       hadDataRef.current = true;
-      // eslint-disable-next-line no-underscore-dangle
       setSelected(transformedData.find(({ _id }) => _id === selected?._id));
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -185,7 +182,6 @@ const AdminTable = ({
   }, [serverPath, fetchParams, get]);
 
   const onDelete = async () => {
-    // eslint-disable-next-line no-underscore-dangle
     await del(selected._id, { force: true });
     if (!response.ok) {
       const { error } = response.data;
@@ -198,7 +194,7 @@ const AdminTable = ({
 
   const onDisable = async () => {
     setLoadingDisableEnable(true);
-    // eslint-disable-next-line no-underscore-dangle
+
     await del(selected._id);
 
     if (!response.ok) {
@@ -212,7 +208,6 @@ const AdminTable = ({
 
   const onRestore = async () => {
     setLoadingDisableEnable(true);
-    // eslint-disable-next-line no-underscore-dangle
     await patch(selected._id, {
       disabled: false,
       disabledAt: null,
@@ -239,7 +234,6 @@ const AdminTable = ({
   };
 
   const onItemEdit = async (item) => {
-    // eslint-disable-next-line no-underscore-dangle
     await patch(`${selected._id}?v=${selected.__v || 0}`, item);
     if (!response.ok) {
       const { error } = response.data;

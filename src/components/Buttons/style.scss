@@ -16,6 +16,8 @@ button {
 .large {
   min-width: 160px;
   min-height: 45px;
+  font-size: 16px !important;
+  line-height: 18.4px;
 }
 
 .medium {
@@ -26,6 +28,12 @@ button {
 .small {
   min-width: 60px;
   min-height: 25px;
+  font-size: 12px !important;
+  line-height: 17.27px;
+}
+
+.outline {
+  background-color: transparent !important;
 }
 
 .landingPrimary,

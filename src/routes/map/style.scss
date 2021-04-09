@@ -3,6 +3,7 @@
 .map {
   flex-grow: 1;
   width: 100%;
+  background: linear-gradient(180deg, #FFD1AF 27.08%, #FFDCEE 100%);
 
   .content {
     display: flex;
@@ -16,11 +17,21 @@
     flex-direction: column;
     justify-content: center;
     max-width: 380px;
+
+    &.habitatSelected {
+      justify-content: start !important;
+      margin-top: 25px;
+    }
   }
+
 }
 
 .card {
-  margin: 20px auto;
+  margin: 0px;
+  min-width: 310px;
+  max-width: 310px;
+  min-height: 340px;
+  max-height: 340px;
 }
 
 @media screen and (max-width: #{$tablet-portrait-width}) {
@@ -43,4 +54,10 @@
       }
     }
   }
+}
+
+.divider::after {
+  content: "";
+  border-left: 1px solid #EBEBEB;
+  height: 100%;
 }

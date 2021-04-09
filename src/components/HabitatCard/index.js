@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { faCircle } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHeart } from '@fortawesome/pro-solid-svg-icons';
-import { Button } from 'grommet';
+import { Button, Heading, Text } from 'grommet';
 import classnames from 'classnames';
 
 import Tag from 'Components/Tag';
@@ -70,9 +70,12 @@ const HabitatCard = ({
         </div>
       </div>
       <div className={style.body}>
-        <h3>{title}</h3>
-        <p>{description || "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s"}</p>
-
+        <div style={{ flexGrow: 1 }}>
+          <Heading level="4" margin={{ top: "0px", bottom: "15px" }}>{title || "Dummy Title"}</Heading>
+          <Text size="xlarge" as="p">
+            {description || "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy"}
+          </Text>
+        </div>
         <div className={classnames(style.buttons, { [style.favorite]: onFavoriteClick })}>
           <Link onClick={onHabitatClick} href={encodeURI(`/h/${zooSlug}/${slug}`)}>
             <Button primary label="Enter Habitat" size="large" />

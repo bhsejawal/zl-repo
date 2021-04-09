@@ -41,7 +41,7 @@ export const OutlineButton = ({
 }) => (
   <Button
     size={size}
-    className={classnames(className, style[size], { [style.loading]: loading })}
+    className={classnames(className, style[size], style.outline, { [style.loading]: loading })}
     label={getLabel(loading, label)}
     /* eslint-disable-next-line react/jsx-props-no-spreading */
     {...args}

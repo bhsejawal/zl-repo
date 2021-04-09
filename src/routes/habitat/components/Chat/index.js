@@ -53,7 +53,7 @@ const Chat = ({ height, width, habitatId }) => {
     // in case lastHabitatId is undefined/null, ind will be -1 which will work nicely
     const nextId = uniqueIds[(ind + 1) % uniqueIds.length];
     const { habitat } = events.find(({ habitat: { _id } }) => _id === nextId);
-    // eslint-disable-next-line no-underscore-dangle
+
     sessionStorage.setItem(sessionStorageKey, habitat._id);
     route(`/h/${habitat.zoo.slug}/${habitat.slug}`);
   };

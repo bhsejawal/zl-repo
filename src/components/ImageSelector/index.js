@@ -186,7 +186,7 @@ const ImageSelector = forwardRef(({
 
         return isValid;
       } catch (err) {
-        setErrorMsg('We had problems validatin the image. Please check for failed network requests.');
+        setErrorMsg('We had problems validating the image. Please check for failed network requests.');
         return false;
       } finally {
         setIsLoading(false);

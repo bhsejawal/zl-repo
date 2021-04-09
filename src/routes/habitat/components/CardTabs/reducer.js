@@ -60,7 +60,6 @@ export default (state = initialState, { type, payload }) => {
       } = payload;
 
       const items = state.items.map((card) => (
-        // eslint-disable-next-line no-underscore-dangle
         card._id === id ? {
           ...card,
           tag,
