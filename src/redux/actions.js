@@ -12,6 +12,7 @@ import {
   SET_SUBSCRIPTION_DATA,
   SET_PLANS,
   UPDATE_SUBSCRIPTION_DATA,
+  UPDATE_FAVORITE_HABITATS,
 } from './types';
 
 const DEFAULT_INTERACTION_TIMEOUT = 3000;
@@ -24,6 +25,11 @@ export const setUserData = ({ _id: userId, ...rest}) => ({
     userId,
     ...rest,
   },
+});
+
+export const updateFavoriteHabitat = (habitatId) => ({
+  type: UPDATE_FAVORITE_HABITATS,
+  payload: { habitatId },
 });
 
 let interactionId = 0;

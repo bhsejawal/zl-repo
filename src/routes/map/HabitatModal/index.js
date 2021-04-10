@@ -89,7 +89,6 @@ const HabitatModal = ({
   return (
     <Layer onClickOutside={toggleMapModalAction}>
       <Box
-        flex
         background="white"
         round="10px"
         direction="row"
@@ -239,6 +238,7 @@ const HabitatModal = ({
                 image={editHabitat.wideImage}
                 logo={editHabitat.zoo?.logo}
                 className={style.card}
+                habitatId={editHabitat._id}
               />
             )}
           </Box>

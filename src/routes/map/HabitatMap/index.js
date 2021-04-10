@@ -35,7 +35,9 @@ const HabitatMap = ({ habitats, setMapDataAction, setHabitatAction }) => {
 
   useEffect(() => {
     fetchData();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // reseting selected habitat to avoid stale data if the user returns to this page
+    return () => setHabitatAction(null);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const habitatClickHandler = (evt, _id) => {

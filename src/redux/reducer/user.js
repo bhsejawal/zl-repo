@@ -6,6 +6,7 @@ import {
   UPDATE_SUBSCRIPTION_DATA,
   UNSET_USER_DATA,
   SET_SUBSCRIPTION_DATA,
+  UPDATE_FAVORITE_HABITATS,
 } from '../types';
 
 const initialState = {
@@ -28,6 +29,7 @@ const initialState = {
   // This needs to be list of habitats that a Host can stream to
   // Should be undefined for Hosts
   habitats: [],
+  favoriteHabitats: [],
   // used to store icon, color and nickname,
   // and other UI user settings
   profile: undefined,
@@ -119,6 +121,20 @@ export default (state = initialState, { type, payload }) => {
       ...state,
       termsAccepted: true,
     };
+  }
+
+  if (type === UPDATE_FAVORITE_HABITATS) {
+    const { habitatId } = payload;
+    const { favoriteHabitats } = state;
+
+    const isHabitatFavorited = favoriteHabitats.includes(habitatId);
+    const newFavHabitats = isHabitatFavorited ? favoriteHabitats.filter((id) => id !== habitatId)
+      : [...favoriteHabitats, habitatId];
+
+    return {
+      ...state,
+      favoriteHabitats: newFavHabitats,
+    }
   }
 
   return state;

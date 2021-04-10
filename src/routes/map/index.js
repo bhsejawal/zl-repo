@@ -61,6 +61,7 @@ const Map = ({
                     description={activeHabitat.description}
                     image={activeHabitat.wideImage}
                     logo={activeHabitat.zoo?.logo}
+                    habitatId={activeHabitat._id}
                   />
                 </>
               )}

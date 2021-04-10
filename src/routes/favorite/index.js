@@ -6,6 +6,7 @@ import {
   Text,
 } from 'grommet';
 import useFetch from 'use-http';
+import { connect } from 'react-redux';
 
 import { buildURL } from 'Shared/fetch';
 import Header from 'Components/Header';
@@ -14,6 +15,7 @@ import Loader from 'Components/async/Loader';
 import NoContentFallback from 'Components/NoContentFallback';
 
 import { useIsInitiallyLoaded, useWindowResize } from '../../hooks';
+import { updateFavoriteHabitat } from '../../redux/actions';
 
 const SET_DATA = 'SET_DATA';
 const REMOVE_HABITAT = 'REMOVE_HABITAT';
@@ -40,7 +42,7 @@ const reducer = (state, { type, payload }) => {
 
 const url = buildURL('/habitats/favorite');
 
-const Favorite = () => {
+const Favorite = ({ updateFavoriteHabitatAction }) => {
   const { width } = useWindowResize();
   const [{ habitats = [] }, dispatch] = useReducer(reducer, {});
   const { loading, error, get } = useFetch(url, {
@@ -68,12 +70,13 @@ const Favorite = () => {
     await del({ habitatId });
     if (delResponse.ok) {
       dispatch({ type: REMOVE_HABITAT, payload: { habitatId } });
+      updateFavoriteHabitatAction(habitatId);
     } else {
       // TODO: display error
       // maybe display a toast
       console.warn(delResponse.data?.error ?? 'There was an error');
     }
-  }, [del, delResponse]);
+  }, [del, delResponse, updateFavoriteHabitatAction]);
 
   return (
     <>
@@ -155,4 +158,4 @@ const Favorite = () => {
   );
 };
 
-export default Favorite;
+export default connect(null, { updateFavoriteHabitatAction: updateFavoriteHabitat })(Favorite);

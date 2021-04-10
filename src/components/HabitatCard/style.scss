@@ -66,10 +66,16 @@
 
 .buttons {
   display: flex;
-  justify-content: center;
-  align-items: flex-end;
+  justify-content: space-between;
+  align-items: center;
 
-  &.favorite {
-    justify-content: space-between;
+  a>button {
+    width: 170px;
+    height: 45px;
+  }
+
+  svg {
+    font-size: 20px;
+    min-width: 20px;
   }
 }
