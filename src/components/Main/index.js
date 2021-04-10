@@ -24,7 +24,6 @@ import NotFound from '../../routes/notFound';
 import DesignSystem from '../../routes/designSystem';
 import Habitat from '../../routes/habitat';
 import RedirectPage from '../../routes/redirectPage';
-import CancelSubscription from '../../routes/cancelSubscription';
 
 import { getDeviceType } from '../../helpers';
 
@@ -113,9 +112,6 @@ const Main = ({ onRouteChange, isTrial }) => {
           <RedirectPage />
         </AuthGuard>
 
-        <AuthGuard path="/cancelSubscription" permission="subscription:cancel" title="Cancel Subscritpion" redirectTo="/plans">
-          <CancelSubscription />
-        </AuthGuard>
         {/* NOTE: NotFound need to be at the end */}
         <NotFound path=":*" />
       </Router>

@@ -17,12 +17,14 @@ import { loadStripe } from '@stripe/stripe-js/pure';
 import { buildURL } from 'Shared/fetch';
 import background from 'Assets/plansBackground.png';
 import PlanCard from 'Components/PlanCard';
+import Dialog from 'Components/modals/Dialog';
+import LoaderModal from 'Components/async/LoaderModal';
 
 import { StripeContext } from 'Shared/context';
 
 import UpdateSubscriptionDialog from './UpdateSubscriptionDialog';
 
-import { setPlans } from '../../redux/actions';
+import { setPlans, setSubscriptionData } from '../../redux/actions';
 
 const defaultDialogSettings = {
   show: false,
@@ -38,14 +40,16 @@ const SubscriptionSection = ({
   validUntil,
   subscriptionStatus,
   setPlansAction,
+  setSubscriptionDataAction,
 }) => {
   const { stripe } = useContext(StripeContext);
   const size = useContext(ResponsiveContext);
   const isLargeScreen = size === 'large';
+  const [showCancelDialog, setShowCancelDialog] = useState(false);
 
   const [dialogSettings, setDialogSettings] = useState(defaultDialogSettings);
 
-  const { get, post } = useFetch(
+  const { get, post, loading } = useFetch(
     buildURL(),
     { credentials: 'include', cachePolicy: 'no-cache' },
   );
@@ -77,7 +81,16 @@ const SubscriptionSection = ({
 
   const validUntilReadable = validUntil ? format(validUntil, 'MMMM dd, yyyy') : '';
 
-  const cancelSubscription = () => route('/cancelSubscription');
+  const cancelSubscription = async () => {
+    try {
+      const { subscriptionStatus } = await post('/users/subscription/unsubscribe');
+      setSubscriptionDataAction(subscriptionStatus);
+      setShowCancelDialog(true);
+    } catch (err) {
+      // TODO: display error modal;
+      console.error(err);
+    }
+  }
 
   const openDialogHandler = (action, planId, priceId, interval) => {
     setDialogSettings({
@@ -91,6 +104,11 @@ const SubscriptionSection = ({
 
   const onCancelHandler = () => {
     setDialogSettings(defaultDialogSettings);
+  }
+
+  const handleCancelDialogClose = () => {
+    setShowCancelDialog(false);
+    route('/map');
   }
 
   const plansData = useMemo(() => {
@@ -305,6 +323,15 @@ const SubscriptionSection = ({
         interval={dialogSettings.interval}
         onCancelHandler={onCancelHandler}
       />
+      {showCancelDialog && (
+        <Dialog
+          title="Until next time."
+          text="You will still be able to access Zoolife until your pass runs outs."
+          buttonLabel="Back to Zoolife"
+          onCancel={handleCancelDialogClose}
+          onConfirm={handleCancelDialogClose}
+        />)}
+      {loading && (<LoaderModal />)}
     </>
   )
 };
@@ -321,4 +348,7 @@ export default connect((
   productId,
   validUntil,
   subscriptionStatus,
-}), { setPlansAction: setPlans })(SubscriptionSection);
+}), {
+  setPlansAction: setPlans,
+  setSubscriptionDataAction: setSubscriptionData,
+})(SubscriptionSection);

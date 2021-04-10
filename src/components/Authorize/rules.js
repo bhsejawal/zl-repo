@@ -38,7 +38,6 @@ const rules = {
       'habitat:view': isSubscriptionActive,
       'map:view': isSubscriptionActive,
       'checkout:plans': isTrial,
-      'subscription:cancel': isSubscriptionActive,
     },
   },
   vip: {
