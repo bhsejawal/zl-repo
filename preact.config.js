@@ -7,8 +7,14 @@ export default (config, env, helpers) => {
   config.resolve.alias.Cards = path.resolve(__dirname, 'src/routes/habitat/components/CardTabs/cards');
   config.resolve.alias.Assets = path.resolve(__dirname, 'src/assets');
   config.resolve.alias.Shared = path.resolve(__dirname, 'src/shared');
-
   envVars(config, env, helpers);
+
+  const { plugin: htmlPlugin } = helpers.getPluginsByName(config, 'HtmlWebpackPlugin')[0] || {};
+  const { PREACT_APP_SEGMENT_ID: segmentId } = process.env;
+
+  if (htmlPlugin) {
+    htmlPlugin.options.segmentId = segmentId;
+  }
 
   if (config.devServer) {
     config.devServer.proxy = [{

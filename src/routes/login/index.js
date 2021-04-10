@@ -22,7 +22,7 @@ import PasswordResetModal from './ResetModal';
 import Layout from '../../layouts/LoginSignup';
 
 import { setUserData } from '../../redux/actions';
-import { emailRegex } from '../../helpers';
+import { emailRegex, identifyUser } from '../../helpers';
 
 import { showModal, validateToken } from './ResetModal/actions';
 
@@ -96,6 +96,7 @@ const Login = ({
       const url = buildURL('/admin/users/login');
       const { user } = await post(url, { email, password });
       setUserDataAction(user);
+      identifyUser(user);
       try {
         localStorage.setItem('returningUser', true);
       } catch (err) {

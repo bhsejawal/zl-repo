@@ -25,7 +25,7 @@ import DesignSystem from '../../routes/designSystem';
 import Habitat from '../../routes/habitat';
 import RedirectPage from '../../routes/redirectPage';
 
-import { getDeviceType } from '../../helpers';
+import { getDeviceType, logPageView } from '../../helpers';
 
 import style from './style.scss';
 
@@ -34,7 +34,13 @@ const Main = ({ onRouteChange, isTrial }) => {
   const [path, setPath] = useState();
 
   const routerChangeHandler = (props) => {
-    const { url } = props;
+    const { url, previous } = props;
+
+    // Segments sends a beacon when plugin is loaded, hence, we should ignore if previous is empty
+    // Its possible to see some duplicated entries on dev due to hot reload
+    if (url !== previous && typeof previous !== 'undefined') {
+      logPageView();
+    }
 
     if (getDeviceType() === 'phone' && !mobileRoutes.includes(url)) {
       route('/mobile', true);

@@ -38,3 +38,18 @@ export const generateTitle = (part) => (part ? `${part} | Zoolife` : 'Zoolife');
 export const formatAge = (dateOfBirth) => formatDistanceToNow(parseISO(dateOfBirth))
   .replace('over', '')
   .trim();
+
+export const logPageView = () => {
+  if (window.analytics) {
+    window.analytics.page()
+  }
+}
+
+export const identifyUser = (user) => {
+  const { _id: userId, role } = user;
+  if (window.analytics) {
+    window.analytics.identify(userId, {
+      role,
+    })
+  }
+}

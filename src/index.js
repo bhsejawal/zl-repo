@@ -20,7 +20,6 @@ import store from './redux/store';
 import zoolifeTheme from './grommetTheme';
 
 import { generateTitle } from './helpers';
-import ga from './shared/ga';
 
 import './style/globalStyle.scss';
 import '@fortawesome/fontawesome-svg-core/styles.css';
@@ -40,15 +39,6 @@ const App = () => {
   });
 
   useEffect(() => {
-    const initializeGa = async () => {
-      try {
-        ga4Ref.current = await ga.initialize();
-        ga4Ref.current?.pageview();
-      } catch (err) {
-        console.error('Error loading GA', err);
-      }
-    };
-
     const initializeStripe = async () => {
       try {
         setStripe(await loadStripe(process.env.PREACT_APP_STRIPE_PUBLIC_KEY));
@@ -58,7 +48,6 @@ const App = () => {
     };
 
     initializeStripe();
-    initializeGa();
   }, []);
 
   const onRouteChange = useCallback(({

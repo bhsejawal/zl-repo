@@ -7,7 +7,7 @@ import useFetch, { Provider as UseFetchProvider } from 'use-http';
 import { setUserData, setUserSessionChecked, unsetUserData } from '../../redux/actions';
 import { hasPermission } from '.';
 import { authRedirect } from './helpers';
-import { getDeviceType } from '../../helpers';
+import { getDeviceType, identifyUser } from '../../helpers';
 
 import ErrorPage from '../../layouts/ErrorPage';
 
@@ -65,6 +65,7 @@ const AuthGuard = ({
 
         if (response.ok) {
           setUserDataAction(response.data);
+          identifyUser(response.data);
         } else if (response.status === 401) {
           unsetUserDataAction();
           if (!guestOnly) {
