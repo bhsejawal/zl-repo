@@ -28,6 +28,11 @@ const isTrial = () => {
   return productId === 'TRIAL';
 }
 
+const notTrial = () => {
+  const { user: { subscription: { productId } } } = store.getState();
+  return productId && productId !== 'TRIAL';
+}
+
 const rules = {
   guest: {
     static: ['checkout:plans', 'signup:view', 'login:view'],
@@ -38,6 +43,8 @@ const rules = {
       'habitat:view': isSubscriptionActive,
       'map:view': isSubscriptionActive,
       'checkout:plans': isTrial,
+      'subscription:cancel': isSubscriptionActive,
+      'subscription:edit': notTrial,
     },
   },
   vip: {

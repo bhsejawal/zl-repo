@@ -10,6 +10,7 @@ import { useState } from 'preact/hooks';
 import { merge } from 'lodash-es';
 
 import Header from 'Components/Header';
+import { hasPermission } from 'Components/Authorize';
 
 import grommetTheme from '../../grommetTheme';
 import Profile from '../profile';
@@ -34,7 +35,7 @@ const tabsTheme = {
 };
 
 const Account = () => {
-  const [activeIndex, setActiveIndex] = useState(2);
+  const [activeIndex, setActiveIndex] = useState(1);
 
   return (
     <Grommet theme={merge(tabsTheme, grommetTheme)} className="full-height">
@@ -67,9 +68,11 @@ const Account = () => {
               </Box>
             </Box>
           </Tab>
-          <Tab title="Manage Subscription">
-            <SubscriptionSection />
-          </Tab>
+          {hasPermission('subscription:edit') && (
+            <Tab title="Manage Subscription">
+              <SubscriptionSection />
+            </Tab>
+          )}
         </Tabs>
       </Box>
     </Grommet>
