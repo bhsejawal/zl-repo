@@ -16,9 +16,13 @@
   .streamControls {
     position: relative;
     height: 100%;
-    justify-content: space-around;
+    justify-content: flex-end;
     display: flex;
     flex-direction: column;
+
+    >* {
+      margin-top: 25px;
+    }
   }
 }
 
