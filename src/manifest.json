@@ -1,6 +1,6 @@
 {
-  "name": "zl-app",
-  "short_name": "zl-app",
+  "name": "Zoolife",
+  "short_name": "Zoolife",
   "start_url": "/",
   "display": "standalone",
   "orientation": "portrait",
