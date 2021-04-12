@@ -55,6 +55,8 @@ const Card = ({
     return false;
   }, [title, scheduleId, scheduledEvents, startTime, zoo]);
 
+  const buttonText = useMemo(() => (isReminded ? 'Email Sent' : 'Remind Me'), [isReminded])
+
   useEffect(() => {
     if (error) {
       console.error("Error sending an email", error);
@@ -63,7 +65,7 @@ const Card = ({
     }
   }, [error, data, setUserDataAction]);
 
-  const onCLickHandler = (id) => async () => {
+  const onClickHandler = (id) => async () => {
     if (onClick) {
       onClick(id);
     } else {
@@ -78,11 +80,11 @@ const Card = ({
           <div className={classnames(style.header, { shimmer: loading })}>{header}</div>
           <div className={classnames(style.description, { shimmer: loading })}>{description}</div>
           <OutlineButton
-            onClick={onCLickHandler(scheduleId)}
+            onClick={onClickHandler(scheduleId)}
             disabled={isReminded}
             className={classnames({ shimmer: loading })}
             size="medium"
-            label={!sendingReminder && (error ? 'Try Again!' : 'Remind me')}
+            label={!sendingReminder && (error ? 'Try Again!' : buttonText)}
             margin={{top: '10px'}}
             loading={sendingReminder && !loading}
           />
