@@ -119,6 +119,10 @@ const Habitats = () => {
     property: 'animal',
     editable: true,
   }, {
+    title: 'Description',
+    property: 'description',
+    editable: true,
+  }, {
     title: 'Partner',
     property: 'zoo.name',
     // when post property is defined, AdminTable will use "property" to display value
