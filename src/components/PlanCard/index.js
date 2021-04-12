@@ -4,6 +4,7 @@ import {
   CardHeader,
   Text,
   Box,
+  Heading,
 } from 'grommet';
 import classnames from 'classnames';
 import { PrimaryButton } from '../Buttons';
@@ -16,7 +17,6 @@ const PlanCard = ({
   planName,
   planPrice,
   planType,
-  planCurrency,
   color,
   discount,
   onClickHandler,
@@ -25,6 +25,7 @@ const PlanCard = ({
   buttonLabel = 'Select',
   benefitTitle,
   benefitText,
+  originalPrice,
 }) => (
   <div>
     <Box pad="xxsmall" className={classnames(style.planCard, { [style.currentPlan]: currentPlan })}>
@@ -42,39 +43,45 @@ const PlanCard = ({
       <Card background={{ color: 'white' }} width={{ min: '200px', max: '200px' }} >
         <CardHeader
           background={{ color }}
-          height={{min: '190px' }}
+          height={{min: '150px' }}
         >
-          <Box fill textAlign="center" pad="small">
+          <Box fill textAlign="center" alignSelf="end" margin={{ bottom: '10px'}}>
             <Text
-              color="white"
               alignSelf="center"
-              size="20px"
-              weight={900}
-              style={{ lineHeight: '28px' }}
+              size="xlarge"
+              weight={800}
             >
               {planName}
             </Text>
             <Box direction="row" justify="center" align="center" >
-              <Text
-                margin={{ top: 'medium' }}
+              <Heading
+                margin={{ top: '12px', bottom: '0' }}
                 alignSelf="center"
-                color="white"
-                style={{ fontSize: '36px', lineHeight: '28px', fontWeight: '900' }}
+                level="2"
               >
-                {planPrice / 100}
-              </Text>
-              <Text alignSelf="end" style={{ lineHeight: '14px' }} color="white">
-                {planCurrency}
+                {`$${planPrice / 100}`}
+              </Heading>
+              <Text
+                margin={{ bottom: '5px' }}
+                alignSelf="end"
+                size="large"
+              >
+                { planType === 'visit' ? '' : `/${planType}`}
               </Text>
             </Box>
-            <Text
-              margin={{ top: 'small' }}
-              style={{ fontSize: '16px', lineHeight: '22px' }}
-              alignSelf="center"
-              color="white"
-            >
-              {`/${planType}`}
-            </Text>
+            <Box align="center">
+              <Text
+                size="20px"
+                style={{ lineHeight: '20px', textDecorationLine: 'line-through'}}
+              >
+                {`$${originalPrice / 100}`}
+              </Text>
+            </Box>
+            <Box align="center" margin={{ top: '10px'}}>
+              <Text size="10px" style={{ lineHeight: '11.5px'}}>
+                Discount Pricing Ends May 16
+              </Text>
+            </Box>
           </Box>
 
         </CardHeader>
@@ -82,14 +89,13 @@ const PlanCard = ({
           <Box margin={{ top: 'xsmall' }} align="center" justify="center" flex="grow">
             <Text
               margin={{ top: '10px' }}
-              size="12px"
-              style={{ lineHeight: "18px" }}
+              size="medium"
+              style={{ textTransform: 'capitalize' }}
             >
               {benefitTitle}
             </Text>
             <Text
-              size="16px"
-              style={{ lineHeight: "22px" }}
+              size="xlarge"
             >
               {benefitText}
             </Text>

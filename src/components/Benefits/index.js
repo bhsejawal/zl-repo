@@ -6,9 +6,9 @@ import {
 } from 'grommet';
 
 import messageBox from './assets/messageBox.svg';
-import learning from './assets/learning.svg';
 import globe from './assets/globe.svg';
-import camera from './assets/camera.svg';
+import binoculars from './assets/binoculars.svg';
+import donate from './assets/donate.svg';
 
 import BenefitItem from './BenefitItem';
 
@@ -23,7 +23,7 @@ const ZoolifeBenefits = () => {
       background="var(--hunterGreenMediumLight)"
       pad="medium"
       align="center"
-      height={{ min: 'unset' }}
+      height={{ min: '90px' }}
     >
       <Grid
         columns={gridSettings}
@@ -31,20 +31,20 @@ const ZoolifeBenefits = () => {
         pad={{ horizontal: 'medium' }}
       >
         <BenefitItem
-          text="Live Zookeeper Q&amp;As every hour, every day"
-          icon={messageBox}
-        />
-        <BenefitItem
-          text="Audience-controlled cameras to explore habitats and get up-close"
-          icon={learning}
-        />
-        <BenefitItem
-          text="Access to 12 live animal families around the world"
+          text="24/7 access to 12 animal families around the world"
           icon={globe}
         />
         <BenefitItem
-          text="Interactive learning content to spark your nature knowledge"
-          icon={camera}
+          text="Join live Q&amp;A&apos;s with zookeepers &amp; experts daily"
+          icon={messageBox}
+        />
+        <BenefitItem
+          text="Audience-controlled cameras to explore animals &amp; habitats and get up-close"
+          icon={binoculars}
+        />
+        <BenefitItem
+          text="50% of your purchase funds animal care &amp; conservation efforts"
+          icon={donate}
         />
       </Grid>
     </Box>

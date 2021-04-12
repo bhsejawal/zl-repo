@@ -44,7 +44,6 @@ const SubscriptionSection = ({
 }) => {
   const { stripe } = useContext(StripeContext);
   const size = useContext(ResponsiveContext);
-  const isLargeScreen = size === 'large';
   const [showCancelDialog, setShowCancelDialog] = useState(false);
 
   const [dialogSettings, setDialogSettings] = useState(defaultDialogSettings);
@@ -81,7 +80,7 @@ const SubscriptionSection = ({
 
   const validUntilReadable = validUntil ? format(validUntil, 'MMMM dd, yyyy') : '';
 
-  const cancelSubscription = async () => {
+  const cancelSubscription = useCallback(async () => {
     try {
       const { subscriptionStatus } = await post('/users/subscription/unsubscribe');
       setSubscriptionDataAction(subscriptionStatus);
@@ -90,7 +89,7 @@ const SubscriptionSection = ({
       // TODO: display error modal;
       console.error(err);
     }
-  }
+  }, [setSubscriptionDataAction, setShowCancelDialog, post])
 
   const openDialogHandler = (action, planId, priceId, interval) => {
     setDialogSettings({
@@ -126,6 +125,7 @@ const SubscriptionSection = ({
         name,
         order,
         price,
+        originalPrice,
       }) => ({
         planProductId,
         priceId,
@@ -138,9 +138,10 @@ const SubscriptionSection = ({
         currentPlan: false,
         label: 'Select',
         display: true,
-        benefitTitle: interval !== 'visit' ? 'Auto-Renewing' : '',
+        benefitTitle: interval !== 'visit' ? `${interval === 'month' ? 'Monthly' : 'Annual'} Auto-Renew` : '',
         benefitText: interval !== 'visit' ? 'Cancel Anytime' : '24h Access',
         clickHandler: () => checkoutHandler(planProductId, priceId),
+        originalPrice,
       }));
     }
 
@@ -156,6 +157,7 @@ const SubscriptionSection = ({
           name,
           order,
           price,
+          originalPrice,
         }) => ({
           planProductId,
           priceId,
@@ -171,6 +173,7 @@ const SubscriptionSection = ({
           benefitTitle: 'Valid until',
           benefitText: validUntilReadable,
           clickHandler: () => openDialogHandler('Renew', planProductId, priceId, interval),
+          originalPrice,
         }));
     }
 
@@ -189,6 +192,7 @@ const SubscriptionSection = ({
       name,
       order,
       price,
+      originalPrice,
     }) => {
       const isCurrentPlan = planProductId === productId;
       let label;
@@ -223,10 +227,11 @@ const SubscriptionSection = ({
       }
 
       let benefitTitle;
+      const renewPrefix = interval === 'month' ? 'Monthly' : 'Annual';
       if (isCurrentPlan && interval !== 'visit') {
         benefitTitle = 'Auto-Renews:';
       } else if (interval !== 'visit') {
-        benefitTitle = 'Auto-Renewing'
+        benefitTitle = `${renewPrefix} Auto-Renew`
       } else {
         benefitTitle = '24h Access'
       }
@@ -247,9 +252,17 @@ const SubscriptionSection = ({
         benefitText,
         clickHandler,
         disabled,
+        originalPrice,
       };
     }).filter(({ display }) => display);
-  }, [plans, productId, subscriptionStatus, checkoutHandler, validUntilReadable]);
+  }, [
+    plans,
+    productId,
+    subscriptionStatus,
+    checkoutHandler,
+    validUntilReadable,
+    cancelSubscription,
+  ]);
 
   return (
     <>
@@ -275,8 +288,6 @@ const SubscriptionSection = ({
             align="center"
             justify="center"
             gap="large"
-            margin={{top: 'small', bottom: 'medium' }}
-            pad={{ top: !isLargeScreen ? 'small' : 'none' }}
           >
             {plansData.map(({
               name,
@@ -293,6 +304,7 @@ const SubscriptionSection = ({
               label,
               clickHandler,
               disabled,
+              originalPrice,
             }) => (
               <PlanCard
                 key={planProductId}
@@ -310,6 +322,7 @@ const SubscriptionSection = ({
                 buttonLabel={label}
                 onClickHandler={clickHandler}
                 disabled={disabled}
+                originalPrice={originalPrice}
               />
             ))}
           </Box>

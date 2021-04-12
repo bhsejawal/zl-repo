@@ -8,8 +8,6 @@ import {
 import Header from 'Components/Header';
 import SubscriptionManager from 'Components/SubscriptionManager';
 
-import background from 'Assets/plansBackground.png';
-
 import ZoolifeBenefits from 'Components/Benefits';
 
 const Plans = () => {
@@ -19,29 +17,22 @@ const Plans = () => {
     <>
       <Header />
       <Box
-        margin={{ top: '60px' }}
-        fill={['medium', 'large'].includes(size)}
+        margin={{ top: "60px" }}
+        height="100%"
         responsive
         direction="column"
+        fill={['medium', 'large'].includes(size)}
       >
         <Box
           height={{ min: 'unset' }}
           flex="grow"
-          background={{
-            image: `url(${background})`,
-            size: 'contain',
-            position: 'bottom',
-            repeat: 'no-repeat',
-            attachment: 'fixed',
-          }}
         >
-          <Box pad={{ vertical: "large", horizontal: "35%" }}>
-            <Heading level={1} textAlign="center" fill size="25px">
-              Explore more #zoolife
+          <Box width={{ max: '650px' }} alignSelf="center">
+            <Heading level={2} textAlign="center" fill>
+              Keep exploring with a Zoolife pass.
             </Heading>
-            <Text textAlign="center" size="16px">
-              50% of your ticket directly funds conservation
-              &amp; animal care efforts led by our AZA-accredited partners.
+            <Text textAlign="center" size="xlarge">
+              50% of your purchase directly funds animal care &amp; conservation efforts worldwide.
             </Text>
           </Box>
           <SubscriptionManager />
