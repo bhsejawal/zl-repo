@@ -12,13 +12,14 @@ const HeroSection = () => {
     <>
       <Box direction={direction} background={{color: '#9BB7F1'}} flex="grow" width={{ max: '100vw'}}>
         <Box justify="center" alignContent="center" pad="30px" basis="1/2">
-          <Heading textAlign="center" level="1">Explore nature, from home.</Heading>
-          <Heading textAlign="center" level="4">
-            Incredible animal experiences from the world&apos;s
-            top zoos, hosted by nature experts.
-          </Heading>
-          <Box alignSelf="center">
-            <LandingSecondary onClick={() => route('/signup')}>Meet the Animals</LandingSecondary>
+          <Box width={{ max: '358px' }} alignSelf="center">
+            <Heading textAlign="center" level="1" sty>Explore nature, from home.</Heading>
+            <Heading textAlign="center" level="4">
+              Live animal experiences from the world&apos;s top zoos, hosted by nature experts.
+            </Heading>
+            <Box alignSelf="center">
+              <LandingSecondary onClick={() => route('/signup')}>Meet the Animals</LandingSecondary>
+            </Box>
           </Box>
         </Box>
         <Box basis="1/2" justify="center" alignContent="center">
