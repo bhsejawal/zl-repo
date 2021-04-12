@@ -5,13 +5,16 @@ import { Drop, Box, Text } from 'grommet';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCog, faQuestionCircle, faSignOut } from '@fortawesome/pro-solid-svg-icons';
 import useFetch from 'use-http';
+import { connect } from 'react-redux';
 
 import { buildURL } from 'Shared/fetch';
 import AnimalIcon from 'Components/AnimalIcon';
 
+import { unsetUserData } from '../../../redux/actions'
+
 import style from './style.scss';
 
-const Menu = () => {
+const Menu = ({ unsetUserDataAction }) => {
   const buttonRef = useRef(null)
   const [showMenu, setShowMenu] = useState(false);
   const { post, response } = useFetch(
@@ -23,6 +26,7 @@ const Menu = () => {
     await post();
     if (response.ok) {
       setShowMenu(false);
+      unsetUserDataAction();
       route('/login');
     }
   }
@@ -94,4 +98,4 @@ const Menu = () => {
   );
 };
 
-export default Menu;
+export default connect(null, { unsetUserDataAction: unsetUserData })(Menu);

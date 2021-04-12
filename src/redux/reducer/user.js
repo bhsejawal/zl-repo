@@ -34,6 +34,7 @@ const initialState = {
   // and other UI user settings
   profile: undefined,
   isOnboarded: false,
+  termsAccepted: null,
 };
 
 export default (state = initialState, { type, payload }) => {
@@ -83,10 +84,8 @@ export default (state = initialState, { type, payload }) => {
   if (type === UNSET_USER_DATA) {
     return {
       ...state,
+      ...initialState,
       role: 'guest',
-      permissions: initialState.permissions,
-      username: initialState.username,
-      logged: initialState.logged,
       sessionChecked: true,
     }
   }
