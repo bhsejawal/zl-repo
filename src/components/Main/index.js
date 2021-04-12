@@ -9,6 +9,11 @@ import TimeBar from 'Components/TimeBar';
 import AuthGuard from 'Components/Authorize/AuthGuard';
 import TermsAndConditions from 'Components/TermsAndConditions';
 
+import oranaZooLogo from 'Assets/partners/orana-zoo.png';
+import torontoZooLogo from 'Assets/partners/toronto-zoo.png';
+import pmmcLogo from 'Assets/partners/pmmc.png';
+import sanAntonioLogo from 'Assets/partners/san-antonio-zoo.png';
+
 // Code-splitting is automated for `routes` directory
 import PasswordReset from '../../routes/passwordReset';
 import Home from '../../routes/home';
@@ -60,6 +65,11 @@ const Main = ({ onRouteChange, isTrial }) => {
     >
       <Router onChange={routerChangeHandler}>
         <Home path="/" exact />
+
+        <Home path="/orana-zoo" partnerImage={oranaZooLogo} exact />
+        <Home path="/toronto-zoo" partnerImage={torontoZooLogo} exact />
+        <Home path="/pacific-marine-mammal-center" partnerImage={pmmcLogo} exact />
+        <Home path="/san-antonio-zoo" partnerImage={sanAntonioLogo} exact />
 
         <AuthGuard path="/login" guestOnly title="Log In" redirectTo="/">
           <Login />

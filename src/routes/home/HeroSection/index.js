@@ -3,8 +3,11 @@ import { useContext } from 'preact/hooks';
 import { ResponsiveContext, Box, Heading } from 'grommet';
 
 import { LandingSecondary } from 'Components/Buttons';
+import zoolifeLogoWhite from 'Assets/zoolife-white.png';
 
-const HeroSection = () => {
+import style from './style.scss';
+
+const HeroSection = ({ partnerImage }) => {
   const size = useContext(ResponsiveContext);
   const direction = ['xsmall', 'small', 'medium'].includes(size) ? 'column' : 'row';
 
@@ -13,6 +16,14 @@ const HeroSection = () => {
       <Box direction={direction} background={{color: '#9BB7F1'}} flex="grow" width={{ max: '100vw'}}>
         <Box justify="center" alignContent="center" pad="30px" basis="1/2">
           <Box width={{ max: '358px' }} alignSelf="center">
+            {partnerImage && (
+              <div className={style.partner}>
+                <img alt="zoolife-logo" src={zoolifeLogoWhite} />
+                <span>x</span>
+                <img alt="partner-logo" src={partnerImage} />
+              </div>
+            )}
+
             <Heading textAlign="center" level="1" sty>Explore nature, from home.</Heading>
             <Heading textAlign="center" level="4">
               Live animal experiences from the world&apos;s top zoos, hosted by nature experts.

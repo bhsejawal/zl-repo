@@ -119,12 +119,12 @@ const websiteTheme = {
   }),
 };
 
-const Home = () => (
+const Home = ({ partnerImage }) => (
   <Grommet theme={websiteTheme}>
     <Box width={{ max: "1650px", min: "350px" }} margin={{ horizontal: 'auto' }}>
       <Header />
       <Box fill pad={{top: 'var(--headerHeight)'}}>
-        <HeroSection />
+        <HeroSection partnerImage={partnerImage} />
         <Partners />
         <Overview />
         <Features />
