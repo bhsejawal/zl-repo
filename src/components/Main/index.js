@@ -79,7 +79,7 @@ const Main = ({ onRouteChange, isTrial }) => {
           <Signup />
         </AuthGuard>
 
-        <AuthGuard path="/login/token/:token" title="Log In" redirectTo="/">
+        <AuthGuard path="/login/token/:token" title="Log In" redirectTo="/" guestOnly>
           <Login />
         </AuthGuard>
 
