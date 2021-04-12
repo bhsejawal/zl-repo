@@ -191,6 +191,12 @@ const Profile = ({
         setErrorMsg('Nickname cannot have spaces');
         return;
       }
+
+      if (nickname.length > 20) {
+        setErrorMsg('Nickname should be between 1 and 20 characters')
+        return;
+      }
+
       setIsLoading(true);
       await updateUser(color, icon, nickname);
       updateProfileAction(color, icon, nickname);
