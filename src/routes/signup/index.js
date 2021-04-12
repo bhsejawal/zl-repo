@@ -206,6 +206,13 @@ const Signup = ({ setUserDataAction, openTermsModalAction }) => {
             <br />
           </form>
         </Box>
+        <Box margin={{ top: "30px", bottom: '20px' }}>
+          <Text>
+            Already have an account?&nbsp;
+            <Anchor href="/login">Log In</Anchor>
+          </Text>
+        </Box>
+
         <Box>
           <div className={style.separator}>
             <hr />
