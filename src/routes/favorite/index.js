@@ -94,9 +94,11 @@ const Favorite = ({ updateFavoriteHabitatAction }) => {
           >
             My Favorites
           </Heading>
-          <Text margin="0" size="large" color="var(--charcoalLight)">
-            Your top habitats in one glance! Tap the heart to remove a favorite.
-          </Text>
+          <Box fill="vertical" justify="center">
+            <Text margin="0" size="xlarge" color="var(--charcoalLight)">
+              Your top habitats in one glance! Tap the heart to remove a favorite.
+            </Text>
+          </Box>
         </Box>
 
         <Box
