@@ -37,6 +37,7 @@ export const generateTitle = (part) => (part ? `${part} | Zoolife` : 'Zoolife');
 
 export const formatAge = (dateOfBirth) => formatDistanceToNow(parseISO(dateOfBirth))
   .replace('over', '')
+  .replace('about', '')
   .trim();
 
 export const logPageView = () => {
