@@ -29,22 +29,22 @@ import classnames from 'classnames';
 
 import { openTermsModal } from 'Components/TermsAndConditions/actions';
 
-import backgroundImg from '../../assets/profileBackground.svg';
-import animal1 from '../../assets/profileIcons/animal1.svg';
-import animal2 from '../../assets/profileIcons/animal2.svg';
-import animal3 from '../../assets/profileIcons/animal3.svg';
-import animal4 from '../../assets/profileIcons/animal4.svg';
-import animal5 from '../../assets/profileIcons/animal5.svg';
-import animal6 from '../../assets/profileIcons/animal6.svg';
-import animal7 from '../../assets/profileIcons/animal7.svg';
-import animal8 from '../../assets/profileIcons/animal8.svg';
-import animal9 from '../../assets/profileIcons/animal9.svg';
-import animal10 from '../../assets/profileIcons/animal10.svg';
-import animal11 from '../../assets/profileIcons/animal11.svg';
-import animal12 from '../../assets/profileIcons/animal12.svg';
-import animal13 from '../../assets/profileIcons/animal13.svg';
-import animal14 from '../../assets/profileIcons/animal14.svg';
-import animal15 from '../../assets/profileIcons/animal15.svg';
+import backgroundImg from 'Assets/profileBackground.png';
+import animal1 from 'Assets/profileIcons/animal1.svg';
+import animal2 from 'Assets/profileIcons/animal2.svg';
+import animal3 from 'Assets/profileIcons/animal3.svg';
+import animal4 from 'Assets/profileIcons/animal4.svg';
+import animal5 from 'Assets/profileIcons/animal5.svg';
+import animal6 from 'Assets/profileIcons/animal6.svg';
+import animal7 from 'Assets/profileIcons/animal7.svg';
+import animal8 from 'Assets/profileIcons/animal8.svg';
+import animal9 from 'Assets/profileIcons/animal9.svg';
+import animal10 from 'Assets/profileIcons/animal10.svg';
+import animal11 from 'Assets/profileIcons/animal11.svg';
+import animal12 from 'Assets/profileIcons/animal12.svg';
+import animal13 from 'Assets/profileIcons/animal13.svg';
+import animal14 from 'Assets/profileIcons/animal14.svg';
+import animal15 from 'Assets/profileIcons/animal15.svg';
 
 import { useIsInitiallyLoaded, useOnClickOutside } from '../../hooks';
 import { getUser, updateUser } from './api';
@@ -100,12 +100,18 @@ const ColorItem = ({ color, selected, onClick }) => (
   />
 );
 
-const IconItem = ({ icon, selected, onClick }) => (
+const IconItem = ({
+  icon,
+  selected,
+  onClick,
+  color,
+}) => (
   <button
     type="button"
     aria-label="color"
     className={classnames(style.circleItem, style.animalIcon, { [style.selected]: selected })}
     onClick={() => onClick(icon)}
+    style={{ backgroundColor: color }}
   >
     <div className={style.icon} style={{ backgroundImage: `url('${icon}')` }} />
   </button>
@@ -113,7 +119,7 @@ const IconItem = ({ icon, selected, onClick }) => (
 
 const background = {
   image: `url('${backgroundImg}')`,
-  size: 'unset',
+  size: '25vw',
   position: 'bottom left',
   repeat: 'no-repeat',
   attachment: 'fixed',
@@ -225,8 +231,8 @@ const Profile = ({
         <div className={style.pickSection}>
           <Box>
             <Box>
-              <Text margin={{ bottom: 'small' }}>
-                Pick your favourite colour:
+              <Text margin={{ bottom: 'small' }} size="xlarge">
+                Pick your favorite colour:
               </Text>
               {/* eslint-disable-next-line react/jsx-props-no-spreading */}
               <Grid {...circlesGridConfig}>
@@ -273,8 +279,8 @@ const Profile = ({
             </Box>
 
             <Box>
-              <Text margin={{ top: 'large', bottom: 'small' }}>
-                And your favourite animal:
+              <Text margin={{ top: 'large', bottom: 'small' }} size="xlarge">
+                And your favorite animal:
               </Text>
               {/* eslint-disable-next-line react/jsx-props-no-spreading */}
               <Grid {...circlesGridConfig}>
@@ -284,6 +290,7 @@ const Profile = ({
                     selected={icon === ico}
                     icon={ico}
                     onClick={setIcon}
+                    color={color}
                   />
                 ))}
               </Grid>
@@ -294,14 +301,14 @@ const Profile = ({
         <div className={style.characterSection}>
           <Box>
             {step && (
-              <Heading size="20px" level="4" color="var(--grey)" margin={{ bottom: 'xsmall', top: '0' }}>
+              <Heading level="4" color="var(--grey)" margin={{ bottom: 'xsmall', top: '0' }}>
                 Step 2 of 2
               </Heading>
             )}
-            <Heading size="45px" level="1" margin={{ top: '0' }}>
+            <Heading level="1" margin={{ top: '0' }}>
               {step ? 'Create your character:' : 'My Character:'}
             </Heading>
-            <Text size="16px">This is how the Zoolife community will see you.</Text>
+            <Text size="xlarge">This is how the Zoolife community will see you.</Text>
 
             <div className={style.largeImgWrapper}>
               {isInitiallyLoaded && (
