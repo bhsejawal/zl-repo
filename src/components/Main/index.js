@@ -95,10 +95,10 @@ const Main = ({ onRouteChange, isTrial }) => {
         <AuthGuard path="/profile" permission="profile:edit" title="Profile">
           <Profile step />
         </AuthGuard>
-        <AuthGuard path="/schedule" permission="schedule:view" title="Talk Schedule">
+        <AuthGuard path="/schedule" permission="schedule:view" title="Talk Schedule" redirectTo="/plans">
           <Schedule />
         </AuthGuard>
-        <AuthGuard path="/favorite" permission="favorite:edit" title="Favorites">
+        <AuthGuard path="/favorite" permission="favorite:edit" title="Favorites" redirectTo="/plans">
           <Favorite />
         </AuthGuard>
         <AuthGuard path="/account" permission="profile:edit">

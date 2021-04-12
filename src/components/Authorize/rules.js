@@ -38,17 +38,19 @@ const rules = {
     static: ['checkout:plans', 'signup:view', 'login:view'],
   },
   user: {
-    static: ['profile:edit', 'favorite:edit', 'redirect:view'],
+    static: ['profile:edit', 'redirect:view'],
     dynamic: {
       'habitat:view': isSubscriptionActive,
       'map:view': isSubscriptionActive,
       'checkout:plans': isTrial,
       'subscription:cancel': isSubscriptionActive,
       'subscription:edit': notTrial,
+      'schedule:view': isSubscriptionActive,
+      'favorite:edit': isSubscriptionActive,
     },
   },
   vip: {
-    static: ['profile:edit', 'favorite:edit', 'habitat:view', 'map:view', 'redirect:view'],
+    static: ['profile:edit', 'favorite:edit', 'habitat:view', 'map:view', 'redirect:view', 'schedule:view'],
   },
   partner: {
     static: ['habitat:view', 'map:view', 'profile:edit', 'favorite:edit', 'redirect:view'],

@@ -17,6 +17,7 @@ const TimeBar = ({
 }) => {
   const [time, setTime] = useState(null);
   const isPlanPage = path === '/plans';
+  const isLandingPage = path === '/';
 
   const isMobileDevice = getDeviceType() === 'phone';
   const text = isMobileDevice ? 'to access your free trial.' : 'left in your free trial.';
@@ -56,7 +57,7 @@ const TimeBar = ({
     return () => clearTimeout(timeout);
   }, [isTrial, time, updateSubscriptionAction, validUntil]);
 
-  if (!isTrial || path === 'signup') {
+  if (!isTrial || isLandingPage) {
     return null;
   }
 
