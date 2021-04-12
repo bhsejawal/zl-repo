@@ -22,7 +22,7 @@ import TagInput from 'Components/TagInput';
 import StatusModalContent from 'Components/modals/StatusContent';
 import { defaultErrorMsg } from 'Components/modals/Error';
 
-import headerImg from './header-img.png';
+import headerImg from './header-img.jpg';
 
 import style from './style.scss';
 
@@ -114,7 +114,7 @@ const InviteModal = ({ onClose }) => {
       )}
 
       {!sent && !error && (
-        <Box width="360px">
+        <Box width="480px">
           <Box
             direction="row"
             align="center"
@@ -122,7 +122,7 @@ const InviteModal = ({ onClose }) => {
             justify="end"
             overflow="hidden"
           >
-            <img src={headerImg} alt="header" />
+            <img src={headerImg} alt="header" width="410" />
             <Button
               className={style.closeBtn}
               plain
@@ -134,17 +134,18 @@ const InviteModal = ({ onClose }) => {
 
           <Box
             pad={{ vertical: '0', horizontal: 'large' }}
+            margin={{ top: '35px'}}
             className={style.content}
           >
-            <Heading margin="small" level="3">
-              Zoolife is better with friends!
-            </Heading>
-            <Text margin={{ bottom: 'large' }} size="large">
-              Send your pals a free trial.
+            <Text size="xlarge">
+              These days, we all need a nature escape.
             </Text>
+            <Heading margin={{ top: '13px', bottom: '33px' }} level="3">
+              Send your friends a free trial.
+            </Heading>
 
             <TagInput
-              label="Friend’s Email:"
+              label="Friend’s Email(s):"
               name="emails"
               ref={tagInputRef}
               value={emails}

@@ -3,10 +3,15 @@
   overflow: hidden;
   margin-top: 0;
   margin-bottom: 0;
+  width: 220px;
+  height: 25px;
+  display: flex;
+  align-items: center;
 }
 
 .input {
   text-align: left;
+  min-width: 300px;
 }
 
 .tagBtn {

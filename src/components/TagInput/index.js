@@ -11,7 +11,6 @@ import {
   Button,
   Keyboard,
   TextInput,
-  Heading,
   Text,
   FormField,
 } from 'grommet';
@@ -32,14 +31,16 @@ const Tag = ({ children, onRemove }) => {
       pad={{ horizontal: 'small', vertical: 'xsmall' }}
       margin={{ vertical: 'xxsmall', horizontal: 'xxsmall' }}
       round="medium"
+      justify="center"
     >
-      <Heading
-        level="6"
+      <Text
+        size="large"
         margin={{ right: 'xsmall' }}
         className={style.tagText}
+        alignSelf="center"
       >
         {children}
-      </Heading>
+      </Text>
       {onRemove && <FontAwesomeIcon icon={faTimes} />}
     </Box>
   );
