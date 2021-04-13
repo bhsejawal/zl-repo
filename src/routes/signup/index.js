@@ -1,6 +1,6 @@
 import { h } from 'preact';
 import { useState, useContext } from 'preact/hooks';
-import { route } from 'preact-router';
+import { Link, route } from 'preact-router';
 import { connect } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faEyeSlash } from "@fortawesome/pro-solid-svg-icons";
@@ -10,7 +10,6 @@ import {
   Box,
   Text,
   CheckBox,
-  Anchor,
   ResponsiveContext,
 } from 'grommet';
 import { buildURL, post } from 'Shared/fetch';
@@ -183,15 +182,21 @@ const Signup = ({ setUserDataAction, openTermsModalAction }) => {
                 {serverError || 'Use a minimum of 8 characters with at least 1 number and 1 character'}
               </div>
             </div>
-            <Box margin={{ top: 'medium' }} className={classnames("customCheckbox", { error: termsError })}>
+            <Box margin={{ top: 'medium' }} className={classnames({ error: termsError })}>
               <CheckBox
                 label={(
                   <Box>
                     <Text>
                       I agree to Zoolife&apos;s&nbsp;
-                      <Anchor onClick={onTermsAndPrivacyClick}>Terms</Anchor>
+                      {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
+                      <Link href="#" className="small" onClick={onTermsAndPrivacyClick}>
+                        Terms
+                      </Link>
                       &nbsp;&amp;&nbsp;
-                      <Anchor onClick={onTermsAndPrivacyClick}>Privacy</Anchor>
+                      {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
+                      <Link href="#" className="small" onClick={onTermsAndPrivacyClick}>
+                        Privacy
+                      </Link>
                     </Text>
                   </Box>
                 )}
@@ -209,7 +214,7 @@ const Signup = ({ setUserDataAction, openTermsModalAction }) => {
         <Box margin={{ top: "30px", bottom: '20px' }}>
           <Text>
             Already have an account?&nbsp;
-            <Anchor href="/login">Log In</Anchor>
+            <Link href="/login" className="small">Log In</Link>
           </Text>
         </Box>
 
@@ -224,9 +229,15 @@ const Signup = ({ setUserDataAction, openTermsModalAction }) => {
         <Box margin={{ top: 'medium' }}>
           <Text>
             By using social signup, I agree to&nbsp;
-            <Anchor>Terms</Anchor>
+            {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
+            <Link href="#" className="small" onClick={onTermsAndPrivacyClick}>
+              Terms
+            </Link>
             &nbsp;&amp;&nbsp;
-            <Anchor>Privacy</Anchor>
+            {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
+            <Link href="#" className="small" onClick={onTermsAndPrivacyClick}>
+              Privacy
+            </Link>
           </Text>
         </Box>
 
