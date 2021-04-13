@@ -25,8 +25,11 @@ $circle-size: 40px;
   display: flex;
   align-items: center;
   justify-content: center;
-  flex-basis: 525px;
-  padding: 40px;
+  padding: 76px;
+
+  @media screen and (max-width: 1000px) {
+    padding: 40px;
+  }
 }
 
 .divider {
@@ -39,7 +42,11 @@ $circle-size: 40px;
   flex-grow: 1;
   align-items: center;
   justify-content: center;
-  padding: 40px;
+  padding: 76px;
+
+  @media screen and (max-width: 1000px) {
+    padding: 40px;
+  }
 
   > div {
     width: 500px;
