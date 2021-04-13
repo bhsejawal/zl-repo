@@ -65,11 +65,11 @@ const EditHabitatRender = ({ profileImage: profileImageProp }) => {
   );
 };
 
-const StreamStatus = ({ isStreamOn, isHostStreamOn }) => {
-  if (isHostStreamOn) {
+const StreamStatus = ({ online, liveTalk }) => {
+  if (online && liveTalk) {
     return <Text size="large">Live Talk</Text>;
   }
-  if (isStreamOn) {
+  if (online) {
     return <Text size="large">Online</Text>;
   }
   return <Text size="large">Offline</Text>;
@@ -134,7 +134,7 @@ const Habitats = () => {
     selectValues: zoos.map(({ name, _id }) => ({ label: name, value: _id })),
   }, {
     title: 'Status',
-    property: 'isStreamOn',
+    property: 'online',
     render: StreamStatus,
   }, {
     title: 'Last Modified',
