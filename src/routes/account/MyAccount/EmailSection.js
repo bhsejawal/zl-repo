@@ -59,7 +59,7 @@ const EmailSection = ({ expand = true, userEmail, setUserDataAction }) => {
         <Box
           direction="row"
           border={{color: '#DFDFDF', size: '1px', side: 'top'}}
-          pad={{horizontal: '50px', top: '30px'}}
+          pad={{ horizontal: '50px', top: '30px', bottom: '40px' }}
         >
           <div className={style.label}>
             <span>Email</span>
@@ -78,21 +78,23 @@ const EmailSection = ({ expand = true, userEmail, setUserDataAction }) => {
                 className={classnames({[style.errorBorder]: hasError})}
               />
             </div>
+
             <div className={classnames(style.errorSection, {[style.active]: hasError})}>
               {hasError}
             </div>
+
+            <Box margin={{ top: '30px' }} />
+
+            <PrimaryButton
+              className={style.updateButton}
+              onClick={updateHandler}
+              primary
+              label={get(data, 'user.email') === email ? 'Updated' : 'Update'}
+              size="large"
+              loading={loading}
+            />
           </div>
         </Box>
-
-        <PrimaryButton
-          className={style.updateButton}
-          onClick={updateHandler}
-          margin={{horizontal: 'auto', top: '20px', bottom: '40px'}}
-          primary
-          label={get(data, 'user.email') === email ? 'Updated' : 'Update'}
-          size="large"
-          loading={loading}
-        />
       </Box>
     </Accordion>
   );
