@@ -71,7 +71,7 @@ const InviteModal = ({ onClose }) => {
       return;
     }
 
-    await post({ emails });
+    await post({ emails, sourceUrl: window.location.pathname });
     if (response.ok) {
       setSent(true);
     }
