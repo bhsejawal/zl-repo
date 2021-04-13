@@ -12,7 +12,17 @@ const Overview = () => (
   <div className={style.overview}>
     <div className={style.topSection}>
       <div className={style.video}>
-        <video src="https://zl-brizi-tv.s3.ca-central-1.amazonaws.com/assets/landing/s3_video.mp4" muted controls={false} autoPlay loop playsInline />
+        <video
+          muted
+          controls={false}
+          autoPlay
+          loop
+          playsInline
+        >
+          <source src="https://zl-brizi-tv.s3.ca-central-1.amazonaws.com/assets/landing/s3_video.webm" type="video/webm" />
+          <source src="https://zl-brizi-tv.s3.ca-central-1.amazonaws.com/assets/landing/s3_video.mp4" type="video/mp4" />
+          Your browser does not support the video tag.
+        </video>
       </div>
       <div className={style.description}>
         <div className={style.streamingLive}>

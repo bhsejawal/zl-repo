@@ -63,14 +63,16 @@ const FeatureSection = () => {
             loop
             muted
             playInline
-            src="https://zl-brizi-tv.s3.ca-central-1.amazonaws.com/assets/landing/s4_camera.mp4"
             style={{
               width: direction === "row" ? "450px" : "100%",
               zIndex: 1,
               borderRadius: '2px',
             }}
-
-          />
+          >
+            <source src="https://zl-brizi-tv.s3.ca-central-1.amazonaws.com/assets/landing/s4_camera.webm" type="video/webm" />
+            <source src="https://zl-brizi-tv.s3.ca-central-1.amazonaws.com/assets/landing/s4_camera.mp4" type="video/mp4" />
+            Your browser does not support the video tag.
+          </video>
         </Box>
       </Box>
     </Box>
