@@ -95,6 +95,10 @@ const TagInput = forwardRef(({
 
   const addNewItem = useCallback(({ target }) => {
     try {
+      if (!currentTag && tagListRef.current.children.length > 0) {
+        return;
+      }
+
       onValidate?.({ target, value: currentTag });
       onAddTag(currentTag);
       setCurrentTag('');
