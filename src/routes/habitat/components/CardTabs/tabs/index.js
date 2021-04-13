@@ -1,5 +1,5 @@
 import { h } from 'preact';
-import { useCallback } from 'preact/hooks';
+import { useCallback, useEffect } from 'preact/hooks';
 import { connect } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
@@ -27,6 +27,10 @@ const Tabs = ({ active, setActiveTabAction }) => {
   const onClick = useCallback(({ target }) => {
     setActiveTabAction(target.dataset.value);
   }, [setActiveTabAction]);
+
+  // reset on unload
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  useEffect(() => () => setActiveTabAction(MEET), []);
 
   return (
     <div>

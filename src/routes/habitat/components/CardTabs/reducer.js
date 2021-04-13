@@ -6,6 +6,7 @@ import {
   SET_HABITAT_CARDS,
   SET_HABITAT_TAB,
   DELETE_HABITAT_CARD,
+  SET_CARDS_LOADING,
 } from './types';
 
 const cardSort = ({ index: i1 }, { index: i2 }) => (i1 - i2);
@@ -17,6 +18,7 @@ const updateFamilyCards = (state, cards) => (
 );
 
 const initialState = {
+  loading: false,
   items: [],
   familyCards: [],
   activeTab: MEET,
@@ -90,6 +92,11 @@ export default (state = initialState, { type, payload }) => {
     case SET_HABITAT_TAB: {
       const { activeTab } = payload;
       return { ...state, activeTab };
+    }
+
+    case SET_CARDS_LOADING: {
+      const { loading } = payload;
+      return { ...state, loading };
     }
 
     default: {

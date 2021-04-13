@@ -1,13 +1,26 @@
 import { h } from 'preact';
 import { connect } from 'react-redux';
-import { useCallback, useRef } from 'preact/hooks';
+import {
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from 'preact/hooks';
+
 import List from 'Components/List';
-import { formatAge } from '../../../../../helpers';
+import Loader from 'Components/async/Loader';
 import Member from './member';
 
-const Members = ({ familyCards }) => {
+import { formatAge } from '../../../../../helpers';
+import { useIsInitiallyLoaded } from '../../../../../hooks';
+
+import style from './style.scss';
+
+const Members = ({ loading, familyCards }) => {
   const listRef = useRef();
   const loadedImagesRef = useRef(0);
+  const initiallyLoaded = useIsInitiallyLoaded(loading);
+  const [loaded, setLoaded] = useState(false);
 
   const onImgLoad = useCallback(() => {
     loadedImagesRef.current += 1;
@@ -15,6 +28,20 @@ const Members = ({ familyCards }) => {
       listRef.current.updateLayout();
     }
   }, [familyCards]);
+
+  useEffect(() => {
+    if (initiallyLoaded) {
+      setLoaded(true);
+    }
+  }, [initiallyLoaded]);
+
+  if (!loaded) {
+    return (
+      <div className={style.loadingWrapper}>
+        <Loader />
+      </div>
+    );
+  }
 
   return (
     <List ref={listRef}>
@@ -36,4 +63,14 @@ const Members = ({ familyCards }) => {
   );
 };
 
-export default connect(({ habitat: { cards: { familyCards } } }) => ({ familyCards }))(Members);
+export default connect(({
+  habitat: {
+    cards: {
+      loading,
+      familyCards,
+    },
+  },
+}) => ({
+  loading,
+  familyCards,
+}))(Members);

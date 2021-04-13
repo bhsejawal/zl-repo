@@ -29,8 +29,9 @@ import OriginAndHabitatCard from './OriginAndHabitatCard';
 import AnimalBodyCard from './AnimalBodyCard';
 import QuizCard from './QuizCard';
 
-import { setCards } from '../actions';
+import { setCards, setLoading } from '../actions';
 import { fetchCards } from '../api';
+import { useIsInitiallyLoaded } from '../../../../../hooks';
 
 import {
   ANIMAL_BODY_CARD_TYPE,
@@ -48,14 +49,16 @@ import {
 import style from './style.scss';
 
 const Cards = ({
+  loading,
   cards = [],
   activeTab,
   habitatId,
   setCardsAction,
+  setLoadingAction,
 }) => {
   const cardsRef = useRef();
+  const loaded = useIsInitiallyLoaded(loading);
   const [activeShortcut, setActiveShortcut] = useState();
-  const [loading, setLoading] = useState(true);
   const { get } = useFetch(API_BASE_URL, {
     credentials: 'include',
     cachePolicy: 'no-cache',
@@ -75,7 +78,7 @@ const Cards = ({
   useEffect(() => {
     const load = async () => {
       try {
-        setLoading(true);
+        setLoadingAction(true);
         const { cards: newCards } = await fetchCards(habitatId, activeTab);
 
         await Promise.all(newCards.map(async (card) => {
@@ -93,14 +96,14 @@ const Cards = ({
         // TODO: implement error UI
         console.error(err);
       } finally {
-        setLoading(false);
+        setLoadingAction(false);
       }
     };
 
     if (habitatId) {
       load();
     }
-  }, [activeTab, get, habitatId, setCardsAction]);
+  }, [activeTab, get, habitatId, setCardsAction, setLoadingAction]);
 
   const onShortcutClick = useCallback(({ target }) => {
     const { value } = target.dataset;
@@ -114,11 +117,11 @@ const Cards = ({
     <>
       <div className={style.cards}>
         <div ref={cardsRef}>
-          {loading && (
+          {!loaded && (
             <Loader fill />
           )}
 
-          {!loading && (
+          {loaded && (
             cards.map((card) => (
               <CardEditor card={card}>
                 {card.type === SINGLE_ICON_CARD_TYPE && (
@@ -236,7 +239,7 @@ const Cards = ({
           {/* seems like there's a bug, and async loader component can't find previous sibling */}
           <span />
 
-          {!loading && (
+          {loaded && (
             <Can
               perform="habitat:edit-cards"
               yes={() => (<CreateCardButton />)}
@@ -258,6 +261,7 @@ export default connect(
   ({
     habitat: {
       cards: {
+        loading,
         items: cards,
         activeTab,
       },
@@ -266,9 +270,13 @@ export default connect(
       },
     },
   }) => ({
+    loading,
     cards,
     activeTab,
     habitatId,
   }),
-  { setCardsAction: setCards },
+  {
+    setCardsAction: setCards,
+    setLoadingAction: setLoading,
+  },
 )(Cards);
