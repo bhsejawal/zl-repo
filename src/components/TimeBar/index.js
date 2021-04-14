@@ -3,7 +3,10 @@ import { route } from 'preact-router';
 import { Box, Text } from 'grommet';
 import { connect } from 'react-redux';
 import { useEffect, useState } from 'preact/hooks';
+
 import { PrimaryButton } from 'Components/Buttons';
+import { openInviteModal } from 'Components/NavBar/Invite/actions';
+
 import { updateSubscription } from '../../redux/actions';
 import { getDeviceType } from '../../helpers';
 
@@ -12,8 +15,9 @@ import style from './style.scss';
 const TimeBar = ({
   validUntil,
   isTrial,
-  updateSubscriptionAction,
   path,
+  updateSubscriptionAction,
+  openInviteModalAction,
 }) => {
   const [time, setTime] = useState(null);
   const isPlanPage = path === '/plans';
@@ -22,6 +26,17 @@ const TimeBar = ({
   const isMobileDevice = getDeviceType() === 'phone';
   const text = isMobileDevice ? 'to access your free trial.' : 'left in your free trial.';
   const ctaText = time === null && isPlanPage ? 'Select a pass to continue exploring!' : 'Want more?';
+
+  // eslint-disable-next-line consistent-return
+  useEffect(() => {
+    if (isTrial) {
+      const timeout = setTimeout(() => {
+        openInviteModalAction();
+      }, 5 * 60 * 1000);
+
+      return () => clearTimeout(timeout);
+    }
+  }, [openInviteModalAction, isTrial]);
 
   useEffect(() => {
     if (validUntil) {
@@ -112,5 +127,8 @@ export default connect(
     validUntil,
     isTrial: productId === 'TRIAL',
   }),
-  { updateSubscriptionAction: updateSubscription },
+  {
+    updateSubscriptionAction: updateSubscription,
+    openInviteModalAction: openInviteModal,
+  },
 )(TimeBar);

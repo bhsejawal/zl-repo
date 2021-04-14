@@ -10,6 +10,6 @@ describe('Initial Test of the NavBar', () => {
     const context = shallow(<NavBar />);
 
     expect(context.find('NavItem').length).toBe(3);
-    expect(context.find('Invite').length).toBe(1);
+    expect(context.find('Connect(Invite)').length).toBe(1);
   });
 });

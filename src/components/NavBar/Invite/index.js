@@ -1,30 +1,30 @@
 import { h } from 'preact';
-import { useCallback, useState } from 'preact/hooks';
+import { useCallback } from 'preact/hooks';
 import { Suspense, lazy } from 'preact/compat';
 import { faShare } from '@fortawesome/pro-solid-svg-icons';
+import { connect } from 'react-redux';
 
 import LoaderModal from 'Components/async/LoaderModal';
 import NavItem from '../NavItem';
+import { closeInviteModal, openInviteModal } from './actions';
 
 const InviteModal = lazy(() => import('./Modal'));
 
-const Invite = () => {
-  const [open, setOpen] = useState(false);
-
+const Invite = ({ isOpen, openInviteModalAction, closeInviteModalAction }) => {
   const onClick = useCallback((evt) => {
     evt.preventDefault();
-    setOpen(!open);
-  }, [open]);
+    openInviteModalAction();
+  }, [openInviteModalAction]);
 
   const onClose = useCallback(() => {
-    setOpen(false);
-  }, []);
+    closeInviteModalAction();
+  }, [closeInviteModalAction]);
 
   return (
     <>
       <NavItem text="Invite" icon={faShare} onClick={onClick} />
 
-      {open && (
+      {isOpen && (
         <Suspense fallback={<LoaderModal />}>
           <InviteModal onClose={onClose} />
         </Suspense>
@@ -33,4 +33,10 @@ const Invite = () => {
   );
 };
 
-export default Invite;
+export default connect(
+  ({ modals: { invite: { isOpen } } }) => ({ isOpen }),
+  {
+    openInviteModalAction: openInviteModal,
+    closeInviteModalAction: closeInviteModal,
+  },
+)(Invite);
