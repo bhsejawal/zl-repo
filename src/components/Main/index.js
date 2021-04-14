@@ -29,6 +29,7 @@ import NotFound from '../../routes/notFound';
 import DesignSystem from '../../routes/designSystem';
 import Habitat from '../../routes/habitat';
 import RedirectPage from '../../routes/redirectPage';
+import Welcome from '../../routes/welcome';
 
 import { getDeviceType, logPageView } from '../../helpers';
 
@@ -70,6 +71,10 @@ const Main = ({ onRouteChange, isTrial }) => {
         <Home path="/toronto-zoo" partnerImage={torontoZooLogo} exact />
         <Home path="/pacific-marine-mammal-center" partnerImage={pmmcLogo} exact />
         <Home path="/san-antonio-zoo" partnerImage={sanAntonioLogo} exact />
+
+        <AuthGuard path="/welcome" title="Welcome to Zoolife" redirectTo="/" permission="welcome:view">
+          <Welcome />
+        </AuthGuard>
 
         <AuthGuard path="/login" guestOnly title="Log In" redirectTo="/">
           <Login />

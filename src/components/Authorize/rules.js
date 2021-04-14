@@ -38,7 +38,7 @@ const rules = {
     static: ['checkout:plans', 'signup:view', 'login:view'],
   },
   user: {
-    static: ['profile:edit', 'redirect:view'],
+    static: ['profile:edit', 'redirect:view', 'welcome:view'],
     dynamic: {
       'habitat:view': isSubscriptionActive,
       'map:view': isSubscriptionActive,
