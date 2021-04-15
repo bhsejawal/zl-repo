@@ -12,7 +12,7 @@ const partnersImages = [
   'https://zl-brizi-tv.s3.ca-central-1.amazonaws.com/assets/landing/s2_pacific.png',
   'https://zl-brizi-tv.s3.ca-central-1.amazonaws.com/assets/landing/s2_toronto_zoo.png',
   'https://zl-brizi-tv.s3.ca-central-1.amazonaws.com/assets/landing/s2_orana.png',
-  'https://zl-brizi-tv.s3.ca-central-1.amazonaws.com/assets/landing/s2_coming_soon.png',
+  'https://zl-brizi-tv.s3.ca-central-1.amazonaws.com/assets/landing/s2_san_antonio.png',
 ];
 
 const Partners = () => {
@@ -22,12 +22,11 @@ const Partners = () => {
     <Box
       height={{min: '604px'}}
       justify="center"
-      background={{image: 'url(https://zl-brizi-tv.s3.ca-central-1.amazonaws.com/assets/landing/s2_bg.jpg)'}}
+      background={{image: 'url(https://zl-brizi-tv.s3.ca-central-1.amazonaws.com/assets/landing/s2_background.jpg)'}}
     >
       <Box alignSelf="center" width={{max: '700px'}}>
         <Heading textAlign="center" level="2" margin="18px">
-          Live 24/7 from accredited zoos, animal sanctuaries and
-          rehabilitation centers worldwide.
+          Live 24/7 from accredited zoos and animal sanctuaries worldwide.
         </Heading>
       </Box>
       <Box align="center" margin={{ top: 'medium' }}>

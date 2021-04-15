@@ -35,10 +35,6 @@ const Overview = () => (
           <li>Observe up-close with live audience-guided cameras. </li>
           <li>Join daily keeper talks and interactive Q&As with experts.</li>
         </ul>
-        <div className={style.greenLeaves}>
-          <img src="https://zl-brizi-tv.s3.ca-central-1.amazonaws.com/assets/landing/s3_green_leaf.png" alt="" />
-          <img src="https://zl-brizi-tv.s3.ca-central-1.amazonaws.com/assets/landing/s3_green_leaf.png" alt="" />
-        </div>
       </div>
     </div>
     <div className={style.bottomSection}>

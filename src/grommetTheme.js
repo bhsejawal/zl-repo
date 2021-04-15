@@ -31,6 +31,9 @@ export default {
   global: {
     colors: {
       brand: 'var(--blueMediumLight)',
+      text: {
+        light: 'black',
+      },
     },
     focus: {
       border: {
