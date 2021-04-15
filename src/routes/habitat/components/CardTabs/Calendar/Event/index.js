@@ -1,18 +1,23 @@
 import { h } from 'preact';
 import { useRef, useState } from 'preact/hooks';
+import { connect } from 'react-redux';
 import { Box, Drop } from 'grommet';
 import { formatDistanceToNow, startOfDay } from 'date-fns';
-import classnames from 'classnames';
 
+import classnames from 'classnames';
 import Card from 'Components/Card';
 import img2 from 'Components/ScheduleCarousel/img2.png';
+import EditButton from 'Components/AdminEditWrappers/EditButton';
+import { hasPermission } from 'Components/Authorize';
 
+import { showEditEventModal } from '../EventScheduleModals/actions';
 import style from './style.scss';
 
 const Event = ({
   event,
   label,
   style: { height, top } = {},
+  showEditEventModalAction,
 }) => {
   const eventRef = useRef();
   const [isRemindPopupOpen, setIsRemindPopupOpen] = useState(false);
@@ -31,7 +36,7 @@ const Event = ({
       })}
       ref={eventRef}
       style={{ top: `${top}%`, height: `${height}%` }}
-      onClick={event.eventType !== 'live' ? togglePopup : undefined}
+      onClick={event.eventType !== 'live' || hasPermission('habitat:edit-schedule') ? togglePopup : undefined}
     >
       <div className={style.title} title={event.title}>
         {event.title}
@@ -47,13 +52,15 @@ const Event = ({
           onClickOutside={togglePopup}
           className={style.drop}
         >
+          {hasPermission('habitat:edit-schedule') && (
+            <EditButton onClick={() => showEditEventModalAction(true, event)} />
+          )}
           <Card
             header={`STARTS IN ${formatDistanceToNow(event.start).toUpperCase()}`}
             description={event.title}
             // TODO: we currently don't have an image,
             //  so we are using this as a placeholder
             image={img2}
-            onClick={() => console.log('Remind Me')}
           />
         </Drop>
       )}
@@ -61,4 +68,4 @@ const Event = ({
   );
 };
 
-export default Event;
+export default connect(null, { showEditEventModalAction: showEditEventModal })(Event);

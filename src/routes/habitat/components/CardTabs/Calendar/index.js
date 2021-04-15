@@ -16,6 +16,9 @@ import Header from './Header';
 import Toolbar from './Toolbar';
 
 import Context from './Context';
+import AddEventModal from './EventScheduleModals/AddEvent';
+import EditEventModal from './EventScheduleModals/EditEvent';
+import DeleteEventModal from './EventScheduleModals/DeleteEvent';
 
 import 'react-big-calendar/lib/sass/styles.scss';
 import style from './style.scss';
@@ -73,6 +76,9 @@ const Calendar = ({ schedules }) => {
           }}
         />
       </Context.Provider>
+      <AddEventModal />
+      <EditEventModal />
+      <DeleteEventModal />
     </div>
   )
 };

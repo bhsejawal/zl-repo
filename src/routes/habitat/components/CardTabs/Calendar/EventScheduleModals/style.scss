@@ -1,0 +1,88 @@
+.scheduleEventModal {
+  width: 595px;
+  max-width: 100vw;
+}
+
+.form {
+  padding: 20px 20px 40px 0;
+  border-top: 1px solid #EBEBEB;
+
+
+  .wrapper {
+    padding: 0 20px 40px 40px;
+    max-height: calc(80vh - 160px);
+    overflow: auto;
+  }
+
+  :global {
+
+    .customScrollBar::-webkit-scrollbar-thumb {
+      background-color: #E7E7E7;
+      border: 2px solid white;
+    }
+  }
+
+  .label {
+    margin-bottom: 10px;
+    margin-top: 20px;
+  }
+
+  select,
+  textarea,
+  input:not([type="checkbox"]):not([type="radio"]) {
+    background: white;
+    border: 2px solid #CDCDCD;
+    border-radius: 4px;
+    height: 36px;
+    color: black;
+    font-weight: 400;
+    padding: 4px 10px;
+  }
+
+  textarea {
+    height: unset;
+  }
+
+  .frequency {
+    border-right: 1px solid #EBEBEB;
+    padding: 5px 20px 5px 0;
+    margin-right: 30px;
+    min-width: 175px;
+  }
+}
+
+.error {
+  display: none;
+  position: absolute;
+  top: 100%;
+  color: var(--red);
+}
+
+.inputWrapper {
+  position: relative;
+
+  input[type="email"]:invalid:not(:focus) {
+
+    + .error {
+      display: block;
+    }
+  }
+
+  input.letterCount {
+    padding-right: 45px;
+
+    & + div {
+      position: absolute;
+      bottom: 5px;
+      right: 5px;
+    }
+  }
+}
+
+.formSubmissionError {
+  bottom: 10px;
+  right: 40px;
+  position: absolute;
+  color: var(--red);
+  font-size: 13px;
+}

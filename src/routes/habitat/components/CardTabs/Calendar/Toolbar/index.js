@@ -5,12 +5,15 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronLeft, faChevronRight } from '@fortawesome/pro-solid-svg-icons';
 import { addWeeks, startOfWeek } from 'date-fns';
 import classnames from 'classnames';
+import { connect} from 'react-redux';
+import { PrimaryButton } from 'Components/Buttons';
 
 import Context from '../Context';
+import { showAddEventModal } from '../EventScheduleModals/actions';
 
 import style from './style.scss';
 
-const Toolbar = ({ date, label }) => {
+const Toolbar = ({ date, label, showAddEventModalAction }) => {
   const { moveNext, movePrev, moveToToday } = useContext(Context);
   const rightArrowDisabled = useMemo(
     () => date > addWeeks(startOfWeek(new Date()), 3),
@@ -45,13 +48,11 @@ const Toolbar = ({ date, label }) => {
 
       <div>
         <div>
-          <span className={style.circle} />
-          &nbsp;
-          <span>Stream Online</span>
+          <PrimaryButton label="Add Event" size="medium" onClick={() => showAddEventModalAction(true)} />
         </div>
       </div>
     </div>
   );
 };
 
-export default Toolbar;
+export default connect(null, { showAddEventModalAction: showAddEventModal })(Toolbar);
