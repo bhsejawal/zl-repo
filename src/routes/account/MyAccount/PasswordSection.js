@@ -168,7 +168,7 @@ const PasswordSection = ({ expand = true, setUserDataAction, setShowModalAction 
 
         <Box
           direction="row"
-          pad={{horizontal: '50px', top: '30px'}}
+          pad={{ horizontal: '50px', top: '30px', bottom: '40px' }}
         >
           <div className={style.label}>
             <span>Confirm Password</span>
@@ -188,19 +188,20 @@ const PasswordSection = ({ expand = true, setUserDataAction, setShowModalAction 
             <div className={classnames(style.errorSection, {[style.active]: passwordConfError})}>
               {passwordConfError}
             </div>
+
+            <Box margin={{ top: '30px' }} />
+
+            <PrimaryButton
+              className={style.updateButton}
+              onClick={updateHandler}
+              primary
+              label={get(data, 'user') ? 'Updated' : 'Update'}
+              size="large"
+              disabled={disableUpdate}
+              loading={loading}
+            />
           </div>
         </Box>
-
-        <PrimaryButton
-          className={style.updateButton}
-          onClick={updateHandler}
-          margin={{horizontal: 'auto', top: '20px', bottom: '40px'}}
-          primary
-          label={get(data, 'user') ? 'Updated' : 'Update'}
-          size="large"
-          disabled={disableUpdate}
-          loading={loading}
-        />
       </Box>
       <PasswordResetModal />
     </Accordion>
