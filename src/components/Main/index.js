@@ -76,7 +76,7 @@ const Main = ({ onRouteChange, isTrial }) => {
           <Welcome />
         </AuthGuard>
 
-        <AuthGuard path="/login" guestOnly title="Log In" redirectTo="/">
+        <AuthGuard path="/login" guestOnly title="Log In" redirectTo="/map">
           <Login />
         </AuthGuard>
 

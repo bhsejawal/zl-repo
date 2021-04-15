@@ -95,8 +95,9 @@ const Login = ({
     try {
       const url = buildURL('/admin/users/login');
       const { user } = await post(url, { email, password });
-      setUserDataAction(user);
+      setUserDataAction({ ...user, sessionChecked: true });
       identifyUser(user);
+      route('/map');
       try {
         localStorage.setItem('returningUser', true);
       } catch (err) {
