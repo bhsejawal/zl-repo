@@ -9,7 +9,7 @@ import style from './style.scss';
 const HeaderComponent = () => (
   <Header className={style.header}>
     <div className={style.logo}>
-      <ZoolifeLogo />
+      <ZoolifeLogo landing />
     </div>
     <NavBar landing />
   </Header>

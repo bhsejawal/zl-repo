@@ -2,10 +2,10 @@ import { h } from 'preact';
 import zoolifeLogo from 'Assets/zoolife.svg';
 import Tag from 'Components/Tag';
 
-const ZoolifeLogo = () => (
+const ZoolifeLogo = ({ landing }) => (
   <div>
     <img src={zoolifeLogo} alt="" />
-    <Tag label="invite only" varient="light" />
+    {landing && <Tag label="invite only" varient="light" />}
   </div>
 );
 
