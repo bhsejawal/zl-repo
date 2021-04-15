@@ -11,10 +11,11 @@ import { buildURL } from 'Shared/fetch';
 import AnimalIcon from 'Components/AnimalIcon';
 
 import { unsetUserData } from '../../../redux/actions'
+import { openContactUsModal } from '../../modals/ContactUs/actions'
 
 import style from './style.scss';
 
-const Menu = ({ unsetUserDataAction }) => {
+const Menu = ({ unsetUserDataAction, openContactUsModalAction }) => {
   const buttonRef = useRef(null)
   const [showMenu, setShowMenu] = useState(false);
   const { post, response } = useFetch(
@@ -73,6 +74,7 @@ const Menu = ({ unsetUserDataAction }) => {
             pad={{ horizontal: '15px' }}
             direction="row"
             align="center"
+            onClick={openContactUsModalAction}
           >
             <FontAwesomeIcon icon={faQuestionCircle} />
             <Box margin={{ left: '12px' }}>
@@ -98,4 +100,7 @@ const Menu = ({ unsetUserDataAction }) => {
   );
 };
 
-export default connect(null, { unsetUserDataAction: unsetUserData })(Menu);
+export default connect(null, {
+  unsetUserDataAction: unsetUserData,
+  openContactUsModalAction: openContactUsModal,
+})(Menu);

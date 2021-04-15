@@ -8,6 +8,7 @@ import AdminRouter from 'Shared/AdminRouter';
 import TimeBar from 'Components/TimeBar';
 import AuthGuard from 'Components/Authorize/AuthGuard';
 import TermsAndConditions from 'Components/TermsAndConditions';
+import ContactUsModalLoader from 'Components/async/ContactUsModalLoader';
 
 import oranaZooLogo from 'Assets/partners/orana-zoo.png';
 import torontoZooLogo from 'Assets/partners/toronto-zoo.png';
@@ -36,7 +37,7 @@ import { getDeviceType, logPageView } from '../../helpers';
 import style from './style.scss';
 
 const mobileRoutes = ['/', '/signup', '/mobile', '/login']
-const Main = ({ onRouteChange, isTrial }) => {
+const Main = ({ onRouteChange, isTrial, showContactUs }) => {
   const [path, setPath] = useState();
 
   const routerChangeHandler = (props) => {
@@ -139,10 +140,11 @@ const Main = ({ onRouteChange, isTrial }) => {
 
       <TimeBar path={path} />
       <TermsAndConditions />
+      <ContactUsModalLoader isOpen={showContactUs} />
     </Box>
   )
 };
 
 export default connect((
-  { user: { subscription: { productId } } },
-) => ({ isTrial: productId === 'TRIAL' }))(Main);
+  { user: { subscription: { productId } }, modals: { contactus: { isOpen: showContactUs }} },
+) => ({ isTrial: productId === 'TRIAL', showContactUs }))(Main);
