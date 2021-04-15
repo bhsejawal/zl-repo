@@ -13,16 +13,15 @@ import { PrimaryButton } from 'Components/Buttons';
 
 import HabitatImage from './HabitatImage';
 
-import torontozoo from './torontozoo.png'
-import habitat from './HabitatImage/habitatAvatar.png';
-
 import style from './style.scss';
 
 const ScheduleItem = ({
   animal,
   liveTalks,
-  zooImage = torontozoo,
-  habitatImage = habitat,
+  zooLogo,
+  habitatImage,
+  description,
+  onClick,
 }) => {
   const size = useContext(ResponsiveContext);
   const columns = useMemo(() => (size === 'large' ? ['medium', 'medium'] : ['auto']), [size]);
@@ -37,14 +36,14 @@ const ScheduleItem = ({
       wrap
     >
       {/* We need to load this from the habitats, size contraints should be defined on api */}
-      <Image src={zooImage} width="140" className={style.zooImage} />
+      <Image src={zooLogo} width="140" className={style.zooImage} />
       <Box direction="row" style={{ zIndex: 1 }}>
         <HabitatImage image={habitatImage} />
         <Box justify="center" margin={{ left: 'medium' }}>
           <Text size="xlarge" weight={900}>{animal}</Text>
           {/* We need to load this from the habitats */}
           <Text size="16px" margin={{ top: 'small' }}>
-            These birds are full of personality! Learn more about them with our programs:
+            {description}
           </Text>
         </Box>
       </Box>
@@ -54,14 +53,15 @@ const ScheduleItem = ({
             <Box className={style.textBox}>
               <Heading level="4" margin="0px">{liveTalk.title}</Heading>
               <Text size="xlarge">
-                Join our expert nutritionist as the penguins enjoy their daily breakfast!
+                {liveTalk.description}
               </Text>
             </Box>
             <Grid gap ="xsmall" margin={{ top: "medium"}} height="xxsmall" columns={['auto', 'auto', 'auto']} rows="xxsmall">
-              {liveTalk.sessions.map((session) => (
+              {liveTalk.sessions.map(({ startTime, sessionId }) => (
                 <PrimaryButton
-                  label={format(Date.parse(session.startTime), 'hh:mm aa')}
+                  label={format(Date.parse(startTime), 'hh:mm aa')}
                   className={style.sessionButton}
+                  onClick={() => onClick(sessionId)}
                 />
               ))}
             </Grid>
