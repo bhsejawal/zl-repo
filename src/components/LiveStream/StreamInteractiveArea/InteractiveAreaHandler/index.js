@@ -52,13 +52,6 @@ const InteractiveAreaHandler = ({
 
   useEffect(() => {
     if (socket) {
-      socket.emit('joinRoom', { room: habitatId, userId });
-    }
-    return () => socket.emit('leaveRoom', { room: habitatId });
-  }, [socket, habitatId, userId]);
-
-  useEffect(() => {
-    if (socket) {
       socket.on('propagateClick', (clickData) => addUserInteractionAction({ ...clickData }));
 
       //  type is here to support cross emotes from twitch, we can remove this later

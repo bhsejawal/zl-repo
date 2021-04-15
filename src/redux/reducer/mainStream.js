@@ -4,6 +4,7 @@ import {
   TOGGLE_IS_STREAM_PLAYING,
   TOGGLE_SHOW_EMOJI_BASKET,
   SHOW_SNAPSHOT_SHARE_POPUP,
+  TOGGLE_IS_BROADCASTING,
 } from '../types';
 
 const mockEmojis = [
@@ -58,6 +59,7 @@ const initialState = {
     showEmojiBasket: false,
     showSnapshotShare: true,
     isStreamPlaying: false,
+    isBroadcasting: false,
   },
 };
 
@@ -92,6 +94,15 @@ export default (state = initialState, { type, payload }) => {
         interactionState: {
           ...state.interactionState,
           isStreamPlaying: !state.interactionState.isStreamPlaying,
+        },
+      }
+    }
+    case TOGGLE_IS_BROADCASTING: {
+      return {
+        ...state,
+        interactionState: {
+          ...state.interactionState,
+          isBroadcasting: !state.interactionState.isBroadcasting,
         },
       }
     }

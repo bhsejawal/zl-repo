@@ -1,15 +1,16 @@
 import { h } from 'preact';
-import { useEffect } from 'preact/hooks';
+import { useEffect, useContext } from 'preact/hooks';
 import { connect } from 'react-redux';
 import useFetch from 'use-http';
 import { route } from 'preact-router';
 
 import { buildURL } from 'Shared/fetch';
-import LiveStream from 'Components/LiveStream';
 import GlobalsContextProvider from "Components/GlobalsContextProvider";
+import LiveStream from 'Components/LiveStream';
 import Header from 'Components/Header';
 import Loader from 'Components/async/Loader';
 import { openTermsModal } from 'Components/TermsAndConditions/actions';
+import { GlobalsContext } from 'Shared/context';
 
 import Chat from './components/Chat';
 import NextTalkBar from './components/NextTalkBar';
@@ -18,7 +19,7 @@ import StreamProfile from './components/StreamProfile';
 import OnboardingModal from './OnboardingModal';
 
 import { useWindowResize } from '../../hooks';
-import { setHabitat, unsetHabitat } from './actions';
+import { setHabitat, unsetHabitat, setHabitatProps } from './actions';
 import { generateTitle } from '../../helpers';
 
 import style from './style.scss';
@@ -30,13 +31,40 @@ const Habitat = ({
   streamKey,
   habitatId,
   title,
-  user,
-  matches: { zooName, habitatSlug },
+  habitatSlug,
+  zooName,
+  userId,
   setHabitatAction,
   unsetHabitatAction,
   openTermsModalAction,
+  termsAccepted,
+  setHabitatPropsAction,
 }) => {
   const { width: windowWidth } = useWindowResize();
+  const { socket } = useContext(GlobalsContext);
+
+  useEffect(() => {
+    if (socket) {
+      socket.emit('joinRoom', { room: habitatId, userId });
+    }
+    return () => {
+      if (socket) {
+        socket.emit('leaveRoom', { room: habitatId });
+      }
+    }
+  }, [socket, habitatId, userId]);
+
+  useEffect(() => {
+    if (socket) {
+      socket.on('streamUpdated', ({ isHostStreamOn, isStreamOn }) => setHabitatPropsAction({ isHostStreamOn, isStreamOn }));
+    }
+    return () => {
+      if (socket) {
+        socket.off('streamUpdated', ({ isHostStreamOn, isStreamOn }) => setHabitatPropsAction({ isHostStreamOn, isStreamOn }));
+      }
+    }
+  }, [socket, setHabitatPropsAction]);
+
   const { loading, error, response } = useFetch(
     buildURL(`/zoos/${zooName}/habitats/${habitatSlug}`),
     { credentials: 'include', cachePolicy: 'no-cache' },
@@ -44,10 +72,10 @@ const Habitat = ({
   );
 
   useEffect(() => {
-    if (user && !user?.termsAccepted) {
+    if (!termsAccepted) {
       openTermsModalAction(true);
     }
-  }, [openTermsModalAction, user]);
+  }, [openTermsModalAction, termsAccepted]);
 
   useEffect(() => {
     if (loading && habitatId) {
@@ -97,8 +125,7 @@ const Habitat = ({
   }
 
   return (
-    <GlobalsContextProvider>
-      <Header />
+    <>
       <div className={style.habitat} style={{ paddingTop: '60px' }}>
         <div className={style.topSection} style={{ height, maxHeight: height }}>
           <NextTalkBar width={sideBarWidth} height={height} />
@@ -107,6 +134,7 @@ const Habitat = ({
             height={height}
             streamId={streamKey}
             interactive
+            mode="stream"
           />
           <Chat width={chatWidth} height={height} />
         </div>
@@ -120,11 +148,11 @@ const Habitat = ({
         </div>
       </div>
       <OnboardingModal />
-    </GlobalsContextProvider>
+    </>
   );
 }
 
-export default connect(
+const ConnectedHabitat = connect(
   ({
     habitat: {
       habitatInfo: {
@@ -133,16 +161,27 @@ export default connect(
         title,
       },
     },
-    user,
+    user: { userId, termsAccepted = false },
   }) => ({
     streamKey,
     habitatId,
     title,
-    user,
+    userId,
+    termsAccepted,
   }),
   {
     setHabitatAction: setHabitat,
     unsetHabitatAction: unsetHabitat,
     openTermsModalAction: openTermsModal,
+    setHabitatPropsAction: setHabitatProps,
   },
 )(Habitat);
+
+const HabitatWrapper = ({ matches: { zooName, habitatSlug } }) => (
+  <GlobalsContextProvider>
+    <Header />
+    <ConnectedHabitat zooName={zooName} habitatSlug={habitatSlug} />
+  </GlobalsContextProvider>
+);
+
+export default HabitatWrapper;

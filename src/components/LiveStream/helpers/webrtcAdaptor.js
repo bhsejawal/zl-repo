@@ -218,7 +218,15 @@ export class WebRTCAdaptor {
   }
 
   turnOffLocalSources() {
-    this.localStream.getTracks().forEach((track) => track.stop());
+    return new Promise((resolve) => {
+      try {
+        this.localStream.getTracks().forEach((track) => track.stop());
+        resolve();
+      } catch (err) {
+        console.warn('Error trying to turn off local sources', err);
+        resolve();
+      }
+    })
   }
 
   prepareStreamTracks(mediaConstraints, audioConstraint, stream) {

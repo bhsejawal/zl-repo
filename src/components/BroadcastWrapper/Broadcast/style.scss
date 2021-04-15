@@ -23,10 +23,16 @@ select {
   color: #757575;
 }
 
-
 .controlContainer {
   position: absolute;
   left: 6px;
   top: 6px;
   z-index: 3;
+}
+
+.fallbackContainer {
+  position: absolute;
+  left: 0;
+  height: 140px;
+  width: 100%;
 }

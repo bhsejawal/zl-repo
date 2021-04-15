@@ -4,29 +4,6 @@
   flex-grow: 1;
   position: relative;
 
-  @media screen and (max-width: #{$phone-portrait-width}) {
-
-    .fallbackMessage {
-      padding: 10px !important;
-      font-size: 12px !important;
-    }
-  }
-
-  .fallbackMessage {
-    position: absolute;
-    top: 0;
-    left: 0;
-    height: 100%;
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: var(--headerHeight);
-    background: white;
-    opacity: .8;
-    border-radius: 5px;
-  }
-
   // Hide the Video Loader
   video::-webkit-media-controls {
     visibility: hidden;

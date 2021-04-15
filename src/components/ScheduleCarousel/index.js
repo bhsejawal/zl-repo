@@ -1,6 +1,5 @@
 import { h } from 'preact';
 import {
-  useContext,
   useEffect,
   useMemo,
   useRef,
@@ -9,9 +8,8 @@ import { connect } from 'react-redux';
 import Carousel from 'react-multi-carousel';
 import { formatDistanceToNow } from 'date-fns';
 
-import { GlobalsContext } from 'Shared/context';
-import Broadcast from 'Components/Broadcast';
-
+import BroadcastWrapper from 'Components/BroadcastWrapper';
+import { hasPermission } from 'Components/Authorize';
 import Tag from '../Tag';
 import Card from '../Card';
 import LiveTalk from '../Card/LiveTalk';
@@ -22,8 +20,12 @@ import style from './style.scss';
 
 const now = new Date();
 
-const ScheduleCarousel = ({ habitatId, hostStreamKey, isHostStreamOn }) => {
-  const { socket } = useContext(GlobalsContext);
+const ScheduleCarousel = ({
+  habitatId,
+  hostStreamKey,
+  isHostStreamOn,
+  isBroadcasting,
+}) => {
   const ref = useRef();
 
   // eslint-disable-next-line no-unused-vars
@@ -39,29 +41,11 @@ const ScheduleCarousel = ({ habitatId, hostStreamKey, isHostStreamOn }) => {
     [upcoming],
   );
 
-  const liveTalkEnable = () => {
-    // change data on redux
-    ref.current.goToSlide(0);
-  }
-
-  const liveTalkDisable = () => {
-    // change data on redux
-  }
-
   useEffect(() => {
-    if (socket) {
-      // these events do not exist on server yet
-      socket.on('keeperTalkOn', liveTalkEnable);
-      socket.on('keeperTalkOff', liveTalkDisable);
+    if (ref.current) {
+      ref.current.goToSlide(0);
     }
-
-    return () => {
-      if (socket) {
-        socket.off('keeperTalkOn', liveTalkEnable);
-        socket.off('keeperTalkOff', liveTalkDisable);
-      }
-    }
-  }, [socket]);
+  }, [isHostStreamOn]);
 
   return (
     <div className={style.container}>
@@ -74,7 +58,7 @@ const ScheduleCarousel = ({ habitatId, hostStreamKey, isHostStreamOn }) => {
           dotListClass={style.dots}
           slidesToSlide={1}
           swipeable
-          additionalTransfrom={0}
+          additionalTransfrom={15}
           arrows={false}
           autoPlaySpeed={3000}
           draggable
@@ -90,8 +74,9 @@ const ScheduleCarousel = ({ habitatId, hostStreamKey, isHostStreamOn }) => {
             },
           }}
         >
-          <Broadcast />
-          {hostStreamKey && isHostStreamOn && <LiveTalk streamId={hostStreamKey} />}
+          {hasPermission('habitat:broadcast') && (!isHostStreamOn || isBroadcasting) && <BroadcastWrapper />}
+          {hostStreamKey && isHostStreamOn && !isBroadcasting
+            && <LiveTalk streamId={hostStreamKey} />}
 
           {list.map(({
             _id,
@@ -122,7 +107,15 @@ const ScheduleCarousel = ({ habitatId, hostStreamKey, isHostStreamOn }) => {
 };
 
 export default connect((
-  { habitat: { habitatInfo: { _id: habitatId, hostStreamKey, isHostStreamOn } } },
+  {
+    habitat: { habitatInfo: { _id: habitatId, hostStreamKey, isHostStreamOn } },
+    mainStream: { interactionState: { isBroadcasting } },
+  },
 ) => (
-  { habitatId, hostStreamKey, isHostStreamOn }
+  {
+    habitatId,
+    hostStreamKey,
+    isHostStreamOn,
+    isBroadcasting,
+  }
 ))(ScheduleCarousel);

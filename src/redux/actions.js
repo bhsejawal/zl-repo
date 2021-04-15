@@ -13,6 +13,7 @@ import {
   SET_PLANS,
   UPDATE_SUBSCRIPTION_DATA,
   UPDATE_FAVORITE_HABITATS,
+  TOGGLE_IS_BROADCASTING,
 } from './types';
 
 const DEFAULT_INTERACTION_TIMEOUT = 3000;
@@ -87,3 +88,5 @@ export const updateSubscription = (payload) => ({
   type: UPDATE_SUBSCRIPTION_DATA,
   payload,
 });
+
+export const toggleIsBroadcasting = () => ({ type: TOGGLE_IS_BROADCASTING });

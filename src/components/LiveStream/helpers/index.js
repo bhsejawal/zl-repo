@@ -13,6 +13,7 @@ const {
   ERROR,
   PLAY_FINISHED,
   PUBLISH_FINISHED,
+  STREAM_IN_USE,
 } = wsMessages;
 
 let websocketConnection = null;
@@ -27,6 +28,13 @@ const sendMessage = (channelId, message, ...props) => {
     return;
   }
   adapter[message](...props);
+}
+
+const sendStreamInUseMessage = () => {
+  // eslint-disable-next-line
+  for (const [stream, adapter] of webRTCMap.entries()) {
+    adapter.callbackError(STREAM_IN_USE);
+  }
 }
 
 const handleSocketCallback = (msg) => {
@@ -72,7 +80,11 @@ const handleSocketCallback = (msg) => {
     }
     case ERROR: {
       const { definition } = obj;
-      sendMessage(streamId, 'callbackError', definition);
+      if (definition === STREAM_IN_USE) {
+        sendStreamInUseMessage();
+      } else {
+        sendMessage(streamId, 'callbackError', definition);
+      }
       break;
     }
     default: {
@@ -107,11 +119,11 @@ if (typeof window !== 'undefined') {
   initializeSocketConnection();
 }
 
-export const removeWebRTCAdaptor = (streamId) => {
+export const removeWebRTCAdaptor = async (streamId) => {
   if (webRTCMap.has(streamId)) {
     const adaptor = webRTCMap.get(streamId);
-    adaptor.turnOffLocalSources();
-    adaptor.closePeerConnections();
+    await adaptor.turnOffLocalSources();
+    await adaptor.closePeerConnections();
     webRTCMap.delete(streamId);
   }
 }

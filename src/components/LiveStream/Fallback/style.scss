@@ -1,0 +1,16 @@
+.contactUs {
+  color: white;
+  text-decoration: underline;
+
+  &:hover {
+    color: white !important;
+  }
+}
+
+.fallbackMessage {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+}

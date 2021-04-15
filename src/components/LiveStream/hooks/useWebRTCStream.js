@@ -16,12 +16,15 @@ const {
   PUBLISH_STARTED,
   PUBLISH_FINISHED,
   ERROR,
+  OFFLINE,
+  STREAM_IN_USE,
+  PUBLISH_TIMEOUT,
 } = wsMessages;
 
 let webRTCAdaptor;
 
 // eslint-disable-next-line import/prefer-default-export
-export const useWebRTCStream = (streamId, videoContainer, mode, logStatsFn) => {
+export const useWebRTCStream = (streamId, isStreamOn, videoContainer, mode, logStatsFn) => {
   const [streamStatus, setStreamStatus] = useState(CLOSED);
   const [isWebsocketConnected, setIsWebsocketConnected] = useState(false);
   const [availableDevices, setAvailableDevices] = useState([]);
@@ -39,14 +42,25 @@ export const useWebRTCStream = (streamId, videoContainer, mode, logStatsFn) => {
     return () => clearInterval(intervalRef.current);
   }, [streamId, logStatsFn, streamStatus, mode])
 
+  const startPlaying = useCallback(() => {
+    webRTCAdaptor.play(streamId);
+    webRTCAdaptor.enableStats(streamId);
+  }, [streamId])
+
   const startPublishing = useCallback(() => {
-    if (streamStatus === INITIALIZED) {
+    if (streamStatus === PLAY_STARTED) {
       webRTCAdaptor.publish(streamId);
     }
   }, [streamStatus, streamId]);
 
   const stopPublishing = useCallback(() => {
     if (streamStatus === PUBLISH_STARTED) {
+      webRTCAdaptor.stop(streamId);
+    }
+  }, [streamStatus, streamId]);
+
+  const stopPlaying = useCallback(() => {
+    if (streamStatus === PLAY_STARTED) {
       webRTCAdaptor.stop(streamId);
     }
   }, [streamStatus, streamId]);
@@ -60,7 +74,9 @@ export const useWebRTCStream = (streamId, videoContainer, mode, logStatsFn) => {
   );
 
   useEffect(() => {
-    const onPlayHandler = () => setStreamStatus(PLAY_STARTED);
+    const onPlayHandler = () => {
+      setStreamStatus(PLAY_STARTED);
+    }
     const htmlVideoContainer = videoContainer?.current;
 
     if (htmlVideoContainer) {
@@ -72,7 +88,58 @@ export const useWebRTCStream = (streamId, videoContainer, mode, logStatsFn) => {
         htmlVideoContainer.removeEventListener('play', onPlayHandler);
       }
     }
-  }, [videoContainer]);
+  }, [videoContainer, streamStatus]);
+
+  const initializeAdapter = useCallback(() => {
+    setStreamStatus(INITIALIZING);
+    webRTCAdaptor = initWebRTCAdaptor(
+      streamId,
+      videoContainer.current,
+      mode,
+      // eslint-disable-next-line prefer-arrow-callback
+      function callback(info, data) {
+        if (info === INITIALIZED) {
+          setStreamStatus(INITIALIZED);
+          setIsWebsocketConnected(true);
+        }
+
+        if (info === 'available_devices') {
+          setAvailableDevices(data);
+        }
+
+        if (info === PUBLISH_STARTED) {
+          setStreamStatus(PUBLISH_STARTED);
+        }
+
+        if (info === PUBLISH_TIMEOUT) {
+          setStreamStatus(PUBLISH_TIMEOUT);
+        }
+
+        if ([
+          CLOSED,
+          PLAY_FINISHED,
+          PUBLISH_FINISHED,
+        ].includes(info)) {
+          setStreamStatus(CLOSED);
+        }
+      },
+      (error) => {
+        if (error === STREAM_IN_USE && mode !== 'viewer') {
+          setStreamStatus(STREAM_IN_USE);
+          return;
+        }
+
+        if (error === STREAM_IN_USE && mode === 'viewer') {
+          return;
+        }
+
+        const currentError = error === OFFLINE && !isStreamOn ? CLOSED : ERROR;
+        setStreamStatus(currentError);
+        // some of the possible errors, NotFoundError, SecurityError,PermissionDeniedError
+        console.error(`error callback: ${JSON.stringify(error)}`, streamId);
+      },
+    );
+  }, [streamId, videoContainer, mode])
 
   useEffect(() => {
     if (
@@ -80,55 +147,22 @@ export const useWebRTCStream = (streamId, videoContainer, mode, logStatsFn) => {
       && videoContainer.current
       && !isWebsocketConnected
       && streamStatus === CLOSED
+      && !webRTCAdaptor
     ) {
-      setStreamStatus(INITIALIZING);
-      webRTCAdaptor = initWebRTCAdaptor(
-        streamId,
-        videoContainer.current,
-        mode,
-        function callback(info, data) {
-          if (info === INITIALIZED) {
-            if (mode === 'viewer') {
-              this.play(streamId);
-              this.enableStats(streamId);
-            } else {
-              setStreamStatus(INITIALIZED);
-            }
-            setIsWebsocketConnected(true);
-          }
-
-          if (info === 'available_devices') {
-            setAvailableDevices(data);
-          }
-
-          if (info === PUBLISH_STARTED) {
-            setStreamStatus(PUBLISH_STARTED);
-          }
-
-          if ([
-            CLOSED,
-            PLAY_FINISHED,
-            PUBLISH_FINISHED,
-          ].includes(info)) {
-            setStreamStatus(CLOSED);
-          }
-        },
-        (error) => {
-          setStreamStatus(ERROR);
-          // some of the possible errors, NotFoundError, SecurityError,PermissionDeniedError
-          console.error(`error callback: ${JSON.stringify(error)}`, streamId);
-        },
-      );
+      initializeAdapter();
     }
-  }, [streamId, videoContainer, isWebsocketConnected, mode, streamStatus]);
+  }, [streamId, videoContainer, isWebsocketConnected, streamStatus, isStreamOn]);
 
   return {
     streamStatus,
     availableDevices,
     startPublishing,
     stopPublishing,
+    startPlaying,
+    stopPlaying,
     switchAudioInput,
     switchVideoInput,
     removeWebRTCAdaptor,
+    initializeAdapter,
   };
 };

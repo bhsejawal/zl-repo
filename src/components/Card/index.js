@@ -15,7 +15,6 @@ const Card = ({
   zoo,
   startTime,
   header,
-  description,
   image,
   onClick,
   loading,
@@ -78,7 +77,7 @@ const Card = ({
       <div className={style.wrapper}>
         <div className={style.content}>
           <div className={classnames(style.header, { shimmer: loading })}>{header}</div>
-          <div className={classnames(style.description, { shimmer: loading })}>{description}</div>
+          <div className={classnames(style.description, { shimmer: loading })}>{title}</div>
           <OutlineButton
             onClick={onClickHandler(scheduleId)}
             disabled={isReminded}

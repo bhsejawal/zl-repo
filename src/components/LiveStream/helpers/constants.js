@@ -12,6 +12,9 @@ export const wsMessages = Object.freeze({
   PLAY_FINISHED: 'play_finished',
   PUBLISH_STARTED: 'publish_started',
   PUBLISH_FINISHED: 'publish_finished',
+  OFFLINE: 'no_stream_exist',
+  STREAM_IN_USE: 'streamIdInUse',
+  PUBLISH_TIMEOUT: 'publishTimeoutError',
 });
 
 export const MEDIASERVER_SOCKET_URL = process.env.PREACT_APP_MEDIASERVER_SOCKET_URL;

@@ -5,6 +5,7 @@ import {
   useEffect,
   useMemo,
 } from 'preact/hooks';
+
 import {
   Box,
   Card,
@@ -13,25 +14,50 @@ import {
   Text,
   Drop,
 } from 'grommet';
+
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSignalStream, faVideo, faMicrophone } from '@fortawesome/pro-solid-svg-icons';
 import { connect } from 'react-redux';
+import { format } from "date-fns";
 
+import { wsMessages } from 'Components/LiveStream/helpers/constants';
 import { useWebRTCStream } from 'Components/LiveStream/hooks/useWebRTCStream';
 import RoundButton from 'Components/RoundButton';
 import { PrimaryButton } from 'Components/Buttons';
 import PreviewTag from './PreviewTag';
 import LiveTag from './LiveTag';
+import Fallback from './Fallback';
+
+import { useUpcomingTalks } from '../../../routes/habitat/hooks';
+import { toggleIsBroadcasting } from '../../../redux/actions';
 
 import style from './style.scss';
 
-const Broadcast = ({ hostStreamKey }) => {
+const {
+  PLAY_STARTED,
+  PUBLISH_STARTED,
+  ERROR,
+  STREAM_IN_USE,
+  PUBLISH_TIMEOUT,
+} = wsMessages;
+
+const Broadcast = ({
+  hostStreamKey,
+  isHostStreamOn,
+  resetBroadcastContainer,
+  habitatId,
+  toggleIsBroadcastingAction,
+}) => {
   const [showMenu, setShowMenu] = useState(false);
   const [selectedAudioDevice, setSelectedAudioDevice] = useState('');
   const [selectedVideoDevice, setSelectedVideoDevice] = useState('');
   const [isBroadcasting, setIsBroadcasting] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const buttonRef = useRef();
   const videoRef = useRef();
+  const { upcoming = [] } = useUpcomingTalks(habitatId, 1);
+  const nextTalk = upcoming[0];
+  const buttonMessage = isBroadcasting ? 'End Stream' : 'Go Live'
 
   const {
     streamStatus,
@@ -41,41 +67,57 @@ const Broadcast = ({ hostStreamKey }) => {
     switchAudioInput,
     switchVideoInput,
     removeWebRTCAdaptor,
-  } = useWebRTCStream(hostStreamKey, videoRef, 'broadcaster');
+    initializeAdapter,
+  } = useWebRTCStream(hostStreamKey, isHostStreamOn, videoRef, 'broadcaster');
 
   const toggleBroadcast = (broadcastStatus) => {
     if (broadcastStatus) {
+      setIsLoading(true);
+      toggleIsBroadcastingAction();
       startPublishing()
-      try {
-        const streamingData = {
-          hostStreamKey,
-          videoDeviceId: selectedVideoDevice,
-          audioDeviceId: selectedAudioDevice,
-        };
-        sessionStorage.setItem('userStreamingData', JSON.stringify(streamingData));
-      } catch (err) {
-        console.error('Error trying to set sessionstorage data', err);
-      }
     } else {
-      stopPublishing()
-      try {
-        sessionStorage.removeItem('userStreamingData');
-      } catch (err) {
-        console.error('Error trying to set sessionstorage data', err);
-      }
+      toggleIsBroadcastingAction();
+      stopPublishing();
+      removeWebRTCAdaptor(hostStreamKey);
+      resetBroadcastContainer();
     }
-    setIsBroadcasting(broadcastStatus);
   }
 
   useEffect(() => {
-    if (streamStatus !== 'publish_started' && isBroadcasting) {
-      startPublishing();
+    if (streamStatus === PUBLISH_STARTED) {
+      setShowMenu(false)
+      setIsLoading(false);
+      setIsBroadcasting(true);
+      return;
     }
-  }, [streamStatus, isBroadcasting, startPublishing])
+
+    if (streamStatus === PUBLISH_TIMEOUT) {
+      removeWebRTCAdaptor(hostStreamKey);
+      toggleIsBroadcastingAction();
+      resetBroadcastContainer();
+    }
+
+    if (isBroadcasting) {
+      setIsBroadcasting(false);
+    }
+  }, [
+    streamStatus,
+    setIsBroadcasting,
+    isBroadcasting,
+    toggleIsBroadcastingAction,
+    resetBroadcastContainer,
+    removeWebRTCAdaptor,
+    hostStreamKey,
+  ]);
+
+  useEffect(() => {
+    if (hostStreamKey && !isHostStreamOn) {
+      initializeAdapter();
+    }
+  }, [hostStreamKey, isHostStreamOn, initializeAdapter])
 
   const videoSources = useMemo(() => availableDevices.filter(({ kind }) => (kind === 'videoinput')), [availableDevices]);
   const audioSources = useMemo(() => availableDevices.filter(({ kind }) => (kind === 'audioinput')), [availableDevices]);
-  const streamData = useMemo(() => JSON.parse(sessionStorage.getItem('userStreamingData')), []);
 
   useEffect(() => {
     if (availableDevices.length) {
@@ -85,23 +127,12 @@ const Broadcast = ({ hostStreamKey }) => {
       const [{ deviceId: currentAudioSource }] = audioSources.filter(
         ({ selected }) => (selected === true),
       );
-      if (streamData) {
-        const { videoDeviceId, audioDeviceId, hostStreamKey: savedKey } = streamData;
-        switchVideoInput(videoDeviceId);
-        switchAudioInput(audioDeviceId);
-        setSelectedVideoDevice(videoDeviceId);
-        setSelectedAudioDevice(audioDeviceId);
-        if (hostStreamKey === savedKey) {
-          setIsBroadcasting(true);
-        }
-      } else {
-        setSelectedAudioDevice(currentAudioSource);
-        setSelectedVideoDevice(currentVideoSource);
-      }
+      setSelectedAudioDevice(currentAudioSource);
+      setSelectedVideoDevice(currentVideoSource);
     }
   }, [availableDevices, videoSources, audioSources, hostStreamKey]);
 
-  useEffect(() => () => removeWebRTCAdaptor(), [removeWebRTCAdaptor]);
+  useEffect(() => () => removeWebRTCAdaptor(hostStreamKey), [removeWebRTCAdaptor, hostStreamKey]);
 
   const selectNewSource = (evt) => {
     const selectedSourceId = evt.target.value;
@@ -126,36 +157,69 @@ const Broadcast = ({ hostStreamKey }) => {
         <Card elevation="none" style={{ position: 'relative', borderRadius: '5px'}} width="auto" height={{ min: "140px" }}>
           <CardBody flex="grow">
             {/* Replace the livetag date with a date from the livetalks */}
-            {isBroadcasting ? <LiveTag endTime={new Date('2021-03-31T18:30:00')} /> : <PreviewTag />}
-            <Box className={style.controlContainer} ref={buttonRef}>
-              <RoundButton
-                onClick={() => setShowMenu(!showMenu)}
-                className={isBroadcasting ? style.online : style.offline}
-                width="35"
-                color="white"
+            {![PLAY_STARTED, PUBLISH_STARTED, ERROR, STREAM_IN_USE].includes(streamStatus) && (
+              <Box className={style.fallbackContainer}>
+                <Fallback type="loading" />
+              </Box>
+            )}
+            {[ERROR, STREAM_IN_USE].includes(streamStatus) && (
+              <Box
+                className={style.fallbackContainer}
               >
-                <FontAwesomeIcon icon={faSignalStream} size="lg" />
-              </RoundButton>
-            </Box>
+                <Fallback type="error" text={ streamStatus === ERROR ? 'Please try again.' : 'Someone is already streaming.'} />
+              </Box>
+            )}
+            {[PLAY_STARTED, PUBLISH_STARTED].includes(streamStatus) && (
+              <Box className={style.controlContainer} ref={buttonRef}>
+                <RoundButton
+                  onClick={() => setShowMenu(!showMenu)}
+                  className={isBroadcasting ? style.online : style.offline}
+                  width="35"
+                  color="white"
+                >
+                  <FontAwesomeIcon icon={faSignalStream} size="lg" />
+                </RoundButton>
+              </Box>
+            )}
+            {streamStatus === PUBLISH_STARTED && nextTalk
+              ? <LiveTag endTime={nextTalk.stopTime} /> : <PreviewTag />}
             <video
               autoPlay
               muted
               ref={videoRef}
-              style={{ height: '140px' }}
+              style={{ height: '140px', width: '100%' }}
             />
           </CardBody>
-          {/* TODO: We need to get this from the backend, if there's no talk, we hide this */}
+          {nextTalk && (
           <CardFooter
             background="#24412B"
             direction="column"
             justify="center"
             align="center"
-            pad="small"
+            pad={{ horizontal: '12px', vertical: '6px' }}
             gap="xxsmall"
           >
-            <Text align="center" size="10px" weight={500}>MAKING LUNCH WITH THE NUTRITIONIST</Text>
-            <Text size="12px">Keeper Karen, Toronto Zoo</Text>
+            <Text
+              size="8px"
+              textAlign="center"
+              style={{
+                textTransform: 'uppercase',
+                lineHeight: "10px",
+                letterSpacing: ".5px",
+              }}
+            >
+              {nextTalk.title}
+            </Text>
+            <Text
+              align="center"
+              size="9px"
+              weight={400}
+              style={{ lineHeight: '18px' }}
+            >
+              {`Starts at ${format(nextTalk.startTime, 'HH:mm aa')}`}
+            </Text>
           </CardFooter>
+          )}
         </Card>
       </Box>
       {showMenu && (
@@ -189,10 +253,10 @@ const Broadcast = ({ hostStreamKey }) => {
             <Box margin={{ top: "xsmall" }} pad={{ horizontal: "small" }} basis="2/3" alignSelf="end">
               <PrimaryButton
                 size="medium"
-                label={`${isBroadcasting ? 'End Stream' : 'Go Live'}`}
+                label={isLoading ? 'Loading...' : buttonMessage}
                 onClick={() => toggleBroadcast(!isBroadcasting)}
                 className={isBroadcasting ? style.online : style.offline}
-                disabled={!selectedAudioDevice || !selectedVideoDevice}
+                disabled={!selectedAudioDevice || !selectedVideoDevice || isLoading}
               />
             </Box>
           </Box>
@@ -202,6 +266,10 @@ const Broadcast = ({ hostStreamKey }) => {
   );
 };
 
-export default connect(
-  ({ habitat: { habitatInfo: { hostStreamKey }} }) => ({ hostStreamKey }),
-)(Broadcast);
+export default connect((
+  { habitat: { habitatInfo: { hostStreamKey, isHostStreamOn, _id: habitatId }} },
+) => (
+  { hostStreamKey, isHostStreamOn, habitatId }
+), {
+  toggleIsBroadcastingAction: toggleIsBroadcasting,
+})(Broadcast);

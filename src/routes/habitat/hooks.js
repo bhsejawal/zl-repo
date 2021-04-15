@@ -4,7 +4,7 @@ import { API_BASE_URL } from "Shared/fetch";
 import useFetch from "use-http";
 
 // eslint-disable-next-line import/prefer-default-export
-export const useUpcomingTalks = (habitatId) => {
+export const useUpcomingTalks = (habitatId, quantity = 3) => {
   const [upcoming, setUpcoming] = useState();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState();
@@ -19,7 +19,7 @@ export const useUpcomingTalks = (habitatId) => {
       setLoading(true);
       setError(false);
 
-      const params = new URLSearchParams({ limit: 3 });
+      const params = new URLSearchParams({ limit: quantity });
       await get(habitatId
         ? `/habitats/${habitatId}/schedules/upcoming?${params}`
         : `/schedules/upcoming?${params}`);
@@ -36,13 +36,16 @@ export const useUpcomingTalks = (habitatId) => {
           _id,
           zoo,
           startTime,
+          stopTime,
           habitat,
           camera,
+          title,
         }) => ({
           _id,
           zoo,
-          title: habitat?.title,
+          title,
           startTime: parseISO(startTime),
+          stopTime: parseISO(stopTime),
           profileImage: habitat?.profileImage,
           link: `/h/${habitat?.zoo?.slug}/${habitat?.slug}`,
           description: habitat?.description,

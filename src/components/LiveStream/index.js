@@ -1,12 +1,17 @@
 import { h } from 'preact';
-import { useRef, useContext, useCallback } from 'preact/hooks';
+import {
+  useRef,
+  useContext,
+  useCallback,
+  useEffect,
+} from 'preact/hooks';
 import { forwardRef } from 'preact/compat';
 import { connect } from 'react-redux';
 
-import Loader from 'Components/async/Loader';
-
 import { GlobalsContext } from 'Shared/context';
 import { hasPermission } from 'Components/Authorize';
+
+import Fallback from './Fallback';
 
 import StreamInteractiveArea from './StreamInteractiveArea';
 import VideoControls from '../VideoControls';
@@ -17,7 +22,12 @@ import { wsMessages } from './helpers/constants';
 
 import style from './style.scss';
 
-const { PLAY_STARTED, ERROR } = wsMessages;
+const {
+  PLAY_STARTED,
+  ERROR,
+  CLOSED,
+  INITIALIZED,
+} = wsMessages;
 
 const Stream = forwardRef(({
   width = 620,
@@ -26,6 +36,8 @@ const Stream = forwardRef(({
   interactive,
   customControls,
   userId,
+  isStreamOn,
+  mode,
 }, passedRef) => {
   const videoRef = useRef();
   const containerRef = useRef(null);
@@ -40,7 +52,41 @@ const Stream = forwardRef(({
     }
   }, [socket, userId])
 
-  const { streamStatus } = useWebRTCStream(streamId, passedRef || videoRef, 'viewer', logStreamStatus);
+  const {
+    streamStatus,
+    startPlaying,
+    stopPlaying,
+    initializeAdapter,
+  } = useWebRTCStream(streamId, isStreamOn, passedRef || videoRef, 'viewer', logStreamStatus);
+
+  useEffect(() => {
+    if (isStreamOn && streamStatus === CLOSED && videoRef.current) {
+      initializeAdapter();
+    }
+
+    if (isStreamOn && streamStatus === INITIALIZED) {
+      setTimeout(() => startPlaying(), 5000);
+    }
+
+    if (!isStreamOn && streamStatus === PLAY_STARTED) {
+      stopPlaying();
+    }
+  }, [streamStatus, isStreamOn, startPlaying, stopPlaying, videoRef]);
+
+  if (!isStreamOn) {
+    return (
+      <div
+        className={style.streamContainer}
+        style={{
+          width,
+          height,
+          maxWidth: width,
+        }}
+      >
+        <Fallback type="offline" />
+      </div>
+    )
+  }
 
   return (
     <div
@@ -55,7 +101,7 @@ const Stream = forwardRef(({
       <video
         ref={passedRef || videoRef}
         autoPlay
-        controls
+        controls={!customControls}
         muted
         playsInline
         style={{ width, height }}
@@ -69,22 +115,18 @@ const Stream = forwardRef(({
         />
       )}
 
-      {![ERROR, PLAY_STARTED].includes(streamStatus) && (
-        // TODO: Add fallback message/image for error when design team provide us
-        <div className={style.fallbackMessage}>
-          <Loader />
-        </div>
+      {![ERROR, PLAY_STARTED, CLOSED].includes(streamStatus) && (
+        <Fallback type="loading" mode={mode} />
       )}
 
       {streamStatus === ERROR && (
-        // TODO: Add fallback message/image for error when design team provide us
-        <div className={style.fallbackMessage}>
-          <p>
-            Error playing the stream, please, refresh the page and, if the error persists,
-            contact the support team.
-          </p>
-        </div>
+        <Fallback type="error" />
       )}
+
+      {streamStatus === CLOSED && (
+        <Fallback type="offline" />
+      )}
+
       {customControls && <VideoControls ref={passedRef || videoRef} />}
 
       {(interactive && hasPermission('habitat:edit-stream')) && <AdminButton />}
@@ -92,4 +134,8 @@ const Stream = forwardRef(({
   );
 });
 
-export default connect(({ user: { userId }}) => ({ userId }))(Stream);
+export default connect((
+  { user: { userId }, habitat: { habitatInfo: { isStreamOn } } },
+) => (
+  { userId, isStreamOn }
+))(Stream);
