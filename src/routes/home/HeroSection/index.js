@@ -24,8 +24,8 @@ const HeroSection = ({ partnerImage }) => {
               </div>
             )}
 
-            <Heading textAlign="center" level="1" sty>Explore nature, from home.</Heading>
-            <Heading textAlign="center" level="4">
+            <Heading textAlign="center" level="1">Explore nature, from home.</Heading>
+            <Heading textAlign="center" level="4" margin="5px 0 45px 0">
               Live animal experiences from the world&apos;s top zoos, hosted by nature experts.
             </Heading>
             <Box alignSelf="center">

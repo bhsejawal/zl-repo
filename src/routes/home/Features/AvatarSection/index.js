@@ -34,10 +34,10 @@ const AvatarSection = () => {
       >
         <Box pad={{ horizontal: direction === 'column' ? 'large' : 'xlarge'}}>
           <Heading textAlign="start" level="2">
-            Cozy up to remarkable animal species, from home.
+            Meet dozens of your favorite animals, from home.
           </Heading>
           <Text textAlign="start" size="18px">
-            Take part in the daily life of 9 animal families from around the world.
+            Explore the secret life of remarkable animals from around the globe.
           </Text>
           <Box alignSelf="start" margin={{ top: '50px' }}>
             <LandingSecondary onClick={() => route('/signup')}>Meet the Animals</LandingSecondary>

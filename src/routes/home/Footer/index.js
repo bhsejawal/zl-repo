@@ -80,12 +80,16 @@ const Footer = () => {
             </a>
           </div>
           <div className={style.termsAndPolicy}>
-            <a href="https://zl-brizi-tv.s3.ca-central-1.amazonaws.com/assets/Brizi+-+Privacy+Policy+v17-03-2021.pdf" target="_blank" rel="noreferrer">
-              Read our Privacy Policy
-            </a>
-            <a href="https://zl-brizi-tv.s3.ca-central-1.amazonaws.com/assets/BRIZI+INC+-+Terms+of+Use+v17-03-2021.pdf" target="_blank" rel="noreferrer">
-              Read our Terms & Conditions
-            </a>
+            <div>
+              <a href="https://zl-brizi-tv.s3.ca-central-1.amazonaws.com/assets/Brizi+-+Privacy+Policy+v17-03-2021.pdf" target="_blank" rel="noreferrer">
+                Read our Privacy Policy
+              </a>
+            </div>
+            <div>
+              <a href="https://zl-brizi-tv.s3.ca-central-1.amazonaws.com/assets/BRIZI+INC+-+Terms+of+Use+v17-03-2021.pdf" target="_blank" rel="noreferrer">
+                Read our Terms & Conditions
+              </a>
+            </div>
           </div>
         </div>
         <div className={style.partners}>

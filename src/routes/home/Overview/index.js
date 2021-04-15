@@ -66,17 +66,32 @@ const Overview = () => (
             items: 3,
           },
           two: {
-            breakpoint: { max: 1023, min: 740 },
+            breakpoint: { max: 1023, min: 800 },
             items: 2,
             partialVisibilityGutter: 50,
           },
-          one: {
-            breakpoint: { max: 739, min: 430 },
+          oneLarge: {
+            breakpoint: { max: 799, min: 668 },
+            items: 1,
+            partialVisibilityGutter: 300,
+          },
+          oneMedium: {
+            breakpoint: { max: 667, min: 560 },
+            items: 1,
+            partialVisibilityGutter: 200,
+          },
+          oneSmall: {
+            breakpoint: { max: 559, min: 460 },
             items: 1,
             partialVisibilityGutter: 100,
           },
-          oneSmall: {
-            breakpoint: { max: 429, min: 320 },
+          oneXSmall: {
+            breakpoint: { max: 459, min: 400 },
+            items: 1,
+            partialVisibilityGutter: 50,
+          },
+          one: {
+            breakpoint: { max: 399, min: 320 },
             items: 1,
             partialVisibilityGutter: 10,
           },

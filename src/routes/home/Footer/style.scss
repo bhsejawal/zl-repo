@@ -80,8 +80,8 @@
 
   .termsAndPolicy a {
     color: white;
-    display: block;
     margin-bottom: 15px;
+    display: inline-flex;
   }
 }
 
@@ -118,7 +118,7 @@
 
   .footer {
     text-align: center;
-    padding: 102px 36px;;
+    padding: 102px 36px;
 
     .top {
       flex-direction: column;
