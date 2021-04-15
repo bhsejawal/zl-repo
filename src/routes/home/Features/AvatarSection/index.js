@@ -16,13 +16,16 @@ const AvatarSection = () => {
   return (
     <Box
       direction={direction}
-      pad={{ horizontal: direction === 'column' ? 'large' : 'xlarge', vertical: 'medium' }}
+      pad={{
+        horizontal: direction === 'column' ? 'large' : 'xlarge',
+        top: direction === 'column' ? '90px' : '190px',
+        bottom: direction === 'column' ? '90px' : '150px',
+      }}
     >
       <Box basis="1/2" justify="center" alignContent="center">
         <Box
-          width={{ max: '340px', min: '200px' }}
+          width="380px"
           alignSelf="center"
-          pad={{ horizontal: direction === 'row' ? 'medium' : 'xlarge', vertical: 'medium' }}
         >
           <Image src="https://zl-brizi-tv.s3.ca-central-1.amazonaws.com/assets/landing/s4_animal_grid.png" />
         </Box>

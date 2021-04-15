@@ -18,11 +18,11 @@ const FeatureSection = () => {
       pad={{ horizontal: direction === 'column-reverse' ? 'large' : 'xlarge', vertical: 'medium' }}
     >
       <Box
-        justify="center"
+        justify="start"
         alignContent="center"
         basis="1/2"
       >
-        <Box pad={{ horizontal: direction === 'column-reverse' ? 'large' : 'xlarge'}}>
+        <Box pad={{ right: direction === 'column-reverse' ? 'large' : 'xlarge'}}>
           <Heading textAlign="start" level="2">
             Get closer than you&apos;ve ever been.
           </Heading>

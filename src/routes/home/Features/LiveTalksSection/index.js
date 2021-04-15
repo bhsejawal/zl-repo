@@ -15,15 +15,17 @@ const LiveTalksSection = () => {
   return (
     <Box
       direction={direction}
-      pad={{ horizontal: direction === 'column' ? 'large' : 'xlarge', vertical: 'medium' }}
+      pad={{ horizontal: direction === 'column' ? 'large' : 'xlarge', vertical: '180px' }}
     >
       <Box
+        justify="center"
+        alignContent="center"
         basis="1/2"
       >
         <Box
           width={{ max: direction === "row" ? '650px' : ''} }
-          pad={ direction === 'column' ? 'large' : 'medium' }
-          justify="start"
+          pad={ direction === 'column' ? 'large' : '' }
+          justify="center"
           alignSelf="start"
         >
           <video
@@ -31,9 +33,8 @@ const LiveTalksSection = () => {
             loop
             muted
             playInline
-            src="https://zl-brizi-tv.s3.ca-central-1.amazonaws.com/assets/landing/s4_host.mp4"
             style={{
-              maxWidth: direction === "row" ? "450px" : "100%",
+              maxWidth: direction === "row" ? "550px" : "100%",
               zIndex: 1,
               borderRadius: '2px',
             }}
@@ -48,9 +49,12 @@ const LiveTalksSection = () => {
       <Box
         basis="1/2"
         margin={{ top: direction === 'column' ? 'medium' : ''}}
+        justify="start"
       >
         <Box
-          pad={{ horizontal: direction === 'column' ? 'large' : 'xlarge'}}
+          pad={{
+            horizontal: direction === 'column' ? 'large' : 'xlarge',
+          }}
         >
           <Heading textAlign="start" level="2">
             Take part in engaging conversations with the experts
@@ -58,7 +62,7 @@ const LiveTalksSection = () => {
           <Text textAlign="start" size="18px">
             Join daily keeper talks and interactive Q&amp;As with animal experts and naturalists.
           </Text>
-          <Box alignSelf="start" margin={{ vertical: 'xlarge' }}>
+          <Box alignSelf="start" margin={{ top: 'xlarge' }}>
             <LandingSecondary onClick={() => route('/signup')}>Join a Live Q&amp;A</LandingSecondary>
           </Box>
         </Box>
