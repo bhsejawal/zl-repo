@@ -9,8 +9,10 @@ const AnimalIcon = ({
   animalIcon,
   color,
   width = 30,
+  userIcon,
+  userColor,
 }) => {
-  if (!animalIcon) {
+  if (!userIcon) {
     if (!logged) {
       return null
     }
@@ -22,14 +24,16 @@ const AnimalIcon = ({
 
   return (
     <div
-      style={{ backgroundColor: color, width, height: width }}
+      style={{ backgroundColor: color || userColor, width, height: width }}
       className={style.animalIcon}
     >
-      <img src={animalIcon} alt="animal" />
+      <img src={animalIcon || userIcon } alt="animal" />
     </div>
   )
 }
 
-export default connect(
-  ({ user: { profile: { animalIcon, color } = {}, logged } }) => ({ animalIcon, color, logged }),
-)(AnimalIcon);
+export default connect((
+  { user: { profile: { animalIcon: userIcon, color: userColor } = {}, logged } },
+) => (
+  { userIcon, userColor, logged }
+))(AnimalIcon);
