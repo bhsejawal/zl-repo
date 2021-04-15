@@ -22,6 +22,7 @@ const StatusContent = ({ type = 'success', text, onClose }) => (
         margin="small"
         onClick={onClose}
         icon={<FontAwesomeIcon size="lg" color="--var(grey)" icon={faTimes} />}
+        style={{ minWidth: 'unset' }}
       />
     </Box>
 

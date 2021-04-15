@@ -1,10 +1,13 @@
 import { h } from 'preact';
+import { route } from 'preact-router';
 import {
   faHeart,
   faMapMarkerAlt,
   faCalendarDay,
-  faShare,
+  faSignInAlt,
 } from '@fortawesome/pro-solid-svg-icons';
+
+import { LandingSecondary } from 'Components/Buttons';
 
 import NavItem from './NavItem';
 import Invite from './Invite';
@@ -15,7 +18,14 @@ const NavBar = ({ landing }) => {
   if (landing) {
     return (
       <div className={style.navBar}>
-        <NavItem text="Login" url="/login" icon={faShare} />
+        <Invite text="Invite Friends" />
+        <NavItem text="Log In" url="/login" icon={faSignInAlt} />
+        <LandingSecondary
+          onClick={() => route('/signup')}
+          className={style.signUpButton}
+        >
+          Sign Up
+        </LandingSecondary>
       </div>
     )
   }

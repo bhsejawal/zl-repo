@@ -1,7 +1,12 @@
 import { h } from 'preact';
+import zoolifeLogo from 'Assets/zoolife.svg';
+import Tag from 'Components/Tag';
 
 const ZoolifeLogo = () => (
-  <img src="https://zl-brizi-tv.s3.ca-central-1.amazonaws.com/assets/zoolifeLogo.png" alt="" />
+  <div>
+    <img src={zoolifeLogo} alt="" />
+    <Tag label="invite only" varient="light" />
+  </div>
 );
 
 export default ZoolifeLogo;

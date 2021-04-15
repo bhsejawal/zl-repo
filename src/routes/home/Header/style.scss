@@ -35,5 +35,18 @@
     justify-content: center;
     align-items: center;
     pointer-events: none;
+
+    div {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      span {
+        font-weight: 700;
+        margin-left: 10px;
+        padding: 4px 10px;
+      }
+
+    }
   }
 }

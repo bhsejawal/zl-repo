@@ -10,7 +10,12 @@ import { closeInviteModal, openInviteModal } from './actions';
 
 const InviteModal = lazy(() => import('./Modal'));
 
-const Invite = ({ isOpen, openInviteModalAction, closeInviteModalAction }) => {
+const Invite = ({
+  isOpen,
+  openInviteModalAction,
+  closeInviteModalAction,
+  text = "Invite",
+}) => {
   const onClick = useCallback((evt) => {
     evt.preventDefault();
     openInviteModalAction();
@@ -22,7 +27,7 @@ const Invite = ({ isOpen, openInviteModalAction, closeInviteModalAction }) => {
 
   return (
     <>
-      <NavItem text="Invite" icon={faShare} onClick={onClick} />
+      <NavItem text={text} icon={faShare} onClick={onClick} />
 
       {isOpen && (
         <Suspense fallback={<LoaderModal />}>
