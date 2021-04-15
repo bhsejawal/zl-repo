@@ -41,11 +41,11 @@ const Footer = () => {
       return;
     }
 
-    await post({ email });
+    const { status } = await post({ email });
 
     if (response.ok) {
       setErrorMessage();
-      setSuccessMessage('Subscribed Successfully');
+      setSuccessMessage(status);
     } else {
       setErrorMessage('Please Try Again!');
     }
