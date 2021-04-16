@@ -7,6 +7,7 @@ import { addWeeks, startOfWeek } from 'date-fns';
 import classnames from 'classnames';
 import { connect} from 'react-redux';
 import { PrimaryButton } from 'Components/Buttons';
+import { hasPermission } from 'Components/Authorize';
 
 import Context from '../Context';
 import { showAddEventModal } from '../EventScheduleModals/actions';
@@ -48,7 +49,17 @@ const Toolbar = ({ date, label, showAddEventModalAction }) => {
 
       <div>
         <div>
-          <PrimaryButton label="Add Event" size="medium" onClick={() => showAddEventModalAction(true)} />
+          {
+            hasPermission('habitat:edit-schedule')
+              ? <PrimaryButton label="Add Event" size="medium" onClick={() => showAddEventModalAction(true)} />
+              : (
+                <>
+                  <span className={style.circle} />
+                  &nbsp;
+                  <span>Stream Online</span>
+                </>
+              )
+          }
         </div>
       </div>
     </div>
