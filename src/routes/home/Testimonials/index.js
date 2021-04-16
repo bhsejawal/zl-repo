@@ -108,7 +108,12 @@ const Testimonials = () => (
 
         <LandingPrimary type="button" onClick={() => route('/signup')}>Join The Community</LandingPrimary>
       </div>
-      <img className={style.mountain} src="https://zl-brizi-tv.s3.ca-central-1.amazonaws.com/assets/landing/s6_mountin.png" alt="" />
+      <img
+        loading="lazy"
+        className={style.mountain}
+        src="https://zl-brizi-tv.s3.ca-central-1.amazonaws.com/assets/landing/s6_mountin.png"
+        alt=""
+      />
     </div>
   </div>
 );

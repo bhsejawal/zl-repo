@@ -34,7 +34,10 @@ const HeroSection = () => {
         </Box>
       </Box>
       <Box basis="1/2" justify="center" alignContent="center">
-        <Image src="https://zl-brizi-tv.s3.ca-central-1.amazonaws.com/assets/landing/s5_koalas.jpg" />
+        <Image
+          loading="lazy"
+          src="https://zl-brizi-tv.s3.ca-central-1.amazonaws.com/assets/landing/s5_koalas.jpg"
+        />
       </Box>
     </Box>
   );

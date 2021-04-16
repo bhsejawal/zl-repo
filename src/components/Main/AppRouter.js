@@ -1,4 +1,5 @@
 import { Router } from 'preact-router';
+import { connect } from 'react-redux';
 import { Box } from 'grommet';
 
 import AuthGuard from 'Components/Authorize/AuthGuard';
@@ -12,9 +13,9 @@ import Account from '../../routes/account';
 import Habitat from '../../routes/habitat';
 import Welcome from '../../routes/welcome';
 
-const AppRouter = () => (
+const AppRouter = ({ sessionChecked }) => (
   <Box fill>
-    <Header />
+    {sessionChecked && <Header />}
 
     <Box fill pad={{ top: 'var(--headerHeight)' }}>
       <Box fill overflow="auto">
@@ -48,4 +49,6 @@ const AppRouter = () => (
   </Box>
 );
 
-export default AppRouter;
+export default connect(
+  ({ user: { sessionChecked } }) => ({ sessionChecked }),
+)(AppRouter);
