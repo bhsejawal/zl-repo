@@ -54,7 +54,7 @@ const Members = ({ loading, familyCards }) => {
           key={`${img}-${name}-${dateOfBirth}`}
           index={ind}
           name={name}
-          age={formatAge(dateOfBirth)}
+          age={dateOfBirth && formatAge(dateOfBirth)}
           profileImg={img}
           onLoad={onImgLoad}
         />

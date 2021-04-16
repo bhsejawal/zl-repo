@@ -1,4 +1,4 @@
-import { formatDistanceToNow, parseISO } from "date-fns";
+import { formatDistanceToNowStrict, parseISO } from "date-fns";
 
 export const isValidUrl = (url) => {
   try {
@@ -35,10 +35,10 @@ export const getDeviceType = () => {
 
 export const generateTitle = (part) => (part ? `${part} | Zoolife` : 'Zoolife');
 
-export const formatAge = (dateOfBirth) => formatDistanceToNow(parseISO(dateOfBirth))
-  .replace('over', '')
-  .replace('about', '')
-  .trim();
+export const formatAge = (dateOfBirth) => formatDistanceToNowStrict(
+  parseISO(dateOfBirth),
+  { addSuffix: false, roundingMethod: 'floor' },
+);
 
 export const logPageView = () => {
   if (window.analytics) {

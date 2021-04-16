@@ -11,10 +11,8 @@ import { faChevronDown, faTimes } from '@fortawesome/pro-solid-svg-icons';
 import {
   Box,
   Text,
-  Layer,
   Button,
   Heading,
-  Grommet,
 } from 'grommet';
 import { OutlineButton, PrimaryButton } from 'Components/Buttons';
 import classnames from 'classnames';
@@ -73,16 +71,8 @@ import {
   EMPTY_TAG,
 } from '../../../constants';
 import { SET_CARD_DATA, UPDATE_CARD_DATA } from './types';
-import grommetTheme from '../../../../../../../grommetTheme';
 
 import style from './style.scss';
-
-const margins = {
-  top: '20px',
-  bottom: '20px',
-  right: '20px',
-  left: '20px',
-};
 
 const dataReducer = (data, { type, payload = {} }) => {
   if (type === SET_CARD_DATA) {
@@ -234,396 +224,392 @@ const EditModal = ({
   };
 
   return (
-    <Grommet theme={grommetTheme}>
-      <Layer margin={margins} onClickOutside={onClose}>
-        <Box fill style={{ minWidth: '650px', minHeight: '600px' }}>
-          <Box
-            direction="row"
-            align="center"
-            justify="end"
-            as="header"
-          >
-            <Button
-              plain
-              margin="small"
-              onClick={onClose}
-              icon={<FontAwesomeIcon size="lg" icon={faTimes} />}
-            />
-          </Box>
+    <Box fill style={{ minWidth: '650px', minHeight: '600px' }}>
+      <Box
+        direction="row"
+        align="center"
+        justify="end"
+        as="header"
+      >
+        <Button
+          plain
+          margin="small"
+          onClick={onClose}
+          icon={<FontAwesomeIcon size="lg" icon={faTimes} />}
+        />
+      </Box>
 
-          <Box flex="grow" justify="center" align="center">
-            {!data && (
-              <CardsList
-                activeTab={activeTab}
-                onContinue={onCardTypeSelect}
-                canCreateQuizCard={canCreateQuizCard}
+      <Box flex="grow" justify="center" align="center">
+        {!data && (
+          <CardsList
+            activeTab={activeTab}
+            onContinue={onCardTypeSelect}
+            canCreateQuizCard={canCreateQuizCard}
+          />
+        )}
+
+        {deleteActive && (
+          <Box pad="xlarge">
+            <Heading textAlign="center" margin={{ top: '0' }} level="2">
+              Are you sure you want to delete this card?
+            </Heading>
+            <Box direction="row" justify="center">
+              <OutlineButton
+                label="Go Back"
+                margin={{ right: '10px' }}
+                onClick={() => setDeleteActive(false)}
               />
-            )}
+              <PrimaryButton label="Delete" onClick={onDelete} />
+            </Box>
+            <Box margin="medium">
+              {error && (
+                <Text size="14px" textAlign="center" color="status-error">
+                  There was an error. Please try again.
+                </Text>
+              )}
+            </Box>
+          </Box>
+        )}
 
-            {deleteActive && (
-              <Box pad="xlarge">
-                <Heading textAlign="center" margin={{ top: '0' }} level="2">
-                  Are you sure you want to delete this card?
-                </Heading>
-                <Box direction="row" justify="center">
-                  <OutlineButton
-                    label="Go Back"
-                    margin={{ right: '10px' }}
-                    onClick={() => setDeleteActive(false)}
-                  />
-                  <PrimaryButton label="Delete" onClick={onDelete} />
-                </Box>
-                <Box margin="medium">
-                  {error && (
-                    <Text size="14px" textAlign="center" color="status-error">
-                      There was an error. Please try again.
-                    </Text>
-                  )}
-                </Box>
-              </Box>
-            )}
+        {data && !deleteActive && (
+          <Box fill align="stretch" direction="row">
+            <Box width="medium" height={{ max: '545px' }} pad={{ vertical: 'medium' }}>
+              <Heading margin={{ bottom: '20px', top: '0', left: '50px' }} level="2">Edit Card</Heading>
 
-            {data && !deleteActive && (
-              <Box fill align="stretch" direction="row">
-                <Box width="medium" height={{ max: '545px' }} pad={{ vertical: 'medium' }}>
-                  <Heading margin={{ bottom: '20px', top: '0', left: '50px' }} level="2">Edit Card</Heading>
+              <div className={classnames(style.form, 'customScrollBar grey')}>
+                {![QUIZ_CARD_TYPE, ANIMAL_PROFILE_CARD_TYPE].includes(type) && (
+                  <Box margin={{ bottom: '20px' }}>
+                    <Heading margin={{ top: '0', bottom: '5px' }} level="5">Card Tag:</Heading>
+                    <div className="simpleSelect">
+                      <select onChange={onTagChange}>
+                        <option
+                          selected={tag === EMPTY_TAG}
+                          value={EMPTY_TAG}
+                        >
+                          Hide Tag
+                        </option>
+                        <option
+                          selected={tag === QUICK_LOOK}
+                          value={QUICK_LOOK}
+                        >
+                          {QUICK_LOOK}
+                        </option>
+                        <option
+                          selected={tag === FOOD_AND_DIET}
+                          value={FOOD_AND_DIET}
+                        >
+                          {FOOD_AND_DIET}
+                        </option>
+                        <option
+                          selected={tag === ORIGIN_AND_HABITAT}
+                          value={ORIGIN_AND_HABITAT}
+                        >
+                          {ORIGIN_AND_HABITAT}
+                        </option>
+                        <option
+                          selected={tag === THE_ANIMAL_BODY}
+                          value={THE_ANIMAL_BODY}
+                        >
+                          {THE_ANIMAL_BODY}
+                        </option>
+                        <option
+                          selected={tag === CONSERVATION}
+                          value={CONSERVATION}
+                        >
+                          {CONSERVATION}
+                        </option>
+                        <option
+                          selected={tag === BEHAVIOR}
+                          value={BEHAVIOR}
+                        >
+                          {BEHAVIOR}
+                        </option>
+                        <option
+                          selected={tag === FAMILY_LIFE}
+                          value={FAMILY_LIFE}
+                        >
+                          {FAMILY_LIFE}
+                        </option>
+                      </select>
 
-                  <div className={classnames(style.form, 'customScrollBar grey')}>
-                    {![QUIZ_CARD_TYPE, ANIMAL_PROFILE_CARD_TYPE].includes(type) && (
-                      <Box margin={{ bottom: '20px' }}>
-                        <Heading margin={{ top: '0', bottom: '5px' }} level="5">Card Tag:</Heading>
-                        <div className="simpleSelect">
-                          <select onChange={onTagChange}>
-                            <option
-                              selected={tag === EMPTY_TAG}
-                              value={EMPTY_TAG}
-                            >
-                              Hide Tag
-                            </option>
-                            <option
-                              selected={tag === QUICK_LOOK}
-                              value={QUICK_LOOK}
-                            >
-                              {QUICK_LOOK}
-                            </option>
-                            <option
-                              selected={tag === FOOD_AND_DIET}
-                              value={FOOD_AND_DIET}
-                            >
-                              {FOOD_AND_DIET}
-                            </option>
-                            <option
-                              selected={tag === ORIGIN_AND_HABITAT}
-                              value={ORIGIN_AND_HABITAT}
-                            >
-                              {ORIGIN_AND_HABITAT}
-                            </option>
-                            <option
-                              selected={tag === THE_ANIMAL_BODY}
-                              value={THE_ANIMAL_BODY}
-                            >
-                              {THE_ANIMAL_BODY}
-                            </option>
-                            <option
-                              selected={tag === CONSERVATION}
-                              value={CONSERVATION}
-                            >
-                              {CONSERVATION}
-                            </option>
-                            <option
-                              selected={tag === BEHAVIOR}
-                              value={BEHAVIOR}
-                            >
-                              {BEHAVIOR}
-                            </option>
-                            <option
-                              selected={tag === FAMILY_LIFE}
-                              value={FAMILY_LIFE}
-                            >
-                              {FAMILY_LIFE}
-                            </option>
-                          </select>
+                      <FontAwesomeIcon icon={faChevronDown} color="var(--blue)" />
+                    </div>
+                  </Box>
+                )}
 
-                          <FontAwesomeIcon icon={faChevronDown} color="var(--blue)" />
-                        </div>
-                      </Box>
-                    )}
-
-                    <Box margin={{ bottom: '20px' }}>
-                      <Heading margin={{ top: '0', bottom: '5px' }} level="5">Card Index (order):</Heading>
-                      <Box direction="row" justify="start">
-                        <input
-                          className="simpleInput"
-                          type="number"
-                          style={{ width: '65px' }}
-                          value={index}
-                          min="0"
-                          onChange={({ target }) => setIndex(target.value)}
-                        />
-                      </Box>
-                    </Box>
-
-                    {type === SINGLE_ICON_CARD_TYPE && (
-                      <SingleIconCardForm
-                        ref={formRef}
-                        title={data.title}
-                        text={data.text}
-                        img={data.img}
-                        onInputChange={onInputChange}
-                        onDataChange={onDataChange}
-                      />
-                    )}
-
-                    {type === THREE_ICONS_CARD_TYPE && (
-                      <ThreeIconsCardForm
-                        ref={formRef}
-                        title={data.title}
-                        img1={data.img1}
-                        img2={data.img2}
-                        img3={data.img3}
-                        text1={data.text1}
-                        text2={data.text2}
-                        text3={data.text3}
-                        onInputChange={onInputChange}
-                        onDataChange={onDataChange}
-                      />
-                    )}
-
-                    {type === FOUR_ICONS_CARD_TYPE && (
-                      <FourIconsCardForm
-                        ref={formRef}
-                        title={data.title}
-                        text={data.text}
-                        img1={data.img1}
-                        img2={data.img2}
-                        img3={data.img3}
-                        img4={data.img4}
-                        icon1Txt={data.icon1Txt}
-                        icon2Txt={data.icon2Txt}
-                        icon3Txt={data.icon3Txt}
-                        icon4Txt={data.icon4Txt}
-                        onInputChange={onInputChange}
-                        onDataChange={onDataChange}
-                      />
-                    )}
-
-                    {type === ANIMAL_PROFILE_CARD_TYPE && (
-                      <AnimalProfileCardForm
-                        ref={formRef}
-                        img={data.img}
-                        name={data.name}
-                        title={data.title}
-                        sex={data.sex}
-                        dateOfBirth={data.dateOfBirth}
-                        text1={data.text1}
-                        text2={data.text2}
-                        text3={data.text3}
-                        onInputChange={onInputChange}
-                        onDataChange={onDataChange}
-                      />
-                    )}
-
-                    {type === CONSERVATION_CARD_TYPE && (
-                      <ConservationCardForm
-                        ref={formRef}
-                        status={data.status}
-                        title={data.title}
-                        text={data.text}
-                        btnLabel={data.btnLabel}
-                        btnLink={data.btnLink}
-                        onInputChange={onInputChange}
-                      />
-                    )}
-
-                    {type === TWO_VIDEOS_CARD_TYPE && (
-                      <TwoVideosCardForm
-                        ref={formRef}
-                        video1Url={data.video1Url}
-                        text1={data.text1}
-                        video2Url={data.video2Url}
-                        text2={data.text2}
-                        onInputChange={onInputChange}
-                        onDataChange={onDataChange}
-                      />
-                    )}
-
-                    {type === SINGLE_VIDEO_CARD_TYPE && (
-                      <SingleVideoCardForm
-                        ref={formRef}
-                        videoUrl={data.videoUrl}
-                        title={data.title}
-                        text={data.text}
-                        onInputChange={onInputChange}
-                        onDataChange={onDataChange}
-                      />
-                    )}
-
-                    {type === ORIGIN_AND_HABITAT_CARD_TYPE && (
-                      <OriginAndHabitatCardForm
-                        ref={formRef}
-                        title={data.title}
-                        text={data.text}
-                        location={data.location}
-                        onInputChange={onInputChange}
-                        onDataChange={onDataChange}
-                      />
-                    )}
-
-                    {type === ANIMAL_BODY_CARD_TYPE && (
-                      <AnimalBodyCardForm
-                        ref={formRef}
-                        img={data.img}
-                        parts={data.parts}
-                        onInputChange={onInputChange}
-                        onDataChange={onDataChange}
-                      />
-                    )}
-
-                    {type === QUIZ_CARD_TYPE && (
-                      <QuizCardForm
-                        ref={formRef}
-                        questions={data.questions}
-                        onInputChange={onInputChange}
-                        onDataChange={onDataChange}
-                      />
-                    )}
-                  </div>
-                </Box>
-                <Box height="520px" margin={{left: '11px'}} background="var(--lightGrey)" width="1px" />
-                <Box pad={{vertical: 'medium', horizontal: '65px'}}>
-                  {type === SINGLE_ICON_CARD_TYPE && (
-                    <SingleIconCard
-                      tag={tag}
-                      img={data.img}
-                      title={data.title}
-                      text={data.text}
-                    />
-                  )}
-
-                  {type === THREE_ICONS_CARD_TYPE && (
-                    <ThreeIconsCard
-                      tag={tag}
-                      title={data.title}
-                      img1={data.img1}
-                      img2={data.img2}
-                      img3={data.img3}
-                      text1={data.text1}
-                      text2={data.text2}
-                      text3={data.text3}
-                    />
-                  )}
-
-                  {type === FOUR_ICONS_CARD_TYPE && (
-                    <FourIconsCard
-                      tag={tag}
-                      title={data.title}
-                      text={data.text}
-                      img1={data.img1}
-                      img2={data.img2}
-                      img3={data.img3}
-                      img4={data.img4}
-                      icon1Txt={data.icon1Txt}
-                      icon2Txt={data.icon2Txt}
-                      icon3Txt={data.icon3Txt}
-                      icon4Txt={data.icon4Txt}
-                    />
-                  )}
-
-                  {type === ANIMAL_PROFILE_CARD_TYPE && (
-                    <AnimalProfileCard
-                      tag={tag}
-                      img={data.img}
-                      name={data.name}
-                      title={data.title}
-                      sex={data.sex}
-                      dateOfBirth={data.dateOfBirth}
-                      text1={data.text1}
-                      text2={data.text2}
-                      text3={data.text3}
-                    />
-                  )}
-
-                  {type === CONSERVATION_CARD_TYPE && (
-                    <ConservationCard
-                      tag={tag}
-                      status={data.status}
-                      title={data.title}
-                      text={data.text}
-                      btnLabel={data.btnLabel}
-                      btnLink={data.btnLink}
-                    />
-                  )}
-
-                  {type === TWO_VIDEOS_CARD_TYPE && (
-                    <TwoVideosCard
-                      tag={tag}
-                      video1Url={data.video1Url}
-                      text1={data.text1}
-                      video2Url={data.video2Url}
-                      text2={data.text2}
-                    />
-                  )}
-
-                  {type === SINGLE_VIDEO_CARD_TYPE && (
-                    <SingleVideoCard
-                      tag={tag}
-                      videoUrl={data.videoUrl}
-                      title={data.title}
-                      text={data.text}
-                    />
-                  )}
-
-                  {type === ORIGIN_AND_HABITAT_CARD_TYPE && (
-                    <OriginAndHabitatCard
-                      tag={tag}
-                      img={data.img}
-                      title={data.title}
-                      text={data.text}
-                    />
-                  )}
-
-                  {type === ANIMAL_BODY_CARD_TYPE && (
-                    <AnimalBodyCard
-                      tag={tag}
-                      img={data.img}
-                      parts={data.parts}
-                    />
-                  )}
-
-                  {type === QUIZ_CARD_TYPE && (
-                    <QuizCard questions={data.questions} answers={data.answers} />
-                  )}
-
-                  <Box direction="row" justify={cardData ? 'between' : 'center'} pad={{top: '20px'}}>
-                    {cardData && (
-                      <OutlineButton
-                        style={{minWidth: 'calc((100%/2) - 5px)'}}
-                        label="Delete"
-                        onClick={() => setDeleteActive(true)}
-                      />
-                    )}
-                    <PrimaryButton
-                      style={{minWidth: cardData && 'calc((100%/2) - 5px)'}}
-                      label="Publish"
-                      onClick={onPublish}
+                <Box margin={{ bottom: '20px' }}>
+                  <Heading margin={{ top: '0', bottom: '5px' }} level="5">Card Index (order):</Heading>
+                  <Box direction="row" justify="start">
+                    <input
+                      className="simpleInput"
+                      type="number"
+                      style={{ width: '65px' }}
+                      value={index}
+                      min="0"
+                      onChange={({ target }) => setIndex(target.value)}
                     />
                   </Box>
-                  {error && (
-                    <Box>
-                      <Text size="14px" textAlign="center" color="status-error" margin={{ top: '10px'}}>
-                        There was an error.
-                        <br />
-                        Please check your input and try again.
-                      </Text>
-                    </Box>
-                  )}
                 </Box>
+
+                {type === SINGLE_ICON_CARD_TYPE && (
+                  <SingleIconCardForm
+                    ref={formRef}
+                    title={data.title}
+                    text={data.text}
+                    img={data.img}
+                    onInputChange={onInputChange}
+                    onDataChange={onDataChange}
+                  />
+                )}
+
+                {type === THREE_ICONS_CARD_TYPE && (
+                  <ThreeIconsCardForm
+                    ref={formRef}
+                    title={data.title}
+                    img1={data.img1}
+                    img2={data.img2}
+                    img3={data.img3}
+                    text1={data.text1}
+                    text2={data.text2}
+                    text3={data.text3}
+                    onInputChange={onInputChange}
+                    onDataChange={onDataChange}
+                  />
+                )}
+
+                {type === FOUR_ICONS_CARD_TYPE && (
+                  <FourIconsCardForm
+                    ref={formRef}
+                    title={data.title}
+                    text={data.text}
+                    img1={data.img1}
+                    img2={data.img2}
+                    img3={data.img3}
+                    img4={data.img4}
+                    icon1Txt={data.icon1Txt}
+                    icon2Txt={data.icon2Txt}
+                    icon3Txt={data.icon3Txt}
+                    icon4Txt={data.icon4Txt}
+                    onInputChange={onInputChange}
+                    onDataChange={onDataChange}
+                  />
+                )}
+
+                {type === ANIMAL_PROFILE_CARD_TYPE && (
+                  <AnimalProfileCardForm
+                    ref={formRef}
+                    img={data.img}
+                    name={data.name}
+                    title={data.title}
+                    sex={data.sex}
+                    dateOfBirth={data.dateOfBirth}
+                    text1={data.text1}
+                    text2={data.text2}
+                    text3={data.text3}
+                    onInputChange={onInputChange}
+                    onDataChange={onDataChange}
+                  />
+                )}
+
+                {type === CONSERVATION_CARD_TYPE && (
+                  <ConservationCardForm
+                    ref={formRef}
+                    status={data.status}
+                    title={data.title}
+                    text={data.text}
+                    btnLabel={data.btnLabel}
+                    btnLink={data.btnLink}
+                    onInputChange={onInputChange}
+                  />
+                )}
+
+                {type === TWO_VIDEOS_CARD_TYPE && (
+                  <TwoVideosCardForm
+                    ref={formRef}
+                    video1Url={data.video1Url}
+                    text1={data.text1}
+                    video2Url={data.video2Url}
+                    text2={data.text2}
+                    onInputChange={onInputChange}
+                    onDataChange={onDataChange}
+                  />
+                )}
+
+                {type === SINGLE_VIDEO_CARD_TYPE && (
+                  <SingleVideoCardForm
+                    ref={formRef}
+                    videoUrl={data.videoUrl}
+                    title={data.title}
+                    text={data.text}
+                    onInputChange={onInputChange}
+                    onDataChange={onDataChange}
+                  />
+                )}
+
+                {type === ORIGIN_AND_HABITAT_CARD_TYPE && (
+                  <OriginAndHabitatCardForm
+                    ref={formRef}
+                    title={data.title}
+                    text={data.text}
+                    location={data.location}
+                    onInputChange={onInputChange}
+                    onDataChange={onDataChange}
+                  />
+                )}
+
+                {type === ANIMAL_BODY_CARD_TYPE && (
+                  <AnimalBodyCardForm
+                    ref={formRef}
+                    img={data.img}
+                    parts={data.parts}
+                    onInputChange={onInputChange}
+                    onDataChange={onDataChange}
+                  />
+                )}
+
+                {type === QUIZ_CARD_TYPE && (
+                  <QuizCardForm
+                    ref={formRef}
+                    questions={data.questions}
+                    onInputChange={onInputChange}
+                    onDataChange={onDataChange}
+                  />
+                )}
+              </div>
+            </Box>
+            <Box height="520px" margin={{left: '11px'}} background="var(--lightGrey)" width="1px" />
+            <Box pad={{vertical: 'medium', horizontal: '65px'}}>
+              {type === SINGLE_ICON_CARD_TYPE && (
+                <SingleIconCard
+                  tag={tag}
+                  img={data.img}
+                  title={data.title}
+                  text={data.text}
+                />
+              )}
+
+              {type === THREE_ICONS_CARD_TYPE && (
+                <ThreeIconsCard
+                  tag={tag}
+                  title={data.title}
+                  img1={data.img1}
+                  img2={data.img2}
+                  img3={data.img3}
+                  text1={data.text1}
+                  text2={data.text2}
+                  text3={data.text3}
+                />
+              )}
+
+              {type === FOUR_ICONS_CARD_TYPE && (
+                <FourIconsCard
+                  tag={tag}
+                  title={data.title}
+                  text={data.text}
+                  img1={data.img1}
+                  img2={data.img2}
+                  img3={data.img3}
+                  img4={data.img4}
+                  icon1Txt={data.icon1Txt}
+                  icon2Txt={data.icon2Txt}
+                  icon3Txt={data.icon3Txt}
+                  icon4Txt={data.icon4Txt}
+                />
+              )}
+
+              {type === ANIMAL_PROFILE_CARD_TYPE && (
+                <AnimalProfileCard
+                  tag={tag}
+                  img={data.img}
+                  name={data.name}
+                  title={data.title}
+                  sex={data.sex}
+                  dateOfBirth={data.dateOfBirth}
+                  text1={data.text1}
+                  text2={data.text2}
+                  text3={data.text3}
+                />
+              )}
+
+              {type === CONSERVATION_CARD_TYPE && (
+                <ConservationCard
+                  tag={tag}
+                  status={data.status}
+                  title={data.title}
+                  text={data.text}
+                  btnLabel={data.btnLabel}
+                  btnLink={data.btnLink}
+                />
+              )}
+
+              {type === TWO_VIDEOS_CARD_TYPE && (
+                <TwoVideosCard
+                  tag={tag}
+                  video1Url={data.video1Url}
+                  text1={data.text1}
+                  video2Url={data.video2Url}
+                  text2={data.text2}
+                />
+              )}
+
+              {type === SINGLE_VIDEO_CARD_TYPE && (
+                <SingleVideoCard
+                  tag={tag}
+                  videoUrl={data.videoUrl}
+                  title={data.title}
+                  text={data.text}
+                />
+              )}
+
+              {type === ORIGIN_AND_HABITAT_CARD_TYPE && (
+                <OriginAndHabitatCard
+                  tag={tag}
+                  img={data.img}
+                  title={data.title}
+                  text={data.text}
+                />
+              )}
+
+              {type === ANIMAL_BODY_CARD_TYPE && (
+                <AnimalBodyCard
+                  tag={tag}
+                  img={data.img}
+                  parts={data.parts}
+                />
+              )}
+
+              {type === QUIZ_CARD_TYPE && (
+                <QuizCard questions={data.questions} answers={data.answers} />
+              )}
+
+              <Box direction="row" justify={cardData ? 'between' : 'center'} pad={{top: '20px'}}>
+                {cardData && (
+                  <OutlineButton
+                    style={{minWidth: 'calc((100%/2) - 5px)'}}
+                    label="Delete"
+                    onClick={() => setDeleteActive(true)}
+                  />
+                )}
+                <PrimaryButton
+                  style={{minWidth: cardData && 'calc((100%/2) - 5px)'}}
+                  label="Publish"
+                  onClick={onPublish}
+                />
               </Box>
-            )}
+              {error && (
+                <Box>
+                  <Text size="14px" textAlign="center" color="status-error" margin={{ top: '10px'}}>
+                    There was an error.
+                    <br />
+                    Please check your input and try again.
+                  </Text>
+                </Box>
+              )}
+            </Box>
           </Box>
-        </Box>
-      </Layer>
-    </Grommet>
+        )}
+      </Box>
+    </Box>
   );
 };
 

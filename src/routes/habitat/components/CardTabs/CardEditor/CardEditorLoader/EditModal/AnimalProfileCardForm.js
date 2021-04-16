@@ -58,7 +58,7 @@ const AnimalProfileCardForm = forwardRef(({
   );
 
   const onDateChange = useCallback(
-    (value) => onDataChange({ dateOfBirth: value.toISOString() }),
+    (value) => onDataChange({ dateOfBirth: value?.toISOString() }),
     [onDataChange],
   );
 
@@ -134,9 +134,9 @@ const AnimalProfileCardForm = forwardRef(({
       <Box margin={{ bottom: '20px' }}>
         <DatePicker
           format="MM/dd/yyyy"
-          value={parseISO(dateOfBirth)}
+          value={dateOfBirth && parseISO(dateOfBirth)}
           onChange={onDateChange}
-          clearIcon={null}
+          isClearable
         />
       </Box>
 

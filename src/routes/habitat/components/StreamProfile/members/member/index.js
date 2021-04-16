@@ -22,11 +22,9 @@ const Member = ({
       </div>
     </div>
 
-    <Text as="p" size="medium" margin="0px">
+    <Text as="p" size="medium" margin="0 8px" className={style.text}>
       {name}
-      ,
-      {' '}
-      {age}
+      {age ? `, ${age}` : ''}
     </Text>
   </div>
 );
