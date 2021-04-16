@@ -311,7 +311,7 @@ const Profile = ({
                 Step 2 of 2
               </Heading>
             )}
-            <Heading level="1" margin={{ top: '0' }}>
+            <Heading level="2" margin={{ top: '0' }}>
               {step ? 'Create your character:' : 'My Character:'}
             </Heading>
             <Text size="xlarge">This is how the Zoolife community will see you.</Text>

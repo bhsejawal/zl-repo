@@ -79,7 +79,7 @@ const Fallback = ({ type, profileImage, mode }) => (
         </Text>
 
         <Text color="white" margin={{ top: 'large' }} size="large">
-          Learn more about their world bellow.
+          Learn more about their world below.
         </Text>
       </>
     )}

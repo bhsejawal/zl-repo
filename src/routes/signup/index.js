@@ -133,15 +133,15 @@ const Signup = ({ setUserDataAction, openTermsModalAction }) => {
           <Heading margin={{top: '30px', bottom: '5px'}} level="4" color="var(--grey)">Step 1 of 2</Heading>
         )}
         <Box direction="row" align="center" height="40px" margin={{ top: !isLargeScreen ? 'xlarge' : ''}}>
-          <Text size="xxlarge" responsive>
+          <Heading level="2">
             Try
-          </Text>
+          </Heading>
           <Box pad={{ horizontal: '10px'}} justify="center">
             <Image src={logo} alt="" />
           </Box>
-          <Text size="xxlarge" responsive>
+          <Heading level="2">
             free
-          </Text>
+          </Heading>
         </Box>
         <Box fill="horizontal" margin={{ top: 'medium' }}>
           <form onSubmit={onSubmit}>

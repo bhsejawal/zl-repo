@@ -41,7 +41,7 @@ const Map = ({
             <div>
               <Heading level="1">Explore the animal kingdom.</Heading>
               <Text size="xlarge">
-                Choose a habitat to visit
+                Choose a habitat to visit.
               </Text>
             </div>
             <div style={{ position: 'relative', width: 'fit-content', marginTop: '45px' }}>
