@@ -1,13 +1,12 @@
 import { h } from 'preact';
 import { useEffect, useContext } from 'preact/hooks';
 import { connect } from 'react-redux';
-import useFetch from 'use-http';
 import { route } from 'preact-router';
+import useFetch from 'use-http';
 
 import { buildURL } from 'Shared/fetch';
 import GlobalsContextProvider from "Components/GlobalsContextProvider";
 import LiveStream from 'Components/LiveStream';
-import Header from 'Components/Header';
 import Loader from 'Components/async/Loader';
 import { openTermsModal } from 'Components/TermsAndConditions/actions';
 import { GlobalsContext } from 'Shared/context';
@@ -126,26 +125,24 @@ const Habitat = ({
 
   return (
     <>
-      <div className={style.habitat} style={{ paddingTop: '60px' }}>
-        <div className={style.topSection} style={{ height, maxHeight: height }}>
-          <NextTalkBar width={sideBarWidth} height={height} />
-          <LiveStream
-            width={streamWidth}
-            height={height}
-            streamId={streamKey}
-            interactive
-            mode="stream"
-          />
-          <Chat width={chatWidth} height={height} />
-        </div>
+      <div className={style.topSection} style={{ height, maxHeight: height }}>
+        <NextTalkBar width={sideBarWidth} height={height} />
+        <LiveStream
+          width={streamWidth}
+          height={height}
+          streamId={streamKey}
+          interactive
+          mode="stream"
+        />
+        <Chat width={chatWidth} height={height} />
+      </div>
 
-        <div className={style.middleSection}>
-          <StreamProfile />
-        </div>
+      <div className={style.middleSection}>
+        <StreamProfile />
+      </div>
 
-        <div className={style.bottomSection}>
-          <CardTabs />
-        </div>
+      <div className={style.bottomSection}>
+        <CardTabs />
       </div>
       <OnboardingModal />
     </>
@@ -179,7 +176,6 @@ const ConnectedHabitat = connect(
 
 const HabitatWrapper = ({ matches: { zooName, habitatSlug } }) => (
   <GlobalsContextProvider>
-    <Header />
     <ConnectedHabitat zooName={zooName} habitatSlug={habitatSlug} />
   </GlobalsContextProvider>
 );

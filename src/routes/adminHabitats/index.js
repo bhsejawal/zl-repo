@@ -5,7 +5,6 @@ import { Box, Text } from 'grommet';
 import { format, parseISO } from 'date-fns';
 import useFetch from 'use-http';
 
-import Header from 'Components/Header';
 import AdminTable from 'Components/AdminTable';
 import ImageSelector from 'Components/ImageSelector';
 import { buildURL } from 'Shared/fetch';
@@ -149,16 +148,13 @@ const Habitats = () => {
   }], [zoos]);
 
   return (
-    <>
-      <Header />
-      <AdminTable
-        deleteDisabled
-        columns={columns}
-        entity={{ singular: 'Habitat', plural: 'Habitats' }}
-        serverPath="/admin/habitats"
-        responseTransform={responseTransform}
-      />
-    </>
+    <AdminTable
+      deleteDisabled
+      columns={columns}
+      entity={{ singular: 'Habitat', plural: 'Habitats' }}
+      serverPath="/admin/habitats"
+      responseTransform={responseTransform}
+    />
   );
 };
 

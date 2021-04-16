@@ -120,10 +120,11 @@ const websiteTheme = {
 };
 
 const Home = ({ partnerImage }) => (
-  <Grommet theme={websiteTheme}>
-    <Box width={{ max: "1650px", min: "350px" }} margin={{ horizontal: 'auto' }}>
+  // TODO: this needs to be refactored and grommet should be removed
+  <Grommet full theme={websiteTheme}>
+    <Box fill width={{ max: "1650px", min: "350px" }} margin={{ horizontal: 'auto' }}>
       <Header />
-      <Box fill pad={{top: 'var(--headerHeight)'}}>
+      <Box overflow="auto" margin={{ top: 'var(--headerHeight)' }}>
         <HeroSection partnerImage={partnerImage} />
         <Partners />
         <Overview />

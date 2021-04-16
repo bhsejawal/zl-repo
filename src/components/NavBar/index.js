@@ -29,6 +29,7 @@ const NavBar = ({ landing }) => {
       </div>
     )
   }
+
   return (
     <div className={style.navBar}>
       <NavItem text="Map" url="/map" icon={faMapMarkerAlt} />

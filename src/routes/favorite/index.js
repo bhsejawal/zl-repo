@@ -9,7 +9,6 @@ import useFetch from 'use-http';
 import { connect } from 'react-redux';
 
 import { buildURL } from 'Shared/fetch';
-import Header from 'Components/Header';
 import HabitatCard from 'Components/HabitatCard';
 import Loader from 'Components/async/Loader';
 import NoContentFallback from 'Components/NoContentFallback';
@@ -79,84 +78,82 @@ const Favorite = ({ updateFavoriteHabitatAction }) => {
   }, [del, delResponse, updateFavoriteHabitatAction]);
 
   return (
-    <>
-      <Header />
-      <Box pad={{ top: '60px' }} flex="grow">
-        <Box
-          direction="row"
-          align="center"
-          pad={{ horizontal: 'large', vertical: 'medium' }}
+    <Box flex overflow="auto">
+      <Box
+        direction="row"
+        align="center"
+        height={{ min: '80px' }}
+        pad={{ horizontal: 'large', vertical: 'medium' }}
+      >
+        <Heading
+          margin={{ top: '0', bottom: '0', right: '20px' }}
+          color="var(--charcoal)"
+          level="3"
         >
-          <Heading
-            margin={{ top: '0', bottom: '0', right: '20px' }}
-            color="var(--charcoal)"
-            level="3"
-          >
-            My Favorites
-          </Heading>
-          <Box fill="vertical" justify="center">
-            <Text margin="0" size="xlarge" color="var(--charcoalLight)">
-              Your top habitats in one glance! Tap the heart to remove a favorite.
-            </Text>
-          </Box>
-        </Box>
-
-        <Box
-          wrap
-          pad={{ horizontal: 'large', vertical: 'medium' }}
-          background="var(--hunterGreenMediumLight)"
-          flex="grow"
-          direction="row"
-          justify={width < 850 ? 'center' : 'start' }
-        >
-          {!loaded && <Loader fill color="white" />}
-
-          {error && (
-            <Box fill justify="center" align="center">
-              <Heading level="4" color="#fff">
-                There was an error. Please try again.
-              </Heading>
-            </Box>
-          )}
-
-          {loaded && habitats.map(({
-            _id,
-            slug,
-            online,
-            liveTalk,
-            title,
-            zoo,
-            description,
-            wideImage: image,
-          }) => (
-            <Box key={_id} pad="small" flex="shrink">
-              <HabitatCard
-                favorite
-                slug={slug}
-                zooSlug={zoo?.slug}
-                habitatId={_id}
-                online={online}
-                liveTalk={liveTalk}
-                title={title}
-                description={description}
-                image={image}
-                logo={zoo?.logo}
-                onFavoriteClick={onFavoriteClick}
-              />
-            </Box>
-          ))}
-
-          {loaded && !error && habitats.length === 0 && (
-            <Box fill flex="grow" justify="center">
-              <NoContentFallback
-                text="Add your favorite animal habitats here for easy access."
-                subText="Favorite by tapping the heart on the photo icon in any habitat. "
-              />
-            </Box>
-          )}
+          My Favorites
+        </Heading>
+        <Box fill="vertical" justify="center">
+          <Text margin="0" size="xlarge" color="var(--charcoalLight)">
+            Your top habitats in one glance! Tap the heart to remove a favorite.
+          </Text>
         </Box>
       </Box>
-    </>
+
+      <Box
+        wrap
+        pad={{ horizontal: 'large', vertical: 'medium' }}
+        background="var(--hunterGreenMediumLight)"
+        flex="grow"
+        direction="row"
+        justify={width < 850 ? 'center' : 'start' }
+      >
+        {!loaded && <Loader fill color="white" />}
+
+        {error && (
+          <Box fill justify="center" align="center">
+            <Heading level="4" color="#fff">
+              There was an error. Please try again.
+            </Heading>
+          </Box>
+        )}
+
+        {loaded && habitats.map(({
+          _id,
+          slug,
+          online,
+          liveTalk,
+          title,
+          zoo,
+          description,
+          wideImage: image,
+        }) => (
+          <Box key={_id} pad="small" flex="shrink">
+            <HabitatCard
+              favorite
+              slug={slug}
+              zooSlug={zoo?.slug}
+              habitatId={_id}
+              online={online}
+              liveTalk={liveTalk}
+              title={title}
+              description={description}
+              image={image}
+              logo={zoo?.logo}
+              onFavoriteClick={onFavoriteClick}
+            />
+          </Box>
+        ))}
+
+        {loaded && !error && habitats.length === 0 && (
+          <Box fill flex="grow" justify="center">
+            <NoContentFallback
+              text="Add your favorite animal habitats here for easy access."
+              subText="Favorite by tapping the heart on the photo icon in any habitat. "
+            />
+          </Box>
+        )}
+      </Box>
+    </Box>
   );
 };
 

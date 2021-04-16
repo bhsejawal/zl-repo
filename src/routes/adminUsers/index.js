@@ -4,7 +4,6 @@ import { Text } from 'grommet';
 import { parseISO } from 'date-fns';
 import DateTimePicker from 'react-datetime-picker'
 
-import Header from 'Components/Header';
 import AdminTable from 'Components/AdminTable';
 import { SELECT } from 'Components/AdminTable/constants';
 
@@ -94,15 +93,12 @@ const responseTransform = ({ users } = {}) => users;
 
 // eslint-disable-next-line arrow-body-style
 const Users = () => (
-  <>
-    <Header />
-    <AdminTable
-      columns={columns}
-      entity={{ singular: 'User', plural: 'Users' }}
-      serverPath="/admin/users"
-      responseTransform={responseTransform}
-    />
-  </>
+  <AdminTable
+    columns={columns}
+    entity={{ singular: 'User', plural: 'Users' }}
+    serverPath="/admin/users"
+    responseTransform={responseTransform}
+  />
 );
 
 export default Users;

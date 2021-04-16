@@ -3,7 +3,6 @@ import { useRef, useState } from 'preact/hooks';
 import { Box, Text } from 'grommet';
 import { format, parseISO } from 'date-fns';
 
-import Header from 'Components/Header';
 import AdminTable from 'Components/AdminTable';
 import ImageSelector from 'Components/ImageSelector';
 import { TEXT_AUTOCOMPLETE } from 'Components/AdminTable/constants';
@@ -134,16 +133,13 @@ const columns = [{
 const responseTransform = ({ zoos } = {}) => zoos;
 
 const Partners = () => (
-  <>
-    <Header />
-    <AdminTable
-      deleteDisabled
-      columns={columns}
-      entity={{ singular: 'Partner', plural: 'Partners' }}
-      serverPath="/admin/zoos"
-      responseTransform={responseTransform}
-    />
-  </>
+  <AdminTable
+    deleteDisabled
+    columns={columns}
+    entity={{ singular: 'Partner', plural: 'Partners' }}
+    serverPath="/admin/zoos"
+    responseTransform={responseTransform}
+  />
 )
 
 export default Partners;

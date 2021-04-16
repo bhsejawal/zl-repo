@@ -9,7 +9,6 @@ import {
 import { useState } from 'preact/hooks';
 import { merge } from 'lodash-es';
 
-import Header from 'Components/Header';
 import { hasPermission } from 'Components/Authorize';
 
 import grommetTheme from '../../grommetTheme';
@@ -39,41 +38,46 @@ const Account = () => {
 
   return (
     <Grommet theme={merge(tabsTheme, grommetTheme)} className="full-height">
-      <Header />
-      <Box flex="grow" height="100%" pad={{ top: '60px' } }>
-        <Tabs
-          activeIndex={activeIndex}
-          onActive={setActiveIndex}
-          flex="grow"
-          fill
-          className={style.tabs}
-        >
-          <Tab title="My Character">
-            <Box fill border={{color: '#DFDFDF', size: '1px', side: 'top'}}>
-              <Profile />
-            </Box>
-          </Tab>
-          <Tab title="Account Info" flex="grow">
-            <Box fill border={{color: '#DFDFDF', size: '1px', side: 'top'}}>
-              <Box
-                pad={{vertical: '20px', top: '20px', bottom: '40px'}}
-                width={{max: '885px'}}
-                margin="auto"
-                fill
-              >
-                <Heading fill textAlign="center" level="2">Account Information</Heading>
-                <EmailSection />
-                <Box pad="20px" />
-                <PasswordSection />
+      <Box fill>
+        <Box fill>
+          <Tabs
+            activeIndex={activeIndex}
+            onActive={setActiveIndex}
+            className={style.tabs}
+            flex
+          >
+            <Tab title="My Character">
+              <Box fill border={{color: '#DFDFDF', size: '1px', side: 'top'}}>
+                <Profile />
               </Box>
-            </Box>
-          </Tab>
-          {hasPermission('subscription:edit') && (
-            <Tab title="Manage Subscription">
-              <SubscriptionSection />
             </Tab>
-          )}
-        </Tabs>
+            <Tab title="Account Info">
+              <Box
+                fill
+                overflow="auto"
+                border={{ color: '#DFDFDF', size: '1px', side: 'top' }}
+                style={{ display: 'block' }}
+              >
+                <Box
+                  width={{max: '885px'}}
+                  margin="auto"
+                  fill="horizontal"
+                  pad={{ vertical: '20px', top: '20px', bottom: '40px' }}
+                >
+                  <Heading fill textAlign="center" level="2">Account Information</Heading>
+                  <EmailSection />
+                  <Box pad="20px" />
+                  <PasswordSection />
+                </Box>
+              </Box>
+            </Tab>
+            {hasPermission('subscription:edit') && (
+              <Tab title="Manage Subscription">
+                <SubscriptionSection />
+              </Tab>
+            )}
+          </Tabs>
+        </Box>
       </Box>
     </Grommet>
   );

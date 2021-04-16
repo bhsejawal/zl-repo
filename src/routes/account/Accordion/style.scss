@@ -3,7 +3,6 @@ $animationTime: .3s;
 .accordionContainer {
   box-shadow: 0 4px 10px rgba(0, 0, 0, .15);
   border-radius: 10px;
-  overflow: hidden;
 
   .header {
     position: relative;
@@ -30,6 +29,7 @@ $animationTime: .3s;
     border-top: 1px solid transparent;
     max-height: 0;
     transition: $animationTime ease-in-out all;
+    overflow: hidden;
   }
 
   &.expand {

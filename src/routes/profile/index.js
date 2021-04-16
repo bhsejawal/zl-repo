@@ -229,6 +229,7 @@ const Profile = ({
     <Box
       className={classnames(style.container, { [style.step]: step })}
       background={background}
+      overflow="auto"
     >
       <Grommet
         theme={grommetTheme}

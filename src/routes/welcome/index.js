@@ -12,7 +12,6 @@ import {
 } from 'grommet';
 import useFetch from 'use-http';
 
-import Header from 'Components/Header';
 import TagInput from 'Components/TagInput';
 import { PrimaryButton } from 'Components/Buttons';
 import Error from 'Components/modals/Error';
@@ -91,8 +90,7 @@ const Welcome = () => {
 
   return (
     <>
-      <Header />
-      <Box className={style.welcomeWrapper} fill direction="row" pad={{ top: '60px' }}>
+      <Box className={style.welcomeWrapper} fill direction="row">
         <Box pad={{ left: '80px', top: '100px' }}>
           <Box width={{ max: "360px", min: "360px" }}>
             <Heading level="1">

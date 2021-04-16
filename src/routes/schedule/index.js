@@ -8,7 +8,6 @@ import {
 import { connect } from 'react-redux';
 
 import Loader from 'Components/async/Loader';
-import Header from 'Components/Header';
 import { API_BASE_URL } from 'Shared/fetch';
 
 import AnimalFilter from './Filters/AnimalFilter';
@@ -49,43 +48,40 @@ const Schedule = ({ setFilterOptionsAction }) => {
   }
 
   return (
-    <>
-      <Header />
-      <Box pad={{ top: '60px' }} flex="grow">
-        {loading && <Loader fill />}
-        {!loading && (
-          <>
-            <Box direction="row" pad="medium" align="center">
-              <Heading
-                margin="none"
-                size={size === 'large' ? 'small' : '20px'}
-                level="2"
-                style={{ fontWeight: size === "large" ? 900 : 500 }}
-              >
-                Zoolife Talk Schedule
-              </Heading>
-              <Box margin={{ left: "small" }}>
-                <CalendarFilter />
-              </Box>
-              <Box direction="row" flex="grow" justify="end" gap="small">
-                <AnimalFilter />
-                <ZooFilter />
-              </Box>
+    <Box flex overflow="auto">
+      {loading && <Loader fill />}
+      {!loading && (
+        <>
+          <Box height={{ min: '95px' }} direction="row" pad="medium" align="center">
+            <Heading
+              margin="none"
+              size={size === 'large' ? 'small' : '20px'}
+              level="2"
+              style={{ fontWeight: size === "large" ? 900 : 500 }}
+            >
+              Zoolife Talk Schedule
+            </Heading>
+            <Box margin={{ left: "small" }}>
+              <CalendarFilter />
             </Box>
-            <Box flex="grow">
-              <Box
-                flex="grow"
-                style={{ background: 'var(--hunterGreenMediumLight)'}}
-                pad={{ horizontal: 'xlarge', vertical: 'medium' }}
-                align="center"
-              >
-                <ScheduleList />
-              </Box>
+            <Box direction="row" flex="grow" justify="end" gap="small">
+              <AnimalFilter />
+              <ZooFilter />
             </Box>
-          </>
-        )}
-      </Box>
-    </>
+          </Box>
+          <Box flex="grow">
+            <Box
+              flex="grow"
+              style={{ background: 'var(--hunterGreenMediumLight)'}}
+              pad={{ horizontal: 'xlarge', vertical: 'medium' }}
+              align="center"
+            >
+              <ScheduleList />
+            </Box>
+          </Box>
+        </>
+      )}
+    </Box>
   );
 }
 

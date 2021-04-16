@@ -127,8 +127,8 @@ const Signup = ({ setUserDataAction, openTermsModalAction }) => {
   };
 
   return (
-    <Layout>
-      <>
+    <Box fill width={{ max: "1650px", min: "350px" }} margin={{ horizontal: 'auto' }}>
+      <Layout>
         {isLargeScreen && (
           <Heading margin={{top: '30px', bottom: '5px'}} level="4" color="var(--grey)">Step 1 of 2</Heading>
         )}
@@ -240,9 +240,8 @@ const Signup = ({ setUserDataAction, openTermsModalAction }) => {
             </Link>
           </Text>
         </Box>
-
-      </>
-    </Layout>
+      </Layout>
+    </Box>
   );
 };
 
