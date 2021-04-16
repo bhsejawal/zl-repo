@@ -87,10 +87,10 @@ const Chat = ({
 export default connect(({
   user: {
     userId,
+    username,
     profile: {
       animalIcon: animal,
       color,
-      nickname: username,
     },
   },
   habitat: { habitatInfo: { _id: habitatId } },

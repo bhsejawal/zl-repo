@@ -136,7 +136,7 @@ const Profile = ({
   const [isLoading, setIsLoading] = useState(true);
   const [color, setColor] = useState('#FFB145');
   const [icon, setIcon] = useState(animal1);
-  const [nickname, setNickname] = useState();
+  const [username, setUsername] = useState();
   const [errorMsg, setErrorMsg] = useState();
   const [isPickerOpen, setIsPickerOpen] = useState(false);
   const isCustomColor = useMemo(() => !colors.includes(color), [color]);
@@ -150,17 +150,17 @@ const Profile = ({
 
   useEffect(() => {
     setErrorMsg(undefined);
-  }, [color, icon, nickname]);
+  }, [color, icon, username]);
 
   useEffect(() => {
     const fetchUser = async () => {
       try {
         setIsLoading(true);
-        const { profile } = await getUser();
+        const { profile, username } = await getUser();
+        setUsername(username);
         if (!isEmpty(profile)) {
           setColor(profile.color);
           setIcon(profile.animalIcon);
-          setNickname(profile.nickname);
         }
       } catch (err) {
         // TODO: display an error somewhere when we have UI designs for it
@@ -181,25 +181,25 @@ const Profile = ({
     gap: { column: '25px', row: '20px' },
   }), [size]);
 
-  const onNicknameChange = ({ target }) => {
-    setNickname(target.value);
+  const onUsernameChange = ({ target }) => {
+    setUsername(target.value);
   };
 
   const onClickHandler = async () => {
     try {
-      if (nickname.match(/\s/)) {
-        setErrorMsg('Nickname cannot have spaces');
+      if (username.match(/\s/)) {
+        setErrorMsg('Username cannot have spaces');
         return;
       }
 
-      if (nickname.length > 20) {
-        setErrorMsg('Nickname should be between 1 and 20 characters')
+      if (username.length > 20) {
+        setErrorMsg('Username should be between 1 and 20 characters')
         return;
       }
 
       setIsLoading(true);
-      await updateUser(color, icon, nickname);
-      updateProfileAction(color, icon, nickname);
+      await updateUser(color, icon, username);
+      updateProfileAction(color, icon, username);
 
       if (step) {
         route('/map');
@@ -325,8 +325,8 @@ const Profile = ({
               {!isInitiallyLoaded && <FontAwesomeIcon icon={faSpinner} size="2x" spin />}
             </div>
 
-            <FormField height="120px" margin={{ bottom: '0' }} error={errorMsg} label="Your Nickname:" htmlFor="nickname">
-              <TextInput id="nickname" value={nickname} onChange={onNicknameChange} />
+            <FormField height="120px" margin={{ bottom: '0' }} error={errorMsg} label="Your Username:" htmlFor="username">
+              <TextInput id="username" value={username} onChange={onUsernameChange} />
             </FormField>
 
             <Box align="start" margin={{ top: 'small' }}>

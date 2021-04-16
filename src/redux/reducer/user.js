@@ -30,7 +30,7 @@ const initialState = {
   // Should be undefined for Hosts
   habitats: [],
   favoriteHabitats: [],
-  // used to store icon, color and nickname,
+  // used to store icon, color,
   // and other UI user settings
   profile: undefined,
   isOnboarded: false,
@@ -91,10 +91,11 @@ export default (state = initialState, { type, payload }) => {
   }
 
   if (type === SET_USER_PROFILE) {
-    const { profile } = payload;
+    const { profile, username } = payload;
     return {
       ...state,
       profile,
+      username,
     }
   }
 

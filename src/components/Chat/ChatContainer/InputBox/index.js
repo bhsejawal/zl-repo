@@ -63,10 +63,10 @@ const InputBox = ({
 export default connect(({
   habitat: { habitatInfo: { _id: habitatId } },
   user: {
+    username,
     profile: {
       animalIcon: animal,
       color,
-      nickname: username,
     },
   },
 }) => ({

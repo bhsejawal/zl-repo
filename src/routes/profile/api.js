@@ -7,7 +7,7 @@ export const getUser = () => {
   return get(url);
 };
 
-export const updateUser = (color, animalIcon, nickname) => {
+export const updateUser = (color, animalIcon, username) => {
   const url = buildURL('/users/profile');
-  return patch(url, { color, animalIcon, nickname });
+  return patch(url, { color, animalIcon, username });
 };
