@@ -2,7 +2,7 @@ import { h } from 'preact';
 import { useRef, useState } from 'preact/hooks';
 import { connect } from 'react-redux';
 import { Box, Drop } from 'grommet';
-import { formatDistanceToNow, startOfDay } from 'date-fns';
+import { formatDistanceToNow } from 'date-fns';
 
 import classnames from 'classnames';
 import Card from 'Components/Card';
@@ -29,7 +29,7 @@ const Event = ({
   return (
     <Box
       className={classnames('rbc-event', {
-        [style.disabled]: event.start < startOfDay(new Date()),
+        [style.disabled]: event.start < new Date(),
         [style.normalEvent]: event.eventType === 'live',
         // TODO: we currently don't have support for this but it's in Figma
         [style.specialEvent]: event.eventType === 'special',
