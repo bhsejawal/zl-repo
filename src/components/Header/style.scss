@@ -11,7 +11,7 @@
   box-shadow: 0 0 5px rgba(41, 31, 31, .5);
   z-index: 19;
   display: flex;
-  justify-content: flex-end;
+  justify-content: flex-end !important;
 
 
   @media screen and (max-width: #{$tablet-landscape-width}) {
