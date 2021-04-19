@@ -3,6 +3,9 @@ import { Header } from 'grommet';
 
 import ZoolifeLogo from 'Components/ZoolifeLogo';
 import NavBar from 'Components/NavBar';
+import Menu from './Menu';
+
+import { getDeviceType } from '../../../helpers';
 
 import style from './style.scss';
 
@@ -11,7 +14,8 @@ const HeaderComponent = () => (
     <div className={style.logo}>
       <ZoolifeLogo landing />
     </div>
-    <NavBar landing />
+    {getDeviceType() !== 'phone' && <NavBar landing />}
+    {getDeviceType() === 'phone' && <Menu />}
   </Header>
 );
 
