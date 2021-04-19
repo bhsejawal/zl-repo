@@ -46,7 +46,6 @@ const CalendarLoader = ({ habitatId }) => {
     const items = [];
 
     events.forEach(({
-      twitchTitle,
       startTime,
       stopTime,
       ...rest
@@ -56,19 +55,16 @@ const CalendarLoader = ({ habitatId }) => {
 
       if (getDate(start) !== getDate(end)) {
         items.push({
-          title: twitchTitle,
           start,
           end: endOfDay(start),
           ...rest,
         }, {
-          title: twitchTitle,
           start: startOfDay(end),
           end,
           ...rest,
         });
       } else {
         items.push({
-          title: twitchTitle,
           start,
           end,
           ...rest,

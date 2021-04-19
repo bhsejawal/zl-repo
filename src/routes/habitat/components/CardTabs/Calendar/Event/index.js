@@ -6,7 +6,6 @@ import { formatDistanceToNow, startOfDay } from 'date-fns';
 
 import classnames from 'classnames';
 import Card from 'Components/Card';
-import img2 from 'Components/ScheduleCarousel/img2.png';
 import EditButton from 'Components/AdminEditWrappers/EditButton';
 import { hasPermission } from 'Components/Authorize';
 
@@ -16,6 +15,7 @@ import style from './style.scss';
 const Event = ({
   event,
   label,
+  profileImage,
   style: { height, top } = {},
   showEditEventModalAction,
 }) => {
@@ -58,9 +58,9 @@ const Event = ({
           <Card
             header={`STARTS IN ${formatDistanceToNow(event.start).toUpperCase()}`}
             description={event.title}
-            // TODO: we currently don't have an image,
-            //  so we are using this as a placeholder
-            image={img2}
+            image={profileImage}
+            scheduleId={event._id}
+            title={event.title}
           />
         </Drop>
       )}
@@ -68,4 +68,7 @@ const Event = ({
   );
 };
 
-export default connect(null, { showEditEventModalAction: showEditEventModal })(Event);
+export default connect(
+  ({ habitat: { habitatInfo: { profileImage } } }) => ({ profileImage }),
+  { showEditEventModalAction: showEditEventModal },
+)(Event);
