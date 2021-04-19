@@ -55,10 +55,10 @@ const Main = ({ onRouteChange, isTrial, showContactUs }) => {
     <Box fill pad={{ bottom: isTrial ? '58px' : undefined }}>
       <Router onChange={routerChangeHandler}>
         <Home path="/" exact />
-        <Home path="/orana-zoo" partnerImage={oranaZooLogo} exact />
-        <Home path="/toronto-zoo" partnerImage={torontoZooLogo} exact />
-        <Home path="/pacific-marine-mammal-center" partnerImage={pmmcLogo} exact />
-        <Home path="/san-antonio-zoo" partnerImage={sanAntonioLogo} exact />
+        <Home path="/oranapark" partnerImage={oranaZooLogo} exact />
+        <Home path="/torontozoo" partnerImage={torontoZooLogo} exact />
+        <Home path="/pmmc" partnerImage={pmmcLogo} exact />
+        <Home path="/sazoo" partnerImage={sanAntonioLogo} exact />
 
         <AuthGuard path="/login" guestOnly title="Log In" redirectTo="/map">
           <Login />
