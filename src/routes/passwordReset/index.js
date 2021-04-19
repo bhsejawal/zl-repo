@@ -8,9 +8,13 @@ import { API_BASE_URL } from 'Shared/fetch';
 import { PrimaryButton } from 'Components/Buttons';
 import classnames from 'classnames';
 import useFetch from 'use-http';
+import { Heading, Box, Text } from 'grommet';
+
+import ZoolifeLogo from 'Assets/zoolife.svg';
 
 import { validateToken } from '../login/ResetModal/actions';
 import { passwordRegex } from '../../helpers';
+import Layout from '../../layouts/LoginSignup';
 
 import style from '../login/style.scss';
 
@@ -67,63 +71,71 @@ const PasswordReset = ({ token, logged }) => {
   };
 
   return (
-    <div className={style.login}>
-      <div className={style.image}>
-        <img src="https://s3.ca-central-1.amazonaws.com/zl.brizi.tech/assets/LoginMap.png" alt="" />
+    <Layout>
+      <div className={style.login}>
+        <div className={style.formWrapper}>
+          <img src={ZoolifeLogo} alt="zoolife" />
+          <Heading level="1">Reset Password</Heading>
+          <form onSubmit={onSubmit}>
+            <div className={style.inputContainer}>
+              <Text size="large" color="var(--charcoalLight)">New Password:</Text>
+              <div className={style.inputWrapper}>
+                <input
+                  type={showPassword ? 'text' : 'password'}
+                  value={password}
+                  onChange={onPasswordChange}
+                  className={classnames({[style.errorBorder]: passwordError})}
+                />
+                <button type="button" onClick={() => setShowPassword(!showPassword)}>
+                  <FontAwesomeIcon icon={showPassword ? faEye : faEyeSlash } />
+                </button>
+              </div>
+              <div
+                className={classnames(style.errorSection, {
+                  [style.active]: passwordError,
+                  [style.valid]: !passwordError,
+                })}
+              >
+                <Text size="large" color="var(--grey)">
+                  Use a minimum of 8 characters with at least 1 number and 1 character
+                </Text>
+              </div>
+            </div>
+            <br />
+            <div className={style.inputContainer}>
+              <Text size="large" color="var(--charcoalLight)">Confirm New Password:</Text>
+              <div className={style.inputWrapper}>
+                <input
+                  type={showPasswordConf ? 'text' : 'password'}
+                  value={passwordConf}
+                  onChange={onPasswordConfChange}
+                  className={classnames({[style.errorBorder]: passwordConfError})}
+                />
+                <button type="button" onClick={() => setShowPasswordConf(!showPasswordConf)}>
+                  <FontAwesomeIcon icon={showPasswordConf ? faEye : faEyeSlash } />
+                </button>
+              </div>
+              <div className={classnames(style.errorSection, {
+                [style.active]: passwordConfError || error,
+              })}>
+                {!error ? (
+                  <Text size="large" color={passwordConfError ? `var(--red)` : `var(--grey)`}>
+                    Passwords must match
+                  </Text>
+                ) : (
+                  <Text size="large" color="var(--red)">
+                    Something went wrong, please try again!
+                  </Text>
+                )}
+              </div>
+            </div>
+            <Box margin={{ top: '36px' }} width="small">
+              <PrimaryButton loading={loading} label="Reset" type="submit" className={style.submitBtn} />
+            </Box>
+          </form>
+        </div>
       </div>
-      <div className={style.formWrapper}>
-        <h1>
-          <img src="https://s3.ca-central-1.amazonaws.com/zl.brizi.tech/assets/loginZoolifeLogo.svg" alt="" />
-          <br />
-          <span>Reset Password</span>
-        </h1>
-        <form onSubmit={onSubmit}>
-          <div className={style.inputContainer}>
-            <span className={style.label}>New Password:</span>
-            <div className={style.inputWrapper}>
-              <input
-                type={showPassword ? 'text' : 'password'}
-                value={password}
-                onChange={onPasswordChange}
-                className={classnames({[style.errorBorder]: passwordError})}
-              />
-              <button type="button" onClick={() => setShowPassword(!showPassword)}>
-                <FontAwesomeIcon icon={showPassword ? faEye : faEyeSlash } />
-              </button>
-            </div>
-            <div
-              className={classnames(style.errorSection, {
-                [style.active]: passwordError,
-                [style.valid]: !passwordError,
-              })}
-            >
-              Use a minimum of 8 characters with at least 1 number and 1 character
-            </div>
-          </div>
-          <br />
-          <div className={style.inputContainer}>
-            <span className={style.label}>Confirm New Password:</span>
-            <div className={style.inputWrapper}>
-              <input
-                type={showPasswordConf ? 'text' : 'password'}
-                value={passwordConf}
-                onChange={onPasswordConfChange}
-                className={classnames({[style.errorBorder]: passwordConfError})}
-              />
-              <button type="button" onClick={() => setShowPasswordConf(!showPasswordConf)}>
-                <FontAwesomeIcon icon={showPasswordConf ? faEye : faEyeSlash } />
-              </button>
-            </div>
-            <div className={classnames(style.errorSection, {
-              [style.active]: passwordConfError || error,
-            })}>
-              {!error ? 'Passwords must match' : 'Something went wrong, please try again!'}
-            </div>
-          </div>
-          <PrimaryButton loading={loading} label="Submit" type="submit" className={style.submitBtn} />
-        </form>
-      </div>
-    </div>
+    </Layout>
   );
 };
 

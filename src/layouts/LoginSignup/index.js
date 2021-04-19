@@ -19,8 +19,8 @@ const LoginSignup = ({ children }) => {
   return (
     <Box flex={isLargeScreen ? 'grow' : 'shrink' } direction={templateDirection} overflow="hidden">
       <Box basis={imageContainerSize} justify="center">
-        <Box fit="cover" width={{ max: '500px', min: '250px' }}>
-          <Image responsive src={loginImage} alt="" />
+        <Box width={{ max: '920px', min: '250px' }}>
+          <Image fit="cover" responsive src={loginImage} alt="" />
         </Box>
       </Box>
       <Box basis={formContainerSize} justify="center" pad={{ horizontal: isLargeScreen ? 'medium' : 'large' }}>
