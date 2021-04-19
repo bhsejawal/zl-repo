@@ -40,9 +40,8 @@ const ScheduleItem = ({
       <Box direction="row" style={{ zIndex: 1 }}>
         <HabitatImage image={habitatImage} />
         <Box justify="center" margin={{ left: 'medium' }}>
-          <Text size="xlarge" weight={900}>{animal}</Text>
-          {/* We need to load this from the habitats */}
-          <Text size="16px" margin={{ top: 'small' }}>
+          <Heading level="3" margin="0px">{animal}</Heading>
+          <Text size="xlarge" margin={{ top: 'small' }}>
             {description}
           </Text>
         </Box>

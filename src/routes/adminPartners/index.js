@@ -37,7 +37,6 @@ const EditLogoRender = ({ logo: logoProp }) => {
               // TODO: we need to review these
               maxResolution: 800,
               maxFileSize: 100_000,
-              aspectRatio: '1:1',
               acceptedFormats: ['jpeg', 'jpg', 'svg', 'png'],
             }}
             onChange={setLogo}
