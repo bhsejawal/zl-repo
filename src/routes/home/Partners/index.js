@@ -1,56 +1,26 @@
-import { useContext } from 'preact/hooks';
+import { h } from 'preact';
 
-import {
-  Box,
-  Heading,
-  Grid,
-  Image,
-  ResponsiveContext,
-} from 'grommet';
+import style from './style.scss'
 
-const partnersImages = [
-  'https://zl-brizi-tv.s3.ca-central-1.amazonaws.com/assets/landing/s2_pacific.png',
-  'https://zl-brizi-tv.s3.ca-central-1.amazonaws.com/assets/landing/s2_toronto_zoo.png',
-  'https://zl-brizi-tv.s3.ca-central-1.amazonaws.com/assets/landing/s2_orana.png',
-  'https://zl-brizi-tv.s3.ca-central-1.amazonaws.com/assets/landing/s2_san_antonio.png',
-];
+const Partners = () => (
+  <div className={style.partnersContainer}>
+    <div>
+      <h2>
+        Live 24/7 from accredited zoos and animal sanctuaries worldwide.
+      </h2>
+    </div>
 
-const Partners = () => {
-  const size = useContext(ResponsiveContext);
-  const partnerImageSize = size === 'xsmall' ? '132px' : '174px';
-  return (
-    <Box
-      height={{min: '604px'}}
-      justify="center"
-      background={{image: 'url(https://zl-brizi-tv.s3.ca-central-1.amazonaws.com/assets/landing/s2_background.jpg)'}}
-    >
-      <Box alignSelf="center" width={{max: '700px'}}>
-        <Heading textAlign="center" level="2" margin="18px">
-          Live 24/7 from accredited zoos and animal sanctuaries worldwide.
-        </Heading>
-      </Box>
-      <Box align="center" margin={{ top: 'medium' }}>
-        <Grid
-          columns={ ['xsmall', 'small', 'medium'].includes(size) ? ['auto', 'auto'] : ['auto', 'auto', 'auto', 'auto']}
-          gap="40px"
-          margin="small"
-        >
-          {partnersImages.map((image) => (
-            <Box
-              background="white"
-              pad="medium"
-              width={partnerImageSize}
-              height={partnerImageSize}
-              alignContent="center"
-              justify="center"
-            >
-              <Image src={image} />
-            </Box>
-          ))}
-        </Grid>
-      </Box>
-    </Box>
-  );
-};
+    <div className={style.partners}>
+      <div>
+        <div><img src="https://zl-brizi-tv.s3.ca-central-1.amazonaws.com/assets/landing/s2_pacific.png" alt="" /></div>
+        <div><img src="https://zl-brizi-tv.s3.ca-central-1.amazonaws.com/assets/landing/s2_toronto_zoo.png" alt="" /></div>
+      </div>
+      <div>
+        <div><img src="https://zl-brizi-tv.s3.ca-central-1.amazonaws.com/assets/landing/s2_orana.png" alt="" /></div>
+        <div><img src="https://zl-brizi-tv.s3.ca-central-1.amazonaws.com/assets/landing/s2_san_antonio.png" alt="" /></div>
+      </div>
+    </div>
+  </div>
+);
 
 export default Partners;

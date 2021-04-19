@@ -1,46 +1,26 @@
 import { route } from 'preact-router';
-import { useContext } from 'preact/hooks';
-import {
-  ResponsiveContext,
-  Box,
-  Heading,
-  Image,
-  Text,
-} from 'grommet';
-
 import { LandingPrimary } from 'Components/Buttons';
 
-const HeroSection = () => {
-  const size = useContext(ResponsiveContext);
-  const direction = ['xsmall', 'small', 'medium'].includes(size) ? 'column' : 'row';
+import style from './style.scss';
 
-  return (
-    <Box direction={direction} background={{color: '#24412B'}} flex="grow" width={{ max: '100vw'}}>
-      <Box
-        justify="center"
-        alignContent="center"
-        basis="1/2"
-        pad={{ horizontal: '10%', vertical: direction === 'row' ? '0%' : '10%' }}>
-        <Heading textAlign="start" level="2" margin={{ top: '0' }}>
+const Conversation = () => (
+  <div className={style.conversation}>
+    <div className={style.left}>
+      <div className={style.wrapper}>
+        <h2>
           Support the conservation movement with your purchase.
-        </Heading>
-        <Text textAlign="start" size="18px">
-          {`
-            50% of your purchase directly funds animal care & conservation efforts led by our partners.
-          `}
-        </Text>
-        <Box alignSelf="start" margin={{ top: '50px' }}>
-          <LandingPrimary onClick={() => route('/signup')}>I want to help</LandingPrimary>
-        </Box>
-      </Box>
-      <Box basis="1/2" justify="center" alignContent="center">
-        <Image
-          loading="lazy"
-          src="https://zl-brizi-tv.s3.ca-central-1.amazonaws.com/assets/landing/s5_koalas.jpg"
-        />
-      </Box>
-    </Box>
-  );
-};
+        </h2>
+        <p className="body">
+          50% of your purchase directly funds animal care & conservation
+          efforts led by our partners.
+        </p>
+        <LandingPrimary onClick={() => route('/signup')}>I want to help</LandingPrimary>
+      </div>
+    </div>
+    <div className={style.right}>
+      <img loading="lazy" src="https://zl-brizi-tv.s3.ca-central-1.amazonaws.com/assets/landing/s5_koalas.jpg" alt="koalas" />
+    </div>
+  </div>
+);
 
-export default HeroSection;
+export default Conversation;

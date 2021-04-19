@@ -20,6 +20,7 @@ const Overview = () => (
           playsInline
         >
           <source src="https://zl-brizi-tv.s3.ca-central-1.amazonaws.com/assets/landing/s3_video.webm" type="video/webm" />
+          <source src="https://zl-brizi-tv.s3.ca-central-1.amazonaws.com/assets/landing/s3_video.mov" />
           <source src="https://zl-brizi-tv.s3.ca-central-1.amazonaws.com/assets/landing/s3_video.mp4" type="video/mp4" />
           Your browser does not support the video tag.
         </video>

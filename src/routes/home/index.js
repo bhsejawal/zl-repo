@@ -15,6 +15,8 @@ import FAQ from './FAQ';
 import Testimonials from './Testimonials';
 import Footer from './Footer';
 
+import './style.scss';
+
 import grommetTheme from '../../grommetTheme';
 // TODO: move this to its own file and import it;
 const websiteTheme = {

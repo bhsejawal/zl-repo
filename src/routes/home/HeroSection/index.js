@@ -1,21 +1,17 @@
+import { h } from 'preact';
 import { route } from 'preact-router';
-import { useContext } from 'preact/hooks';
-import { ResponsiveContext, Box, Heading } from 'grommet';
-
 import { LandingSecondary } from 'Components/Buttons';
+
 import zoolifeLogoWhite from 'Assets/zoolife-white.png';
 
 import style from './style.scss';
 
-const HeroSection = ({ partnerImage }) => {
-  const size = useContext(ResponsiveContext);
-  const direction = ['xsmall', 'small', 'medium'].includes(size) ? 'column' : 'row';
-
-  return (
-    <>
-      <Box direction={direction} background={{color: '#9BB7F1'}} flex="grow" width={{ max: '100vw'}}>
-        <Box justify="center" alignContent="center" pad="30px" basis="1/2">
-          <Box width={{ max: '358px' }} alignSelf="center">
+const HeroSection = ({ partnerImage }) => (
+  <div className={style.heroContainer}>
+    <div className={style.top}>
+      <div className={style.left}>
+        <div>
+          <div>
             {partnerImage && (
               <div className={style.partner}>
                 <img alt="zoolife-logo" src={zoolifeLogoWhite} />
@@ -24,28 +20,26 @@ const HeroSection = ({ partnerImage }) => {
               </div>
             )}
 
-            <Heading textAlign="center" level="1">Explore nature, from home.</Heading>
-            <Heading textAlign="center" level="4" margin="5px 0 45px 0">
+            <h1>Explore nature, from home.</h1>
+            <h4>
               Live animal experiences from the world&apos;s top zoos, hosted by nature experts.
-            </Heading>
-            <Box alignSelf="center">
-              <LandingSecondary onClick={() => route('/signup')}>Meet the Animals</LandingSecondary>
-            </Box>
-          </Box>
-        </Box>
-        <Box basis="1/2" justify="center" alignContent="center">
-          <video autoPlay muted loop controls={false} >
-            <source src="https://zl-brizi-tv.s3.ca-central-1.amazonaws.com/assets/landing/s1.webm" type="video/webm" />
-            <source src="https://zl-brizi-tv.s3.ca-central-1.amazonaws.com/assets/landing/s1.mp4" type="video/mp4" />
-            Your browser does not support the video tag.
-          </video>
-        </Box>
-      </Box>
-      <Box background="linear-gradient(180deg, #FFDCEE 0%, #FEDFD0 100%)" pad={{ horizontal: '10%' }}>
-        <Heading textAlign="center" level="4" margin="medium">50% of your purchase funds animal care &amp; conservation.</Heading>
-      </Box>
-    </>
-  );
-};
+            </h4>
+            <LandingSecondary onClick={() => route('/signup')}>Meet the Animals</LandingSecondary>
+          </div>
+        </div>
+      </div>
+      <div className={style.right}>
+        <video autoPlay muted loop controls={false} >
+          <source src="https://zl-brizi-tv.s3.ca-central-1.amazonaws.com/assets/landing/s1.webm" type="video/webm" />
+          <source src="https://zl-brizi-tv.s3.ca-central-1.amazonaws.com/assets/landing/s1.mp4" type="video/mp4" />
+          Your browser does not support the video tag.
+        </video>
+      </div>
+    </div>
+    <div className={style.bottom}>
+      <h4>50% of your purchase funds animal care &amp; conservation.</h4>
+    </div>
+  </div>
+);
 
 export default HeroSection;

@@ -1,0 +1,41 @@
+.partnersContainer {
+  background-image: url(https://zl-brizi-tv.s3.ca-central-1.amazonaws.com/assets/landing/s2_background.jpg);
+  background-size: cover;
+
+  h2 {
+    margin: 140px auto 55px auto;
+    text-align: center;
+    display: block;
+    max-width: 780px;
+    padding: 0 60px;
+  }
+}
+
+.partners {
+  text-align: center;
+  margin-bottom: 130px;
+
+  > div {
+    display: inline-block;
+    vertical-align: middle;
+
+    > div {
+      background: #FFFFFF;
+      width: 174px;
+      height: 174px;
+      display: inline-flex;
+      margin: 20px;
+      vertical-align: inherit;
+
+      @media screen and (max-width: 450px) {
+        width: 132px;
+        height: 132px;
+      }
+    }
+  }
+
+  img {
+    width: 80%;
+    margin: auto;
+  }
+}

@@ -1,3 +1,78 @@
+@import "../../../style/media-query";
+
+$videoRatio: 352 / 335;
+
+.heroContainer {
+  display: flex;
+  flex-direction: column;
+  background-color: var(--blueMediumLight);
+
+  .top {
+    display: flex;
+    flex-direction: row;
+
+    .left {
+      display: flex;
+      width: 50%;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+    }
+
+    .right {
+      display: flex;
+      width: 50%;
+      flex-grow: 1;
+      text-align: center;
+      align-items: center;
+      justify-content: center;
+    }
+
+    h1 {
+      margin-bottom: 30px;
+    }
+
+    h4 {
+      margin: 0 0 60px 0;
+    }
+  }
+
+  .bottom {
+    min-height: 68px;
+    background: linear-gradient(180deg, #FFDCEE 0%, #FEDFD0 100%);
+    display: flex;
+    justify-items: center;
+    align-items: center;
+    flex-direction: column;
+    padding: 0 40px;
+    text-align: center;
+  }
+
+
+  .left div {
+    max-width: 330px;
+  }
+
+  .right {
+    height: calc((50vw - 15px) * #{$videoRatio}); // vw includes the scrollbar and its ~15px
+    max-height: calc((1650px / 2) * #{$videoRatio});
+    overflow: hidden;
+    position: relative;
+  }
+
+  video {
+    // video is not rendering the same way on chrome and safari because of the scrollbar
+    // so we will set width 101% hide overflow to eliminate the jump and the empty space
+    // that is showing vertically while scaling
+    width: 100%;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+  }
+}
+
 .partner {
   display: flex;
   align-items: center;
@@ -5,5 +80,40 @@
 
   span {
     margin: 0 15px;
+  }
+}
+
+// we need to reduce the left side spacing so the video remains in full height
+@media screen and (max-width: 920px) and (min-width: 768px) {
+
+  .top .left {
+
+    h1 {
+      margin: 10px;
+    }
+
+    h4 {
+      margin-bottom: 20px;
+    }
+  }
+}
+
+@media screen and (max-width: #{$tablet-portrait-width}) {
+
+  .heroContainer {
+
+    .top {
+      flex-direction: column;
+
+      .left {
+        width: 100%;
+        padding: 90px 30px;
+      }
+
+      .right {
+        width: 100%;
+        height: calc((100vw - 15px) * #{$videoRatio});
+      }
+    }
   }
 }
