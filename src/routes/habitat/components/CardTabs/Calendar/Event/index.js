@@ -41,9 +41,11 @@ const Event = ({
       <div className={style.title} title={event.title}>
         {event.title}
       </div>
-      <div className={classnames("rbc-event-label", style.label)} title={label}>
-        {label}
-      </div>
+      {event.eventType === 'live' && (
+        <div className={classnames("rbc-event-label", style.label)} title={label}>
+          {label}
+        </div>
+      )}
       {isRemindPopupOpen && (
         <Drop
           target={eventRef.current}
