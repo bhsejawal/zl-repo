@@ -4,7 +4,17 @@ import {
   useCallback,
   useRef,
 } from 'preact/hooks';
-import { initWebRTCAdaptor, removeWebRTCAdaptor } from '../helpers';
+import {
+  initWebRTCAdaptor,
+  removeWebRTCAdaptor,
+  play,
+  enableStats,
+  getStreamStats,
+  publish,
+  stop,
+  switchAudioInputSource,
+  switchVideoCameraCapture,
+} from '../helpers';
 import { wsMessages } from '../helpers/constants';
 
 const {
@@ -21,12 +31,12 @@ const {
   PUBLISH_TIMEOUT,
 } = wsMessages;
 
-let webRTCAdaptor;
+let isInitializing = false;
 
 // eslint-disable-next-line import/prefer-default-export
 export const useWebRTCStream = (streamId, isStreamOn, videoContainer, mode, logStatsFn) => {
   const [streamStatus, setStreamStatus] = useState(CLOSED);
-  const [isWebsocketConnected, setIsWebsocketConnected] = useState(false);
+  const [isInitialized, setIsInitialized] = useState(false);
   const [availableDevices, setAvailableDevices] = useState([]);
   const intervalRef = useRef(null);
 
@@ -34,7 +44,7 @@ export const useWebRTCStream = (streamId, isStreamOn, videoContainer, mode, logS
     intervalRef.current = setInterval(
       () => {
         if (streamStatus === PLAY_STARTED && logStatsFn && mode === 'viewer') {
-          logStatsFn(webRTCAdaptor.getStreamStats(streamId));
+          logStatsFn(getStreamStats(streamId));
         }
       },
       30000,
@@ -43,41 +53,39 @@ export const useWebRTCStream = (streamId, isStreamOn, videoContainer, mode, logS
   }, [streamId, logStatsFn, streamStatus, mode])
 
   const startPlaying = useCallback(() => {
-    webRTCAdaptor.play(streamId);
-    webRTCAdaptor.enableStats(streamId);
+    play(streamId);
+    enableStats(streamId);
   }, [streamId])
 
   const startPublishing = useCallback(() => {
     if (streamStatus === PLAY_STARTED) {
-      webRTCAdaptor.publish(streamId);
+      publish(streamId);
     }
   }, [streamStatus, streamId]);
 
   const stopPublishing = useCallback(() => {
     if (streamStatus === PUBLISH_STARTED) {
-      webRTCAdaptor.stop(streamId);
+      stop(streamId);
     }
   }, [streamStatus, streamId]);
 
   const stopPlaying = useCallback(() => {
-    if (streamStatus === PLAY_STARTED) {
-      webRTCAdaptor.stop(streamId);
-    }
-  }, [streamStatus, streamId]);
+    stop(streamId);
+  }, [streamId]);
 
   const switchAudioInput = useCallback(
-    (deviceId) => webRTCAdaptor.switchAudioInputSource(streamId, deviceId), [streamId],
+    (deviceId) => switchAudioInputSource(streamId, deviceId), [streamId],
   );
 
   const switchVideoInput = useCallback(
-    (deviceId) => webRTCAdaptor.switchVideoCameraCapture(streamId, deviceId), [streamId],
+    (deviceId) => switchVideoCameraCapture(streamId, deviceId), [streamId],
   );
 
   useEffect(() => {
     const onPlayHandler = () => {
       setStreamStatus(PLAY_STARTED);
     }
-    const htmlVideoContainer = videoContainer?.current;
+    const { current: htmlVideoContainer } = videoContainer;
 
     if (htmlVideoContainer) {
       htmlVideoContainer.addEventListener('play', onPlayHandler);
@@ -85,6 +93,9 @@ export const useWebRTCStream = (streamId, isStreamOn, videoContainer, mode, logS
 
     return () => {
       if (htmlVideoContainer) {
+        if (streamStatus === PLAY_STARTED) {
+          htmlVideoContainer.pause();
+        }
         htmlVideoContainer.removeEventListener('play', onPlayHandler);
       }
     }
@@ -92,7 +103,7 @@ export const useWebRTCStream = (streamId, isStreamOn, videoContainer, mode, logS
 
   const initializeAdapter = useCallback(() => {
     setStreamStatus(INITIALIZING);
-    webRTCAdaptor = initWebRTCAdaptor(
+    initWebRTCAdaptor(
       streamId,
       videoContainer.current,
       mode,
@@ -100,7 +111,7 @@ export const useWebRTCStream = (streamId, isStreamOn, videoContainer, mode, logS
       function callback(info, data) {
         if (info === INITIALIZED) {
           setStreamStatus(INITIALIZED);
-          setIsWebsocketConnected(true);
+          setIsInitialized(true);
         }
 
         if (info === 'available_devices') {
@@ -145,13 +156,21 @@ export const useWebRTCStream = (streamId, isStreamOn, videoContainer, mode, logS
     if (
       streamId
       && videoContainer.current
-      && !isWebsocketConnected
+      && !isInitialized
       && streamStatus === CLOSED
-      && !webRTCAdaptor
+      && !isInitializing
+      && isStreamOn
     ) {
+      isInitializing = true;
       initializeAdapter();
     }
-  }, [streamId, videoContainer, isWebsocketConnected, streamStatus, isStreamOn]);
+  }, [streamId, videoContainer, isInitialized, streamStatus, isStreamOn, initializeAdapter]);
+
+  useEffect(() => () => {
+    if (streamStatus === PLAY_STARTED && streamId) {
+      stop(streamId);
+    }
+  }, [])
 
   return {
     streamStatus,

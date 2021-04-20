@@ -4,8 +4,8 @@ import {
   useContext,
   useCallback,
   useEffect,
+  useState,
 } from 'preact/hooks';
-import { forwardRef } from 'preact/compat';
 import { connect } from 'react-redux';
 
 import { GlobalsContext } from 'Shared/context';
@@ -14,7 +14,6 @@ import { hasPermission } from 'Components/Authorize';
 import Fallback from './Fallback';
 
 import StreamInteractiveArea from './StreamInteractiveArea';
-import VideoControls from '../VideoControls';
 import AdminButton from './AdminButton';
 
 import { useWebRTCStream } from './hooks/useWebRTCStream';
@@ -29,7 +28,7 @@ const {
   INITIALIZED,
 } = wsMessages;
 
-const Stream = forwardRef(({
+const Stream = ({
   width = 620,
   height = 355,
   streamId,
@@ -38,10 +37,11 @@ const Stream = forwardRef(({
   userId,
   isStreamOn,
   mode,
-}, passedRef) => {
+}) => {
   const videoRef = useRef();
   const containerRef = useRef(null);
   const { socket } = useContext(GlobalsContext);
+  const [isInitialized, setIsInitialized] = useState(false);
 
   const logStreamStatus = useCallback((data) => {
     if (data?.startTime && data?.streamId) {
@@ -57,21 +57,37 @@ const Stream = forwardRef(({
     startPlaying,
     stopPlaying,
     initializeAdapter,
-  } = useWebRTCStream(streamId, isStreamOn, passedRef || videoRef, 'viewer', logStreamStatus);
+  } = useWebRTCStream(streamId, isStreamOn, videoRef, 'viewer', logStreamStatus);
 
   useEffect(() => {
-    if (isStreamOn && streamStatus === CLOSED && videoRef.current) {
+    if (isInitialized && isStreamOn && streamStatus === CLOSED && videoRef.current) {
       initializeAdapter();
     }
 
     if (isStreamOn && streamStatus === INITIALIZED) {
-      setTimeout(() => startPlaying(), 5000);
+      startPlaying();
     }
 
     if (!isStreamOn && streamStatus === PLAY_STARTED) {
       stopPlaying();
     }
-  }, [streamStatus, isStreamOn, startPlaying, stopPlaying, videoRef]);
+  }, [
+    streamStatus,
+    isStreamOn,
+    startPlaying,
+    stopPlaying,
+    videoRef,
+    isInitialized,
+    initializeAdapter,
+  ]);
+
+  useEffect(() => () => {
+    stopPlaying();
+  }, [streamId, isStreamOn, stopPlaying])
+
+  useEffect(() => {
+    setIsInitialized(true);
+  }, []);
 
   if (!isStreamOn) {
     return (
@@ -99,11 +115,12 @@ const Stream = forwardRef(({
       ref={containerRef}
     >
       <video
-        ref={passedRef || videoRef}
+        ref={videoRef}
         autoPlay
         controls={!customControls}
         muted
         playsInline
+        key={streamId}
         style={{ width, height }}
       />
 
@@ -127,15 +144,13 @@ const Stream = forwardRef(({
         <Fallback type="offline" />
       )}
 
-      {customControls && <VideoControls ref={passedRef || videoRef} />}
-
       {(interactive && hasPermission('habitat:edit-stream')) && <AdminButton />}
     </div>
   );
-});
+};
 
 export default connect((
-  { user: { userId }, habitat: { habitatInfo: { isStreamOn } } },
+  { user: { userId } },
 ) => (
-  { userId, isStreamOn }
+  { userId }
 ))(Stream);

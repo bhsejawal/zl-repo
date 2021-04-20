@@ -1,12 +1,14 @@
 import { h } from 'preact';
 import { createRef } from 'preact/compat';
+import { connect } from 'react-redux';
 import classnames from 'classnames';
 import LiveStream from '../LiveStream';
 
 import style from './style.scss';
 
 const LiveTalk = ({
-  streamId,
+  hostStreamKey,
+  isHostStreamOn,
   description,
   name,
   disabled,
@@ -23,7 +25,8 @@ const LiveTalk = ({
         ref={videoRef}
         width="auto"
         height="140px"
-        streamId={streamId}
+        streamId={hostStreamKey}
+        isStreamOn={isHostStreamOn}
         // Custom controls is bugged, removing it for now
         // customControls
         mode="liveTalk"
@@ -38,4 +41,8 @@ const LiveTalk = ({
   );
 };
 
-export default LiveTalk;
+export default connect((
+  { habitat: { habitatInfo: { isHostStreamOn, hostStreamKey } }},
+) => (
+  { isHostStreamOn, hostStreamKey}
+))(LiveTalk);

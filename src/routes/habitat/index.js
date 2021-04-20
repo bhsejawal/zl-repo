@@ -28,6 +28,7 @@ const maxStreamHeight = 720;
 
 const Habitat = ({
   streamKey,
+  isStreamOn,
   habitatId,
   title,
   habitatSlug,
@@ -43,11 +44,11 @@ const Habitat = ({
   const { socket } = useContext(GlobalsContext);
 
   useEffect(() => {
-    if (socket) {
+    if (socket && userId && habitatId) {
       socket.emit('joinRoom', { room: habitatId, userId });
     }
     return () => {
-      if (socket) {
+      if (socket && habitatId) {
         socket.emit('leaveRoom', { room: habitatId });
       }
     }
@@ -133,6 +134,7 @@ const Habitat = ({
           streamId={streamKey}
           interactive
           mode="stream"
+          isStreamOn={isStreamOn}
         />
         <Chat width={chatWidth} height={height} />
       </div>
@@ -156,6 +158,7 @@ const ConnectedHabitat = connect(
         streamKey,
         _id: habitatId,
         title,
+        isStreamOn,
       },
     },
     user: { userId, termsAccepted = false },
@@ -164,6 +167,7 @@ const ConnectedHabitat = connect(
     habitatId,
     title,
     userId,
+    isStreamOn,
     termsAccepted,
   }),
   {

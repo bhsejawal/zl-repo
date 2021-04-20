@@ -23,7 +23,7 @@ const webRTCMap = new Map();
 const sendMessage = (channelId, message, ...props) => {
   const adapter = webRTCMap.get(channelId);
   if (!adapter) {
-    console.warn('adapter is not longer on screen, ignoring message');
+    console.warn('adapter is no longer on screen, ignoring message');
     webRTCMap.delete(channelId);
     return;
   }
@@ -151,4 +151,54 @@ export const initWebRTCAdaptor = (streamId, videoContainer, mode, callback, call
     adaptor.callback('initialized');
   }
   return adaptor;
+};
+
+export const play = (streamId) => {
+  if (webRTCMap.has(streamId)) {
+    const adaptor = webRTCMap.get(streamId);
+    adaptor.play(streamId);
+  }
+};
+
+export const enableStats = (streamId) => {
+  if (webRTCMap.has(streamId)) {
+    const adaptor = webRTCMap.get(streamId);
+    adaptor.enableStats();
+  }
+};
+
+export const getStreamStats = (streamId) => {
+  if (webRTCMap.has(streamId)) {
+    const adaptor = webRTCMap.get(streamId);
+    return adaptor.getStreamStats(streamId);
+  }
+  return {};
+};
+
+export const publish = (streamId) => {
+  if (webRTCMap.has(streamId)) {
+    const adaptor = webRTCMap.get(streamId);
+    adaptor.publish(streamId);
+  }
+};
+
+export const stop = (streamId) => {
+  if (webRTCMap.has(streamId)) {
+    const adaptor = webRTCMap.get(streamId);
+    adaptor.stop(streamId);
+  }
+};
+
+export const switchAudioInputSource = (streamId, deviceId) => {
+  if (webRTCMap.has(streamId)) {
+    const adaptor = webRTCMap.get(streamId);
+    adaptor.switchAudioInputSource(streamId, deviceId);
+  }
+};
+
+export const switchVideoCameraCapture = (streamId, deviceId) => {
+  if (webRTCMap.has(streamId)) {
+    const adaptor = webRTCMap.get(streamId);
+    adaptor.switchVideoInputSource(streamId, deviceId);
+  }
 };
