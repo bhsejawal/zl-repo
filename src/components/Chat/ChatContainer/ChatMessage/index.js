@@ -9,7 +9,7 @@ const ChatMessage = ({
   text,
 }) => (
   <div className={style.chatMessageContainer}>
-    <AnimalIcon animal={animal} color={color} width={26} />
+    <AnimalIcon animalIcon={animal} color={color} width={26} />
     <div className={style.messageWrapper}>
       <span className={style.userName}>
         {username}
