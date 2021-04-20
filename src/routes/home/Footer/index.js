@@ -1,4 +1,4 @@
-import { Heading, Text } from 'grommet';
+import { h } from 'preact';
 import { useState } from 'preact/hooks';
 import { LandingPrimary } from 'Components/Buttons';
 import useFetch from 'use-http';
@@ -55,8 +55,8 @@ const Footer = () => {
     <div className={style.footer}>
       <div className={style.top}>
         <div className={style.subscribe}>
-          <Heading level="2">Join the Community</Heading>
-          <Text size="xlarge">Subscribe for exclusive deals and Zoolife updates.</Text>
+          <h2>Join the Community</h2>
+          <span className="body">Subscribe for exclusive deals and Zoolife updates.</span>
           <div className={style.inputContainer}>
             <input value={email} type="text" placeholder="Enter email" onChange={changeHandler} />
             <LandingPrimary onClick={subscribeHandler}>
@@ -93,25 +93,25 @@ const Footer = () => {
           </div>
         </div>
         <div className={style.partners}>
-          <Heading level="5">
+          <h5>
             To ensure responsible animal experiences, Zoolife only partners with fully accredited
             non-for-profit zoos, sanctuaries and rehabilitation centers.
-          </Heading>
+          </h5>
           <img src="https://zl-brizi-tv.s3.ca-central-1.amazonaws.com/assets/landing/s8_partner_1.png" alt="" />
           <img src="https://zl-brizi-tv.s3.ca-central-1.amazonaws.com/assets/landing/s8_partner_2.png" alt="" />
           <img src="https://zl-brizi-tv.s3.ca-central-1.amazonaws.com/assets/landing/s8_partner_3.png" alt="" />
           <img src="https://zl-brizi-tv.s3.ca-central-1.amazonaws.com/assets/landing/s8_partner_4.png" alt="" />
-          <Heading level="3">Contact: info@zoolife.tv</Heading>
-          <Heading level="3">Press: press@zoolife.tv</Heading>
+          <h3>Contact: info@zoolife.tv</h3>
+          <h3>Press: press@zoolife.tv</h3>
         </div>
       </div>
       <div className={style.bottom}>
-        <Text size="xlarge">
+        <span className="body">
           <FontAwesomeIcon icon={faCopyright} />
           &nbsp;
           2021 Zoolife All Rights Reserved
-        </Text>
-        <Text size="xlarge">325 Front St. W. Toronto, Canada</Text>
+        </span>
+        <span className="body">325 Front St. W. Toronto, Canada</span>
       </div>
     </div>
   );

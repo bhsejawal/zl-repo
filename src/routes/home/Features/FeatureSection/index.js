@@ -1,82 +1,34 @@
-import { useContext } from 'preact/hooks';
 import { route } from 'preact-router';
-import {
-  Box,
-  ResponsiveContext,
-  Heading,
-  Text,
-} from 'grommet';
 import { LandingSecondary } from 'Components/Buttons';
 
-const FeatureSection = () => {
-  const size = useContext(ResponsiveContext);
-  const direction = ['xsmall', 'small', 'medium'].includes(size) ? 'column-reverse' : 'row';
+import style from '../style.scss';
 
-  return (
-    <Box
-      direction={direction}
-      pad={{ horizontal: direction === 'column-reverse' ? 'large' : 'xlarge', vertical: 'medium' }}
-    >
-      <Box
-        justify="start"
-        alignContent="center"
-        basis="1/2"
-      >
-        <Box pad={{ right: direction === 'column-reverse' ? 'large' : 'xlarge'}}>
-          <Heading textAlign="start" level="2">
-            Get closer than you&apos;ve ever been.
-          </Heading>
-          <Text textAlign="start" size="18px">
-            Use audience-guided cameras to observe animals and expore habitats stunningly close.
-          </Text>
-          <Box alignSelf="start" margin={{ top: '50px' }}>
-            <LandingSecondary onClick={() => route('/signup')}>Explore a Habitat</LandingSecondary>
-          </Box>
-        </Box>
-      </Box>
-      <Box
-        basis="1/2"
-        justify="center"
-        alignContent="center"
-      >
-        <Box
-          justify="center"
-          alignSelf="center"
-          style={{ position: 'relative' }}
-          pad={direction === 'column-reverse' ? 'large' : ''}
-        >
-          {direction === 'row' && (
-            <img
-              src="https://zl-brizi-tv.s3.ca-central-1.amazonaws.com/assets/landing/s4_macbook.png"
-              alt="laptop mockup"
-              style={{
-                position: 'absolute',
-                zIndex: 2,
-                left: '-10%',
-                maxWidth: '535px',
-                top: '-2.5%',
-              }}
-            />
-          )}
-          <video
-            autoPlay
-            loop
-            muted
-            playInline
-            style={{
-              width: direction === "row" ? "450px" : "100%",
-              zIndex: 1,
-              borderRadius: '2px',
-            }}
-          >
-            <source src="https://zl-brizi-tv.s3.ca-central-1.amazonaws.com/assets/landing/s4_camera.webm" type="video/webm" />
-            <source src="https://zl-brizi-tv.s3.ca-central-1.amazonaws.com/assets/landing/s4_camera.mp4" type="video/mp4" />
-            Your browser does not support the video tag.
-          </video>
-        </Box>
-      </Box>
-    </Box>
-  );
-};
+const FeatureSection = () => (
+  <div className={style.middle}>
+    {/* this section is reversed on desktop */}
+    <div className={style.left}>
+      <div className={style.videoWrapper}>
+        <img
+          src="https://zl-brizi-tv.s3.ca-central-1.amazonaws.com/assets/landing/s4_macbook.png"
+          alt="laptop mockup"
+        />
+        <video muted autoPlay loop playsInline controls={false}>
+          <source src="https://zl-brizi-tv.s3.ca-central-1.amazonaws.com/assets/landing/s4_camera.webm" type="video/webm" />
+          <source src="https://zl-brizi-tv.s3.ca-central-1.amazonaws.com/assets/landing/s4_camera.mp4" type="video/mp4" />
+          Your browser does not support the video tag.
+        </video>
+      </div>
+    </div>
+    <div className={style.right}>
+      <div className={style.description}>
+        <h2>Get closer than you&apos;ve ever been.</h2>
+        <p>
+          Use audience-guided cameras to observe animals and explore habitats stunningly close.
+        </p>
+        <LandingSecondary onClick={() => route('/signup')}>Explore a Habitat</LandingSecondary>
+      </div>
+    </div>
+  </div>
+);
 
 export default FeatureSection;

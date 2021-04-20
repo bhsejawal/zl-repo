@@ -1,17 +1,15 @@
 import { h } from 'preact';
-import { Heading } from 'grommet';
-
 import Accordion from '../../account/Accordion';
 
 import style from './style.scss';
 
 const FAQ = () => (
   <div className={style.FAQ}>
-    <Heading level="2" margin="0">Frequently Asked Questions</Heading>
+    <h2>Frequently Asked Questions</h2>
 
     <Accordion
       className={style.accordion}
-      header={<Heading level="3">What is Zoolife?</Heading>}
+      header={<h3>What is Zoolife?</h3>}
     >
       <p>
         Zoolife is the world’s first digital zoo. We showcase immersive animal experiences hosted by
@@ -35,7 +33,7 @@ const FAQ = () => (
 
     <Accordion
       className={style.accordion}
-      header={<Heading level="3">How much does Zoolife cost?</Heading>}
+      header={<h3>How much does Zoolife cost?</h3>}
     >
       <p>
         50% of every purchase directly funds animal care & conservation efforts worldwide.
@@ -53,7 +51,7 @@ const FAQ = () => (
 
     <Accordion
       className={style.accordion}
-      header={<Heading level="3">How does Zoolife ensure responsible animal experiences?</Heading>}
+      header={<h3>How does Zoolife ensure responsible animal experiences?</h3>}
     >
       <p>
         To ensure responsible animal experiences, Zoolife only partners with fully accredited
@@ -65,7 +63,7 @@ const FAQ = () => (
 
     <Accordion
       className={style.accordion}
-      header={<Heading level="3">How does Zoolife fund animal care & conservation?</Heading>}
+      header={<h3>How does Zoolife fund animal care & conservation?</h3>}
     >
       <p>
         50% of every Zoolife pass directly funds animal care & conservation efforts led by our
@@ -78,7 +76,7 @@ const FAQ = () => (
 
     <Accordion
       className={style.accordion}
-      header={<Heading level="3">What’s included in a Zoolife pass?</Heading>}
+      header={<h3>What’s included in a Zoolife pass?</h3>}
     >
       <p>
         With a Zoolife pass (Day, Monthly or Annual) you get unlimited access to our collection of

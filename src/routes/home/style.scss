@@ -90,3 +90,19 @@ h6 {
     }
   }
 }
+
+.landing {
+  padding-top: var(--headerHeight);
+
+  .container {
+    overflow-y: scroll;
+    max-height: calc(100vh - var(--headerHeight));
+  }
+
+  .wrapper {
+    max-width: 1650px;
+    min-width: 350px;
+    width: 100%;
+    margin: 0 auto;
+  }
+}

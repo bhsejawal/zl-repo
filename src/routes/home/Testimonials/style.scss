@@ -12,6 +12,12 @@
     margin-bottom: 20px;
   }
 
+  p {
+    margin: 0;
+    font-size: 16px;
+    line-height: 22px;
+  }
+
   div {
     display: flex;
     align-items: center;
@@ -35,6 +41,11 @@
   background-image: url("https://zl-brizi-tv.s3.ca-central-1.amazonaws.com/assets/landing/s6_background.jpg");
   background-size: cover;
   padding-top: 40px;
+
+  > h2 {
+    text-align: center;
+    padding: 0 40px;
+  }
 }
 
 .mission {
@@ -52,6 +63,11 @@
 
   h1 {
     margin: 20px 0 10px;
+  }
+
+  p,
+  h6 {
+    margin: 0;
   }
 
   button {

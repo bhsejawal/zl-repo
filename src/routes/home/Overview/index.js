@@ -1,8 +1,6 @@
-import { Heading } from 'grommet';
-
+import { h } from 'preact';
 import { faCircle } from '@fortawesome/pro-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-
 import Carousel from 'react-multi-carousel';
 
 import 'react-multi-carousel/lib/styles.css';
@@ -12,13 +10,7 @@ const Overview = () => (
   <div className={style.overview}>
     <div className={style.topSection}>
       <div className={style.video}>
-        <video
-          muted
-          controls={false}
-          autoPlay
-          loop
-          playsInline
-        >
+        <video muted autoPlay loop playsInline controls={false}>
           <source src="https://zl-brizi-tv.s3.ca-central-1.amazonaws.com/assets/landing/s3_video.webm" type="video/webm" />
           <source src="https://zl-brizi-tv.s3.ca-central-1.amazonaws.com/assets/landing/s3_video.mov" />
           <source src="https://zl-brizi-tv.s3.ca-central-1.amazonaws.com/assets/landing/s3_video.mp4" type="video/mp4" />
@@ -30,7 +22,7 @@ const Overview = () => (
           <FontAwesomeIcon icon={faCircle} />
           <span>Streaming Live</span>
         </div>
-        <Heading level="2" margin="0">Immersive animal experiences designed to bring you closer to nature.</Heading>
+        <h2>Immersive animal experiences designed to bring you closer to nature.</h2>
         <ul>
           <li>Meet 9 remarkable animal families</li>
           <li>Observe up-close with live audience-guided cameras. </li>

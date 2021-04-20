@@ -1,0 +1,137 @@
+@import "../../../style/media-query";
+
+.features {
+  background-image: url("https://zl-brizi-tv.s3.ca-central-1.amazonaws.com/assets/landing/s4_background.jpg");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center top;
+  padding: 40px;
+}
+
+.top,
+.middle,
+.bottom {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding: 50px 0;
+
+  .left,
+  .right {
+    width: calc(50% - 50px);
+    justify-content: center;
+    display: flex;
+  }
+
+  .description {
+    max-width: 450px;
+    margin-left: auto;
+    justify-content: center;
+    display: flex;
+    flex-direction: column;
+
+    h2 {
+      margin: 0;
+    }
+
+    p {
+      font-size: 18px;
+      line-height: 30px;
+      margin: 30px 0 50px 0;
+    }
+  }
+}
+
+.top img {
+  width: auto;
+  max-width: 100%;
+  height: auto;
+  max-height: 372px;
+  margin-right: auto;
+  align-self: center;
+}
+
+.middle {
+  flex-direction: row-reverse;
+
+  .description {
+    margin-left: unset;
+    margin-right: auto;
+  }
+
+  .videoWrapper {
+    max-width: 508px;
+    position: relative;
+    display: flex;
+    align-self: center;
+    height: fit-content;
+    margin-left: auto;
+
+    img {
+      width: 100%;
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      right: 0;
+      left: 0;
+    }
+
+    video {
+      width: 100%;
+      padding: 2% 8% 5% 8%;
+      height: intrinsic; // Fix for safari
+    }
+  }
+}
+
+.bottom video {
+  max-height: 293px;
+  max-width: 100%;
+  margin-right: auto;
+}
+
+
+@media screen and (min-width: 1300px) {
+
+  .features {
+    padding: 200px 200px;
+  }
+}
+
+
+@media screen and (max-width: 1299px) {
+
+  .features {
+    padding: 200px 150px;
+  }
+}
+
+
+@media screen and (max-width: 1024px) {
+
+  .features {
+    padding: 150px 50px;
+  }
+}
+
+@media screen and (max-width: #{$tablet-portrait-width}) {
+
+  .top,
+  .middle,
+  .bottom {
+    flex-direction: column;
+
+    .left,
+    .right {
+      width: 100%;
+
+      > * {
+        margin: auto;
+      }
+    }
+
+    .description {
+      margin-top: 60px;
+    }
+  }
+}

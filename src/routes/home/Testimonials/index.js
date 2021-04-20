@@ -1,4 +1,4 @@
-import { Heading, Text } from 'grommet';
+import { h } from 'preact';
 import { LandingPrimary } from 'Components/Buttons';
 import { route } from 'preact-router';
 
@@ -11,7 +11,7 @@ import style from './style.scss';
 const Testimonial = ({ text, name, image }) => (
   <div className={style.testimonial}>
     <img className={style.quote} src={quotation} alt="" />
-    <Text size="xlarge">{text}</Text>
+    <p className="body">{text}</p>
     <div>
       <img src={image} alt="" />
       <span>{name}</span>
@@ -21,7 +21,7 @@ const Testimonial = ({ text, name, image }) => (
 
 const Testimonials = () => (
   <div className={style.testimonials}>
-    <Heading level="2" textAlign="center">What the community is saying.</Heading>
+    <h2>What the community is saying.</h2>
 
     <div className={style.carousel}>
       <Carousel
@@ -102,9 +102,12 @@ const Testimonials = () => (
 
     <div className={style.mission}>
       <div>
-        <Heading level="6" margin="0">CROWDFUNDING CONSERVATION</Heading>
-        <Heading level="1" margin="0">At Zoolife, our mission is to help humankind reconnect with nature, while working together to protect it.</Heading>
-        <Text size="xlarge" >50% of your purchase directly funds animal care & conservation efforts led by our partners.</Text>
+        <h6>CROWDFUNDING CONSERVATION</h6>
+        <h1>
+          At Zoolife, our mission is to help humankind reconnect with nature,
+          while working together to protect it.
+        </h1>
+        <p className="body">50% of your purchase directly funds animal care & conservation efforts led by our partners.</p>
 
         <LandingPrimary type="button" onClick={() => route('/signup')}>Join The Community</LandingPrimary>
       </div>
