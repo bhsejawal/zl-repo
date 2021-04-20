@@ -9,7 +9,7 @@ import style from './style.scss';
 const Overview = () => (
   <div className={style.overview}>
     <div className={style.topSection}>
-      <div className={style.video}>
+      <div className={style.left}>
         <video muted autoPlay loop playsInline controls={false}>
           <source src="https://zl-brizi-tv.s3.ca-central-1.amazonaws.com/assets/landing/s3_video.webm" type="video/webm" />
           <source src="https://zl-brizi-tv.s3.ca-central-1.amazonaws.com/assets/landing/s3_video.mov" />
@@ -17,17 +17,19 @@ const Overview = () => (
           Your browser does not support the video tag.
         </video>
       </div>
-      <div className={style.description}>
-        <div className={style.streamingLive}>
-          <FontAwesomeIcon icon={faCircle} />
-          <span>Streaming Live</span>
+      <div className={style.right}>
+        <div className={style.description}>
+          <div className={style.streamingLive}>
+            <FontAwesomeIcon icon={faCircle} />
+            <span>Streaming Live</span>
+          </div>
+          <h2>Immersive animal experiences designed to bring you closer to nature.</h2>
+          <ul>
+            <li>Meet 9 remarkable animal families</li>
+            <li>Observe up-close with live audience-guided cameras. </li>
+            <li>Join daily keeper talks and interactive Q&As with experts.</li>
+          </ul>
         </div>
-        <h2>Immersive animal experiences designed to bring you closer to nature.</h2>
-        <ul>
-          <li>Meet 9 remarkable animal families</li>
-          <li>Observe up-close with live audience-guided cameras. </li>
-          <li>Join daily keeper talks and interactive Q&As with experts.</li>
-        </ul>
       </div>
     </div>
     <div className={style.bottomSection}>

@@ -20,7 +20,7 @@ const HeroSection = ({ partnerImage }) => (
               </div>
             )}
 
-            <h1>Explore nature, from home.</h1>
+            <h1>Explore nature from home.</h1>
             <h4>
               Live animal experiences from the world&apos;s top zoos, hosted by nature experts.
             </h4>
