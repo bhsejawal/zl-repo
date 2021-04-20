@@ -37,7 +37,7 @@ const WeatherWidget = ({ weather, location }) => {
 }
 
 export default connect((
-  { habitat: { habitatInfo: { weather, location } } },
+  { habitat: { habitatInfo: { zoo } } },
 ) => (
-  { weather, location }
+  { weather: zoo?.weather, location: zoo?.location }
 ))(WeatherWidget);

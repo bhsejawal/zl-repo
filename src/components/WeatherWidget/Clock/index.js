@@ -29,7 +29,7 @@ const Clock = ({ timezone }) => {
 }
 
 export default connect((
-  { habitat: { habitatInfo: { timezone }}},
+  { habitat: { habitatInfo: { zoo }}},
 ) => (
-  { timezone }
+  { timezone: zoo?.timezone }
 ))(Clock)
