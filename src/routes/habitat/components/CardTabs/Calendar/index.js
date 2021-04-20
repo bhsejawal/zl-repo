@@ -12,7 +12,6 @@ import {
 } from 'date-fns';
 
 import Event from './Event';
-import Header from './Header';
 import Toolbar from './Toolbar';
 
 import Context from './Context';
@@ -70,7 +69,6 @@ const Calendar = ({ schedules }) => {
           drilldownView={null}
           components={{
             toolbar: Toolbar,
-            header: Header,
             timeGutterHeader: TimeGutterHeader,
             eventWrapper: Event,
           }}
