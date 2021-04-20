@@ -478,7 +478,7 @@ const EditModal = ({
               </div>
             </Box>
             <Box height="520px" margin={{left: '11px'}} background="var(--lightGrey)" width="1px" />
-            <Box pad={{vertical: 'medium', horizontal: '65px'}}>
+            <Box id="cardPreview" pad={{vertical: 'medium', horizontal: '65px'}}>
               {type === SINGLE_ICON_CARD_TYPE && (
                 <SingleIconCard
                   tag={tag}

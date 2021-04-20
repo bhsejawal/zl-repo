@@ -1,5 +1,6 @@
 import { h } from 'preact';
 import { Heading, Text } from 'grommet';
+import classnames from 'classnames';
 
 import { formatAge } from '../../../../../../helpers';
 import CardWrapper from '../components/CardWrapper';
@@ -19,7 +20,7 @@ const AnimalProfileCard = ({
 }) => (
   <CardWrapper tag={tag} hideTag>
     <div className={style.wrapper}>
-      <img className={style.img} src={img} alt="" />
+      <img className={classnames('profileImg', style.img)} src={img} alt="" />
       <Heading level="4" margin={{ top: '20px', bottom: '0px' }}>{name}</Heading>
       {title && <Text size="highlight" weight={700} style={{ letterSpacing: '.5px'}} margin={{ top: '5px'}}>{title}</Text>}
       {sex && dateOfBirth && (

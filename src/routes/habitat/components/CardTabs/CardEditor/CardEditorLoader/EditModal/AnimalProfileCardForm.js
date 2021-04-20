@@ -34,6 +34,7 @@ const AnimalProfileCardForm = forwardRef(({
   onDataChange,
 }, ref) => {
   const imgRef = useRef();
+  const imgPreviewRef = useRef();
   const [nameErrorMsg, setNameErrorMsg] = useState();
 
   useImperativeHandle(ref, () => ({
@@ -53,7 +54,10 @@ const AnimalProfileCardForm = forwardRef(({
   useEffect(() => setNameErrorMsg(undefined), [name]);
 
   const onImgChange = useCallback(
-    (img) => onDataChange({ img }),
+    (img) => {
+      onDataChange({ img });
+      imgPreviewRef.current = document.querySelector('#cardPreview .profileImg');
+    },
     [onDataChange],
   );
 
@@ -71,9 +75,11 @@ const AnimalProfileCardForm = forwardRef(({
           prop="img"
           url={img}
           ref={imgRef}
+          previewRef={imgPreviewRef}
           placeholder="https://"
           constraints={{
             acceptedFormats: ['jpg', 'jpeg', 'png'],
+            aspectRatio: '1:1',
             maxFileSize: 50_000,
           }}
           onBlur={onInputChange}
