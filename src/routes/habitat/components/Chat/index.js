@@ -20,9 +20,11 @@ const ChatComponent = lazy(() => {
   return null;
 });
 
+const upcomingParams = new URLSearchParams({ limit: 20, eventType: 'live' });
+
 const Chat = ({ height, width, habitatId }) => {
   const { data: upcomming } = useFetch(
-    buildURL('/schedules/upcoming?limit=20'),
+    buildURL(`/schedules/upcoming?${upcomingParams}`),
     { credentials: 'include', cachePolicy: 'no-cache' },
     [],
   );
