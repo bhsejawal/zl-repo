@@ -54,9 +54,10 @@ const Chat = ({ height, width, habitatId }) => {
     } catch (err) {
       lastHabitatId = habitatId;
     }
-    const uniqueIds = getLiveEventIds(events)
-      .filter((id) => id !== habitatId);
-    const ind = uniqueIds.indexOf(lastHabitatId);
+    const uniqueIds = getLiveEventIds(events);
+    const ind = uniqueIds.includes(lastHabitatId)
+      ? uniqueIds.indexOf(lastHabitatId)
+      : uniqueIds.indexOf(habitatId);
     // in case lastHabitatId is undefined/null, ind will be -1 which will work nicely
     const nextId = uniqueIds[(ind + 1) % uniqueIds.length];
     const { habitat } = events.find(({ habitat: { _id } }) => _id === nextId);
