@@ -16,7 +16,7 @@ import {
 import { buildURL, post } from 'Shared/fetch';
 import SocialLoginBar from 'Components/SocialLoginBar';
 import { PrimaryButton } from 'Components/Buttons';
-import logo from 'Assets/zoolife.svg';
+import logo from 'Components/ZoolifeLogo/zoolife.svg';
 
 import PasswordResetModal from './ResetModal';
 import Layout from '../../layouts/LoginSignup';

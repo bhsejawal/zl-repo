@@ -2,8 +2,8 @@
 // this is also used in other sampleData.js files
 // https://github.com/webpack-contrib/file-loader/issues/367#issuecomment-593931637
 // eslint-disable-next-line
-// import defaultImg from 'file-loader?name=placeholder.svg!../../../../../../../assets/quick-look-card-img.svg';
-import defaultImg from 'Assets/gorilla.png';
+// import defaultImg from 'file-loader?name=placeholder.svg!../quick-look-card-img.svg';
+import defaultImg from './gorilla.png';
 
 import { ANIMAL_BODY_CARD_TYPE, THE_ANIMAL_BODY } from "../../constants";
 

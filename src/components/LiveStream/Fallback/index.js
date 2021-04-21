@@ -1,6 +1,6 @@
+import { connect } from 'react-redux';
 import { faTimesCircle } from '@fortawesome/pro-regular-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-
 import {
   Box,
   Heading,
@@ -10,8 +10,7 @@ import {
 } from 'grommet';
 
 import Loader from 'Components/async/Loader';
-import background from 'Assets/videoBackground.png';
-import { connect } from 'react-redux';
+import background from './videoBackground.png';
 
 import style from './style.scss';
 

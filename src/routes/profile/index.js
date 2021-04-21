@@ -20,7 +20,6 @@ import {
 } from 'grommet';
 import { route } from 'preact-router';
 import { connect } from 'react-redux';
-import { isEmpty } from 'lodash-es';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEyeDropper, faSpinner, faTimes } from '@fortawesome/pro-solid-svg-icons';
 import { HexColorPicker } from "react-colorful";
@@ -28,23 +27,9 @@ import { PrimaryButton } from 'Components/Buttons';
 import classnames from 'classnames';
 
 import { openTermsModal } from 'Components/TermsAndConditions/actions';
+import { getIconKeys, getIconUrl } from 'Shared/profileIcons';
 
-import backgroundImg from 'Assets/profileBackground.png';
-import animal1 from 'Assets/profileIcons/animal1.svg';
-import animal2 from 'Assets/profileIcons/animal2.svg';
-import animal3 from 'Assets/profileIcons/animal3.svg';
-import animal4 from 'Assets/profileIcons/animal4.svg';
-import animal5 from 'Assets/profileIcons/animal5.svg';
-import animal6 from 'Assets/profileIcons/animal6.svg';
-import animal7 from 'Assets/profileIcons/animal7.svg';
-import animal8 from 'Assets/profileIcons/animal8.svg';
-import animal9 from 'Assets/profileIcons/animal9.svg';
-import animal10 from 'Assets/profileIcons/animal10.svg';
-import animal11 from 'Assets/profileIcons/animal11.svg';
-import animal12 from 'Assets/profileIcons/animal12.svg';
-import animal13 from 'Assets/profileIcons/animal13.svg';
-import animal14 from 'Assets/profileIcons/animal14.svg';
-import animal15 from 'Assets/profileIcons/animal15.svg';
+import backgroundImg from './profileBackground.png';
 
 import { useIsInitiallyLoaded, useOnClickOutside } from '../../hooks';
 import { getUser, updateUser } from './api';
@@ -53,9 +38,9 @@ import { updateProfile } from './actions';
 
 import 'react-colorful/dist/index.css';
 import accountPageStyle from '../account/style.scss';
-
 import style from './style.scss';
 
+const icons = getIconKeys();
 const colors = [
   '#FFB145',
   '#FF8A00',
@@ -71,23 +56,6 @@ const colors = [
   '#529ADD',
   '#368185',
   '#76ADAA',
-];
-const icons = [
-  animal1,
-  animal2,
-  animal3,
-  animal4,
-  animal5,
-  animal6,
-  animal7,
-  animal8,
-  animal9,
-  animal10,
-  animal11,
-  animal12,
-  animal13,
-  animal14,
-  animal15,
 ];
 
 const ColorItem = ({ color, selected, onClick }) => (
@@ -135,7 +103,7 @@ const Profile = ({
   const size = useContext(ResponsiveContext);
   const [isLoading, setIsLoading] = useState(true);
   const [color, setColor] = useState('#FFB145');
-  const [icon, setIcon] = useState(animal1);
+  const [icon, setIcon] = useState(icons[0]);
   const [username, setUsername] = useState();
   const [errorMsg, setErrorMsg] = useState();
   const [isPickerOpen, setIsPickerOpen] = useState(false);
@@ -158,8 +126,10 @@ const Profile = ({
         setIsLoading(true);
         const { profile, username } = await getUser();
         setUsername(username);
-        if (!isEmpty(profile)) {
+        if (profile?.color) {
           setColor(profile.color);
+        }
+        if (profile?.animalIcon) {
           setIcon(profile.animalIcon);
         }
       } catch (err) {
@@ -295,8 +265,8 @@ const Profile = ({
                   <IconItem
                     key={ico}
                     selected={icon === ico}
-                    icon={ico}
-                    onClick={setIcon}
+                    icon={getIconUrl(ico)}
+                    onClick={() => setIcon(ico)}
                     color={color}
                   />
                 ))}
@@ -320,7 +290,11 @@ const Profile = ({
             <div className={style.largeImgWrapper}>
               {isInitiallyLoaded && (
                 <div className={style.largeImg} style={{ backgroundColor: color }}>
-                  <img src={icon} alt="avatar" />
+                  {/* cheking for .svg as because the type was changed */}
+                  {/* old version had Webpack generated path */}
+                  {/* we can remove this in future */}
+                  {/* NOTE: this will not work locally which is fine */}
+                  <img src={icon.endsWith('.svg') ? icon : getIconUrl(icon)} alt="avatar" />
                 </div>
               )}
               {!isInitiallyLoaded && <FontAwesomeIcon icon={faSpinner} size="2x" spin />}

@@ -1,5 +1,5 @@
 import { THREE_ICONS_CARD_TYPE, QUICK_LOOK } from "../../constants";
-import defaultImg from '../../../../../../assets/quick-look-card-img.svg';
+import defaultImg from '../quick-look-card-img.svg';
 
 export const tag = QUICK_LOOK;
 export const type = THREE_ICONS_CARD_TYPE;

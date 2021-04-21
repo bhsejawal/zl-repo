@@ -15,7 +15,7 @@ import {
 import { buildURL, post } from 'Shared/fetch';
 import classnames from 'classnames';
 import SocialLoginBar from 'Components/SocialLoginBar';
-import logo from 'Assets/zoolife.svg';
+import logo from 'Components/ZoolifeLogo/zoolife.svg';
 import { PrimaryButton } from 'Components/Buttons';
 import { openTermsModal } from 'Components/TermsAndConditions/actions';
 

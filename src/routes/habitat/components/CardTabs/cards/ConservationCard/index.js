@@ -8,14 +8,14 @@ import {
 
 import { OutlineButton } from 'Components/Buttons';
 
-import criticallyEndangered from 'Assets/conservationCards/critically_endangered.png';
-import dataDeficient from 'Assets/conservationCards/data_deficient.png';
-import endangered from 'Assets/conservationCards/endangered.png';
-import extinctInWild from 'Assets/conservationCards/extinct_in_wild.png';
-import extinct from 'Assets/conservationCards/extinct.png';
-import leastConcerned from 'Assets/conservationCards/least_concerned.png';
-import nearThreatened from 'Assets/conservationCards/near_threateaned.png';
-import vulnerable from 'Assets/conservationCards/vulnerable.png';
+import criticallyEndangered from './conservationCards/critically_endangered.png';
+import dataDeficient from './conservationCards/data_deficient.png';
+import endangered from './conservationCards/endangered.png';
+import extinctInWild from './conservationCards/extinct_in_wild.png';
+import extinct from './conservationCards/extinct.png';
+import leastConcerned from './conservationCards/least_concerned.png';
+import nearThreatened from './conservationCards/near_threateaned.png';
+import vulnerable from './conservationCards/vulnerable.png';
 
 import CardWrapper from '../components/CardWrapper';
 

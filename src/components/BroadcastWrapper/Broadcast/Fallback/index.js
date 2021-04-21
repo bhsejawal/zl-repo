@@ -1,8 +1,10 @@
 import { Box, Text } from 'grommet';
-import background from 'Assets/hostBackground.png';
-import Loader from 'Components/async/Loader';
 import { faTimesCircle } from '@fortawesome/pro-regular-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+
+import Loader from 'Components/async/Loader';
+
+import background from '../../hostBackground.png';
 
 const BroadcastFallback = ({ type, text }) => (
   <Box

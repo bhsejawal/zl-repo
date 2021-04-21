@@ -1,5 +1,5 @@
 import { FOUR_ICONS_CARD_TYPE, FOOD_AND_DIET } from "../../constants";
-import defaultImg from '../../../../../../assets/quick-look-card-img.svg';
+import defaultImg from '../quick-look-card-img.svg';
 
 export const tag = FOOD_AND_DIET;
 export const type = FOUR_ICONS_CARD_TYPE;

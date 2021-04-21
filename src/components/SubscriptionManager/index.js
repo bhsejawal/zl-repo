@@ -15,7 +15,6 @@ import { format } from "date-fns";
 import { loadStripe } from '@stripe/stripe-js/pure';
 
 import { buildURL } from 'Shared/fetch';
-import background from 'Assets/plansBackground.png';
 import PlanCard from 'Components/PlanCard';
 import Dialog from 'Components/modals/Dialog';
 import LoaderModal from 'Components/async/LoaderModal';
@@ -25,6 +24,8 @@ import { StripeContext } from 'Shared/context';
 import UpdateSubscriptionDialog from './UpdateSubscriptionDialog';
 
 import { setPlans, setSubscriptionData } from '../../redux/actions';
+
+import background from './plansBackground.png';
 
 const defaultDialogSettings = {
   show: false,

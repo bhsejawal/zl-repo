@@ -10,7 +10,7 @@ import classnames from 'classnames';
 import useFetch from 'use-http';
 import { Heading, Box, Text } from 'grommet';
 
-import ZoolifeLogo from 'Assets/zoolife.svg';
+import ZoolifeLogo from 'Components/ZoolifeLogo/zoolife.svg';
 
 import { validateToken } from '../login/ResetModal/actions';
 import { passwordRegex } from '../../helpers';

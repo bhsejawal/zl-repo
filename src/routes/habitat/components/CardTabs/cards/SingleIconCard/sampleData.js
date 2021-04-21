@@ -4,8 +4,8 @@ import { SINGLE_ICON_CARD_TYPE, QUICK_LOOK } from "../../constants";
 // this is also used in other sampleData.js files
 // https://github.com/webpack-contrib/file-loader/issues/367#issuecomment-593931637
 // eslint-disable-next-line max-len
-// import defaultImg from 'file-loader?name=placeholder.svg!../../../../../../../assets/quick-look-card-img.svg';
-import defaultImg from '../../../../../../assets/quick-look-card-img.svg';
+// import defaultImg from 'file-loader?name=placeholder.svg!../quick-look-card-img.svg';
+import defaultImg from '../quick-look-card-img.svg';
 
 export const tag = QUICK_LOOK;
 export const type = SINGLE_ICON_CARD_TYPE;

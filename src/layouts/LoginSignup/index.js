@@ -7,7 +7,7 @@ import {
   ResponsiveContext,
 } from 'grommet';
 
-import loginImage from 'Assets/login.png';
+import loginImage from './login.png';
 
 const LoginSignup = ({ children }) => {
   const size = useContext(ResponsiveContext);

@@ -1,7 +1,7 @@
 import { subMonths } from "date-fns";
 
 import { ANIMAL_PROFILE_CARD_TYPE, EMPTY_TAG } from "../../constants";
-import defaultAnimalImg from '../../../../../../assets/default-animal-card-img.png';
+import defaultAnimalImg from './default-animal-card-img.png';
 
 export const tag = EMPTY_TAG;
 export const type = ANIMAL_PROFILE_CARD_TYPE;

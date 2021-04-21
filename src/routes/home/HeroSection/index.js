@@ -2,7 +2,7 @@ import { h } from 'preact';
 import { route } from 'preact-router';
 import { LandingSecondary } from 'Components/Buttons';
 
-import zoolifeLogoWhite from 'Assets/zoolife-white.png';
+import zoolifeLogoWhite from './zoolife-white.png';
 
 import style from './style.scss';
 

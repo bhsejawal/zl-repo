@@ -1,6 +1,6 @@
 import { h } from 'preact';
-import zoolifeLogo from 'Assets/zoolife.svg';
 import Tag from 'Components/Tag';
+import zoolifeLogo from './zoolife.svg';
 
 const ZoolifeLogo = ({ landing }) => (
   <div>

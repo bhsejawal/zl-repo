@@ -4,7 +4,7 @@ import { Box, Text } from 'grommet';
 import { PrimaryButton } from 'Components/Buttons';
 import Broadcast from 'Components/BroadcastWrapper/Broadcast';
 
-import background from 'Assets/hostBackground.png';
+import background from './hostBackground.png';
 import style from './style.scss';
 
 const BroadcastWrapper = () => {

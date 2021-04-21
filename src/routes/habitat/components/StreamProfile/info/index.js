@@ -7,13 +7,14 @@ import { faHeart as faHeartSolid, faSpinner, faTimes } from '@fortawesome/pro-so
 import { faHeart } from '@fortawesome/pro-light-svg-icons';
 import useFetch from 'use-http';
 
-import profileMask from 'Assets/profile-mask.svg';
 import { buildURL } from 'Shared/fetch';
 
 import TextEditor from 'Components/AdminEditWrappers/TextEditor';
 import ImageEditor from 'Components/AdminEditWrappers/ImageEditor';
 
 import { setHabitatLiked } from '../../../actions';
+
+import profileMask from './profile-mask.svg';
 
 import style from './style.scss';
 

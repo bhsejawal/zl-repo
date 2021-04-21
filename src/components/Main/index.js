@@ -8,10 +8,10 @@ import AuthGuard from 'Components/Authorize/AuthGuard';
 import TermsAndConditions from 'Components/TermsAndConditions';
 import ContactUsModalLoader from 'Components/async/ContactUsModalLoader';
 
-import oranaZooLogo from 'Assets/partners/orana-zoo.png';
-import torontoZooLogo from 'Assets/partners/toronto-zoo.png';
-import pmmcLogo from 'Assets/partners/pmmc.png';
-import sanAntonioLogo from 'Assets/partners/san-antonio-zoo.png';
+import oranaZooLogo from './partners/orana-zoo.png';
+import torontoZooLogo from './partners/toronto-zoo.png';
+import pmmcLogo from './partners/pmmc.png';
+import sanAntonioLogo from './partners/san-antonio-zoo.png';
 
 // Code-splitting is automated for `routes` directory
 import PasswordReset from '../../routes/passwordReset';

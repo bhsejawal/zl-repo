@@ -5,8 +5,8 @@ import {
   Heading,
 } from 'grommet';
 
-import background from 'Assets/redirectBackground.png';
-import zoolifeLogo from 'Assets/zoolife.svg';
+import zoolifeLogo from 'Components/ZoolifeLogo/zoolife.svg';
+import background from './redirectBackground.png';
 
 import style from './style.scss';
 

@@ -11,7 +11,7 @@ import {
 } from 'grommet';
 
 import { PrimaryButton, OutlineButton } from 'Components/Buttons';
-import background from 'Assets/errorBackground.png';
+import background from './errorBackground.webp';
 
 const ErrorPage = ({
   error,
