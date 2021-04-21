@@ -3,6 +3,7 @@ import {
   useEffect,
   useMemo,
   useRef,
+  useState,
 } from "preact/hooks";
 import { connect } from 'react-redux';
 import Carousel from 'react-multi-carousel';
@@ -18,8 +19,6 @@ import { useUpcomingTalks } from '../../routes/habitat/hooks';
 import 'react-multi-carousel/lib/styles.css';
 import style from './style.scss';
 
-const now = new Date();
-
 const ScheduleCarousel = ({
   habitatId,
   hostStreamKey,
@@ -27,6 +26,8 @@ const ScheduleCarousel = ({
   isBroadcasting,
 }) => {
   const ref = useRef();
+  const [now, setNow] = useState(new Date());
+  const [initiallyLoaded, setInitiallyLoaded] = useState(false);
 
   // eslint-disable-next-line no-unused-vars
   const { loading, error, upcoming = [] } = useUpcomingTalks(habitatId);
@@ -38,8 +39,14 @@ const ScheduleCarousel = ({
       startTime,
       ...rest,
     })),
-    [upcoming],
+    [upcoming, now],
   );
+
+  useEffect(() => {
+    if (!loading) {
+      setInitiallyLoaded(true);
+    }
+  }, [loading]);
 
   useEffect(() => {
     if (ref.current) {
@@ -47,12 +54,19 @@ const ScheduleCarousel = ({
     }
   }, [isHostStreamOn]);
 
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setNow(new Date());
+    }, 60 * 1000);
+    return () => clearInterval(interval);
+  }, []);
+
   return (
     <div className={style.container}>
-      {loading && <Card loading />}
+      {!initiallyLoaded && <Card loading />}
       {/* TODO: add error UI */}
 
-      {!loading && !error && (
+      {initiallyLoaded && !error && (
         <Carousel
           ref={ref}
           dotListClass={style.dots}

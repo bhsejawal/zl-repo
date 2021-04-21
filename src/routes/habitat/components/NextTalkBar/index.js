@@ -1,5 +1,10 @@
 import { h } from 'preact';
-import { useState, useRef, useMemo } from 'preact/hooks';
+import {
+  useState,
+  useRef,
+  useMemo,
+  useEffect,
+} from 'preact/hooks';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSpinner, faTimes } from '@fortawesome/pro-solid-svg-icons';
 import { faChevronLeft, faChevronRight } from '@fortawesome/pro-regular-svg-icons';
@@ -15,12 +20,11 @@ import { useUpcomingTalks } from '../../hooks';
 
 import style from './style.scss';
 
-const now = new Date();
-
 const NextTalkBar = ({ height, width }) => {
   const [expand, setExpand] = useState(false);
   const ref = useRef();
-  const { loading, error, upcoming = [] } = useUpcomingTalks(null);
+  const { loading, error, upcoming = [] } = useUpcomingTalks(null, 6);
+  const [now, setNow] = useState(new Date());
   const list = useMemo(
     () => upcoming.map(({ startTime, isStreamLive, ...rest }) => ({
       // TODO: we should format it to a shorter value ('days' -> 'd', 'minutes' -> 'm)
@@ -29,8 +33,15 @@ const NextTalkBar = ({ height, width }) => {
       startTime,
       ...rest,
     })),
-    [upcoming],
+    [now, upcoming],
   );
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setNow(new Date());
+    }, 60 * 1000);
+    return () => clearInterval(interval);
+  }, []);
 
   useOnClickOutside(ref, () => setExpand(false));
 
@@ -85,7 +96,7 @@ const NextTalkBar = ({ height, width }) => {
               <Text size="medium">Live Talks</Text>
               <FontAwesomeIcon icon={faChevronRight} />
             </button>
-            <ul>
+            <ul className="customScrollBar">
               {list.map(({
                 _id,
                 profileImage,

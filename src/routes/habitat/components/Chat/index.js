@@ -22,6 +22,13 @@ const ChatComponent = lazy(() => {
 
 const upcomingParams = new URLSearchParams({ limit: 20, eventType: 'live' });
 
+const getLiveEventIds = (events) => {
+  const ids = events
+    .filter(({ camera }) => camera?.cameraStatus === 'on')
+    .map(({ habitat: { _id } }) => _id);
+  return Array.from(new Set(ids));
+};
+
 const Chat = ({ height, width, habitatId }) => {
   const { data: upcomming } = useFetch(
     buildURL(`/schedules/upcoming?${upcomingParams}`),
@@ -31,12 +38,11 @@ const Chat = ({ height, width, habitatId }) => {
 
   const isNextBtnDisabled = useMemo(() => {
     if (upcomming?.events) {
-      const ids = upcomming.events.map(({ habitat: { _id } }) => _id);
-      const uniqueIds = Array.from(new Set(ids));
+      const uniqueIds = getLiveEventIds(upcomming.events);
       return uniqueIds.length === 0
         || (uniqueIds.length === 1 && habitatId === uniqueIds[0]);
     }
-    return false;
+    return true;
   }, [habitatId, upcomming?.events]);
 
   const onNextClick = () => {
@@ -48,8 +54,7 @@ const Chat = ({ height, width, habitatId }) => {
     } catch (err) {
       lastHabitatId = habitatId;
     }
-    const ids = events.map(({ habitat: { _id } }) => _id);
-    const uniqueIds = Array.from(new Set(ids))
+    const uniqueIds = getLiveEventIds(events)
       .filter((id) => id !== habitatId);
     const ind = uniqueIds.indexOf(lastHabitatId);
     // in case lastHabitatId is undefined/null, ind will be -1 which will work nicely

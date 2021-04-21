@@ -14,6 +14,7 @@ export const useUpcomingTalks = (habitatId, quantity = 3) => {
     cachePolicy: 'no-cache',
   });
 
+  // eslint-disable-next-line consistent-return
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
@@ -61,6 +62,12 @@ export const useUpcomingTalks = (habitatId, quantity = 3) => {
     // know if the hook should run without this value
     if (habitatId || habitatId === null) {
       fetchData();
+
+      const interval = setInterval(() => {
+        fetchData();
+      }, 5 * 60 * 1000);
+
+      return () => clearInterval(interval);
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [habitatId]);
