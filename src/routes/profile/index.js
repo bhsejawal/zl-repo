@@ -310,7 +310,7 @@ const Profile = ({
                 loading={isLoading}
                 label={step ? 'Enter Zoolife!' : 'Save Changes'}
                 onClick={onClickHandler}
-                disabled={username.length === 0}
+                disabled={username?.length === 0}
               />
             </Box>
           </Box>
