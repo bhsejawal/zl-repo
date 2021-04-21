@@ -16,8 +16,9 @@ const AnimalIcon = ({
   userColor,
 }) => {
   const userIconUrl = useMemo(() => {
-    // in case of old solution where we were saving URLs
-    if (userIcon.endsWith('.svg')) {
+    // in case of old solution where we were saving URLs,
+    // initial value will be undefined after a user signup
+    if (userIcon?.endsWith('.svg')) {
       return userIcon;
     }
     // getIconUrl(getIconKeys()[0]) is defensive part in case 'userIcon' is not found
