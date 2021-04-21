@@ -127,7 +127,7 @@ const ShareContainer = ({ userId, show, showSnapshotShareAction }) => {
   }
 
   return (
-    <Box width={{max: '245px', min: '245px'}} className={style.shareContainer}>
+    <Box width={{max: '450px', min: '30vw'}} className={style.shareContainer}>
       <Box background="var(--hunterGreenMediumLight)">
         <button onClick={closeHandler} type="button" className={style.close}>
           <FontAwesomeIcon icon={faTimes} />
