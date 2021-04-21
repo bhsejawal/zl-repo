@@ -2,6 +2,7 @@ import { h } from 'preact';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSpinner } from '@fortawesome/free-solid-svg-icons';
 
+import { getIconUrl } from 'Shared/profileIcons';
 import { LOADING, FULL_CURSOR, LOADING_PIN } from './constants';
 
 import style from './style.scss';
@@ -43,7 +44,14 @@ const CustomCursor = ({
           <ellipse stroke="1.5" fill="url(#ellipse)" ry="55" rx="185" cy="441" cx="192" />
         </>
       )}
-      <image href={animal} width="250" height="250" x="67" y="80" />
+
+      <image
+        width="250"
+        height="250"
+        x="67"
+        y="80"
+        href={animal.endsWith('.svg') ? animal : getIconUrl(animal)}
+      />
     </svg>
   );
 };
