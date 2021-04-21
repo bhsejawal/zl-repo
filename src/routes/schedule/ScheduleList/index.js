@@ -111,6 +111,8 @@ const ScheduleList = ({
         logo,
         profileInfo,
         description,
+        habitatSlug,
+        zooSlug,
       }) => (
         <ScheduleItem
           liveTalks={liveTalks}
@@ -121,6 +123,8 @@ const ScheduleList = ({
           habitatImage={profileInfo}
           description={description}
           onClick={handleScheduleClick}
+          habitatSlug={habitatSlug}
+          zooSlug={zooSlug}
         />
       ))}
       {showDialog && (
@@ -153,4 +157,4 @@ export default connect((
   { schedule: { filters: { animals, zoos, date }}},
 ) => (
   { animals, zoos, date}
-))(ScheduleList)
+))(ScheduleList);

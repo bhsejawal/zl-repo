@@ -8,6 +8,7 @@ import {
   Heading,
 } from 'grommet';
 import { format } from 'date-fns';
+import { Link } from 'preact-router';
 
 import { PrimaryButton } from 'Components/Buttons';
 
@@ -21,6 +22,8 @@ const ScheduleItem = ({
   zooLogo,
   habitatImage,
   description,
+  habitatSlug,
+  zooSlug,
   onClick,
 }) => {
   const size = useContext(ResponsiveContext);
@@ -38,9 +41,13 @@ const ScheduleItem = ({
       {/* We need to load this from the habitats, size contraints should be defined on api */}
       <Image src={zooLogo} width="140" className={style.zooImage} />
       <Box direction="row" style={{ zIndex: 1 }}>
-        <HabitatImage image={habitatImage} />
+        <Link href={encodeURI(`/h/${zooSlug}/${habitatSlug}`)}>
+          <HabitatImage image={habitatImage} />
+        </Link>
         <Box justify="center" margin={{ left: 'medium' }}>
-          <Heading level="3" margin="0px">{animal}</Heading>
+          <Link href={encodeURI(`/h/${zooSlug}/${habitatSlug}`)}>
+            <Heading level="3" margin="0px">{animal}</Heading>
+          </Link>
           <Text size="xlarge" margin={{ top: 'small' }}>
             {description}
           </Text>
