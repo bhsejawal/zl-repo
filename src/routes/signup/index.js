@@ -127,7 +127,7 @@ const Signup = ({ setUserDataAction, openTermsModalAction }) => {
   };
 
   return (
-    <Box fill width={{ max: "1650px", min: "350px" }} margin={{ horizontal: 'auto' }}>
+    <Box fill width={{ max: "1650px", min: "350px" }} height={{ min: 'max-content' }} margin={{ horizontal: 'auto' }}>
       <Layout>
         {isLargeScreen && (
           <Heading margin={{top: '30px', bottom: '5px'}} level="4" color="var(--grey)">Step 1 of 2</Heading>

@@ -125,7 +125,7 @@ const Login = ({
   };
 
   return (
-    <Box fill width={{ max: "1650px", min: "350px" }} margin={{ horizontal: 'auto' }}>
+    <Box fill width={{ max: "1650px", min: "350px" }} height={{ min: 'max-content' }} margin={{ horizontal: 'auto' }}>
       <Layout>
         <Box direction="row" align="center" height="40px">
           <Text size="xxlarge" responsive>
