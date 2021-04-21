@@ -157,6 +157,7 @@ const HabitatCard = ({
             onClick={handleFavoriteClick}
             margin={{ right: '5px' }}
             width="20px"
+            className={style.iconButton}
           >
             <FontAwesomeIcon
               icon={likeIcon}

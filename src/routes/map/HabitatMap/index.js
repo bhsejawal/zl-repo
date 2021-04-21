@@ -86,12 +86,12 @@ const HabitatMap = ({ habitats, setMapDataAction, setHabitatAction }) => {
       <Can
         perform="maps:edit"
         yes={() => (
-          <Box margin={{ top: '20px' }} alignSelf="end" pad={{ right: '25px'}}>
+          <Box margin={{ top: '20px' }} alignSelf="end" pad={{ right: '25px', bottom: '4px'}}>
             {!coordinates && (
-              <Heading level="4" color="var(--blueDark)" textAlign="end">Click on map to show location percentages</Heading>
+              <Heading level="4" color="var(--blueDark)" textAlign="end" margin={{ bottom: '0px'}}>Click on map to show location percentages</Heading>
             )}
             {coordinates && (
-              <Heading level="4" color="var(--blueDark)">
+              <Heading level="4" color="var(--blueDark)" margin={{ bottom: '0px'}}>
                 {`X: ${coordinates.x}%, Y: ${coordinates.y}%`}
               </Heading>
             )}

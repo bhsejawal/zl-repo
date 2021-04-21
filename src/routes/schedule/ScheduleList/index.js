@@ -130,7 +130,7 @@ const ScheduleList = ({
       {showDialog && (
         <Dialog
           title="Send reminder?"
-          text="We'll send a calendar invite to your email"
+          text="We'll send a calendar invite to your email."
           buttonLabel="Remind me"
           onConfirm={sendInvitationHandler}
           onCancel={() => setShowDialog(false)}
@@ -139,13 +139,13 @@ const ScheduleList = ({
       {sendingReminder && (<LoaderModal />)}
       {showErrorModal && (
         <ErrorModal
-          text="Something went wrong. Please, try again"
+          text="Something went wrong. Please try again"
           onClose={() => setShowErrorModal(false)}
         />
       )}
       {showSuccessModal && (
         <SuccessModal
-          text="Invitation sent! Please, check your inbox."
+          text="Invitation sent! Please check your inbox."
           onClose={() => setShowSuccessModal(false)}
         />
       )}

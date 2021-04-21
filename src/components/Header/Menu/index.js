@@ -37,6 +37,11 @@ const Menu = ({ unsetUserDataAction, openContactUsModalAction }) => {
     route('/account')
   }
 
+  const contactUsHandler = () => {
+    setShowMenu(false);
+    openContactUsModalAction()
+  }
+
   return (
     <div className={style.menuContainer}>
       <Box
@@ -54,6 +59,7 @@ const Menu = ({ unsetUserDataAction, openContactUsModalAction }) => {
           target={buttonRef.current}
           elevation="xlarge"
           className={style.menuItem}
+          onClickOutside={() => setShowMenu(!showMenu)}
         >
           <Box
             width="195px"
@@ -74,7 +80,7 @@ const Menu = ({ unsetUserDataAction, openContactUsModalAction }) => {
             pad={{ horizontal: '15px' }}
             direction="row"
             align="center"
-            onClick={openContactUsModalAction}
+            onClick={contactUsHandler}
           >
             <FontAwesomeIcon icon={faQuestionCircle} />
             <Box margin={{ left: '12px' }}>
