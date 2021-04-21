@@ -10,11 +10,18 @@ import {
 } from 'grommet';
 
 import Loader from 'Components/async/Loader';
+import { openContactUsModal } from 'Components/modals/ContactUs/actions'
+
 import background from './videoBackground.png';
 
 import style from './style.scss';
 
-const Fallback = ({ type, profileImage, mode }) => (
+const Fallback = ({
+  type,
+  profileImage,
+  mode,
+  openContactUsModalAction,
+}) => (
   <Box
     background={{image: `url(${background})`}}
     fill
@@ -40,8 +47,7 @@ const Fallback = ({ type, profileImage, mode }) => (
               </Heading>
               <Text color="white" margin={{ top: 'large' }} size="large">
                 Not loading?&nbsp;
-                {/* TODO: ADD Contact US POPUP */}
-                <Anchor color="white" className={style.contactUs}>Contact Us</Anchor>
+                <Anchor color="white" className={style.contactUs} onClick={openContactUsModalAction}>Contact Us</Anchor>
               </Text>
             </>
           )}
@@ -61,8 +67,7 @@ const Fallback = ({ type, profileImage, mode }) => (
 
           <Text color="white" margin={{ top: 'large' }} size="large">
             Still not working?&nbsp;
-            {/* TODO: ADD Contact US POPUP */}
-            <Anchor color="white" className={style.contactUs}>Contact Us</Anchor>
+            <Anchor color="white" className={style.contactUs} onClick={openContactUsModalAction}>Contact Us</Anchor>
           </Text>
         </Box>
       </>
@@ -87,4 +92,5 @@ const Fallback = ({ type, profileImage, mode }) => (
 
 export default connect(
   ({ habitat: { habitatInfo: { profileImage } } }) => ({ profileImage }),
+  { openContactUsModalAction: openContactUsModal },
 )(Fallback);
