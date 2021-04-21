@@ -86,9 +86,12 @@ const ShareContainer = ({ userId, show, showSnapshotShareAction }) => {
 
   useEffect(() => {
     const socketHandler = (data) => {
-      setSnapshotData(data);
-      setShowMainContent(true);
-      showSnapshotShareAction(true);
+      const { userId: snapshotUserId } = data;
+      if (snapshotUserId === userId) {
+        setSnapshotData(data);
+        setShowMainContent(true);
+        showSnapshotShareAction(true);
+      }
     };
 
     if (socket) {
