@@ -2,6 +2,7 @@
   display: flex;
   background-color: var(--hunterGreenMediumLight);
   padding: 10px;
+  min-height: max-content;
 
   .inputContainer {
     display: flex;
@@ -14,7 +15,7 @@
       font-size: 14px;
       border: 0;
       outline: none;
-      padding: 10px;
+      padding: 8px 32px 9px 10px;
       box-sizing: content-box;
 
       &:placeholder {

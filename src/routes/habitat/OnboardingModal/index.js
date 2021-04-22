@@ -79,12 +79,15 @@ const Onboarding = ({ isOnboarded, setUserDataAction }) => {
           )}
           <video
             ref={videoRef}
-            src="https://zl-brizi-tv.s3.ca-central-1.amazonaws.com/assets/onboarding.mp4"
             muted
             autoPlay
             controls={false}
             onEnded={() => setShowButtons(true)}
-          />
+          >
+            <source src="https://zl-brizi-tv.s3.ca-central-1.amazonaws.com/assets/onboarding.mp4" type="video/mp4" />
+            <source src="https://zl-brizi-tv.s3.ca-central-1.amazonaws.com/assets/onboarding.webm" type="video/webm" />
+            <source src="https://zl-brizi-tv.s3.ca-central-1.amazonaws.com/assets/onboarding2.mp4" />
+          </video>
         </Box>
       </Box>
     </Layer>
