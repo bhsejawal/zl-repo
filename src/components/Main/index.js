@@ -27,7 +27,7 @@ import AppRouter from './AppRouter';
 
 import { getDeviceType, logPageView } from '../../helpers';
 
-const mobileRoutes = ['/', '/signup', '/mobile', '/login'];
+const mobileRoutes = ['/', '/signup', '/mobile', '/login', '/torontozoo', '/oranapark', '/pmmc', '/sazoo'];
 
 const Main = ({ onRouteChange, isTrial, showContactUs }) => {
   const [path, setPath] = useState();
