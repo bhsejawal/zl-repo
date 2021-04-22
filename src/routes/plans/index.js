@@ -24,7 +24,7 @@ const Plans = () => {
         height={{ min: 'unset' }}
         flex="grow"
       >
-        <Box width={{ max: '650px' }} alignSelf="center">
+        <Box width={{ max: '650px' }} height={{ min: 'max-content' }} alignSelf="center">
           <Heading level={2} textAlign="center" fill>
             Keep exploring with a Zoolife pass.
           </Heading>

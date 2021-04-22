@@ -23,12 +23,12 @@ const ZoolifeBenefits = () => {
       background="var(--hunterGreenMediumLight)"
       pad="medium"
       align="center"
-      height={{ min: '90px' }}
+      height={{ min: 'max-content' }}
     >
       <Grid
         columns={gridSettings}
         gap="large"
-        pad={{ horizontal: 'medium' }}
+        pad={{ horizontal: '27px' }}
       >
         <BenefitItem
           text="24/7 access to 12 animal families around the world"

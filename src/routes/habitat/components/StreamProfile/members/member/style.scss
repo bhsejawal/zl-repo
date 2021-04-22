@@ -24,14 +24,15 @@
     border-radius: inherit;
     position: absolute;
     top: 50%;
-    right: 0;
     left: 50%;
     width: 100%;
-    transition: .6s ease-in-out transform;
-    transform: translate3d(-50%, -50%, 0) scale(1);
+    height: 100%;
+    transition: .6s ease-in-out all;
+    transform: translateY(-50%) translateX(-50%);
 
     &:hover {
-      transform: translate3d(-50%, -50%, 0) scale(1.5);
+      width: 150%;
+      height: 150%;
     }
   }
 }

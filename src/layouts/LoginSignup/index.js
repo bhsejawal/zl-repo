@@ -10,7 +10,9 @@ const LoginSignup = ({ children }) => (
       <img src={loginImage} alt="" />
     </div>
     <div className="formSection">
-      {children}
+      <div>
+        {children}
+      </div>
     </div>
   </div>
 );

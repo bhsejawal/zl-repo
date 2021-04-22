@@ -268,9 +268,9 @@ const SubscriptionSection = ({
   return (
     <>
       <Box
-        fill={['medium', 'large'].includes(size)}
-        responsive
         direction="column"
+        flex="grow"
+        height="auto"
       >
         <Box
           fill
@@ -282,6 +282,8 @@ const SubscriptionSection = ({
             repeat: 'no-repeat',
             attachment: 'fixed',
           }}
+          flex="grow"
+          pad="50px"
         >
           <Box
             direction={['medium', 'large'].includes(size) ? 'row' : 'column'}
@@ -289,6 +291,7 @@ const SubscriptionSection = ({
             align="center"
             justify="center"
             gap="large"
+            margin="auto"
           >
             {plansData.map(({
               name,

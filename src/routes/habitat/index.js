@@ -125,7 +125,7 @@ const Habitat = ({
   }
 
   return (
-    <>
+    <div>
       <div className={style.topSection} style={{ height, maxHeight: height }}>
         <NextTalkBar width={sideBarWidth} height={height} />
         <LiveStream
@@ -147,7 +147,7 @@ const Habitat = ({
         <CardTabs />
       </div>
       <OnboardingModal />
-    </>
+    </div>
   );
 }
 
