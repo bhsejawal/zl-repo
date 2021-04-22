@@ -1,3 +1,4 @@
+import { getIconUrl } from 'Shared/profileIcons';
 import AnimalIcon from '../../../AnimalIcon';
 
 import style from './style.module.scss';
@@ -9,7 +10,11 @@ const ChatMessage = ({
   text,
 }) => (
   <div className={style.chatMessageContainer}>
-    <AnimalIcon animalIcon={animal} color={color} width={26} />
+    <AnimalIcon
+      animalIcon={animal.endsWith('.svg') ? animal : getIconUrl(animal)}
+      color={color}
+      width={26}
+    />
     <div className={style.messageWrapper}>
       <span className={style.userName}>
         {username}
