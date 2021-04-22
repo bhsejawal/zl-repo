@@ -12,7 +12,7 @@
   @media screen and (max-width: #{$phone-portrait-width} - 1) {
 
     a {
-      padding: 0px !important;
+      padding: 0 !important;
     }
 
     span {
@@ -25,10 +25,10 @@
     color: var(--grey);
     text-decoration: none;
     display: inline-block;
-    padding: 0 15px;
+    margin: 0 15px;
     min-width: 50px;
     text-align: center;
-    text-decoration: none;
+    text-decoration: unset;
     cursor: pointer;
 
     @media screen and (min-width: #{$phone-portrait-width}) and (max-width: #{$phone-landscape-width - 1}) {
