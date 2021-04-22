@@ -36,7 +36,19 @@ const ContactUsModal = ({ closeContactUsModalAction }) => {
       return;
     }
     setHasSubmitted(true);
-    await post({ content });
+
+    const {
+      userAgent,
+      platform,
+      vendor,
+    } = window.navigator;
+
+    await post({
+      content,
+      userAgent,
+      platform,
+      vendor,
+    });
   }
 
   const closeModalHandler = () => {
