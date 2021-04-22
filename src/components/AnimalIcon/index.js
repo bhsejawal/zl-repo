@@ -37,7 +37,13 @@ const AnimalIcon = ({
 
   return (
     <div
-      style={{ backgroundColor: color || userColor, width, height: width }}
+      style={{
+        backgroundColor: color || userColor,
+        width,
+        height: width,
+        minWidth: width,
+        minHeight: width,
+      }}
       className={style.animalIcon}
     >
       <img src={animalIcon || userIconUrl} alt="animal" />
