@@ -100,16 +100,18 @@ const Testimonials = () => (
       </Carousel>
     </div>
 
-    <div className={style.mission}>
-      <div>
-        <h6>CROWDFUNDING CONSERVATION</h6>
-        <h1>
-          At Zoolife, our mission is to help humankind reconnect with nature,
-          while working together to protect it.
-        </h1>
-        <p className="body">50% of your purchase directly funds animal care & conservation efforts led by our partners.</p>
+    <div className={style.missionContainer}>
+      <div className={style.mission}>
+        <div className={style.wrapper}>
+          <h6>CROWDFUNDING CONSERVATION</h6>
+          <h1>
+            At Zoolife, our mission is to help humankind reconnect with nature,
+            while working together to protect it.
+          </h1>
+          <p className="body">50% of your purchase directly funds animal care & conservation efforts led by our partners.</p>
 
-        <LandingPrimary type="button" onClick={() => route('/signup')}>Join The Community</LandingPrimary>
+          <LandingPrimary type="button" onClick={() => route('/signup')}>Join The Community</LandingPrimary>
+        </div>
       </div>
       <img
         loading="lazy"

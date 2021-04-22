@@ -48,17 +48,20 @@
   }
 }
 
-.mission {
+.missionContainer {
   position: relative;
   display: flex;
   justify-content: space-between;
 
-  > div:first-child {
-    max-width: 520px;
-    margin-left: 70px;
+  .mission {
     height: auto;
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
+    padding-left: 200px;
+
+    .wrapper {
+      max-width: 520px;
+    }
   }
 
   h1 {
@@ -110,14 +113,17 @@
   }
 }
 
+@media screen and (max-width: $tablet-landscape-width) {
+
+  .missionContainer .mission {
+    padding: 50px;
+  }
+}
+
 @media screen and (max-width: 715px) {
 
-  .mission {
+  .missionContainer {
     flex-direction: column;
-
-    > div:first-child {
-      margin: 0 40px;
-    }
 
     button {
       margin: 50px 0 0 0;
