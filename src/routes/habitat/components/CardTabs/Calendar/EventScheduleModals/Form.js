@@ -1,5 +1,5 @@
 import { get, omit } from 'lodash-es';
-import { useState } from 'preact/hooks';
+import { useEffect, useState } from 'preact/hooks';
 import { connect } from 'react-redux';
 import {
   Box,
@@ -8,12 +8,15 @@ import {
   Grommet,
   RadioButton,
   Text,
+  TextInput,
 } from 'grommet';
 import { formatISO, parseISO } from 'date-fns';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronDown } from '@fortawesome/pro-solid-svg-icons';
 import classnames from 'classnames';
+import useFetch from 'use-http';
 
+import { buildURL } from 'Shared/fetch';
 import { PrimaryButton, OutlineButton } from 'Components/Buttons';
 import { showDeleteEventModal } from './actions';
 import grommetTheme from '../../../../../../grommetTheme';
@@ -65,6 +68,17 @@ const Form = ({
   } : defaultData);
   const [error, setError] = useState();
   const [loading, setLoading] = useState();
+
+  const { data: { hosts } = {}, get: getHosts } = useFetch(
+    buildURL('/admin/users/hosts'),
+    { credentials: 'include' },
+  );
+
+  useEffect(() => {
+    if (data?.type === TALK) {
+      getHosts();
+    }
+  }, [data?.type, getHosts]);
 
   // TODO enhance form validation to be field specific before sending a request
   const submitHandler = async (e) => {
@@ -125,6 +139,10 @@ const Form = ({
     setData({ ...data, [property]: value });
   };
 
+  const onHostSuggestionClick = ({ suggestion }) => {
+    setData({ ...data, hostEmail: suggestion });
+  };
+
   return (
     <form onSubmit={submitHandler} className={style.form}>
       <div className={classnames(style.wrapper, 'customScrollBar')}>
@@ -172,7 +190,14 @@ const Form = ({
             {data.type === TALK && (
               <Box direction="column" width="calc(50% - 10px)" margin={{ left: '10px' }} className={style.inputWrapper}>
                 <Text size="xlarge" className={style.label}>Host Email</Text>
-                <input type="email" value={data.hostEmail} onChange={changeHandler('hostEmail')} required />
+                <TextInput
+                  required
+                  type="email"
+                  value={data.hostEmail}
+                  onChange={changeHandler('hostEmail')}
+                  onSuggestionSelect={onHostSuggestionClick}
+                  suggestions={hosts}
+                />
                 {data.hostEmail.length > 0 && <div className={style.error}>Invalid Email</div>}
               </Box>
             )}
