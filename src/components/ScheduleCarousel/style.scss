@@ -29,4 +29,12 @@ $dotsHeight: 27px;
       }
     }
   }
+
+  .carousel {
+    padding: 0 30px;
+
+    li > div {
+      margin: auto;
+    }
+  }
 }

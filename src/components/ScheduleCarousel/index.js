@@ -72,7 +72,7 @@ const ScheduleCarousel = ({
           dotListClass={style.dots}
           slidesToSlide={1}
           swipeable
-          additionalTransfrom={15}
+          additionalTransfrom={-30}
           arrows={false}
           autoPlaySpeed={3000}
           draggable
@@ -80,11 +80,12 @@ const ScheduleCarousel = ({
           partialVisible
           renderDotsOutside
           showDots
+          className={style.carousel}
           responsive={{
             generic: {
               breakpoint: { max: 3000, min: 0 },
               items: 1,
-              partialVisibilityGutter: 30,
+              partialVisibilityGutter: 20,
             },
           }}
         >
