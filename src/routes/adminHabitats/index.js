@@ -64,20 +64,6 @@ const EditHabitatRender = ({ profileImage: profileImageProp }) => {
   );
 };
 
-const StreamStatus = ({ online, liveTalk }) => {
-  if (online && liveTalk) {
-    return <Text size="large">Live Talk</Text>;
-  }
-  if (online) {
-    return <Text size="large">Online</Text>;
-  }
-  return <Text size="large">Offline</Text>;
-};
-
-const Partner = ({ zoo }) => (
-  <Text size="large">{zoo?.name}</Text>
-);
-
 const UpdatedAtCell = ({ updatedAt }) => (
   <Text size="large">
     {updatedAt ? format(parseISO(updatedAt), 'yyyy-MM-dd') : ''}
@@ -129,12 +115,10 @@ const Habitats = () => {
     postProperty: 'zoo',
     editable: true,
     type: TEXT_AUTOCOMPLETE,
-    render: Partner,
     selectValues: zoos.map(({ name, _id }) => ({ label: name, value: _id })),
   }, {
     title: 'Status',
-    property: 'online',
-    render: StreamStatus,
+    property: 'status',
   }, {
     title: 'Last Modified',
     property: 'updatedAt',
