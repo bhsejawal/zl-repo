@@ -6,7 +6,7 @@ import style from "../style.scss";
 const AvatarSection = () => (
   <div className={style.top}>
     <div className={style.left}>
-      <img src="https://zl-brizi-tv.s3.ca-central-1.amazonaws.com/assets/landing/s4_animal_grid.png" alt="animals" />
+      <img src="https://assets.zoolife.tv/landing/s4_animal_grid.png" alt="animals" />
     </div>
     <div className={style.right}>
       <div className={style.description}>

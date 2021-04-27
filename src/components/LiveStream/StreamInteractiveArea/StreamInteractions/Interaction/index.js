@@ -51,7 +51,7 @@ const Click = ({
   if (type === 'emoji') {
     return (
       <img
-        src={`https://brizi-sandbox-bucket.s3.amazonaws.com${path}`}
+        src={`https://assets.zoolife.tv${path}`}
         style={{ top: `${y}%`, left: `${x}%` }}
         draggable="false"
         alt="emoji"

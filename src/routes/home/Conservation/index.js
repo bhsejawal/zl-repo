@@ -18,7 +18,7 @@ const Conversation = () => (
       </div>
     </div>
     <div className={style.right}>
-      <img loading="lazy" src="https://zl-brizi-tv.s3.ca-central-1.amazonaws.com/assets/landing/s5_koalas.jpg" alt="koalas" />
+      <img loading="lazy" src="https://assets.zoolife.tv/landing/s5_koalas.jpg" alt="koalas" />
     </div>
   </div>
 );

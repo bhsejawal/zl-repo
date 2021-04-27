@@ -80,7 +80,7 @@ const HabitatMap = ({ habitats, setMapDataAction, setHabitatAction }) => {
             </div>
           ))}
 
-          <img src="https://zl-brizi-tv.s3.ca-central-1.amazonaws.com/assets/zoolifeMap.png" alt="" />
+          <img src="https://assets.zoolife.tv/zoolifeMap.png" alt="" />
         </div>
       </div>
       <Can

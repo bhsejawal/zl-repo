@@ -18,8 +18,8 @@ import { buildURL } from 'Shared/fetch';
 import { PrimaryButton } from 'Components/Buttons';
 import { closeTermsModal, setUserTermsAccepted } from './actions';
 
-const termsPdfUrl = 'https://zl-brizi-tv.s3.ca-central-1.amazonaws.com/assets/BRIZI+INC+-+Terms+of+Use+v17-03-2021.pdf';
-const privacyPdfUrl = 'https://zl-brizi-tv.s3.ca-central-1.amazonaws.com/assets/Brizi+-+Privacy+Policy+v17-03-2021.pdf';
+const termsPdfUrl = 'https://assets.zoolife.tv/BRIZI+INC+-+Terms+of+Use+v17-03-2021.pdf';
+const privacyPdfUrl = 'https://assets.zoolife.tv/Brizi+-+Privacy+Policy+v17-03-2021.pdf';
 
 const TermsAndConditions = ({
   user,

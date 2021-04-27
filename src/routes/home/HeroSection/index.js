@@ -30,8 +30,8 @@ const HeroSection = ({ partnerImage }) => (
       </div>
       <div className={style.right}>
         <video muted autoPlay loop playsInline controls={false}>
-          <source src="https://zl-brizi-tv.s3.ca-central-1.amazonaws.com/assets/landing/s1.webm" type="video/webm" />
-          <source src="https://zl-brizi-tv.s3.ca-central-1.amazonaws.com/assets/landing/s1.mp4" type="video/mp4" />
+          <source src="https://assets.zoolife.tv/landing/s1.webm" type="video/webm" />
+          <source src="https://assets.zoolife.tv/landing/s1.mp4" type="video/mp4" />
           Your browser does not support the video tag.
         </video>
       </div>

@@ -81,12 +81,12 @@ const Footer = () => {
           </div>
           <div className={style.termsAndPolicy}>
             <div>
-              <a href="https://zl-brizi-tv.s3.ca-central-1.amazonaws.com/assets/Brizi+-+Privacy+Policy+v17-03-2021.pdf" target="_blank" rel="noreferrer">
+              <a href="https://assets.zoolife.tv/Brizi+-+Privacy+Policy+v17-03-2021.pdf" target="_blank" rel="noreferrer">
                 Read our Privacy Policy
               </a>
             </div>
             <div>
-              <a href="https://zl-brizi-tv.s3.ca-central-1.amazonaws.com/assets/BRIZI+INC+-+Terms+of+Use+v17-03-2021.pdf" target="_blank" rel="noreferrer">
+              <a href="https://assets.zoolife.tv/BRIZI+INC+-+Terms+of+Use+v17-03-2021.pdf" target="_blank" rel="noreferrer">
                 Read our Terms & Conditions
               </a>
             </div>
@@ -97,10 +97,10 @@ const Footer = () => {
             To ensure responsible animal experiences, Zoolife only partners with fully accredited
             non-for-profit zoos, sanctuaries and rehabilitation centers.
           </h5>
-          <img src="https://zl-brizi-tv.s3.ca-central-1.amazonaws.com/assets/landing/s8_partner_1.png" alt="" />
-          <img src="https://zl-brizi-tv.s3.ca-central-1.amazonaws.com/assets/landing/s8_partner_2.png" alt="" />
-          <img src="https://zl-brizi-tv.s3.ca-central-1.amazonaws.com/assets/landing/s8_partner_3.png" alt="" />
-          <img src="https://zl-brizi-tv.s3.ca-central-1.amazonaws.com/assets/landing/s8_partner_4.png" alt="" />
+          <img src="https://assets.zoolife.tv/landing/s8_partner_1.png" alt="" />
+          <img src="https://assets.zoolife.tv/landing/s8_partner_2.png" alt="" />
+          <img src="https://assets.zoolife.tv/landing/s8_partner_3.png" alt="" />
+          <img src="https://assets.zoolife.tv/landing/s8_partner_4.png" alt="" />
           <h3>Contact: info@zoolife.tv</h3>
           <h3>Press: press@zoolife.tv</h3>
         </div>

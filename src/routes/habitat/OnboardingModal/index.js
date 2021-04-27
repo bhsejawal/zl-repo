@@ -84,9 +84,9 @@ const Onboarding = ({ isOnboarded, setUserDataAction }) => {
             controls={false}
             onEnded={() => setShowButtons(true)}
           >
-            <source src="https://zl-brizi-tv.s3.ca-central-1.amazonaws.com/assets/onboarding.mp4" type="video/mp4" />
-            <source src="https://zl-brizi-tv.s3.ca-central-1.amazonaws.com/assets/onboarding.webm" type="video/webm" />
-            <source src="https://zl-brizi-tv.s3.ca-central-1.amazonaws.com/assets/onboarding2.mp4" />
+            <source src="https://assets.zoolife.tv/onboarding.mp4" type="video/mp4" />
+            <source src="https://assets.zoolife.tv/onboarding.webm" type="video/webm" />
+            <source src="https://assets.zoolife.tv/onboarding2.mp4" />
           </video>
         </Box>
       </Box>
