@@ -18,6 +18,8 @@ import { buildURL } from 'Shared/fetch';
 import { PrimaryButton } from 'Components/Buttons';
 import { closeTermsModal, setUserTermsAccepted } from './actions';
 
+import style from './style.scss';
+
 const termsPdfUrl = 'https://assets.zoolife.tv/BRIZI+INC+-+Terms+of+Use+v17-03-2021.pdf';
 const privacyPdfUrl = 'https://assets.zoolife.tv/Brizi+-+Privacy+Policy+v17-03-2021.pdf';
 
@@ -83,6 +85,7 @@ const TermsAndConditions = ({
 
         <Box pad={{ horizontal: 'large', vertical: 'medium' }} flex="grow">
           <iframe
+            className={style.pdfContainer}
             width="100%"
             height="100%"
             src={`${termsPdfUrl}#toolbar=0`}
