@@ -199,6 +199,6 @@ export const switchAudioInputSource = (streamId, deviceId) => {
 export const switchVideoCameraCapture = (streamId, deviceId) => {
   if (webRTCMap.has(streamId)) {
     const adaptor = webRTCMap.get(streamId);
-    adaptor.switchVideoInputSource(streamId, deviceId);
+    adaptor.switchVideoCameraCapture(streamId, deviceId);
   }
 };
