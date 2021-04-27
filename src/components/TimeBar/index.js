@@ -16,6 +16,7 @@ const TimeBar = ({
   validUntil,
   isTrial,
   path,
+  role,
   updateSubscriptionAction,
   openInviteModalAction,
 }) => {
@@ -72,7 +73,7 @@ const TimeBar = ({
     return () => clearTimeout(timeout);
   }, [isTrial, time, updateSubscriptionAction, validUntil]);
 
-  if (!isTrial || isLandingPage) {
+  if (!isTrial || isLandingPage || role !== 'user') {
     return null;
   }
 
@@ -122,10 +123,12 @@ export default connect(
   ({
     user: {
       subscription: { validUntil, productId },
+      role,
     },
   }) => ({
     validUntil,
     isTrial: productId === 'TRIAL',
+    role,
   }),
   {
     updateSubscriptionAction: updateSubscription,
