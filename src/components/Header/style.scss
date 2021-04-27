@@ -13,27 +13,24 @@
   display: flex;
   justify-content: flex-end !important;
 
+  @media screen and (max-width: 1140px) {
 
-  @media screen and (max-width: #{$tablet-landscape-width}) {
-
-    .logo {
-      position: static !important;
-      display: flex !important;
-      justify-content: flex-start !important;
-      padding-left: 12px !important;
+    div.logo {
+      position: initial;
+      transform: inherit;
+      justify-content: flex-start;
+      padding-left: 16px;
     }
   }
 
   .logo {
     position: absolute;
-    left: 0;
-    right: 0;
-    top: 0;
-    bottom: 0;
+    left: 50%;
+    top: 50%;
+    transform: translateX(-50%) translateY(-50%);
     display: flex;
     flex-grow: 1;
     justify-content: center;
     align-items: center;
-    pointer-events: none;
   }
 }

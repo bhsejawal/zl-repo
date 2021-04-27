@@ -20,21 +20,20 @@
       position: static !important;
       display: flex !important;
       justify-content: flex-start !important;
-      padding-left: 12px !important;
+      padding-left: 16px !important;
+      transform: unset !important;
     }
   }
 
   .logo {
     position: absolute;
-    left: 0;
-    right: 0;
-    top: 0;
-    bottom: 0;
+    left: 50%;
+    top: 50%;
+    transform: translateX(-50%) translateY(-50%);
     display: flex;
     flex-grow: 1;
     justify-content: center;
     align-items: center;
-    pointer-events: none;
 
     div {
       display: flex;
