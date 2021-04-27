@@ -20,8 +20,8 @@ import { closeTermsModal, setUserTermsAccepted } from './actions';
 
 import style from './style.scss';
 
-const termsPdfUrl = 'https://assets.zoolife.tv/BRIZI+INC+-+Terms+of+Use+v17-03-2021.pdf';
-const privacyPdfUrl = 'https://assets.zoolife.tv/Brizi+-+Privacy+Policy+v17-03-2021.pdf';
+const termsPdfUrl = 'https://assets.zoolife.tv/BRIZI_INC_-_Terms_of_Use_v17-03-2021.pdf';
+const privacyPdfUrl = 'https://assets.zoolife.tv/Brizi_-_Privacy_Policy_v17-03-2021.pdf';
 
 const TermsAndConditions = ({
   user,

@@ -81,12 +81,12 @@ const Footer = () => {
           </div>
           <div className={style.termsAndPolicy}>
             <div>
-              <a href="https://assets.zoolife.tv/Brizi+-+Privacy+Policy+v17-03-2021.pdf" target="_blank" rel="noreferrer">
+              <a href="https://assets.zoolife.tv/Brizi_-_Privacy_Policy_v17-03-2021.pdf" target="_blank" rel="noreferrer">
                 Read our Privacy Policy
               </a>
             </div>
             <div>
-              <a href="https://assets.zoolife.tv/BRIZI+INC+-+Terms+of+Use+v17-03-2021.pdf" target="_blank" rel="noreferrer">
+              <a href="https://assets.zoolife.tv/BRIZI_INC_-_Terms_of_Use_v17-03-2021.pdf" target="_blank" rel="noreferrer">
                 Read our Terms & Conditions
               </a>
             </div>
