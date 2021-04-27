@@ -163,7 +163,7 @@ export const play = (streamId) => {
 export const enableStats = (streamId) => {
   if (webRTCMap.has(streamId)) {
     const adaptor = webRTCMap.get(streamId);
-    adaptor.enableStats();
+    adaptor.enableStats(streamId);
   }
 };
 
