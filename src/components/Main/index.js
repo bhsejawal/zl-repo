@@ -27,7 +27,7 @@ import AppRouter from './AppRouter';
 
 import { getDeviceType, logPageView } from '../../helpers';
 
-const mobileRoutes = ['/', '/signup', '/mobile', '/login', '/torontozoo', '/oranapark', '/pmmc', '/sazoo'];
+const mobileRoutes = ['/', '/signup', '/mobile', '/login', '/torontozoo', '/oranapark', '/orana', '/pmmc', '/sazoo'];
 
 const Main = ({ onRouteChange, isTrial, showContactUs }) => {
   const [path, setPath] = useState();
@@ -56,6 +56,7 @@ const Main = ({ onRouteChange, isTrial, showContactUs }) => {
       <Router onChange={routerChangeHandler}>
         <Home path="/" exact />
         <Home path="/oranapark" partnerImage={oranaZooLogo} exact />
+        <Home path="/orana" partnerImage={oranaZooLogo} exact />
         <Home path="/torontozoo" partnerImage={torontoZooLogo} exact />
         <Home path="/pmmc" partnerImage={pmmcLogo} exact />
         <Home path="/sazoo" partnerImage={sanAntonioLogo} exact />
