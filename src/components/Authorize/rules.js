@@ -3,7 +3,7 @@ import store from '../../redux/store';
 const canEditZoo = () => {
   const {
     user: { zooId: userZooId },
-    habitat: { habitatInfo: { zooId } },
+    habitat: { habitatInfo: { zoo: { _id: zooId } } },
   } = store.getState();
 
   return userZooId === zooId;
