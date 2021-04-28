@@ -1,6 +1,8 @@
 @import "../../../style/media-query";
 
 $videoRatio: 352 / 335;
+$animationDuration: 2.5s;
+$textChangeDuration: $animationDuration * 5;
 
 .heroContainer {
   display: flex;
@@ -115,5 +117,79 @@ $videoRatio: 352 / 335;
         height: calc((100vw - 15px) * #{$videoRatio});
       }
     }
+  }
+}
+
+.animationContainer {
+  display: inline-flex;
+  width: 150px;
+  justify-content: flex-end;
+
+  span {
+    animation-name: animation;
+    animation-duration: $animationDuration;
+    animation-iteration-count: infinite;
+  }
+
+  span:before {
+    content: "";
+    display: inline-block;
+    animation-name: textChange;
+    animation-duration: $textChangeDuration;
+    animation-iteration-count: infinite;
+  }
+}
+
+@keyframes animation {
+
+  0% {
+    opacity: 1;
+    transform: scale3d(.9, .9, .9);
+  }
+
+  20% {
+    transform: scale3d(1, 1, 1);
+  }
+
+  60% {
+    opacity: 1;
+    transform: scale3d(1, 1, 1);
+  }
+
+  98% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 0;
+    transform: scale3d(.9, .9, .9);
+  }
+}
+
+@keyframes textChange {
+
+  0%,
+  19% {
+    content: "Explore";
+  }
+
+  20%,
+  39% {
+    content: "Protect";
+  }
+
+  40%,
+  59% {
+    content: "Observe";
+  }
+
+  60%,
+  79% {
+    content: "Discover";
+  }
+
+  80%,
+  100% {
+    content: "Support";
   }
 }
