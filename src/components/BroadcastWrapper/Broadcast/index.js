@@ -181,8 +181,11 @@ const Broadcast = ({
                 </RoundButton>
               </Box>
             )}
-            {streamStatus === PUBLISH_STARTED && nextTalk
-              ? <LiveTag endTime={nextTalk.stopTime} /> : <PreviewTag />}
+            {streamStatus === PUBLISH_STARTED && nextTalk && (
+              <LiveTag endTime={nextTalk.stopTime} />
+            )}
+
+            {streamStatus !== PUBLISH_STARTED && <PreviewTag />}
             <video
               autoPlay
               muted
