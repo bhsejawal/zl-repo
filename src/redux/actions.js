@@ -14,6 +14,7 @@ import {
   UPDATE_SUBSCRIPTION_DATA,
   UPDATE_FAVORITE_HABITATS,
   TOGGLE_IS_BROADCASTING,
+  UPDATE_REFERRAL_DATA,
 } from './types';
 
 const DEFAULT_INTERACTION_TIMEOUT = 3000;
@@ -90,3 +91,8 @@ export const updateSubscription = (payload) => ({
 });
 
 export const toggleIsBroadcasting = () => ({ type: TOGGLE_IS_BROADCASTING });
+
+export const updateReferralData = (referralData) => ({
+  type: UPDATE_REFERRAL_DATA,
+  payload: { referralData },
+})

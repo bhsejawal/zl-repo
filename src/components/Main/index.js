@@ -1,6 +1,6 @@
 import { Router, route } from 'preact-router';
 import { Box } from 'grommet';
-import { useState } from 'preact/hooks';
+import { useState, useEffect } from 'preact/hooks';
 import { connect } from 'react-redux';
 
 import TimeBar from 'Components/TimeBar';
@@ -25,12 +25,24 @@ import RedirectPage from '../../routes/redirectPage';
 import AdminRouter from './AdminRouter';
 import AppRouter from './AppRouter';
 
-import { getDeviceType, logPageView } from '../../helpers';
+import { getDeviceType, logPageView, logAndGetCampaignData } from '../../helpers';
+
+import { updateReferralData } from '../../redux/actions';
 
 const mobileRoutes = ['/', '/signup', '/mobile', '/login', '/torontozoo', '/oranapark', '/orana', '/pmmc', '/sazoo'];
 
-const Main = ({ onRouteChange, isTrial, showContactUs }) => {
+const Main = ({
+  onRouteChange,
+  isTrial,
+  showContactUs,
+  updateReferralDataAction,
+}) => {
   const [path, setPath] = useState();
+
+  useEffect(() => {
+    const campaignData = logAndGetCampaignData();
+    updateReferralDataAction(campaignData);
+  }, [updateReferralDataAction])
 
   const routerChangeHandler = (props) => {
     const { url, previous } = props;
@@ -119,4 +131,8 @@ const Main = ({ onRouteChange, isTrial, showContactUs }) => {
 
 export default connect((
   { user: { subscription: { productId } }, modals: { contactus: { isOpen: showContactUs }} },
-) => ({ isTrial: productId === 'TRIAL', showContactUs }))(Main);
+) => (
+  { isTrial: productId === 'TRIAL', showContactUs }
+), {
+  updateReferralDataAction: updateReferralData,
+})(Main);

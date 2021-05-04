@@ -7,6 +7,7 @@ import {
   UNSET_USER_DATA,
   SET_SUBSCRIPTION_DATA,
   UPDATE_FAVORITE_HABITATS,
+  UPDATE_REFERRAL_DATA,
 } from '../types';
 
 const initialState = {
@@ -35,6 +36,7 @@ const initialState = {
   profile: undefined,
   isOnboarded: false,
   termsAccepted: null,
+  referralData: null,
 };
 
 export default (state = initialState, { type, payload }) => {
@@ -87,6 +89,7 @@ export default (state = initialState, { type, payload }) => {
       ...initialState,
       role: 'guest',
       sessionChecked: true,
+      referralData: state.referralData,
     }
   }
 
@@ -134,6 +137,14 @@ export default (state = initialState, { type, payload }) => {
     return {
       ...state,
       favoriteHabitats: newFavHabitats,
+    }
+  }
+
+  if (type === UPDATE_REFERRAL_DATA) {
+    const { referralData } = payload;
+    return {
+      ...state,
+      referralData,
     }
   }
 

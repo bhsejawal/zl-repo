@@ -20,7 +20,12 @@ import { PrimaryButton } from 'Components/Buttons';
 import { openTermsModal } from 'Components/TermsAndConditions/actions';
 
 import { setUserData } from '../../redux/actions';
-import { emailRegex, passwordRegex, getDeviceType } from '../../helpers';
+import {
+  emailRegex,
+  passwordRegex,
+  getDeviceType,
+  getCampaignData,
+} from '../../helpers';
 
 import Layout from '../../layouts/LoginSignup';
 
@@ -66,6 +71,7 @@ const Signup = ({ setUserDataAction, openTermsModalAction }) => {
       const url = buildURL('/users/signup');
       const origin = getDeviceType();
       const termsVersion = TERMS_VERSION;
+      const referralData = getCampaignData();
       const {
         user,
         passwordError,
@@ -76,6 +82,7 @@ const Signup = ({ setUserDataAction, openTermsModalAction }) => {
         password,
         origin,
         termsVersion,
+        referralData,
       });
 
       if (passwordError) {
