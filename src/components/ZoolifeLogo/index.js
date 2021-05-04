@@ -6,7 +6,7 @@ import zoolifeLogo from './zoolife.svg';
 const ZoolifeLogo = ({ landing }) => (
   <div>
     <Link href="/">
-      <img src={zoolifeLogo} alt="" />
+      <img width="100" src={zoolifeLogo} alt="" />
     </Link>
     {landing && <Tag label="invite only" varient="light" />}
   </div>
