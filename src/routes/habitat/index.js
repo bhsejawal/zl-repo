@@ -101,7 +101,7 @@ const Habitat = ({
 
   useEffect(() => {
     if (title) {
-      document.title = generateTitle(`${title} - Habitat`);
+      document.title = generateTitle(`${title} | Habitat`);
     }
   }, [title]);
 

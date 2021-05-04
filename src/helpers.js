@@ -33,7 +33,7 @@ export const getDeviceType = () => {
   return "desktop";
 };
 
-export const generateTitle = (part) => (part ? `${part} | Zoolife` : 'Zoolife');
+export const generateTitle = (part) => (part ? `Zoolife - ${part}` : 'Zoolife');
 
 export const formatAge = (dateOfBirth) => formatDistanceToNowStrict(
   parseISO(dateOfBirth),

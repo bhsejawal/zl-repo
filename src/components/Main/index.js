@@ -1,4 +1,4 @@
-import { Router, route } from 'preact-router';
+import { Router } from 'preact-router';
 import { Box } from 'grommet';
 import { useState, useEffect } from 'preact/hooks';
 import { connect } from 'react-redux';
@@ -24,12 +24,12 @@ import DesignSystem from '../../routes/designSystem';
 import RedirectPage from '../../routes/redirectPage';
 import AdminRouter from './AdminRouter';
 import AppRouter from './AppRouter';
+import MobileGuard from './MobileGuard';
 
-import { getDeviceType, logPageView, logAndGetCampaignData } from '../../helpers';
-
+import { logPageView, logAndGetCampaignData } from '../../helpers';
 import { updateReferralData } from '../../redux/actions';
 
-const mobileRoutes = ['/', '/signup', '/mobile', '/login', '/torontozoo', '/oranapark', '/orana', '/pmmc', '/sazoo'];
+const homeTitle = "The world's first digital zoo.";
 
 const Main = ({
   onRouteChange,
@@ -53,25 +53,20 @@ const Main = ({
       logPageView();
     }
 
-    if (getDeviceType() === 'phone' && !mobileRoutes.includes(url)) {
-      route('/mobile', true);
-      setPath('/mobile');
-    } else {
-      onRouteChange(props);
-      setPath(url);
-    }
+    onRouteChange(props);
+    setPath(url);
   }
 
   return (
     // time bar padding
     <Box fill pad={{ bottom: isTrial ? '58px' : undefined }}>
       <Router onChange={routerChangeHandler}>
-        <Home path="/" exact />
-        <Home path="/oranapark" partnerImage={oranaZooLogo} exact />
-        <Home path="/orana" partnerImage={oranaZooLogo} exact />
-        <Home path="/torontozoo" partnerImage={torontoZooLogo} exact />
-        <Home path="/pmmc" partnerImage={pmmcLogo} exact />
-        <Home path="/sazoo" partnerImage={sanAntonioLogo} exact />
+        <Home path="/" exact title={homeTitle} />
+        <Home path="/oranapark" partnerImage={oranaZooLogo} exact title={homeTitle} />
+        <Home path="/orana" partnerImage={oranaZooLogo} exact title={homeTitle} />
+        <Home path="/torontozoo" partnerImage={torontoZooLogo} exact title={homeTitle} />
+        <Home path="/pmmc" partnerImage={pmmcLogo} exact title={homeTitle} />
+        <Home path="/sazoo" partnerImage={sanAntonioLogo} exact title={homeTitle} />
 
         <AuthGuard path="/login" guestOnly title="Log In" redirectTo="/map">
           <Login />
@@ -87,36 +82,56 @@ const Main = ({
 
         <PasswordReset path="/passwordReset" title="Reset Password" />
 
-        <AuthGuard path="/profile" permission="profile:edit" title="Profile">
-          <Profile step />
-        </AuthGuard>
+        <MobileGuard path="/profile" title="Profile">
+          <AuthGuard permission="profile:edit">
+            <Profile step />
+          </AuthGuard>
+        </MobileGuard>
 
         {/* display 404 instead of Unatuhorized message
             we don't want our viewers to know about this route
             and still redirect unauthenticated users to /login page
             this redirection is there not to confuse our admins */}
-        <AuthGuard path="/admin/:*" adminOnly fallback={<NotFound />} title="Admin">
-          <AdminRouter />
-        </AuthGuard>
+        <MobileGuard path="/admin/:*" title="Admin">
+          <AuthGuard adminOnly fallback={<NotFound />}>
+            <AdminRouter />
+          </AuthGuard>
+        </MobileGuard>
 
         {/* TODO: we should consider removing this
             another option is to set ENV variable
             and have this route only in development */}
-        <AuthGuard path="/design" adminOnly fallback={<NotFound />} title="Design Guideline">
-          <DesignSystem />
-        </AuthGuard>
+        <MobileGuard path="/design" title="Design Guideline">
+          <AuthGuard adminOnly fallback={<NotFound />}>
+            <DesignSystem />
+          </AuthGuard>
+        </MobileGuard>
 
         <AuthGuard path="/mobile" phoneOnly title="Our animals are too big" redirectTo="/" permission="redirect:view">
           <RedirectPage />
         </AuthGuard>
 
-        <AppRouter path="/welcome" />
-        <AppRouter path="/h/:zooName/:habitatSlug" />
-        <AppRouter path="/map" />
-        <AppRouter path="/schedule" />
-        <AppRouter path="/favorite" />
-        <AppRouter path="/account" />
-        <AppRouter path="/plans" />
+        <MobileGuard path="/welcome" title="Welcome to Zoolife">
+          <AppRouter />
+        </MobileGuard>
+        <MobileGuard path="/h/:zooName/:habitatSlug" skipTitle>
+          <AppRouter />
+        </MobileGuard>
+        <MobileGuard path="/map" title="Map">
+          <AppRouter />
+        </MobileGuard>
+        <MobileGuard path="/schedule" title="Talk Schedule">
+          <AppRouter />
+        </MobileGuard>
+        <MobileGuard path="/favorite" title="Favorites">
+          <AppRouter />
+        </MobileGuard>
+        <MobileGuard path="/account" title="Account">
+          <AppRouter />
+        </MobileGuard>
+        <MobileGuard path="/plans" title="Plans">
+          <AppRouter />
+        </MobileGuard>
 
         {/* NOTE: NotFound need to be at the end */}
         <NotFound path=":*" />
