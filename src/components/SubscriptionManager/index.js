@@ -39,6 +39,7 @@ const SubscriptionSection = ({
   plans,
   productId,
   validUntil,
+  isSubscriptionActive,
   subscriptionStatus,
   setPlansAction,
   setSubscriptionDataAction,
@@ -116,7 +117,7 @@ const SubscriptionSection = ({
       return [];
     }
 
-    if (!productId || productId === 'TRIAL') {
+    if (!productId || productId === 'TRIAL' || !isSubscriptionActive) {
       return plans.map(({
         productId: planProductId,
         priceId,
@@ -357,7 +358,12 @@ export default connect((
   {
     plans: { plans },
     user: {
-      subscription: { productId, validUntil, status: subscriptionStatus },
+      subscription: {
+        productId,
+        validUntil,
+        status: subscriptionStatus,
+        active: isSubscriptionActive,
+      },
     },
   },
 ) => ({
@@ -365,6 +371,7 @@ export default connect((
   productId,
   validUntil,
   subscriptionStatus,
+  isSubscriptionActive,
 }), {
   setPlansAction: setPlans,
   setSubscriptionDataAction: setSubscriptionData,

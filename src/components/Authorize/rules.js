@@ -23,11 +23,6 @@ const isSubscriptionActive = () => {
   return active;
 }
 
-const isTrial = () => {
-  const { user: { subscription: { productId } } } = store.getState();
-  return productId === 'TRIAL';
-}
-
 const notTrial = () => {
   const { user: { subscription: { productId } } } = store.getState();
   return productId && productId !== 'TRIAL';
@@ -38,11 +33,10 @@ const rules = {
     static: ['checkout:plans', 'signup:view', 'login:view'],
   },
   user: {
-    static: ['profile:edit', 'redirect:view', 'welcome:view'],
+    static: ['profile:edit', 'redirect:view', 'welcome:view', 'checkout:plans'],
     dynamic: {
       'habitat:view': isSubscriptionActive,
       'map:view': isSubscriptionActive,
-      'checkout:plans': isTrial,
       'subscription:cancel': isSubscriptionActive,
       'subscription:edit': notTrial,
       'schedule:view': isSubscriptionActive,
