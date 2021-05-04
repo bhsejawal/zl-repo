@@ -8,7 +8,7 @@ import useFetch from 'use-http';
 import AdminTable from 'Components/AdminTable';
 import ImageSelector from 'Components/ImageSelector';
 import { buildURL } from 'Shared/fetch';
-import { TEXT_AUTOCOMPLETE } from 'Components/AdminTable/constants';
+import { TEXTAREA, TEXT_AUTOCOMPLETE } from 'Components/AdminTable/constants';
 
 import editImagePlaceholder from './editImagePlaceholder.png';
 
@@ -107,6 +107,7 @@ const Habitats = () => {
     title: 'Description',
     property: 'description',
     editable: true,
+    type: TEXTAREA,
   }, {
     title: 'Partner',
     property: 'zoo.name',

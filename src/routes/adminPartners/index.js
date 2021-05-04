@@ -5,7 +5,7 @@ import { format, parseISO } from 'date-fns';
 
 import AdminTable from 'Components/AdminTable';
 import ImageSelector from 'Components/ImageSelector';
-import { TEXT_AUTOCOMPLETE } from 'Components/AdminTable/constants';
+import { TEXTAREA, TEXT_AUTOCOMPLETE } from 'Components/AdminTable/constants';
 
 import editImagePlaceholder from './placeholder.png';
 import { countryList, timezoneList } from './constants';
@@ -89,6 +89,7 @@ const columns = [{
   title: 'Description',
   property: 'description',
   editable: true,
+  type: TEXTAREA,
 }, {
   title: 'Address',
   property: 'location',

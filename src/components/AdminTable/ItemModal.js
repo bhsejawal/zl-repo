@@ -7,6 +7,7 @@ import {
   Heading,
   Layer,
   TextInput,
+  TextArea,
 } from 'grommet';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronDown, faTimes } from '@fortawesome/pro-solid-svg-icons';
@@ -14,7 +15,12 @@ import { useEffect, useMemo, useState } from 'preact/hooks';
 import { pick, get } from 'lodash-es';
 
 import { PrimaryButton } from 'Components/Buttons';
-import { SELECT, TEXT_AUTOCOMPLETE, TEXT } from './constants';
+import {
+  SELECT,
+  TEXT_AUTOCOMPLETE,
+  TEXT,
+  TEXTAREA,
+} from './constants';
 
 // TODO: we should replace this with Select when Grommet issue is fixed
 const AutocompleteTextInput = ({
@@ -221,6 +227,20 @@ const ItemModal = ({
                   selectValues={selectValues}
                   value={get(values, property)}
                 />
+              )}
+
+              {!editRender && type === TEXTAREA && (
+                <Box height={{ min: '150px', max: '150px' }}>
+                  <TextArea
+                    required={required}
+                    name={property}
+                    value={get(values, property)}
+                    onChange={onInputChange}
+                    fill
+                    resize={false}
+                    rows={10}
+                  />
+                </Box>
               )}
 
               {editRender && editRender(values)}
