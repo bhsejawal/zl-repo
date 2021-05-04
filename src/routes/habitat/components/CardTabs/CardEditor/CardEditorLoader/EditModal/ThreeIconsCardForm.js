@@ -111,11 +111,11 @@ const ThreeIconsCardForm = forwardRef(({
             rows="3"
             data-prop="text1"
             onChange={onInputChange}
-            maxLength="60"
+            maxLength="80"
           />
           <span className={style.bottomRight}>
             {text1?.length ?? 0}
-            /60
+            /80
           </span>
         </div>
         {text1ErrorMsg && (
@@ -146,11 +146,11 @@ const ThreeIconsCardForm = forwardRef(({
             rows="3"
             data-prop="text2"
             onChange={onInputChange}
-            maxLength="60"
+            maxLength="80"
           />
           <span className={style.bottomRight}>
             {text2?.length ?? 0}
-            /60
+            /80
           </span>
         </div>
       </Box>
@@ -175,11 +175,11 @@ const ThreeIconsCardForm = forwardRef(({
             rows="3"
             data-prop="text3"
             onChange={onInputChange}
-            maxLength="60"
+            maxLength="80"
           />
           <span className={style.bottomRight}>
             {text3?.length ?? 0}
-            /60
+            /80
           </span>
         </div>
       </Box>

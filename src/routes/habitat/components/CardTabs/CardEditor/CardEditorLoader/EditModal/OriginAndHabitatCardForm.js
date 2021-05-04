@@ -86,11 +86,11 @@ const OriginAndHabitatCardForm = forwardRef(({
             rows="5"
             data-prop="text"
             onChange={onInputChange}
-            maxLength="120"
+            maxLength="150"
           />
           <span className={style.bottomRight}>
             {text?.length ?? 0}
-            /120
+            /150
           </span>
         </div>
         {textErrorMsg && (

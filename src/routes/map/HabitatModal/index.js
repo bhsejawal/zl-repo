@@ -59,7 +59,7 @@ const HabitatModal = ({
 
     if (!editHabitat.description
       || editHabitat.description.length === 0
-      || editHabitat.description.length > 125) {
+      || editHabitat.description.length > 145) {
       formErrors.description = true;
     }
 
@@ -179,7 +179,7 @@ const HabitatModal = ({
               </Box>
               <Box margin={{ top: '5px' }}>
                 <Heading level="4" as="label">Photo:</Heading>
-                <Text size="large">We recommend using the habitat photo, cropped.</Text>
+                <Text size="large">We recommend using the habitat photo, cropped to 450px by 150px.</Text>
                 <Box margin={{ top: '10px' }}>
                   <ImageSelector
                     required
@@ -208,14 +208,14 @@ const HabitatModal = ({
                     <Box>
                       {errors?.description && (
                         <Text color="status-error">
-                          Text should be between 1 and 125 characters
+                          Text should be between 1 and 145 characters
                         </Text>
                       )}
                     </Box>
                     <Box flex={{ grow: '1' }}>
                       <Text textAlign="end">
                         {editHabitat.description?.length ?? 0}
-                        /125
+                        /145
                       </Text>
                     </Box>
                   </Box>
