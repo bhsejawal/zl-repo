@@ -40,9 +40,13 @@ export const formatAge = (dateOfBirth) => formatDistanceToNowStrict(
   { addSuffix: false, roundingMethod: 'floor' },
 );
 
-export const logPageView = () => {
+export const logPageView = (page) => {
   if (window.analytics) {
-    window.analytics.page()
+    if (page) {
+      window.analytics.page(page);
+    } else {
+      window.analytics.page();
+    }
   }
 }
 

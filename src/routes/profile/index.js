@@ -35,6 +35,7 @@ import { useIsInitiallyLoaded, useOnClickOutside } from '../../hooks';
 import { getUser, updateUser } from './api';
 import grommetTheme from '../../grommetTheme';
 import { updateProfile } from './actions';
+import { logPageView } from '../../helpers';
 
 import 'react-colorful/dist/index.css';
 import accountPageStyle from '../account/style.scss';
@@ -172,6 +173,9 @@ const Profile = ({
       updateProfileAction(color, icon, username);
 
       if (step) {
+        if (user.subscription?.productId === 'TRIAL') {
+          logPageView('/trialStarted');
+        }
         route('/map');
       }
     } catch (err) {
