@@ -11,6 +11,9 @@ module.exports = [
   { url: '/pmmc', title: 'Zoolife - The world\'s first digital zoo. - Pacific Marine Mammal Center', segmentId: process.env.PREACT_APP_SEGMENT_ID },
   { url: '/sazoo', title: 'Zoolife - The world\'s first digital zoo. - San Antonio Zoo', segmentId: process.env.PREACT_APP_SEGMENT_ID },
 
+  { url: '/terms-and-conditions', title: 'Terms and Conditions' },
+  { url: '/privacy-policy', title: 'Privacy Policy' },
+
   // this will prerender only loading indicator
   // we'll use this as fallback on s3
   { url: '/account', segmentId: process.env.PREACT_APP_SEGMENT_ID },

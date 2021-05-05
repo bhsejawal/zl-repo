@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 
 import TimeBar from 'Components/TimeBar';
 import AuthGuard from 'Components/Authorize/AuthGuard';
-import TermsAndConditions from 'Components/TermsAndConditions';
+import TermsAndConditions, { PRIVACY_PDF_URL, TERMS_PDF_URL } from 'Components/TermsAndConditions';
 import ContactUsModalLoader from 'Components/async/ContactUsModalLoader';
 
 import oranaZooLogo from './partners/orana-zoo.png';
@@ -22,6 +22,7 @@ import Profile from '../../routes/profile';
 import NotFound from '../../routes/notFound';
 import DesignSystem from '../../routes/designSystem';
 import RedirectPage from '../../routes/redirectPage';
+import TermsAndPrivacy from '../../routes/TermsAndPrivacy';
 import AdminRouter from './AdminRouter';
 import AppRouter from './AppRouter';
 import MobileGuard from './MobileGuard';
@@ -132,6 +133,17 @@ const Main = ({
         <MobileGuard path="/plans" title="Plans">
           <AppRouter />
         </MobileGuard>
+
+        <TermsAndPrivacy
+          path="/terms-and-conditions"
+          title="Terms and Conditions"
+          pdfLink={TERMS_PDF_URL}
+        />
+        <TermsAndPrivacy
+          path="/privacy-policy"
+          title="Privacy Policy"
+          pdfLink={PRIVACY_PDF_URL}
+        />
 
         {/* NOTE: NotFound need to be at the end */}
         <NotFound path=":*" />

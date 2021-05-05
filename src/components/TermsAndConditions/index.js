@@ -20,8 +20,8 @@ import { closeTermsModal, setUserTermsAccepted } from './actions';
 
 import style from './style.scss';
 
-const termsPdfUrl = 'https://assets.zoolife.tv/BRIZI_INC_-_Terms_of_Use_v17-03-2021.pdf';
-const privacyPdfUrl = 'https://assets.zoolife.tv/Brizi_-_Privacy_Policy_v17-03-2021.pdf';
+export const TERMS_PDF_URL = 'https://assets.zoolife.tv/BRIZI_INC_-_Terms_of_Use_v17-03-2021.pdf';
+export const PRIVACY_PDF_URL = 'https://assets.zoolife.tv/Brizi_-_Privacy_Policy_v17-03-2021.pdf';
 
 const TermsAndConditions = ({
   user,
@@ -88,7 +88,7 @@ const TermsAndConditions = ({
             className={style.pdfContainer}
             width="100%"
             height="100%"
-            src={`${termsPdfUrl}#toolbar=0`}
+            src={`${TERMS_PDF_URL}#toolbar=0`}
             title="Terms and Conditions"
           />
         </Box>
@@ -107,7 +107,7 @@ const TermsAndConditions = ({
                   native
                   target="_blank"
                   rel="noopener noreferrer"
-                  href={termsPdfUrl}
+                  href={TERMS_PDF_URL}
                 >
                   Terms &amp; Conditions
                 </a>
@@ -126,7 +126,7 @@ const TermsAndConditions = ({
                   native
                   target="_blank"
                   rel="noopener noreferrer"
-                  href={privacyPdfUrl}
+                  href={PRIVACY_PDF_URL}
                 >
                   Privacy Policy
                 </a>
