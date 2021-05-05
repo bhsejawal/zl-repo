@@ -14,10 +14,11 @@ import samplePhoto from './overlay-sample-photo.png';
 import style from './style.scss';
 
 const imageConstraints = {
-  maxResolution: 150,
-  minResolution: 50,
-  maxFileSize: 50_000,
-  acceptedFormats: ['jpg', 'jpeg', 'png', 'svg'],
+  width: 1920,
+  height: 1080,
+  maxFileSize: 60_000,
+  aspectRatio: '16:9',
+  acceptedFormats: ['png'],
 };
 
 const Overlay = ({
@@ -87,7 +88,7 @@ const Overlay = ({
             <img
               className={style.overlayPreview}
               src={overlayStorageKey}
-              ref={imageSelectorRef}
+              ref={imagePreviewRef}
               alt="overlay"
             />
           </Box>
