@@ -8,6 +8,18 @@
   z-index: 10;
 }
 
+.onboardingWrapper {
+  margin: auto;
+  position: relative;
+  max-width: calc(1650px * .8);
+
+  video {
+    max-width: 80vw;
+    max-height: 80vh;
+    width: 100%;
+  }
+}
+
 button.replayButton {
   border: 1.5px solid var(--blueMediumLight);
   background-color: transparent !important;

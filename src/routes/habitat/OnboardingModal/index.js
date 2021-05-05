@@ -60,7 +60,7 @@ const Onboarding = ({ isOnboarded, setUserDataAction }) => {
       background="transparent"
     >
       <Box className={style.onboarding} onClick={enterHabitatHandler}>
-        <Box justify="center" margin="auto" width={{max: (isSmallScreen ? '100vw' : '80vw')}} style={{position: 'relative'}}>
+        <Box className={style.onboardingWrapper}>
           {showButtons && (
             <Box direction="row" justify="center" className={style.buttonsWrapper}>
               <OutlineButton
