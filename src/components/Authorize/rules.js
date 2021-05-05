@@ -47,7 +47,7 @@ const rules = {
     static: ['profile:edit', 'favorite:edit', 'habitat:view', 'map:view', 'redirect:view', 'schedule:view'],
   },
   partner: {
-    static: ['habitat:view', 'map:view', 'profile:edit', 'favorite:edit', 'redirect:view'],
+    static: ['habitat:view', 'map:view', 'profile:edit', 'favorite:edit', 'redirect:view', 'schedule:view'],
     dynamic: {
       "zoo:edit-timezone": canEditZoo,
       "zoo:edit-location": canEditZoo,
@@ -64,11 +64,8 @@ const rules = {
     },
   },
   host: {
-    static: ['habitat:view', 'map:view', 'profile:edit', 'favorite:edit', 'redirect:view'],
-    dynamic: {
-      "habitat:broadcast": canEditHabitat,
-      "habitat:edit-stream": canEditHabitat,
-    },
+    static: ['habitat:view', 'map:view', 'profile:edit', 'favorite:edit', 'redirect:view', 'schedule:view'],
+    dynamic: { "habitat:broadcast": canEditHabitat },
   },
 };
 
