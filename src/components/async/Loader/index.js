@@ -1,4 +1,5 @@
 import { Box } from 'grommet';
+import classnames from 'classnames';
 
 import style from './style.scss';
 
@@ -7,9 +8,10 @@ const Loader = ({
   height = '200px',
   width = '200px',
   fill,
+  className,
 }) => (
   <Box
-    className={style.palmAnimation}
+    className={classnames(style.palmAnimation, className)}
     fill={fill}
     justify="center"
     align="center"
