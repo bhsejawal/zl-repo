@@ -91,4 +91,4 @@ promotions:
   - name: Dev deploy
     pipeline_file: dev-deploy.yml
     auto_promote:
-      when: "result = 'passed' and branch = 'master'"
+      when: "result = 'passed' and branch = 'development'"
