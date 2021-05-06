@@ -154,7 +154,11 @@ const Broadcast = ({
   return (
     <Box>
       <Box flex="grow" fill justify="center" align="center">
-        <Card elevation="none" style={{ position: 'relative', borderRadius: '5px'}} width="auto" height={{ min: "140px" }}>
+        <Card
+          elevation="none" style={{ position: 'relative', borderRadius: '5px'}}
+          width="auto"
+          height={{ min: !nextTalk && [PLAY_STARTED, PUBLISH_STARTED].includes(streamStatus) ? `${videoRef?.current?.offsetHeight}px` : '140px' }}
+        >
           <CardBody flex="grow">
             {/* Replace the livetag date with a date from the livetalks */}
             {![PLAY_STARTED, PUBLISH_STARTED, ERROR, STREAM_IN_USE].includes(streamStatus) && (
@@ -165,6 +169,7 @@ const Broadcast = ({
             {[ERROR, STREAM_IN_USE].includes(streamStatus) && (
               <Box
                 className={style.fallbackContainer}
+                height={nextTalk ? `${videoRef?.current?.offsetHeight}px` : '140px'}
               >
                 <Fallback type="error" text={ streamStatus === ERROR ? 'Please try again.' : 'Someone is already streaming.'} />
               </Box>
@@ -190,7 +195,7 @@ const Broadcast = ({
               autoPlay
               muted
               ref={videoRef}
-              style={{ height: '140px', width: '100%' }}
+              style={{ maxHeight: '140px', maxWidth: '240px', width: '100%' }}
             />
           </CardBody>
           {nextTalk && (
@@ -230,12 +235,13 @@ const Broadcast = ({
           align={{ top: "top", right: "left" }}
           target={buttonRef.current}
           margin={{ left: "-5px", top: "5px" }}
+          className={style.controls}
         >
-          <Box width="240px" background="white" style={{ borderRadius: '5px' }} pad="small" >
-            <Text size="14px">Stream Setup</Text>
-            <Box direction="row" pad={{vertical: "xsmall", horizontal: "small" }} align="center">
+          <Box width="240px" background="white" style={{ borderRadius: '5px' }} pad="small" flex="grow">
+            <span className={style.title}>Stream Setup</span>
+            <Box direction="row" pad={{vertical: '7px' }} align="center">
               <FontAwesomeIcon icon={faVideo} size="1x" style={{ minWidth: '20px' }} color="#CDCDCD" />
-              <Box margin={{ left: "5px"}}>
+              <Box margin={{ left: "14px"}} flex="grow">
                 <select value={selectedVideoDevice} onChange={selectNewSource}>
                   {videoSources.map((source) => (
                     <option value={source.deviceId} key={source.deviceId}>{source.label}</option>
@@ -243,9 +249,9 @@ const Broadcast = ({
                 </select>
               </Box>
             </Box>
-            <Box direction="row" pad={{vertical: "xsmall", horizontal: "small" }} align="center">
+            <Box direction="row" pad={{vertical: '7px' }} align="center" flex="grow">
               <FontAwesomeIcon icon={faMicrophone} size="1x" style={{ minWidth: '20px' }} color="#CDCDCD" />
-              <Box margin={{ left: "5px"}}>
+              <Box margin={{ left: "14px"}} flex="grow">
                 <select value={selectedAudioDevice} onChange={selectNewSource}>
                   {audioSources.map((source) => (
                     <option value={source.deviceId} key={source.deviceId}>{source.label}</option>
@@ -253,7 +259,7 @@ const Broadcast = ({
                 </select>
               </Box>
             </Box>
-            <Box margin={{ top: "xsmall" }} pad={{ horizontal: "small" }} basis="2/3" alignSelf="end">
+            <Box margin={{ top: '15px' }} basis="2/3" alignSelf="start">
               <PrimaryButton
                 size="medium"
                 label={isLoading ? 'Loading...' : buttonMessage}
