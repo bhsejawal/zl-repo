@@ -1,5 +1,6 @@
-import { route } from 'preact-router';
 import { LandingSecondary } from 'Components/Buttons';
+
+import { goToSignup } from '../../helpers';
 
 import style from '../style.scss';
 
@@ -25,7 +26,7 @@ const FeatureSection = () => (
         <p>
           Use audience-guided cameras to observe animals and explore habitats stunningly close.
         </p>
-        <LandingSecondary onClick={() => route('/signup')}>Explore a Habitat</LandingSecondary>
+        <LandingSecondary onClick={goToSignup}>Explore a Habitat</LandingSecondary>
       </div>
     </div>
   </div>

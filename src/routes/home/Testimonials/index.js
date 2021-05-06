@@ -1,9 +1,9 @@
 import { h } from 'preact';
 import { LandingPrimary } from 'Components/Buttons';
-import { route } from 'preact-router';
-
 import Carousel from 'react-multi-carousel';
 import 'react-multi-carousel/lib/styles.css';
+
+import { goToSignup } from '../helpers';
 
 import quotation from './quotation.svg';
 import style from './style.scss';
@@ -110,7 +110,7 @@ const Testimonials = () => (
           </h1>
           <p className="body">50% of your purchase directly funds animal care & conservation efforts led by our partners.</p>
 
-          <LandingPrimary type="button" onClick={() => route('/signup')}>Join The Community</LandingPrimary>
+          <LandingPrimary type="button" onClick={goToSignup}>Join The Community</LandingPrimary>
         </div>
       </div>
       <img

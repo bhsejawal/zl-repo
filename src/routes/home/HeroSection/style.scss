@@ -61,7 +61,8 @@ $animationDuration: 2.5s;
     position: relative;
   }
 
-  video {
+  video,
+  .videoPlaceholder {
     // video is not rendering the same way on chrome and safari because of the scrollbar
     // so we will set width 101% hide overflow to eliminate the jump and the empty space
     // that is showing vertically while scaling, and will also hide the black line on the right

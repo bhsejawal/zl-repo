@@ -2,7 +2,6 @@ import { h } from 'preact';
 import {
   useCallback,
   useEffect,
-  useRef,
   useState,
   useErrorBoundary,
 } from 'preact/hooks';
@@ -31,7 +30,6 @@ faConfig.autoAddCss = false;
 
 const App = () => {
   const [stripe, setStripe] = useState(null);
-  const ga4Ref = useRef();
 
   useErrorBoundary((err) => {
     console.error(err);
@@ -51,15 +49,10 @@ const App = () => {
   }, []);
 
   const onRouteChange = useCallback(({
-    url,
     current: { props: { title, skipTitle } },
   }) => {
     if (!skipTitle && typeof window !== 'undefined') {
       document.title = generateTitle(title);
-    }
-
-    if (typeof window !== 'undefined') {
-      ga4Ref.current?.pageview(url);
     }
   }, []);
 
@@ -73,4 +66,5 @@ const App = () => {
     </Provider>
   );
 };
+
 export default App;

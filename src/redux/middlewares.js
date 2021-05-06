@@ -1,10 +1,10 @@
-import logger from 'redux-logger';
 import thunk from 'redux-thunk';
 
 const middlewares = [thunk];
 
 if (process.env.NODE_ENV === 'development') {
-  middlewares.push(logger);
+  // eslint-disable-next-line global-require
+  middlewares.push(require('redux-logger').default);
 }
 
 export default middlewares;

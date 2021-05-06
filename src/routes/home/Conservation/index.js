@@ -1,5 +1,6 @@
-import { route } from 'preact-router';
 import { LandingPrimary } from 'Components/Buttons';
+
+import { goToSignup } from '../helpers';
 
 import style from './style.scss';
 
@@ -14,7 +15,7 @@ const Conversation = () => (
           50% of your purchase directly funds animal care & conservation
           efforts led by our partners.
         </p>
-        <LandingPrimary onClick={() => route('/signup')}>I want to help</LandingPrimary>
+        <LandingPrimary onClick={goToSignup}>I want to help</LandingPrimary>
       </div>
     </div>
     <div className={style.right}>

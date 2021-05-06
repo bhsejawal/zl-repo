@@ -1,5 +1,6 @@
-import { route } from 'preact-router';
 import { LandingSecondary } from 'Components/Buttons';
+
+import { goToSignup } from '../../helpers';
 
 import style from "../style.scss";
 
@@ -18,7 +19,7 @@ const LiveTalksSection = () => (
         <p>
           Join daily keeper talks and interactive Q&amp;As with animal experts and naturalists.
         </p>
-        <LandingSecondary onClick={() => route('/signup')}>Join a Live Q&amp;A</LandingSecondary>
+        <LandingSecondary onClick={goToSignup}>Join a Live Q&amp;A</LandingSecondary>
       </div>
     </div>
   </div>

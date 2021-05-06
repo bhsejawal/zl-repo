@@ -1,6 +1,5 @@
 import { h } from 'preact';
 import { useRef, useState } from 'preact/hooks';
-import { route } from 'preact-router';
 import { Drop, Box } from 'grommet';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSignOut } from '@fortawesome/pro-solid-svg-icons';
@@ -8,6 +7,8 @@ import { faBars } from '@fortawesome/pro-light-svg-icons';
 import NavItem from 'Components/NavBar/NavItem'
 import Invite from 'Components/NavBar/Invite';
 import { LandingSecondary } from 'Components/Buttons';
+
+import { goToLogin, goToSignup } from '../../helpers';
 
 import style from './style.scss';
 
@@ -40,11 +41,11 @@ const Menu = () => {
             <Invite text="Invite Friends" />
           </Box>
           <Box align="center" margin={{ top: '20px', left: '5px' }}>
-            <NavItem text="Log In" url="/login" icon={faSignOut} />
+            <NavItem onClick={goToLogin} text="Log In" url="/login" icon={faSignOut} />
           </Box>
           <Box margin={{ top: '35px', left: '20px' }}>
             <LandingSecondary
-              onClick={() => route('/signup')}
+              onClick={goToSignup}
               className={style.signUpButton}
             >
               Sign Up
