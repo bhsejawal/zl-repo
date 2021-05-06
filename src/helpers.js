@@ -43,7 +43,10 @@ export const formatAge = (dateOfBirth) => formatDistanceToNowStrict(
 export const logPageView = (page) => {
   if (window.analytics) {
     if (page) {
-      window.analytics.page(page);
+      window.analytics.page(page, {
+        path: `${page}`,
+        url: `${page}`,
+      });
     } else {
       window.analytics.page();
     }
