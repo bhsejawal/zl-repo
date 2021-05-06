@@ -1,6 +1,6 @@
 .pdfWrapper {
   display: flex;
-  height: 100vh;
+  height: calc(100vh - var(--headerHeight));
   margin-top: var(--headerHeight);
 
   iframe {
