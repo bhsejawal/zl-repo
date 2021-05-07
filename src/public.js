@@ -10,6 +10,7 @@ import { PRIVACY_PDF_URL, TERMS_PDF_URL } from 'Components/TermsAndConditions';
 import ContactUsModalLoader from "Components/async/ContactUsModalLoader";
 import Home from "./routes/home";
 import TermsAndPrivacy from "./routes/TermsAndPrivacy";
+import NotFound from "./routes/notFound";
 
 import oranaZooLogo from './components/Main/partners/orana-zoo.png';
 import torontoZooLogo from './components/Main/partners/toronto-zoo.png';
@@ -65,7 +66,11 @@ const Content = ({ showContactUs, updateReferralDataAction }) => {
           title="Privacy Policy"
           pdfLink={PRIVACY_PDF_URL}
         />
+
+        {/* NOTE: NotFound need to be at the end */}
+        <NotFound path=":*" />
       </Router>
+
       <ContactUsModalLoader isOpen={showContactUs} />
     </Grommet>
   );
