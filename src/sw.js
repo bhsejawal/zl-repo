@@ -3,6 +3,7 @@ import { getFiles, setupPrecaching, setupRouting } from 'preact-cli/sw/';
 const publicPages = [
   '/', '/oranapark', '/orana', '/torontozoo', '/pmmc',
   '/sazoo', '/terms-and-conditions', '/privacy-policy',
+  '/twitch',
 ];
 
 // setup routing and precaching only for app pages - no need to do it on public pages

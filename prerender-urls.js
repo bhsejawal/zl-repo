@@ -5,6 +5,7 @@ require('dotenv').config()
 
 module.exports = [
   { url: '/', title: 'Zoolife - The world\'s first digital zoo.', segmentId: process.env.PREACT_APP_SEGMENT_ID },
+  { url: '/twitch', title: 'Zoolife - The world\'s first digital zoo.', segmentId: process.env.PREACT_APP_SEGMENT_ID },
   { url: '/oranapark', title: 'Zoolife - The world\'s first digital zoo. - Orana Wildlife Park', segmentId: process.env.PREACT_APP_SEGMENT_ID },
   { url: '/orana', title: 'Zoolife - The world\'s first digital zoo. - Orana Wildlife Park', segmentId: process.env.PREACT_APP_SEGMENT_ID },
   { url: '/torontozoo', title: 'Zoolife - The world\'s first digital zoo. - Toronto Zoo', segmentId: process.env.PREACT_APP_SEGMENT_ID },

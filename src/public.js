@@ -50,6 +50,7 @@ const Content = ({ showContactUs, updateReferralDataAction }) => {
     <Grommet full theme={customBreakpoints}>
       <Router onRouteChange={routerChangeHandler}>
         <Home path="/" exact title={homeTitle} />
+        <Home path="/twitch" exact title={homeTitle} />
         <Home path="/oranapark" partnerImage={oranaZooLogo} exact title={homeTitle} />
         <Home path="/orana" partnerImage={oranaZooLogo} exact title={homeTitle} />
         <Home path="/torontozoo" partnerImage={torontoZooLogo} exact title={homeTitle} />
