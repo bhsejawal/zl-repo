@@ -51,7 +51,7 @@ const HeroSection = ({ partnerImage }) => {
                 <div className={style.partner}>
                   <img alt="zoolife-logo" src={zoolifeLogoWhite} />
                   <span>x</span>
-                  <img alt="partner-logo" src={partnerImage} />
+                  <img alt="partner-logo" src={partnerImage} className={style.partnerLogo} />
                 </div>
               )}
 

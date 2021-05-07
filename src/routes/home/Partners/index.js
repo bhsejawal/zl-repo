@@ -12,7 +12,7 @@ const Partners = () => (
 
     <div className={style.partners}>
       <div>
-        <div><img src="https://assets.zoolife.tv/landing/s2_pacific.png" alt="" /></div>
+        <div><img src="https://assets.zoolife.tv/landing/s2_pmmc.png" alt="" /></div>
         <div><img src="https://assets.zoolife.tv/landing/s2_toronto_zoo.png" alt="" /></div>
       </div>
       <div>
