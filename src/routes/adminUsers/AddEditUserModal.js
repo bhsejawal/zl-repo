@@ -10,7 +10,7 @@ import {
 } from 'grommet';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronDown, faTimes } from '@fortawesome/pro-solid-svg-icons';
-import { useState, useEffect } from 'preact/hooks';
+import { useState, useEffect, useMemo } from 'preact/hooks';
 import { set, get } from 'lodash-es';
 
 import { PrimaryButton } from 'Components/Buttons';
@@ -49,6 +49,8 @@ const AddEditUserModal = ({
   const [showDatePicker, setShowDatePicker] = useState(false);
   const [loading, setLoading] = useState();
   const [error, setError] = useState();
+
+  const availableZoos = useMemo(() => zoos.filter(({ disabled }) => !disabled), [zoos]);
 
   const { post, patch, response } = useFetch(buildURL('/admin/users'), {
     credentials: 'include',
@@ -191,7 +193,7 @@ const AddEditUserModal = ({
                 <select name="zooId" required onChange={onInputChange} value={formData.zooId}>
                   {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
                   <option value="" />
-                  {zoos.map((item) => (<option value={item._id}>{item.name}</option>))}
+                  {availableZoos.map((item) => (<option value={item._id}>{item.name}</option>))}
                 </select>
 
                 <FontAwesomeIcon icon={faChevronDown} color="var(--blue)" />
