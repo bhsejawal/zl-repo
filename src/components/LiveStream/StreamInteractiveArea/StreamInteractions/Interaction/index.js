@@ -51,7 +51,7 @@ const Click = ({
   if (type === 'emoji') {
     return (
       <img
-        src={`https://assets.zoolife.tv${path}`}
+        src={`${window.location.origin}${path}`}
         style={{ top: `${y}%`, left: `${x}%` }}
         draggable="false"
         alt="emoji"
