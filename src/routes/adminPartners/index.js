@@ -89,6 +89,7 @@ const columns = [{
   title: 'Description',
   property: 'description',
   editable: true,
+  maxLength: 400,
   type: TEXTAREA,
 }, {
   title: 'Address',

@@ -1,4 +1,4 @@
-import { Fragment, h } from 'preact';
+import { h } from 'preact';
 import {
   Box,
   Button,
@@ -21,6 +21,8 @@ import {
   TEXT,
   TEXTAREA,
 } from './constants';
+
+import style from './style.scss';
 
 // TODO: we should replace this with Select when Grommet issue is fixed
 const AutocompleteTextInput = ({
@@ -182,18 +184,19 @@ const ItemModal = ({
             type = TEXT,
             selectValues,
             editRender,
+            maxLength,
           }) => (
-            <Fragment key={property}>
+            <Box key={property} className={style.inputWrapper}>
               <Text margin={{ top: 'medium', bottom: 'small' }} size="large">
                 {title}
               </Text>
-
               {!editRender && type === TEXT && (
                 <TextInput
                   required={required}
                   name={property}
                   value={get(values, property)}
                   onChange={onInputChange}
+                  maxLength={maxLength}
                 />
               )}
 
@@ -239,12 +242,14 @@ const ItemModal = ({
                     fill
                     resize={false}
                     rows={10}
+                    maxLength={maxLength}
                   />
                 </Box>
               )}
 
               {editRender && editRender(values)}
-            </Fragment>
+              {maxLength && <div className={style.counter}>{`${get(values, property).length}/${maxLength}`}</div>}
+            </Box>
           ))}
         </Box>
 

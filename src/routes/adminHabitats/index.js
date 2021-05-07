@@ -99,15 +99,18 @@ const Habitats = () => {
     property: 'title',
     hiddenOnTable: true,
     editable: true,
+    maxLength: 20,
   }, {
     title: 'Species',
     property: 'animal',
     editable: true,
+    maxLength: 20,
   }, {
     title: 'Description',
     property: 'description',
     editable: true,
     type: TEXTAREA,
+    maxLength: 145,
   }, {
     title: 'Partner',
     property: 'zoo.name',
