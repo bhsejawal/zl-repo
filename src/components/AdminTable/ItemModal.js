@@ -248,7 +248,7 @@ const ItemModal = ({
               )}
 
               {editRender && editRender(values)}
-              {maxLength && <div className={style.counter}>{`${get(values, property).length}/${maxLength}`}</div>}
+              {maxLength && <div className={style.counter}>{`${get(values, property, '').length}/${maxLength}`}</div>}
             </Box>
           ))}
         </Box>

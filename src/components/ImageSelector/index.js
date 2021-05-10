@@ -77,7 +77,7 @@ const ImageSelector = forwardRef(({
         .get('content-type')
         .split('/')
         .reverse();
-      if (!acceptedFormats.some((format) => url.endsWith(format))
+      if (!acceptedFormats.some((format) => url?.endsWith(format))
         && !acceptedFormats.some((format) => format === imgFormat)) {
         newErrors[ACCEPTED_FORMAT_CONSTRAINT] = true;
       } else {
