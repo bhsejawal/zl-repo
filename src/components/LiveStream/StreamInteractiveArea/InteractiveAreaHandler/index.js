@@ -18,7 +18,8 @@ import { useCursorHook } from '../CustomCursor/hooks';
 
 import style from './style.scss';
 
-import { FULL_CURSOR, LOADING, DEFAULT_CURSOR_DELAY } from '../CustomCursor/constants';
+import { FULL_CURSOR, LOADING } from '../CustomCursor/constants';
+import {getConfig} from "../../../../helpers";
 
 const validDropTypes = ['emoji', 'cursorPin'];
 
@@ -31,6 +32,7 @@ const InteractiveAreaHandler = ({
   color,
   emojis,
   addUserInteractionAction,
+  configs,
 }) => {
   const { socket } = useContext(GlobalsContext);
   const ownCursorRef = useRef(null);
@@ -42,7 +44,7 @@ const InteractiveAreaHandler = ({
   // eslint-disable-next-line consistent-return
   useEffect(() => {
     if (cursorState === LOADING) {
-      const timeout = setTimeout(() => setCursorState(FULL_CURSOR), DEFAULT_CURSOR_DELAY);
+      const timeout = setTimeout(() => setCursorState(FULL_CURSOR), getConfig(configs, 'ptu.votingTime').configValue);
       return () => {
         setCursorState(FULL_CURSOR);
         clearTimeout(timeout);
@@ -182,13 +184,14 @@ export default connect(({
       color,
     },
   },
-  habitat: { habitatInfo: { _id: habitatId, emojiDrops: emojis = []} },
+  habitat: { habitatInfo: { _id: habitatId, emojiDrops: emojis = [], camera: { configs }} },
 }) => ({
   userId,
   animal,
   color,
   habitatId,
   emojis,
+  configs,
 }), {
   addUserInteractionAction: addUserInteraction,
 })(InteractiveAreaHandler);

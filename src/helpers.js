@@ -107,3 +107,7 @@ export const getCampaignData = () => {
     return {};
   }
 }
+
+export const getConfig = (configs = [], key) => (
+  configs.find(({ configKey }) => configKey === key) || {}
+);

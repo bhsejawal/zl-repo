@@ -1,3 +1,6 @@
+import { get } from 'lodash-es';
+import { getConfig } from '../helpers';
+
 import {
   SET_USER_DATA,
   ADD_USER_INTERACTION,
@@ -16,8 +19,6 @@ import {
   TOGGLE_IS_BROADCASTING,
   UPDATE_REFERRAL_DATA,
 } from './types';
-
-const DEFAULT_INTERACTION_TIMEOUT = 3000;
 
 export const setSubscriptionData = (payload) => ({ type: SET_SUBSCRIPTION_DATA, payload });
 
@@ -42,10 +43,14 @@ const newUserInteraction = (payload) => ({
 
 const removeUserInteraction = () => ({ type: REMOVE_USER_INTERACTION });
 
-export const addUserInteraction = (payload) => (dispatch) => {
+export const addUserInteraction = (payload) => (dispatch, getState) => {
+  const configs = get(getState(), 'habitat.habitatInfo.camera.configs', []);
+  const { configValue: votingTime } = getConfig(configs, 'ptu.votingTime');
+
   interactionId += 1;
   dispatch(newUserInteraction(payload));
-  setTimeout(() => dispatch(removeUserInteraction()), payload.ttl || DEFAULT_INTERACTION_TIMEOUT);
+  setTimeout(() => dispatch(removeUserInteraction()),
+    payload.ttl || Number(votingTime) + 1000);
 }
 
 export const toggleIsStreamPlaying = () => ({ type: TOGGLE_IS_STREAM_PLAYING });

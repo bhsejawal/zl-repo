@@ -1,6 +1,5 @@
 import { h } from 'preact';
 import { useMemo, useState } from 'preact/hooks';
-import { Link } from 'preact-router';
 import { connect } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHeart as faHeartSolid, faSpinner, faTimes } from '@fortawesome/pro-solid-svg-icons';
@@ -23,7 +22,7 @@ const Info = ({
   title,
   profileImage,
   zooLogo,
-  zooSlug,
+  // zooSlug, this will be used for zoo page link
   isLiked,
   setLikedAction,
 }) => {
@@ -119,9 +118,7 @@ const Info = ({
           {/* TODO: we need to agree on this routing path */}
           {/* maybe we could use `/z/${zooName}` */}
           {/* if we go with only `/${zooName}` we would need to do much more work to handle 404 */}
-          <Link href={`/zoo/${zooSlug}`}>
-            <img src={zooLogo} alt="logo" />
-          </Link>
+          <img src={zooLogo} alt="logo" />
         </p>
       </div>
     </div>
