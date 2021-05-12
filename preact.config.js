@@ -11,6 +11,11 @@ export default (config, env, helpers) => {
 
   if (env.production && !env.isServer) {
     config.entry['public-bundle'] = path.resolve(__dirname, 'public-page.entry.js');
+    config.entry.bundle = path.resolve(__dirname, 'app.entry.js');
+    // using this to prevent 'entry.js' from assigning a service worker
+    // we want it assigned from 'app.entry.js'
+    env.sw = false;
+
     // eslint-disable-next-line no-restricted-syntax
     for (const { plugin: { options } } of helpers.getPluginsByName(config, 'HtmlWebpackPlugin')) {
       if (options.url === '/account') {
