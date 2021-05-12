@@ -249,10 +249,9 @@ const HabitatModal = ({
               gap="small"
               height="50px"
             >
-              <OutlineButton label="Cancel" size="medium" onClick={toggleMapModalAction} />
+              <OutlineButton label="Cancel" onClick={toggleMapModalAction} />
               <PrimaryButton
                 label="Publish"
-                size="medium"
                 onClick={submitHandler}
                 disabled={!editHabitat._id}
               />
