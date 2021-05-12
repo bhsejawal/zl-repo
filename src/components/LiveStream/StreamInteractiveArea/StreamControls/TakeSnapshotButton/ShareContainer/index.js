@@ -21,6 +21,7 @@ import { connect } from 'react-redux';
 import useFetch from 'use-http';
 import { API_BASE_URL } from 'Shared/fetch';
 import { GlobalsContext } from 'Shared/context';
+import LiveStreamContext from 'Components/LiveStream/LiveStreamContext';
 import { androidDevice, iOSDevice } from '../../../../../../helpers';
 
 import style from './style.scss';
@@ -52,6 +53,7 @@ export const generateFacebookURL = (html) => {
 };
 
 const ShareContainer = ({ userId, show, showSnapshotShareAction }) => {
+  const { videoRef } = useContext(LiveStreamContext);
   const [snapshotData, setSnapshotData] = useState({});
   const [showMainContent, setShowMainContent] = useState(true);
   const { socket } = useContext(GlobalsContext);
@@ -127,7 +129,13 @@ const ShareContainer = ({ userId, show, showSnapshotShareAction }) => {
   }
 
   return (
-    <Box width={{max: '450px', min: '30vw'}} className={style.shareContainer}>
+    <Box
+      className={style.shareContainer}
+      width={{
+        max: `${videoRef?.current.clientHeight - 60}px`,
+        min: `${videoRef?.current.clientHeight / 2 - 60}px`,
+      }}
+    >
       <Box background="var(--hunterGreenMediumLight)">
         <button onClick={closeHandler} type="button" className={style.close}>
           <FontAwesomeIcon icon={faTimes} />
