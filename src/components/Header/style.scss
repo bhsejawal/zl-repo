@@ -11,26 +11,19 @@
   box-shadow: 0 0 5px rgba(41, 31, 31, .5);
   z-index: 19;
   display: flex;
-  justify-content: flex-end !important;
+  justify-content: space-between;
 
-  @media screen and (max-width: 1140px) {
-
-    div.logo {
-      position: initial;
-      transform: inherit;
-      justify-content: flex-start;
-      padding-left: 16px;
-    }
+  > div {
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 
   .logo {
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    transform: translateX(-50%) translateY(-50%);
-    display: flex;
-    flex-grow: 1;
-    justify-content: center;
-    align-items: center;
+    padding: 25px 18px;
   }
+}
+
+.search {
+  margin-left: 25px;
 }

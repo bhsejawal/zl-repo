@@ -18,6 +18,9 @@ import {
   UPDATE_FAVORITE_HABITATS,
   TOGGLE_IS_BROADCASTING,
   UPDATE_REFERRAL_DATA,
+  SET_HABITATS,
+  UPDATE_HABITAT,
+  UNSET_HABITATS,
 } from './types';
 
 export const setSubscriptionData = (payload) => ({ type: SET_SUBSCRIPTION_DATA, payload });
@@ -100,4 +103,16 @@ export const toggleIsBroadcasting = () => ({ type: TOGGLE_IS_BROADCASTING });
 export const updateReferralData = (referralData) => ({
   type: UPDATE_REFERRAL_DATA,
   payload: { referralData },
-})
+});
+
+export const setHabitats = (habitats) => ({
+  type: SET_HABITATS,
+  payload: { habitats },
+});
+
+export const unsetHabitats = () => ({ type: UNSET_HABITATS });
+
+export const updateHabitat = (habitatId, data) => ({
+  type: UPDATE_HABITAT,
+  payload: { habitatId, data },
+});

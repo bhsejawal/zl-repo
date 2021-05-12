@@ -18,26 +18,25 @@ import { PrimaryButton, OutlineButton } from 'Components/Buttons';
 import HabitatCard from 'Components/HabitatCard';
 import ImageSelector from 'Components/ImageSelector';
 
-import {
-  updateHabitatData,
-  selectEditHabitat,
-  toggleMapModal,
-  updateHabitatList,
-} from '../actions';
+import { updateHabitatData, setEditHabitat, toggleMapModal } from '../actions';
+import { updateHabitat } from '../../../redux/actions';
 
 import style from '../style.scss';
 
 const HabitatModal = ({
+  allHabitats,
   editHabitat,
-  habitats,
   updateHabitatDataAction,
-  selectEditHabitatAction,
+  setEditHabitatAction,
   toggleMapModalAction,
-  updateHabitatListAction,
+  updateHabitatAction,
 }) => {
   const [errors, setErrors] = useState(null);
   const imgSelectorRef = useRef();
-  const habitatList = useMemo(() => habitats.map(({ _id, title }) => ({ _id, title })), [habitats]);
+  const habitatList = useMemo(
+    () => allHabitats.map(({ _id, title }) => ({ _id, title })),
+    [allHabitats],
+  );
   const { patch, response } = useFetch(
     buildURL('/admin/habitats'),
     { credentials: 'include', cachePolicy: 'no-cache' },
@@ -73,18 +72,19 @@ const HabitatModal = ({
       return;
     }
 
-    const {
-      description,
-      mapPosition,
-      wideImage,
-    } = editHabitat;
+    const { description, mapPosition, wideImage } = editHabitat;
+    const editData = { description, mapPosition, wideImage };
 
-    await patch(`${editHabitat._id}?v=${editHabitat.__v || 0}`, { description, mapPosition, wideImage });
+    await patch(`${editHabitat._id}?v=${editHabitat.__v || 0}`, editData);
     if (response.ok) {
-      updateHabitatListAction();
+      updateHabitatAction(editHabitat._id, editData);
       toggleMapModalAction();
     }
   }
+
+  const onSelectEditHabitat = ({ target }) => {
+    setEditHabitatAction(allHabitats.find(({ _id }) => _id === target.value));
+  };
 
   return (
     <Layer onClickOutside={toggleMapModalAction}>
@@ -114,7 +114,7 @@ const HabitatModal = ({
             <Box className="simpleSelect" margin={{ top: '16px' }}>
               <select
                 value={editHabitat?._id}
-                onChange={(evt) => selectEditHabitatAction(evt.target.value)}
+                onChange={onSelectEditHabitat}
               >
                 {!editHabitat?._id && (
                   <option value="" selected> Select a habitat</option>
@@ -266,18 +266,20 @@ const HabitatModal = ({
 
 export default connect(
   ({
+    allHabitats,
     map: {
       editHabitat,
       habitats,
     },
   }) => ({
+    allHabitats,
     editHabitat,
     habitats,
   }),
   {
     updateHabitatDataAction: updateHabitatData,
-    selectEditHabitatAction: selectEditHabitat,
+    setEditHabitatAction: setEditHabitat,
     toggleMapModalAction: toggleMapModal,
-    updateHabitatListAction: updateHabitatList,
+    updateHabitatAction: updateHabitat,
   },
 )(HabitatModal);

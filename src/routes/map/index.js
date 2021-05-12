@@ -1,4 +1,5 @@
 import { h } from 'preact';
+import { useMemo } from 'preact/hooks';
 import { connect } from 'react-redux';
 import { Heading, Text, Box } from 'grommet';
 import classnames from 'classnames';
@@ -11,25 +12,31 @@ import Can from 'Components/Authorize';
 import HabitatMap from './HabitatMap'
 import HabitatModal from './HabitatModal';
 
-import { toggleMapModal, selectEditHabitat } from './actions';
+import { toggleMapModal, setEditHabitat } from './actions';
 
 import style from './style.scss';
 
 const Map = ({
+  allHabitats,
   showMapModal,
-  activeHabitat,
+  activeHabitatId,
   toggleMapModalAction,
-  selectEditHabitatAction,
+  setEditHabitatAction,
 }) => {
+  const activeHabitat = useMemo(
+    () => allHabitats.find(({ _id }) => _id === activeHabitatId),
+    [allHabitats, activeHabitatId],
+  );
+
   const handleEditButton = () => {
-    selectEditHabitatAction(activeHabitat._id);
+    setEditHabitatAction(activeHabitat);
     toggleMapModalAction();
-  }
+  };
 
   const handleMapButton = () => {
-    selectEditHabitatAction(null);
+    setEditHabitatAction(null);
     toggleMapModalAction();
-  }
+  };
 
   return (
     <div className={style.map}>
@@ -83,18 +90,18 @@ const Map = ({
 };
 export default connect(
   ({
+    allHabitats,
     map: {
-      activeHabitat,
-      habitats,
+      activeHabitatId,
       showMapModal,
     },
   }) => ({
-    activeHabitat,
-    habitats,
+    allHabitats,
+    activeHabitatId,
     showMapModal,
   }),
   {
     toggleMapModalAction: toggleMapModal,
-    selectEditHabitatAction: selectEditHabitat,
+    setEditHabitatAction: setEditHabitat,
   },
 )(Map);

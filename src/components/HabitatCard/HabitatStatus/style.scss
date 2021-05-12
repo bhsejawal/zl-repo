@@ -1,0 +1,13 @@
+.tag {
+  display: flex;
+
+  span {
+    display: flex;
+    align-items: center;
+  }
+
+  svg {
+    font-size: 5px;
+    margin-right: 5px;
+  }
+}

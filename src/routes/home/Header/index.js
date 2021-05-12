@@ -8,7 +8,6 @@ import NavItem from 'Components/NavBar/NavItem';
 import ZoolifeLogo from 'Components/ZoolifeLogo';
 import Menu from './Menu';
 
-import { getDeviceType } from '../../../helpers';
 import { goToLogin, goToSignup } from '../helpers';
 
 import style from './style.scss';
@@ -19,20 +18,18 @@ const HeaderComponent = () => (
       <ZoolifeLogo landing />
     </div>
 
-    {getDeviceType() !== 'phone' && (
-      <div className={style.navBar}>
-        <Invite text="Invite Friends" />
-        <NavItem text="Log In" onClick={goToLogin} icon={faSignInAlt} />
-        <LandingSecondary
-          onClick={goToSignup}
-          className={style.signUpButton}
-        >
-          Sign Up
-        </LandingSecondary>
-      </div>
-    )}
+    <div className={style.navBar}>
+      <Invite text="Invite Friends" />
+      <NavItem text="Log In" onClick={goToLogin} icon={faSignInAlt} />
+      <LandingSecondary
+        onClick={goToSignup}
+        className={style.signUpButton}
+      >
+        Sign Up
+      </LandingSecondary>
+    </div>
 
-    {getDeviceType() === 'phone' && <Menu />}
+    <Menu className={style.menu} />
   </Header>
 );
 

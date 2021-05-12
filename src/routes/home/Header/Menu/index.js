@@ -4,6 +4,8 @@ import { Drop, Box } from 'grommet';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSignOut } from '@fortawesome/pro-solid-svg-icons';
 import { faBars } from '@fortawesome/pro-light-svg-icons';
+import classnames from 'classnames';
+
 import NavItem from 'Components/NavBar/NavItem'
 import Invite from 'Components/NavBar/Invite';
 import { LandingSecondary } from 'Components/Buttons';
@@ -12,12 +14,12 @@ import { goToLogin, goToSignup } from '../../helpers';
 
 import style from './style.scss';
 
-const Menu = () => {
+const Menu = ({ className }) => {
   const buttonRef = useRef(null)
   const [showMenu, setShowMenu] = useState(false);
 
   return (
-    <div className={style.menuContainer}>
+    <div className={classnames(style.menuContainer, className)}>
       <Box
         pad="20px"
         align="center"

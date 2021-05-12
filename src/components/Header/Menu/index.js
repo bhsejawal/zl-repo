@@ -1,12 +1,20 @@
 import { h } from 'preact';
 import { route } from 'preact-router';
 import { useRef, useState } from 'preact/hooks';
+import { connect } from 'react-redux';
 import { Drop, Box, Text } from 'grommet';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCog, faQuestionCircle, faSignOut } from '@fortawesome/pro-solid-svg-icons';
+import {
+  faCog,
+  faGlobeAmericas,
+  faHeart,
+  faQuestionCircle,
+  faSignOut,
+  faUsersCog,
+} from '@fortawesome/pro-solid-svg-icons';
 import useFetch from 'use-http';
-import { connect } from 'react-redux';
 
+import { hasPermission } from 'Components/Authorize';
 import { buildURL } from 'Shared/fetch';
 import AnimalIcon from 'Components/AnimalIcon';
 
@@ -32,11 +40,6 @@ const Menu = ({ unsetUserDataAction, openContactUsModalAction }) => {
     }
   }
 
-  const accountHandler = () => {
-    setShowMenu(false);
-    route('/account')
-  }
-
   const contactUsHandler = () => {
     setShowMenu(false);
     openContactUsModalAction()
@@ -49,25 +52,75 @@ const Menu = ({ unsetUserDataAction, openContactUsModalAction }) => {
         align="center"
         justify="start"
         ref={buttonRef}
-        onClick={() => setShowMenu(!showMenu)}
+        // using onclick for cursor pointer,
+        // and onMouseDown to prevent reopening on avatar click
+        onClick={() => {}}
+        onMouseDown={() => setShowMenu(!showMenu)}
       >
         <AnimalIcon />
       </Box>
+
       {showMenu && (
         <Drop
           align={{ top: 'bottom' }}
           target={buttonRef.current}
           elevation="xlarge"
           className={style.menuItem}
-          onClickOutside={() => setShowMenu(!showMenu)}
+          onClickOutside={() => setShowMenu(false)}
+          onClick={() => setShowMenu(false)}
+          width={{ min: '180px' }}
         >
+          {hasPermission('admin:menu') && (
+            <>
+              <Box
+                width="195px"
+                height="35px"
+                pad={{ horizontal: '15px' }}
+                direction="row"
+                align="center"
+                onClick={() => route('/admin/users')}
+              >
+                <FontAwesomeIcon icon={faUsersCog} />
+                <Box margin={{ left: '12px' }}>
+                  <Text size="large">Users (Admin)</Text>
+                </Box>
+              </Box>
+              <Box
+                width="195px"
+                height="35px"
+                pad={{ horizontal: '15px' }}
+                direction="row"
+                align="center"
+                onClick={() => route('/admin/habitats')}
+              >
+                <FontAwesomeIcon icon={faGlobeAmericas} />
+                <Box margin={{ left: '12px' }}>
+                  <Text size="large">Habitats (Admin)</Text>
+                </Box>
+              </Box>
+              <Box
+                width="195px"
+                height="35px"
+                pad={{ horizontal: '15px' }}
+                direction="row"
+                align="center"
+                onClick={() => route('/admin/partners')}
+              >
+                <FontAwesomeIcon icon={faHeart} />
+                <Box margin={{ left: '12px' }}>
+                  <Text size="large">Partners (Admin)</Text>
+                </Box>
+              </Box>
+            </>
+          )}
+
           <Box
             width="195px"
             height="35px"
             pad={{ horizontal: '15px' }}
             direction="row"
             align="center"
-            onClick={accountHandler}
+            onClick={() => route('/account')}
           >
             <FontAwesomeIcon icon={faCog} />
             <Box margin={{ left: '12px' }}>
