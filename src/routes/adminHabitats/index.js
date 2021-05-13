@@ -104,7 +104,7 @@ const Habitats = () => {
     title: 'Species',
     property: 'animal',
     editable: true,
-    maxLength: 20,
+    maxLength: 32,
   }, {
     title: 'Description',
     property: 'description',
