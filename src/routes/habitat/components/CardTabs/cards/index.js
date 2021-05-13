@@ -5,8 +5,8 @@ import {
   useEffect,
   useMemo,
   useRef,
-  useState,
 } from 'preact/hooks';
+import { throttle } from 'lodash-es';
 import useFetch from 'use-http';
 
 import { API_BASE_URL } from 'Shared/fetch';
@@ -29,7 +29,7 @@ import OriginAndHabitatCard from './OriginAndHabitatCard';
 import AnimalBodyCard from './AnimalBodyCard';
 import QuizCard from './QuizCard';
 
-import { setCards, setLoading } from '../actions';
+import { setActiveShortcut, setCards, setLoading } from '../actions';
 import { fetchCards } from '../api';
 import { useIsInitiallyLoaded } from '../../../../../hooks';
 
@@ -55,25 +55,65 @@ const Cards = ({
   habitatId,
   setCardsAction,
   setLoadingAction,
+  setActiveShortcutAction,
 }) => {
   const cardsRef = useRef();
+  const tagPositionsRef = useRef();
+  // this is used for smooth scroll to disable shortcut update
+  const autoScrollingRef = useRef();
   const loaded = useIsInitiallyLoaded(loading);
-  const [activeShortcut, setActiveShortcut] = useState();
   const { get } = useFetch(API_BASE_URL, {
     credentials: 'include',
     cachePolicy: 'no-cache',
   });
 
   const availableShortcuts = useMemo(
-    () => Array.from(new Set(cards.map(({ tag }) => tag))),
+    // non empty tags
+    () => Array.from(new Set(cards.map(({ tag }) => tag)))
+      .filter((shortcut) => shortcut),
     [cards],
   );
 
   useEffect(() => {
-    if (!activeShortcut && cards.length > 0) {
-      setActiveShortcut(cards[0].tag);
+    let prevTag;
+    tagPositionsRef.current = [];
+    const nodes = cardsRef.current.childNodes;
+
+    const timeout = setTimeout(() => {
+      cards.forEach(({ tag }, ind) => {
+        if (tag !== prevTag) {
+          prevTag = tag;
+          tagPositionsRef.current.push({
+            tag,
+            pos: nodes[ind].offsetLeft,
+          });
+        }
+      });
+    }, 50);
+
+    return () => {
+      clearTimeout(timeout);
+    };
+  }, [cards]);
+
+  const onCardsScroll = useMemo(() => throttle((evt) => {
+    if (!autoScrollingRef.current) {
+      const scrolledFromLeft = evt.target.scrollLeft;
+      const tagObj = tagPositionsRef.current
+        .find(({ pos }) => pos > scrolledFromLeft);
+      setActiveShortcutAction(tagObj?.tag);
     }
-  }, [cards, activeShortcut]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, 300, { trailing: true, leading: false }), [cards]);
+
+  useEffect(() => {
+    if (loading) {
+      setActiveShortcutAction(null);
+    } else {
+      // find the first that has tag and use that value
+      setActiveShortcutAction(cards.find(({ tag }) => tag)?.tag);
+    }
+  }, [activeTab, loading, cards, setActiveShortcutAction]);
 
   useEffect(() => {
     const load = async () => {
@@ -107,15 +147,20 @@ const Cards = ({
 
   const onShortcutClick = useCallback(({ target }) => {
     const { value } = target.dataset;
-    setActiveShortcut(value);
+    setActiveShortcutAction(value);
     const selector = `[data-tag="${value}"]`;
     const firstChild = cardsRef.current?.querySelectorAll(selector)?.[0];
     firstChild.scrollIntoView({ behavior: 'smooth', inline: 'center' });
-  }, [setActiveShortcut]);
+
+    autoScrollingRef.current = true;
+    setTimeout(() => {
+      autoScrollingRef.current = false;
+    }, 1000);
+  }, [setActiveShortcutAction]);
 
   return (
     <>
-      <div className={style.cards}>
+      <div className={style.cards} onScroll={onCardsScroll}>
         <div ref={cardsRef}>
           {!loaded && (
             <Loader fill />
@@ -248,11 +293,7 @@ const Cards = ({
         </div>
       </div>
 
-      <Shortcuts
-        available={availableShortcuts}
-        active={activeShortcut}
-        onClick={onShortcutClick}
-      />
+      <Shortcuts available={availableShortcuts} onClick={onShortcutClick} />
     </>
   );
 };
@@ -278,5 +319,6 @@ export default connect(
   {
     setCardsAction: setCards,
     setLoadingAction: setLoading,
+    setActiveShortcutAction: setActiveShortcut,
   },
 )(Cards);
