@@ -50,20 +50,21 @@
     align-items: center;
 
     .dotWrapper {
-      flex-grow: 1;
       overflow: hidden;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      padding: 10px;
+      display: block;
       cursor: pointer;
       position: relative;
+      width: 20px;
+      height: 20px;
 
       .loader {
         color: white;
         position: absolute;
         font-size: 20px;
         height: 20px;
+        top: 50%;
+        left: 50%;
+        transform: translateY(-50%)translateX(-50%);
       }
 
       &.active {
@@ -77,6 +78,12 @@
       &:hover .dot {
         background: white;
       }
+
+      svg {
+        height: 20px;
+        width: 20px;
+        display: block;
+      }
     }
 
     .dot {
@@ -85,6 +92,10 @@
       background: var(--hunterGreenLight);
       border-radius: 50%;
       display: inline-block;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translateY(-50%)translateX(-50%);
     }
   }
 }

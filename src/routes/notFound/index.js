@@ -1,5 +1,5 @@
 import { h } from 'preact';
-import ErrorPage from '../../layouts/ErrorPage';
+import ErrorPage from '../../components/ErrorPage';
 
 const NotFound = ({ url }) => (
   <ErrorPage

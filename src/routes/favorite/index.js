@@ -85,15 +85,18 @@ const Favorite = ({ updateFavoriteHabitatAction }) => {
         height={{ min: '80px' }}
         pad={{ horizontal: 'large', vertical: 'medium' }}
       >
-        <Heading
-          margin={{ top: '0', bottom: '0', right: '20px' }}
-          color="var(--charcoal)"
-          level="3"
-        >
-          My Favorites
-        </Heading>
-        <Box fill="vertical" justify="center">
-          <Text margin="0" size="xlarge" color="var(--charcoalLight)">
+        <Box justify="start" height="26px">
+          <Heading
+            margin={{ top: '0', bottom: '0', right: '20px' }}
+            color="var(--charcoal)"
+            level="3"
+            style={{ lineHeight: '.8em' }}
+          >
+            My Favorites
+          </Heading>
+        </Box>
+        <Box justify="center" height="28px">
+          <Text margin="0" size="xlarge" color="var(--charcoalLight)" style={{ lineHeight: '.8em' }}>
             Your top habitats in one glance! Tap the heart to remove a favorite.
           </Text>
         </Box>

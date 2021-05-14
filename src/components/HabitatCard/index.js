@@ -3,12 +3,7 @@ import { Link } from 'preact-router';
 import { useMemo, useState } from 'preact/hooks';
 import { connect } from 'react-redux';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faHeart,
-  faCircle,
-  faSpinner,
-  faTimes,
-} from '@fortawesome/pro-solid-svg-icons';
+import { faHeart, faSpinner, faTimes } from '@fortawesome/pro-solid-svg-icons';
 import { faHeart as faHeartOutline } from '@fortawesome/pro-light-svg-icons';
 import {
   Button,
@@ -20,8 +15,8 @@ import classnames from 'classnames';
 import useFetch from 'use-http';
 
 import { buildURL } from 'Shared/fetch';
-import Tag from 'Components/Tag';
 import { openTermsModal } from 'Components/TermsAndConditions/actions';
+import HabitatStatus from './HabitatStatus';
 
 import zooPlaceholder from './zooPlaceholder.png';
 import wideImgPlaceholder from './wideImgPlaceholder.png';
@@ -29,26 +24,6 @@ import wideImgPlaceholder from './wideImgPlaceholder.png';
 import { updateFavoriteHabitat } from '../../redux/actions';
 
 import style from './style.scss';
-
-const HabitatStatus = ({ online, liveTalk }) => {
-  let label = online ? 'ONLINE' : 'OFFLINE'
-
-  if (online && liveTalk) {
-    label = 'LIVE TALK';
-  }
-
-  return (
-    <Tag
-      label={(
-        <span he>
-          {(online || liveTalk) && <FontAwesomeIcon icon={faCircle} />}
-          <Text size="small" weight={700} style={{ lineHeight: '15px'}}>{label}</Text>
-        </span>
-      )}
-      varient={online && liveTalk ? 'liveTalk' : label.toLowerCase()}
-    />
-  )
-};
 
 const HabitatCard = ({
   className,
@@ -136,9 +111,7 @@ const HabitatCard = ({
         <div className={style.logo}>
           <img src={logo ?? zooPlaceholder} alt="" />
         </div>
-        <div className={style.tag}>
-          <HabitatStatus online={online} liveTalk={liveTalk} />
-        </div>
+        <HabitatStatus className={style.tag} online={online} liveTalk={liveTalk} />
       </div>
       <div className={style.body}>
         <div style={{ flexGrow: 1 }}>

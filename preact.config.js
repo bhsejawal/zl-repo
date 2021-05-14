@@ -9,6 +9,25 @@ export default (config, env, helpers) => {
   config.resolve.alias.Shared = path.resolve(__dirname, 'src/shared');
   envVars(config, env, helpers);
 
+  if (env.production && !env.isServer) {
+    config.entry['public-bundle'] = path.resolve(__dirname, 'public-page.entry.js');
+    config.entry.bundle = path.resolve(__dirname, 'app.entry.js');
+    // using this to prevent 'entry.js' from assigning a service worker
+    // we want it assigned from 'app.entry.js'
+    env.sw = false;
+
+    // eslint-disable-next-line no-restricted-syntax
+    for (const { plugin: { options } } of helpers.getPluginsByName(config, 'HtmlWebpackPlugin')) {
+      if (options.url === '/account') {
+        options.chunks = ['bundle', 'polyfills'];
+        options.template = `!!ejs-loader?esModule=false!${path.resolve(__dirname, './src/app-template.ejs')}`;
+      } else {
+        options.chunks = ['public-bundle', 'polyfills'];
+        options.template = `!!ejs-loader?esModule=false!${path.resolve(__dirname, './src/public-template.ejs')}`;
+      }
+    }
+  }
+
   const { plugin: htmlPlugin } = helpers.getPluginsByName(config, 'HtmlWebpackPlugin')[0] || {};
   const { PREACT_APP_SEGMENT_ID: segmentId } = process.env;
 

@@ -58,11 +58,11 @@ const SingleVideoCardForm = forwardRef(({
             rows="3"
             data-prop="text"
             onChange={onInputChange}
-            maxLength="80"
+            maxLength="110"
           />
           <span className={style.bottomRight}>
             {text?.length ?? 0}
-            /80
+            /110
           </span>
         </div>
       </Box>

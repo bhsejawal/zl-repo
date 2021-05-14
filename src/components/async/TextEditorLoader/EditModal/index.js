@@ -97,12 +97,20 @@ const EditModal = ({
             <FormField name="text">
               <TextArea name={TEXT_INPUT} type="text" />
             </FormField>
-
-            {error && (
-              <Box pad={{ horizontal: 'small' }}>
-                <Text color="status-error">{error}</Text>
+            <Box justify="between" direction="row">
+              {error && (
+                <Box pad={{ horizontal: 'small' }}>
+                  <Text color="status-error">{error}</Text>
+                </Box>
+              )}
+              <Box margin={{ left: 'auto' }}>
+                <Text color={error ? 'status-error' : ''}>
+                  {value.text?.length ?? 0}
+                  /
+                  {maxLen}
+                </Text>
               </Box>
-            )}
+            </Box>
           </Box>
 
           <Box

@@ -27,6 +27,8 @@ const RESOLUTION_CONSTRAINT = 'RESOLUTION_CONSTRAINT';
 const FILE_SIZE_CONSTRAINT = 'FILE_SIZE_CONSTRAINT';
 const ASPECT_RATIO_CONSTRAINT = 'ASPECT_RATIO_CONSTRAINT';
 const ACCEPTED_FORMAT_CONSTRAINT = 'ACCEPTED_FORMAT_CONSTRAINT';
+const WIDTH_CONSTRAINT = 'WIDTH_CONSTRAINT';
+const HEIGHT_CONSTRAINT = 'HEIGHT_CONSTRAINT';
 
 const ValidationLine = ({ error, text }) => (
   <Text color={error ? 'status-error' : undefined}>{text}</Text>
@@ -49,6 +51,8 @@ const ImageSelector = forwardRef(({
   constraints: {
     maxResolution,
     minResolution,
+    width,
+    height,
     maxFileSize,
     aspectRatio,
     acceptedFormats = [],
@@ -73,7 +77,7 @@ const ImageSelector = forwardRef(({
         .get('content-type')
         .split('/')
         .reverse();
-      if (!acceptedFormats.some((format) => url.endsWith(format))
+      if (!acceptedFormats.some((format) => url?.endsWith(format))
         && !acceptedFormats.some((format) => format === imgFormat)) {
         newErrors[ACCEPTED_FORMAT_CONSTRAINT] = true;
       } else {
@@ -89,8 +93,8 @@ const ImageSelector = forwardRef(({
 
     // we assume the new image is loaded while we were waiting for head request in getHeaders
     if (previewRef?.current) {
-      const imgWidth = previewRef.current.naturalHeight;
-      const imgHeight = previewRef.current.naturalWidth;
+      const imgWidth = previewRef.current.naturalWidth;
+      const imgHeight = previewRef.current.naturalHeight;
 
       if ((maxResolution && (imgWidth > maxResolution || imgHeight > maxResolution))
         || (minResolution && (imgWidth < maxResolution || imgHeight < maxResolution))
@@ -98,6 +102,17 @@ const ImageSelector = forwardRef(({
         newErrors[RESOLUTION_CONSTRAINT] = true;
       } else {
         newErrors[RESOLUTION_CONSTRAINT] = false;
+      }
+
+      if (width && width !== imgWidth) {
+        newErrors[WIDTH_CONSTRAINT] = true;
+      } else {
+        newErrors[WIDTH_CONSTRAINT] = false;
+      }
+      if (height && height !== imgHeight) {
+        newErrors[HEIGHT_CONSTRAINT] = true;
+      } else {
+        newErrors[HEIGHT_CONSTRAINT] = false;
       }
 
       if (aspectRatio) {
@@ -214,6 +229,19 @@ const ImageSelector = forwardRef(({
       });
     }
 
+    if (width) {
+      constraints.push({
+        type: WIDTH_CONSTRAINT,
+        text: `Width: ${width}`,
+      });
+    }
+    if (height) {
+      constraints.push({
+        type: HEIGHT_CONSTRAINT,
+        text: `Height: ${height}`,
+      });
+    }
+
     if (maxFileSize) {
       if (maxFileSize < 1000) {
         constraints.push({
@@ -252,7 +280,7 @@ const ImageSelector = forwardRef(({
     }
 
     return constraints;
-  }, [maxResolution, minResolution, maxFileSize, aspectRatio, acceptedFormats]);
+  }, [maxResolution, minResolution, width, height, maxFileSize, aspectRatio, acceptedFormats]);
 
   const onInputChange = async ({ target }) => {
     try {
@@ -262,6 +290,8 @@ const ImageSelector = forwardRef(({
         maxResolution,
         acceptedFormats,
         maxFileSize,
+        width,
+        height,
       );
       onChange(`${window.location.origin}/${path}`);
     } catch (err) {

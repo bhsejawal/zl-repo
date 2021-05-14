@@ -15,6 +15,7 @@ import Fallback from './Fallback';
 
 import StreamInteractiveArea from './StreamInteractiveArea';
 import AdminButton from './AdminButton';
+import LiveStreamContext from './LiveStreamContext';
 
 import { useWebRTCStream } from './hooks/useWebRTCStream';
 import { wsMessages } from './helpers/constants';
@@ -105,47 +106,49 @@ const Stream = ({
   }
 
   return (
-    <div
-      className={style.streamContainer}
-      style={{
-        width,
-        height,
-        maxWidth: width,
-      }}
-      ref={containerRef}
-    >
-      <video
-        ref={videoRef}
-        autoPlay
-        controls={!customControls}
-        muted
-        playsInline
-        key={streamId}
-        style={{ width, height }}
-      />
-
-      {streamStatus === PLAY_STARTED && interactive && (
-        <StreamInteractiveArea
-          width={width}
-          height={height}
-          parentRef={containerRef}
+    <LiveStreamContext.Provider value={{ videoRef }}>
+      <div
+        className={style.streamContainer}
+        style={{
+          width,
+          height,
+          maxWidth: width,
+        }}
+        ref={containerRef}
+      >
+        <video
+          ref={videoRef}
+          autoPlay
+          controls={!customControls}
+          muted
+          playsInline
+          key={streamId}
+          style={{ width, height }}
         />
-      )}
 
-      {![ERROR, PLAY_STARTED, CLOSED].includes(streamStatus) && (
-        <Fallback type="loading" mode={mode} />
-      )}
+        {streamStatus === PLAY_STARTED && interactive && (
+          <StreamInteractiveArea
+            width={width}
+            height={height}
+            parentRef={containerRef}
+          />
+        )}
 
-      {streamStatus === ERROR && (
-        <Fallback type="error" />
-      )}
+        {![ERROR, PLAY_STARTED, CLOSED].includes(streamStatus) && (
+          <Fallback type="loading" mode={mode} />
+        )}
 
-      {streamStatus === CLOSED && (
-        <Fallback type="offline" />
-      )}
+        {streamStatus === ERROR && (
+          <Fallback type="error" />
+        )}
 
-      {(interactive && hasPermission('habitat:edit-stream')) && <AdminButton />}
-    </div>
+        {streamStatus === CLOSED && (
+          <Fallback type="offline" />
+        )}
+
+        {(interactive && hasPermission('habitat:edit-stream')) && <AdminButton />}
+      </div>
+    </LiveStreamContext.Provider>
   );
 };
 

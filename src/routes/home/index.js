@@ -1,5 +1,4 @@
 import { h } from 'preact';
-import { route } from 'preact-router';
 
 import { FloatingButton } from 'Components/Buttons';
 
@@ -13,13 +12,15 @@ import FAQ from './FAQ';
 import Testimonials from './Testimonials';
 import Footer from './Footer';
 
+import { goToSignup } from './helpers';
+
 import style from './style.scss';
 
 const Home = ({ partnerImage }) => (
   <div className={style.landing}>
     <Header />
     {/* This will need to float around the screen */}
-    <FloatingButton onClick={() => route('/signup')} />
+    <FloatingButton onClick={goToSignup} />
     <div className={style.container}>
       <div className={style.wrapper}>
         <HeroSection partnerImage={partnerImage} />

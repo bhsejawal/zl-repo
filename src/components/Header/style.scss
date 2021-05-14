@@ -11,29 +11,19 @@
   box-shadow: 0 0 5px rgba(41, 31, 31, .5);
   z-index: 19;
   display: flex;
-  justify-content: flex-end !important;
+  justify-content: space-between;
 
-
-  @media screen and (max-width: #{$tablet-landscape-width}) {
-
-    .logo {
-      position: static !important;
-      display: flex !important;
-      justify-content: flex-start !important;
-      padding-left: 12px !important;
-    }
+  > div {
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 
   .logo {
-    position: absolute;
-    left: 0;
-    right: 0;
-    top: 0;
-    bottom: 0;
-    display: flex;
-    flex-grow: 1;
-    justify-content: center;
-    align-items: center;
-    pointer-events: none;
+    padding: 25px 18px;
   }
+}
+
+.search {
+  margin-left: 25px;
 }

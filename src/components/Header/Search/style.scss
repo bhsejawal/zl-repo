@@ -1,0 +1,13 @@
+@import "../../../style/media-query";
+
+.searchWrapper {
+  border-radius: 50px;
+
+  @media screen and (max-width: 900px) {
+    display: none !important;
+  }
+}
+
+.suggestion {
+  text-decoration: none;
+}

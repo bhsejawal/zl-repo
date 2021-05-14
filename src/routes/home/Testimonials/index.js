@@ -1,9 +1,9 @@
 import { h } from 'preact';
 import { LandingPrimary } from 'Components/Buttons';
-import { route } from 'preact-router';
-
 import Carousel from 'react-multi-carousel';
 import 'react-multi-carousel/lib/styles.css';
+
+import { goToSignup } from '../helpers';
 
 import quotation from './quotation.svg';
 import style from './style.scss';
@@ -79,22 +79,22 @@ const Testimonials = () => (
       >
         <Testimonial
           text="You feel like you're right there with an animal family without leaving your couch."
-          image="https://zl-brizi-tv.s3.ca-central-1.amazonaws.com/assets/landing/s6_testimonial_1.png"
+          image="https://assets.zoolife.tv/landing/s6_testimonial_1.png"
           name="Corrine, Denver"
         />
         <Testimonial
           text="The healthiest screen time I've had in months, so therapeutic."
-          image="https://zl-brizi-tv.s3.ca-central-1.amazonaws.com/assets/landing/s6_testimonial_2.png"
+          image="https://assets.zoolife.tv/landing/s6_testimonial_2.png"
           name="Billie, Auckland"
         />
         <Testimonial
           text="An incredible way to experience & protect nature as a family."
-          image="https://zl-brizi-tv.s3.ca-central-1.amazonaws.com/assets/landing/s6_testimonial_3.png"
+          image="https://assets.zoolife.tv/landing/s6_testimonial_3.png"
           name="JP, Sao Paulo"
         />
         <Testimonial
           text="... and I've never felt more connected with nature than I do on Zoolife."
-          image="https://zl-brizi-tv.s3.ca-central-1.amazonaws.com/assets/landing/s6_testimonial_4.png"
+          image="https://assets.zoolife.tv/landing/s6_testimonial_4.png"
           name="Arjun, Montreal"
         />
       </Carousel>
@@ -110,13 +110,13 @@ const Testimonials = () => (
           </h1>
           <p className="body">50% of your purchase directly funds animal care & conservation efforts led by our partners.</p>
 
-          <LandingPrimary type="button" onClick={() => route('/signup')}>Join The Community</LandingPrimary>
+          <LandingPrimary type="button" onClick={goToSignup}>Join The Community</LandingPrimary>
         </div>
       </div>
       <img
         loading="lazy"
         className={style.mountain}
-        src="https://zl-brizi-tv.s3.ca-central-1.amazonaws.com/assets/landing/s6_mountin.png"
+        src="https://assets.zoolife.tv/landing/s6_mountin.png"
         alt=""
       />
     </div>

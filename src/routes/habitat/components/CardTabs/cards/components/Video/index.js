@@ -3,12 +3,14 @@ import { useEffect, useRef, useState } from 'preact/hooks';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPause, faPlayCircle } from '@fortawesome/pro-regular-svg-icons';
 import classnames from 'classnames';
+import Loader from 'Components/async/Loader';
 
 import style from './style.scss';
 
 const Video = ({ url, className }) => {
   const videoRef = useRef();
   const [isPlaying, setIsPlaying] = useState(false);
+  const [showLoader, setShowLoader] = useState(true);
 
   const onPlay = () => {
     videoRef.current.play();
@@ -22,12 +24,15 @@ const Video = ({ url, className }) => {
 
   useEffect(() => {
     const onPaused = () => setIsPlaying(false);
+    const onLoadedData = () => setShowLoader(false);
     const el = videoRef.current;
 
+    el.addEventListener('loadeddata', onLoadedData);
     el.addEventListener('pause', onPaused);
 
     return () => {
       el.removeEventListener('pause', onPaused);
+      el.removeEventListener('loadeddata', onLoadedData);
     };
   }, [url]);
 
@@ -37,8 +42,10 @@ const Video = ({ url, className }) => {
         Sorry, your browser doesn&quot;t support embedded videos.
       </video>
 
+      {showLoader && <Loader className={style.videoLoader} />}
+
       <FontAwesomeIcon
-        className={classnames(style.control, { [style.hidden]: isPlaying })}
+        className={classnames(style.control, { [style.hidden]: isPlaying || showLoader })}
         color="#fff"
         size="3x"
         onClick={onPlay}
@@ -46,7 +53,9 @@ const Video = ({ url, className }) => {
       />
 
       <FontAwesomeIcon
-        className={classnames(style.control, style.pause, { [style.hidden]: !isPlaying })}
+        className={classnames(style.control, style.pause, {
+          [style.hidden]: !isPlaying || showLoader,
+        })}
         color="#fff"
         size="3x"
         onClick={onPause}

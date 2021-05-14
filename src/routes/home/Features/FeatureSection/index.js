@@ -1,5 +1,6 @@
-import { route } from 'preact-router';
 import { LandingSecondary } from 'Components/Buttons';
+
+import { goToSignup } from '../../helpers';
 
 import style from '../style.scss';
 
@@ -9,12 +10,12 @@ const FeatureSection = () => (
     <div className={style.left}>
       <div className={style.videoWrapper}>
         <img
-          src="https://zl-brizi-tv.s3.ca-central-1.amazonaws.com/assets/landing/s4_macbook.png"
+          src="https://assets.zoolife.tv/landing/s4_macbook.png"
           alt="laptop mockup"
         />
         <video muted autoPlay loop playsInline controls={false}>
-          <source src="https://zl-brizi-tv.s3.ca-central-1.amazonaws.com/assets/landing/s4_camera.webm" type="video/webm" />
-          <source src="https://zl-brizi-tv.s3.ca-central-1.amazonaws.com/assets/landing/s4_camera.mp4" type="video/mp4" />
+          <source src="https://assets.zoolife.tv/landing/s4_camera.webm" type="video/webm" />
+          <source src="https://assets.zoolife.tv/landing/s4_camera.mp4" type="video/mp4" />
           Your browser does not support the video tag.
         </video>
       </div>
@@ -25,7 +26,7 @@ const FeatureSection = () => (
         <p>
           Use audience-guided cameras to observe animals and explore habitats stunningly close.
         </p>
-        <LandingSecondary onClick={() => route('/signup')}>Explore a Habitat</LandingSecondary>
+        <LandingSecondary onClick={goToSignup}>Explore a Habitat</LandingSecondary>
       </div>
     </div>
   </div>

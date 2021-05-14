@@ -1,0 +1,9 @@
+.pdfWrapper {
+  display: flex;
+  height: calc(100vh - var(--headerHeight));
+  margin-top: var(--headerHeight);
+
+  iframe {
+    border: 0;
+  }
+}

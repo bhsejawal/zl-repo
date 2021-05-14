@@ -1,6 +1,6 @@
 import { h } from 'preact';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSpinner } from '@fortawesome/free-solid-svg-icons';
+import { faSpinner } from '@fortawesome/pro-duotone-svg-icons';
 
 import { getIconUrl } from 'Shared/profileIcons';
 import { LOADING, FULL_CURSOR, LOADING_PIN } from './constants';

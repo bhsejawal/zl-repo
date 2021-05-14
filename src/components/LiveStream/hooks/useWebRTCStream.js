@@ -83,8 +83,13 @@ export const useWebRTCStream = (streamId, isStreamOn, videoContainer, mode, logS
 
   useEffect(() => {
     const onPlayHandler = () => {
-      setStreamStatus(PLAY_STARTED);
+      // Play handler will trigger again when users navigate through
+      // the carousel, if someone is broadcasting, the container would reset
+      if (streamStatus !== PUBLISH_STARTED) {
+        setStreamStatus(PLAY_STARTED);
+      }
     }
+
     const { current: htmlVideoContainer } = videoContainer;
 
     if (htmlVideoContainer) {
@@ -93,9 +98,6 @@ export const useWebRTCStream = (streamId, isStreamOn, videoContainer, mode, logS
 
     return () => {
       if (htmlVideoContainer) {
-        if (streamStatus === PLAY_STARTED) {
-          htmlVideoContainer.pause();
-        }
         htmlVideoContainer.removeEventListener('play', onPlayHandler);
       }
     }

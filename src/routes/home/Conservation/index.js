@@ -1,5 +1,6 @@
-import { route } from 'preact-router';
 import { LandingPrimary } from 'Components/Buttons';
+
+import { goToSignup } from '../helpers';
 
 import style from './style.scss';
 
@@ -14,11 +15,11 @@ const Conversation = () => (
           50% of your purchase directly funds animal care & conservation
           efforts led by our partners.
         </p>
-        <LandingPrimary onClick={() => route('/signup')}>I want to help</LandingPrimary>
+        <LandingPrimary onClick={goToSignup}>I want to help</LandingPrimary>
       </div>
     </div>
     <div className={style.right}>
-      <img loading="lazy" src="https://zl-brizi-tv.s3.ca-central-1.amazonaws.com/assets/landing/s5_koalas.jpg" alt="koalas" />
+      <img loading="lazy" src="https://assets.zoolife.tv/landing/s5_koalas.jpg" alt="koalas" />
     </div>
   </div>
 );

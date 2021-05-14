@@ -1,3 +1,6 @@
+import { get } from 'lodash-es';
+import { getConfig } from '../helpers';
+
 import {
   SET_USER_DATA,
   ADD_USER_INTERACTION,
@@ -14,9 +17,11 @@ import {
   UPDATE_SUBSCRIPTION_DATA,
   UPDATE_FAVORITE_HABITATS,
   TOGGLE_IS_BROADCASTING,
+  UPDATE_REFERRAL_DATA,
+  SET_HABITATS,
+  UPDATE_HABITAT,
+  UNSET_HABITATS,
 } from './types';
-
-const DEFAULT_INTERACTION_TIMEOUT = 3000;
 
 export const setSubscriptionData = (payload) => ({ type: SET_SUBSCRIPTION_DATA, payload });
 
@@ -41,10 +46,14 @@ const newUserInteraction = (payload) => ({
 
 const removeUserInteraction = () => ({ type: REMOVE_USER_INTERACTION });
 
-export const addUserInteraction = (payload) => (dispatch) => {
+export const addUserInteraction = (payload) => (dispatch, getState) => {
+  const configs = get(getState(), 'habitat.habitatInfo.camera.configs', []);
+  const { configValue: votingTime } = getConfig(configs, 'ptu.votingTime');
+
   interactionId += 1;
   dispatch(newUserInteraction(payload));
-  setTimeout(() => dispatch(removeUserInteraction()), payload.ttl || DEFAULT_INTERACTION_TIMEOUT);
+  setTimeout(() => dispatch(removeUserInteraction()),
+    payload.ttl || Number(votingTime) + 1000);
 }
 
 export const toggleIsStreamPlaying = () => ({ type: TOGGLE_IS_STREAM_PLAYING });
@@ -90,3 +99,20 @@ export const updateSubscription = (payload) => ({
 });
 
 export const toggleIsBroadcasting = () => ({ type: TOGGLE_IS_BROADCASTING });
+
+export const updateReferralData = (referralData) => ({
+  type: UPDATE_REFERRAL_DATA,
+  payload: { referralData },
+});
+
+export const setHabitats = (habitats) => ({
+  type: SET_HABITATS,
+  payload: { habitats },
+});
+
+export const unsetHabitats = () => ({ type: UNSET_HABITATS });
+
+export const updateHabitat = (habitatId, data) => ({
+  type: UPDATE_HABITAT,
+  payload: { habitatId, data },
+});

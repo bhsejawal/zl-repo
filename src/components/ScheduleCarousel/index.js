@@ -8,6 +8,7 @@ import {
 import { connect } from 'react-redux';
 import Carousel from 'react-multi-carousel';
 import { formatDistanceToNow } from 'date-fns';
+import classnames from 'classnames';
 
 import BroadcastWrapper from 'Components/BroadcastWrapper';
 import { hasPermission } from 'Components/Authorize';
@@ -80,7 +81,7 @@ const ScheduleCarousel = ({
           partialVisible
           renderDotsOutside
           showDots
-          className={style.carousel}
+          className={classnames(style.carousel, { [style.singleItem]: list.length === 0 }) }
           responsive={{
             generic: {
               breakpoint: { max: 3000, min: 0 },

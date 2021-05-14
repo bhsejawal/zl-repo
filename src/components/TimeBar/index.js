@@ -12,20 +12,53 @@ import { getDeviceType } from '../../helpers';
 
 import style from './style.scss';
 
+const format = (timestamp) => {
+  const secondMs = 1000;
+  const minuteMs = secondMs * 60;
+  const hourMs = minuteMs * 60;
+  const dayMs = hourMs * 24;
+  const result = [];
+
+  const days = Math.floor(timestamp / dayMs);
+  const daysMs = days * dayMs;
+
+  const hours = Math.floor((timestamp - daysMs) / hourMs);
+  const hoursMs = hours * hourMs;
+
+  const minutes = Math.floor((timestamp - (daysMs + hoursMs)) / minuteMs);
+  const minutesMs = minutes * minuteMs;
+
+  const seconds = Math.floor((timestamp - (daysMs + hoursMs + minutesMs)) / secondMs);
+
+  if (days > 0) {
+    result.push(`${days}d`);
+  }
+  if (days > 0 || hours > 0) {
+    result.push(`${hours}h`);
+  }
+
+  const leadingZero = (number) => `${number < 10 ? '0' : ''}${number}`;
+
+  result.push(`${leadingZero(minutes)}m:${leadingZero(seconds)}s`);
+
+  return result.join(':');
+}
+
 const TimeBar = ({
   validUntil,
   isTrial,
   path,
+  role,
   updateSubscriptionAction,
   openInviteModalAction,
 }) => {
-  const [time, setTime] = useState(null);
+  const [timestamp, setTimestamp] = useState(null);
   const isPlanPage = path === '/plans';
   const isLandingPage = path === '/';
 
   const isMobileDevice = getDeviceType() === 'phone';
   const text = isMobileDevice ? 'to access your free trial.' : 'left in your free trial.';
-  const ctaText = time === null && isPlanPage ? 'Select a pass to continue exploring!' : 'Want more?';
+  const ctaText = timestamp === null && isPlanPage ? 'Select a pass to continue exploring!' : 'Want more?';
 
   // eslint-disable-next-line consistent-return
   useEffect(() => {
@@ -40,15 +73,13 @@ const TimeBar = ({
 
   useEffect(() => {
     if (validUntil) {
-      const now = new Date();
-      const until = new Date(validUntil);
-      const diff = until - now;
+      const diff = new Date(validUntil) - new Date();
 
       if (diff > 1000) {
-        setTime(new Date(diff));
+        setTimestamp(diff);
         updateSubscriptionAction({ active: true });
       } else {
-        setTime(null);
+        setTimestamp(null);
       }
     }
   }, [updateSubscriptionAction, validUntil]);
@@ -56,23 +87,21 @@ const TimeBar = ({
   useEffect(() => {
     let timeout;
 
-    if (isTrial && time) {
-      const until = new Date(validUntil);
-      const diff = until - new Date();
+    if (isTrial && timestamp) {
       timeout = setTimeout(() => {
-        if (diff > 1000) {
-          setTime(new Date(diff - 1000));
+        if (timestamp > 1000) {
+          setTimestamp(timestamp - 1000);
         } else {
-          setTime(null);
+          setTimestamp(null);
           updateSubscriptionAction({ active: false })
         }
       }, 1000);
     }
 
     return () => clearTimeout(timeout);
-  }, [isTrial, time, updateSubscriptionAction, validUntil]);
+  }, [isTrial, timestamp, updateSubscriptionAction, validUntil]);
 
-  if (!isTrial || isLandingPage) {
+  if (!isTrial || isLandingPage || role !== 'user') {
     return null;
   }
 
@@ -85,17 +114,22 @@ const TimeBar = ({
       justify="center"
     >
       <Text size="16px" className={style.text}>
-        {((time && isMobileDevice) || !isMobileDevice) && (
+        {((timestamp && isMobileDevice) || !isMobileDevice) && (
           <>
-            <span>You Have &nbsp;</span>
-            <Text size="20px" weight={700}>
-              {time ? time.toISOString().slice(14, 19) : '00:00'}
-              &nbsp;
-            </Text>
-            <span>{text}</span>
+            {timestamp && (
+              <>
+                <span>You Have&nbsp;</span>
+                <Text size="20px" weight={700}>
+                  {format(timestamp)}
+                  &nbsp;
+                </Text>
+                <span>{text}</span>
+              </>
+            )}
+            {!timestamp && <span>Your free trial has ended,</span> }
           </>
         )}
-        {!time && isMobileDevice && (
+        {!timestamp && isMobileDevice && (
           <Text size="16px">Check your inbox to explore Zoolife</Text>
         )}
         {!isMobileDevice && (
@@ -104,15 +138,14 @@ const TimeBar = ({
             {ctaText}
           </span>
         )}
-        {!(isPlanPage && !time) && !isMobileDevice && (
+        {!(isPlanPage && !timestamp) && !isMobileDevice && (
           <PrimaryButton
             margin={{left: '15px'}}
             size="medium"
-            label={isPlanPage && time ? 'Back to Trial' : 'Select a Plan'}
-            onClick={() => route(isPlanPage && time ? '/map' : '/plans')}
+            label={isPlanPage && timestamp ? 'Back to Trial' : 'Select a Plan'}
+            onClick={() => route(isPlanPage && timestamp ? '/map' : '/plans')}
           />
         )}
-
       </Text>
     </Box>
   );
@@ -122,10 +155,12 @@ export default connect(
   ({
     user: {
       subscription: { validUntil, productId },
+      role,
     },
   }) => ({
     validUntil,
     isTrial: productId === 'TRIAL',
+    role,
   }),
   {
     updateSubscriptionAction: updateSubscription,

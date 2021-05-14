@@ -1,0 +1,13 @@
+.inputWrapper {
+  position: relative;
+  display: flex;
+  min-height: max-content;
+
+  .counter {
+    position: absolute;
+    bottom: -22px;
+    right: 8px;
+    font-size: 12px;
+    line-height: 18px;
+  }
+}

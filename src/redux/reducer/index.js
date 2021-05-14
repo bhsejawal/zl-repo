@@ -1,5 +1,6 @@
 import { combineReducers } from "redux";
 
+import allHabitats from './allHabitats';
 import mainStream from './mainStream';
 import user from './user';
 import chat from './chat';
@@ -11,6 +12,7 @@ import map from '../../routes/map/reducer';
 import passwordReset from '../../routes/login/ResetModal/reducer';
 
 export default combineReducers({
+  allHabitats,
   mainStream,
   user,
   chat,

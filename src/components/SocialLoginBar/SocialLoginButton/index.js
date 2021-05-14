@@ -2,22 +2,31 @@ import { ResponsiveContext } from 'grommet';
 import { buildURL } from 'Shared/fetch';
 import { useContext } from 'preact/hooks';
 import classnames from 'classnames';
+import { connect } from 'react-redux';
 
 import facebook from './logos/facebook.svg';
 import google from './logos/google.svg';
 
 import style from './style.scss';
 
-const SocialLoginButton = ({ variant }) => {
+const SocialLoginButton = ({ variant, referralData }) => {
   const size = useContext(ResponsiveContext);
   const isSmallScreen = ['xsmall', 'small'].includes(size);
   if (!['facebook', 'google'].includes(variant)) {
     return null;
   }
+  const queryParams = new URLSearchParams();
+
+  Object.entries(referralData).forEach(([key, value]) => {
+    if (value) {
+      queryParams.append(key, value);
+    }
+  });
+  queryParams.append('platform', variant);
 
   return (
     <a
-      href={buildURL('connect', variant)}
+      href={buildURL('connect', variant, `?${queryParams}`)}
       rel="noopener noreferrer nofollow"
       className={classnames(style.socialButton, {[style.roundButton]: isSmallScreen})}
     >
@@ -29,4 +38,4 @@ const SocialLoginButton = ({ variant }) => {
   );
 }
 
-export default SocialLoginButton;
+export default connect(({ user: { referralData }}) => ({ referralData }))(SocialLoginButton);

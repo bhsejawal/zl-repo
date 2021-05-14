@@ -1,4 +1,4 @@
-import { Fragment, h } from 'preact';
+import { h } from 'preact';
 import {
   Box,
   Button,
@@ -7,6 +7,7 @@ import {
   Heading,
   Layer,
   TextInput,
+  TextArea,
 } from 'grommet';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronDown, faTimes } from '@fortawesome/pro-solid-svg-icons';
@@ -14,7 +15,14 @@ import { useEffect, useMemo, useState } from 'preact/hooks';
 import { pick, get } from 'lodash-es';
 
 import { PrimaryButton } from 'Components/Buttons';
-import { SELECT, TEXT_AUTOCOMPLETE, TEXT } from './constants';
+import {
+  SELECT,
+  TEXT_AUTOCOMPLETE,
+  TEXT,
+  TEXTAREA,
+} from './constants';
+
+import style from './style.scss';
 
 // TODO: we should replace this with Select when Grommet issue is fixed
 const AutocompleteTextInput = ({
@@ -176,18 +184,19 @@ const ItemModal = ({
             type = TEXT,
             selectValues,
             editRender,
+            maxLength,
           }) => (
-            <Fragment key={property}>
+            <Box key={property} className={style.inputWrapper}>
               <Text margin={{ top: 'medium', bottom: 'small' }} size="large">
                 {title}
               </Text>
-
               {!editRender && type === TEXT && (
                 <TextInput
                   required={required}
                   name={property}
                   value={get(values, property)}
                   onChange={onInputChange}
+                  maxLength={maxLength}
                 />
               )}
 
@@ -223,8 +232,24 @@ const ItemModal = ({
                 />
               )}
 
+              {!editRender && type === TEXTAREA && (
+                <Box height={{ min: '150px', max: '150px' }}>
+                  <TextArea
+                    required={required}
+                    name={property}
+                    value={get(values, property)}
+                    onChange={onInputChange}
+                    fill
+                    resize={false}
+                    rows={10}
+                    maxLength={maxLength}
+                  />
+                </Box>
+              )}
+
               {editRender && editRender(values)}
-            </Fragment>
+              {maxLength && <div className={style.counter}>{`${get(values, property, '').length}/${maxLength}`}</div>}
+            </Box>
           ))}
         </Box>
 

@@ -12,6 +12,7 @@ import { faPlus, faMinus } from '@fortawesome/pro-light-svg-icons';
 import { faSpinner } from '@fortawesome/pro-duotone-svg-icons';
 
 import { GlobalsContext } from 'Shared/context';
+import { getConfig } from '../../../../../helpers';
 
 import style from './style.scss';
 
@@ -22,7 +23,7 @@ const initialZoomState = {
 
 const ZOOM_LEVELS = [100, 80, 60, 40, 20, 0];
 
-const ZoomBar = ({ userId, habitatId }) => {
+const ZoomBar = ({ userId, habitatId, configs }) => {
   const { socket } = useContext(GlobalsContext);
   const [zoomInfo, setZoomInfo] = useState(initialZoomState);
   const [isLoading, setIsLoading] = useState(false);
@@ -61,8 +62,8 @@ const ZoomBar = ({ userId, habitatId }) => {
     });
 
     setZoomInfo({ currentZoom, isLoading: true, requestedZoom });
-    setTimeout(() => setIsLoading(false), 3000);
-  }, [habitatId, userId, socket]);
+    setTimeout(() => setIsLoading(false), getConfig(configs, 'ptu.votingTime')?.configValue);
+  }, [habitatId, userId, socket, configs]);
 
   return (
     <div ref={wrapperRef} className={classnames(style.zoomWrapper)}>
@@ -113,6 +114,9 @@ const ZoomBar = ({ userId, habitatId }) => {
   );
 };
 
-export default connect((
-  { user: { userId }, habitat: { habitatInfo: { _id: habitatId } }},
-) => ({ userId, habitatId }))(ZoomBar);
+export default connect(({
+  user: { userId },
+  habitat: { habitatInfo: { _id: habitatId, camera: { configs } } },
+}) => (
+  { userId, habitatId, configs }
+))(ZoomBar);

@@ -1,53 +1,35 @@
 import { set } from 'lodash-es';
+import { UPDATE_HABITAT } from '../../redux/types';
+
 import {
-  SET_MAP_DATA,
   SELECT_HABITAT,
   UPDATE_HABITAT_DATA,
   TOGGLE_MAP_MODAL,
-  SELECT_EDIT_HABITAT,
-  UPDATE_HABITAT_LIST,
+  SET_EDIT_HABITAT,
 } from './types';
 
 const initialState = {
-  habitats: [],
-  activeHabitat: null,
+  activeHabitatId: null,
   showMapModal: false,
   editHabitat: {},
 };
 
 export default (state = initialState, { type, payload }) => {
   switch (type) {
-    case SET_MAP_DATA: {
-      const { habitats } = payload;
-      return { ...state, habitats };
-    }
-
     case SELECT_HABITAT: {
-      const { habitatId } = payload;
-      return {
-        ...state,
-        activeHabitat: state.habitats
-          .find(({ _id }) => _id === habitatId),
-      };
+      const { habitatId: activeHabitatId } = payload;
+      return { ...state, activeHabitatId };
     }
 
-    case SELECT_EDIT_HABITAT: {
-      const { habitatId } = payload;
-      return {
-        ...state,
-        editHabitat: habitatId ? state.habitats
-          .find(({ _id }) => _id === habitatId) : {},
-      };
+    case SET_EDIT_HABITAT: {
+      const { habitat } = payload;
+      return { ...state, editHabitat: { ...habitat } };
     }
 
     case UPDATE_HABITAT_DATA: {
       const { field, value } = payload;
-      const newHabitatData = { ... state.editHabitat };
-      set(newHabitatData, field, value);
-      return {
-        ...state,
-        editHabitat: newHabitatData,
-      }
+      const editHabitat = set({ ... state.editHabitat }, field, value);
+      return { ...state, editHabitat };
     }
 
     case TOGGLE_MAP_MODAL: {
@@ -57,23 +39,13 @@ export default (state = initialState, { type, payload }) => {
       }
     }
 
-    case UPDATE_HABITAT_LIST: {
-      const newHabitat = state.editHabitat;
-
-      const newHabitatList = state.habitats.map((habitat) => (
-        habitat._id === newHabitat._id ? newHabitat : habitat
-      ));
-
-      const newActiveHabitat = state.activeHabitat._id === newHabitat._id
-        ? newHabitat : state.activeHabitat;
-
+    case UPDATE_HABITAT: {
       return {
         ...state,
-        habitats: newHabitatList,
-        activeHabitat: newActiveHabitat,
-        editHabitat: {},
-      }
+        editHabitat: initialState.editHabitat,
+      };
     }
+
     default: {
       return state;
     }

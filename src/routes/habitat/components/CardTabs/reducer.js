@@ -7,6 +7,7 @@ import {
   SET_HABITAT_TAB,
   DELETE_HABITAT_CARD,
   SET_CARDS_LOADING,
+  SET_CARDS_SHORTCUT,
 } from './types';
 
 const cardSort = ({ index: i1 }, { index: i2 }) => (i1 - i2);
@@ -23,6 +24,7 @@ const initialState = {
   familyCards: [],
   activeTab: MEET,
   canCreateQuizCard: false,
+  activeShortcut: null,
 };
 
 export default (state = initialState, { type, payload }) => {
@@ -97,6 +99,11 @@ export default (state = initialState, { type, payload }) => {
     case SET_CARDS_LOADING: {
       const { loading } = payload;
       return { ...state, loading };
+    }
+
+    case SET_CARDS_SHORTCUT: {
+      const { activeShortcut } = payload;
+      return { ...state, activeShortcut };
     }
 
     default: {

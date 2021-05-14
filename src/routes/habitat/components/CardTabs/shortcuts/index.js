@@ -1,5 +1,5 @@
 import { h } from 'preact';
-import { memo } from 'preact/compat';
+import { connect } from 'react-redux';
 import classnames from 'classnames';
 
 import ToggleButton from '../toggleButton';
@@ -8,7 +8,7 @@ import style from './style.scss';
 
 const Shortcuts = ({ available = [], active, onClick }) => (
   <div className={style.shortcuts}>
-    {available.map((tag, ind) => (
+    {available.length >= 2 && available.map((tag, ind) => (
       <>
         <ToggleButton
           className={style.shortcutBtn}
@@ -27,7 +27,7 @@ const Shortcuts = ({ available = [], active, onClick }) => (
     ))}
 
     {/* hidden placeholder just to occupy space and prevent page jumping */}
-    {available.length === 0 && (
+    {available.length < 2 && (
       <ToggleButton
         className={classnames(style.shortcutBtn, style.disabled )}
         value=""
@@ -39,4 +39,6 @@ const Shortcuts = ({ available = [], active, onClick }) => (
   </div>
 );
 
-export default memo(Shortcuts);
+export default connect(
+  ({ habitat: { cards: { activeShortcut: active } } }) => ({ active }),
+)(Shortcuts);

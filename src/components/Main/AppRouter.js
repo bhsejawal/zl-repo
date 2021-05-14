@@ -25,7 +25,7 @@ const PageWrapper = ({ children }) => (
 const AppRouter = ({ matches }) => (
   <Box fill>
     <Router>
-      <AuthGuard path="/welcome" title="Welcome to Zoolife" redirectTo="/" permission="welcome:view">
+      <AuthGuard path="/welcome" redirectTo="/" permission="welcome:view">
         <Header />
         <PageWrapper>
           <Welcome />
@@ -43,13 +43,13 @@ const AppRouter = ({ matches }) => (
           <Map />
         </PageWrapper>
       </AuthGuard>
-      <AuthGuard path="/schedule" permission="schedule:view" title="Talk Schedule" redirectTo="/plans">
+      <AuthGuard path="/schedule" permission="schedule:view" redirectTo="/plans">
         <Header />
         <PageWrapper>
           <Schedule />
         </PageWrapper>
       </AuthGuard>
-      <AuthGuard path="/favorite" permission="favorite:edit" title="Favorites" redirectTo="/plans">
+      <AuthGuard path="/favorite" permission="favorite:edit" redirectTo="/plans">
         <Header />
         <PageWrapper>
           <Favorite />
@@ -61,7 +61,7 @@ const AppRouter = ({ matches }) => (
           <Account />
         </PageWrapper>
       </AuthGuard>
-      <AuthGuard path="/plans" permission="checkout:plans" title="Plans">
+      <AuthGuard path="/plans" permission="checkout:plans">
         <Header />
         <PageWrapper>
           <Plans />

@@ -3,12 +3,21 @@
   justify-content: center;
   align-items: center;
   display: flex;
+  user-select: none;
 }
 
-.menuItem:hover {
-  cursor: pointer;
+.menuItem {
 
-  div:hover {
-    background: #EBEBEB;
+  svg {
+    width: 25px !important;
+  }
+
+  &:hover {
+    cursor: pointer;
+
+
+    div:hover {
+      background: #EBEBEB;
+    }
   }
 }

@@ -3,7 +3,7 @@ import store from '../../redux/store';
 const canEditZoo = () => {
   const {
     user: { zooId: userZooId },
-    habitat: { habitatInfo: { zooId } },
+    habitat: { habitatInfo: { zoo: { _id: zooId } } },
   } = store.getState();
 
   return userZooId === zooId;
@@ -23,11 +23,6 @@ const isSubscriptionActive = () => {
   return active;
 }
 
-const isTrial = () => {
-  const { user: { subscription: { productId } } } = store.getState();
-  return productId === 'TRIAL';
-}
-
 const notTrial = () => {
   const { user: { subscription: { productId } } } = store.getState();
   return productId && productId !== 'TRIAL';
@@ -38,11 +33,10 @@ const rules = {
     static: ['checkout:plans', 'signup:view', 'login:view'],
   },
   user: {
-    static: ['profile:edit', 'redirect:view', 'welcome:view'],
+    static: ['profile:edit', 'redirect:view', 'welcome:view', 'checkout:plans'],
     dynamic: {
       'habitat:view': isSubscriptionActive,
       'map:view': isSubscriptionActive,
-      'checkout:plans': isTrial,
       'subscription:cancel': isSubscriptionActive,
       'subscription:edit': notTrial,
       'schedule:view': isSubscriptionActive,
@@ -53,7 +47,7 @@ const rules = {
     static: ['profile:edit', 'favorite:edit', 'habitat:view', 'map:view', 'redirect:view', 'schedule:view'],
   },
   partner: {
-    static: ['habitat:view', 'map:view', 'profile:edit', 'favorite:edit', 'redirect:view'],
+    static: ['habitat:view', 'map:view', 'profile:edit', 'favorite:edit', 'redirect:view', 'schedule:view'],
     dynamic: {
       "zoo:edit-timezone": canEditZoo,
       "zoo:edit-location": canEditZoo,
@@ -70,11 +64,8 @@ const rules = {
     },
   },
   host: {
-    static: ['habitat:view', 'map:view', 'profile:edit', 'favorite:edit', 'redirect:view'],
-    dynamic: {
-      "habitat:broadcast": canEditHabitat,
-      "habitat:edit-stream": canEditHabitat,
-    },
+    static: ['habitat:view', 'map:view', 'profile:edit', 'favorite:edit', 'redirect:view', 'schedule:view'],
+    dynamic: { "habitat:broadcast": canEditHabitat },
   },
 };
 

@@ -1,6 +1,7 @@
 @import "../../../style/media-query";
 
 $videoRatio: 352 / 335;
+$animationDuration: 2.5s;
 
 .heroContainer {
   display: flex;
@@ -60,7 +61,8 @@ $videoRatio: 352 / 335;
     position: relative;
   }
 
-  video {
+  video,
+  .videoPlaceholder {
     // video is not rendering the same way on chrome and safari because of the scrollbar
     // so we will set width 101% hide overflow to eliminate the jump and the empty space
     // that is showing vertically while scaling, and will also hide the black line on the right
@@ -80,6 +82,11 @@ $videoRatio: 352 / 335;
 
   span {
     margin: 0 15px;
+  }
+
+  .partnerLogo {
+    height: 60px;
+    border-radius: 9px;
   }
 }
 
@@ -117,3 +124,42 @@ $videoRatio: 352 / 335;
     }
   }
 }
+
+.animationContainer {
+  display: inline-flex;
+  width: 150px;
+  justify-content: flex-end;
+
+  span {
+    // TODO find a solution to make css and js are in sync without having the text to flicker on change
+    //animation-name: animation;
+    animation-duration: $animationDuration;
+    animation-iteration-count: infinite;
+  }
+}
+
+//@keyframes animation {
+//
+//  0% {
+//    opacity: 1;
+//    transform: scale3d(.9, .9, .9);
+//  }
+//
+//  20% {
+//    transform: scale3d(1, 1, 1);
+//  }
+//
+//  60% {
+//    opacity: 1;
+//    transform: scale3d(1, 1, 1);
+//  }
+//
+//  98% {
+//    opacity: 0;
+//  }
+//
+//  100% {
+//    opacity: 0;
+//    transform: scale3d(.9, .9, .9);
+//  }
+//}

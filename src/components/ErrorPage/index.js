@@ -13,6 +13,8 @@ import {
 import { PrimaryButton, OutlineButton } from 'Components/Buttons';
 import background from './errorBackground.webp';
 
+import style from './style.scss';
+
 const ErrorPage = ({
   error,
   message,
@@ -28,11 +30,8 @@ const ErrorPage = ({
   };
 
   return (
-    <Box
-      fill
-      className="errorGradient"
-    >
-      <Box justify="center" align="center" margin={{ top: 'medium' }} basis="1/2" pad="large">
+    <Box fill className={style.gradient}>
+      <Box justify="center" align="center" margin={{ top: 'medium' }} basis="2/3" pad="large">
         <Box>
           <Text size="100px" color="#3B499C" weight={700} textAlign="center">{error}</Text>
           <Heading level="2" textAlign="center">{message}</Heading>

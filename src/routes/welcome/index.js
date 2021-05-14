@@ -135,7 +135,7 @@ const Welcome = () => {
         </Box>
         <Box align="end" justify="center" fill>
           <Box alignSelf="end">
-            <img src="https://zl-brizi-tv.s3.ca-central-1.amazonaws.com/assets/zoolifeMap.png" alt="" width="853" height="567" />
+            <img src="https://assets.zoolife.tv/zoolifeMap.png" alt="" width="853" height="567" />
           </Box>
         </Box>
       </Box>

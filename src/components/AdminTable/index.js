@@ -290,7 +290,7 @@ const AdminTable = ({
           )}
 
           {(!deleteDisabled || !selected?.disabled) && (
-            <PrimaryButton
+            <OutlineButton
               key="delete"
               disabled={!selected}
               loading={!selected?.disabled && loadingDisableEnable}

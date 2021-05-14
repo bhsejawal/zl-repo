@@ -33,16 +33,23 @@ export const getDeviceType = () => {
   return "desktop";
 };
 
-export const generateTitle = (part) => (part ? `${part} | Zoolife` : 'Zoolife');
+export const generateTitle = (part) => (part ? `Zoolife - ${part}` : 'Zoolife');
 
 export const formatAge = (dateOfBirth) => formatDistanceToNowStrict(
   parseISO(dateOfBirth),
   { addSuffix: false, roundingMethod: 'floor' },
 );
 
-export const logPageView = () => {
+export const logPageView = (page) => {
   if (window.analytics) {
-    window.analytics.page()
+    if (page) {
+      window.analytics.page(page, {
+        path: `${page}`,
+        url: `${page}`,
+      });
+    } else {
+      window.analytics.page();
+    }
   }
 }
 
@@ -54,3 +61,53 @@ export const identifyUser = (user) => {
     })
   }
 }
+
+export const logAndGetCampaignData = () => {
+  try {
+    const { referrer } = document;
+    const { searchParams } = new URL(document.location);
+    const utmSource = searchParams.get('utm_source');
+    const utmMedium = searchParams.get('utm_medium');
+    const utmCampaign = searchParams.get('utm_campaign');
+
+    const referralData = {
+      utmSource,
+      utmMedium,
+      utmCampaign,
+      referrer,
+    };
+
+    const storedReferralData = JSON.parse(localStorage.getItem('referralData')) ?? {};
+    const {
+      utmSource: localUTMSource,
+      utmMedium: localUTMMedium,
+      utmCampaign: localUTMCampaign,
+    } = storedReferralData;
+
+    const hasLocalUTMData = localUTMSource && localUTMMedium && localUTMCampaign;
+    const hasNewUTMData = utmSource && utmCampaign && utmMedium;
+
+    if (!hasLocalUTMData && hasNewUTMData) {
+      localStorage.setItem('referralData', JSON.stringify(referralData));
+      return referralData;
+    }
+
+    return storedReferralData;
+  } catch (err) {
+    console.error('Error setting up referral data on local storage', err);
+    return {};
+  }
+}
+
+export const getCampaignData = () => {
+  try {
+    return JSON.parse(localStorage.getItem('referralData')) || {};
+  } catch (err) {
+    console.error('Error getting referral data on local storage', err);
+    return {};
+  }
+}
+
+export const getConfig = (configs = [], key) => (
+  configs.find(({ configKey }) => configKey === key) || {}
+);

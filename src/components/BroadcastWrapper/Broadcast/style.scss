@@ -1,26 +1,53 @@
-.test {
-  height: 22px;
-}
+.controls {
 
-.online,
-.online:hover {
-  background: var(--red) !important;
-  color: white;
-}
+  .title {
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    margin-bottom: 5px;
+    color: var(--grey);
+  }
 
-.offline {
-  background: var(--lightGrey);
-}
+  svg {
+    color: var(--grey);
+  }
 
-input,
-select {
-  font-size: 12px;
-  border-radius: 4px;
-  padding: 5px;
-  width: 100%;
-  flex-grow: 1;
-  border: 2px solid #CDCDCD;
-  color: #757575;
+  > div {
+    padding: 22px;
+  }
+
+  select {
+    font-size: 12px;
+    border-radius: 4px;
+    padding: 5px;
+    width: 100%;
+    max-width: 161px;
+    flex-grow: 1;
+    border: 2px solid var(--mediumGrey);
+    color: var(--grey);
+    background: transparent;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  button {
+    min-width: 103px;
+
+    &.online,
+    &.online:hover {
+      background: var(--red) !important;
+      color: white;
+    }
+
+    &.offline {
+      background: var(--blueMediumLight);
+    }
+
+    &:disabled {
+      background: var(--lightGrey);
+    }
+  }
 }
 
 .controlContainer {
@@ -28,11 +55,19 @@ select {
   left: 6px;
   top: 6px;
   z-index: 3;
+
+  .online {
+    background: var(--red) !important;
+  }
+
+  .offline {
+    background: var(--hunterGreen);
+  }
 }
 
 .fallbackContainer {
   position: absolute;
   left: 0;
-  height: 140px;
+  max-height: 140px;
   width: 100%;
 }

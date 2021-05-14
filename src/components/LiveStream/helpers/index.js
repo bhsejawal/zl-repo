@@ -163,7 +163,7 @@ export const play = (streamId) => {
 export const enableStats = (streamId) => {
   if (webRTCMap.has(streamId)) {
     const adaptor = webRTCMap.get(streamId);
-    adaptor.enableStats();
+    adaptor.enableStats(streamId);
   }
 };
 
@@ -199,6 +199,6 @@ export const switchAudioInputSource = (streamId, deviceId) => {
 export const switchVideoCameraCapture = (streamId, deviceId) => {
   if (webRTCMap.has(streamId)) {
     const adaptor = webRTCMap.get(streamId);
-    adaptor.switchVideoInputSource(streamId, deviceId);
+    adaptor.switchVideoCameraCapture(streamId, deviceId);
   }
 };

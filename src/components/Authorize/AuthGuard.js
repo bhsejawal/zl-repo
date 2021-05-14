@@ -9,7 +9,7 @@ import { hasPermission } from '.';
 import { authRedirect } from './helpers';
 import { getDeviceType, identifyUser } from '../../helpers';
 
-import ErrorPage from '../../layouts/ErrorPage';
+import ErrorPage from '../ErrorPage';
 
 import style from './style.scss';
 

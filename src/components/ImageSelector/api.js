@@ -6,6 +6,8 @@ export const uploadFile = async (
   maxResolution,
   acceptedFormats,
   maxFileSize,
+  width,
+  height,
 ) => {
   const url = buildURL('/admin/v2/media');
   const formData = new FormData();
@@ -18,6 +20,14 @@ export const uploadFile = async (
 
   if (maxFileSize) {
     formData.append('maxFileSize', maxFileSize);
+  }
+
+  if (width) {
+    formData.append('width', width);
+  }
+
+  if (height) {
+    formData.append('height', height);
   }
 
   acceptedFormats.forEach((format) => {
