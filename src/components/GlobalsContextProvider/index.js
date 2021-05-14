@@ -8,7 +8,9 @@ const GlobalsContextProvider = ({ children }) => {
 
   useEffect(() => {
     if (!socket) {
-      setSocket(io(`${process.env.PREACT_APP_WS_PROTOCOL}${process.env.PREACT_APP_API_AUTHORITY}`));
+      setSocket(io(`${process.env.PREACT_APP_WS_PROTOCOL}${process.env.PREACT_APP_API_AUTHORITY}`, {
+        transports: ['websocket'],
+      }));
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
