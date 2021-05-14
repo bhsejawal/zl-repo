@@ -18,6 +18,7 @@ import { add } from 'date-fns';
 import DateTimePicker from 'react-datetime-picker';
 import useFetch from 'use-http';
 import { buildURL } from 'Shared/fetch';
+import TagsInput from './TagsInput';
 
 import style from './style.scss';
 
@@ -43,7 +44,8 @@ const AddEditUserModal = ({
   data,
   onClose,
   updateTable,
-  zoos,
+  zoos = [],
+  habitats = [],
 }) => {
   const [formData, setFormData] = useState(data || initialValues);
   const [showDatePicker, setShowDatePicker] = useState(false);
@@ -90,6 +92,10 @@ const AddEditUserModal = ({
         set(filteredFormData, 'zooId', null);
       }
 
+      if (formData.role !== HOST) {
+        set(filteredFormData, 'habitats', null);
+      }
+
       if (data) {
         await patch(`${data._id}?v=${data.__v || 0}`, filteredFormData);
       } else {
@@ -114,110 +120,123 @@ const AddEditUserModal = ({
 
   return (
     <Layer onEsc={onClose} onClickOutside={onClose}>
-      <Box
-        width="large"
-        direction="row"
-        align="center"
-        as="header"
-        elevation="small"
-        justify="between"
-      >
-        <Heading level="2" margin={{ vertical: 'medium', horizontal: 'large' }}>
-          {data ? 'Edit User' : 'New User'}
-        </Heading>
-        <Button
-          plain
-          margin="medium"
-          onClick={onClose}
-          icon={<FontAwesomeIcon size="2x" icon={faTimes} />}
-        />
-      </Box>
-
-      <Form onSubmit={onSubmit}>
+      <Box width="min-content">
         <Box
-          overflow="auto"
-          height={{ max: 'calc(100vh - 200px)' }}
-          pad={{ vertical: 'medium', horizontal: 'large' }}
+          width="large"
+          direction="row"
+          align="center"
+          as="header"
+          elevation="small"
+          justify="between"
         >
-          <Box>
-            <Text margin={{ top: 'medium', bottom: 'small' }} size="large">Email</Text>
-            <TextInput
-              required={true}
-              name="email"
-              value={formData.email}
-              onChange={onInputChange}
-              type="email"
-            />
-          </Box>
-          <Box>
-            <Text margin={{ top: 'medium', bottom: 'small' }} size="large">Username</Text>
-            <TextInput
-              required={true}
-              name="username"
-              value={formData.username}
-              onChange={onInputChange}
-            />
-          </Box>
-          <Box>
-            <Text margin={{ top: 'medium', bottom: 'small' }} size="large">Role</Text>
-            <div className="simpleSelect">
-              <select name="role" required onChange={onInputChange} value={formData.role}>
-                <option value={USER}>User</option>
-                <option value={PARTNER}>Partner</option>
-                <option value={HOST}>Host</option>
-                <option value={VIP}>VIP</option>
-                <option value={ADMIN}>Admin</option>
-              </select>
+          <Heading level="2" margin={{ vertical: 'medium', horizontal: 'large' }}>
+            {data ? 'Edit User' : 'New User'}
+          </Heading>
+          <Button
+            plain
+            margin="medium"
+            onClick={onClose}
+            icon={<FontAwesomeIcon size="2x" icon={faTimes} />}
+          />
+        </Box>
 
-              <FontAwesomeIcon icon={faChevronDown} color="var(--blue)" />
-            </div>
-          </Box>
-          {(formData.role === VIP
-            || (formData.role === USER && formData?.subscriptionStatus?.productId === TRIAL)) && (
+        <Form onSubmit={onSubmit}>
+          <Box
+            overflow="auto"
+            height={{ max: 'calc(100vh - 200px)' }}
+            pad={{ vertical: 'medium', horizontal: 'large' }}
+          >
             <Box>
-              <Text margin={{ top: 'medium', bottom: 'small' }} size="large">Pass Valid Until</Text>
-              <DateTimePicker
-                className={style.dateTimePicker}
-                showLeadingZeros
-                value={!showDatePicker ? new Date(null) : new Date(get(formData, 'subscriptionStatus.validUntil'))}
-                clearIcon={null}
-                onChange={(value) => showDatePicker && onInputChange({ target: { name: 'subscriptionStatus.validUntil', value } })}
-                format="dd/MM/y hh:mm a"
+              <Text margin={{ top: 'medium', bottom: 'small' }} size="large">Email</Text>
+              <TextInput
+                required={true}
+                name="email"
+                value={formData.email}
+                onChange={onInputChange}
+                type="email"
               />
             </Box>
-          )}
-          {(formData.role === PARTNER) && (
             <Box>
-              <Text margin={{ top: 'medium', bottom: 'small' }} size="large">Zoo</Text>
+              <Text margin={{ top: 'medium', bottom: 'small' }} size="large">Username</Text>
+              <TextInput
+                required={true}
+                name="username"
+                value={formData.username}
+                onChange={onInputChange}
+              />
+            </Box>
+            <Box>
+              <Text margin={{ top: 'medium', bottom: 'small' }} size="large">Role</Text>
               <div className="simpleSelect">
-                <select name="zooId" required onChange={onInputChange} value={formData.zooId}>
-                  {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
-                  <option value="" />
-                  {availableZoos.map((item) => (<option value={item._id}>{item.name}</option>))}
+                <select name="role" required onChange={onInputChange} value={formData.role}>
+                  <option value={USER}>User</option>
+                  <option value={PARTNER}>Partner</option>
+                  <option value={HOST}>Host</option>
+                  <option value={VIP}>VIP</option>
+                  <option value={ADMIN}>Admin</option>
                 </select>
 
                 <FontAwesomeIcon icon={faChevronDown} color="var(--blue)" />
               </div>
             </Box>
-          )}
-        </Box>
+            {(formData.role === VIP
+              || (formData.role === USER && formData?.subscriptionStatus?.productId === TRIAL)) && (
+              <Box>
+                <Text margin={{ top: 'medium', bottom: 'small' }} size="large">Pass Valid Until</Text>
+                <DateTimePicker
+                  className={style.dateTimePicker}
+                  showLeadingZeros
+                  value={!showDatePicker ? new Date(null) : new Date(get(formData, 'subscriptionStatus.validUntil'))}
+                  clearIcon={null}
+                  onChange={(value) => showDatePicker && onInputChange({ target: { name: 'subscriptionStatus.validUntil', value } })}
+                  format="dd/MM/y hh:mm a"
+                />
+              </Box>
+            )}
+            {(formData.role === PARTNER) && (
+              <Box>
+                <Text margin={{ top: 'medium', bottom: 'small' }} size="large">Zoo</Text>
+                <div className="simpleSelect">
+                  <select name="zooId" required onChange={onInputChange} value={formData.zooId}>
+                    {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
+                    <option value="" />
+                    {availableZoos.map((item) => (<option value={item._id}>{item.name}</option>))}
+                  </select>
 
-        <Box pad={{ vertical: 'medium', horizontal: 'large' }} align="end">
-          <PrimaryButton
-            primary
-            size="large"
-            type="submit"
-            loading={loading}
-            label={data ? 'Save Changes' : 'Done'}
-          />
+                  <FontAwesomeIcon icon={faChevronDown} color="var(--blue)" />
+                </div>
+              </Box>
+            )}
+            {(formData.role === HOST) && (
+              <Box>
+                <Text margin={{ top: 'medium', bottom: 'small' }} size="large">Habitats</Text>
+                <TagsInput
+                  name="habitats"
+                  values={habitats}
+                  onChange={onInputChange}
+                  selected={formData.habitats}
+                />
+              </Box>
+            )}
+          </Box>
 
-          {error && (
-            <Box pad="small">
-              <Text color="status-error">{error}</Text>
-            </Box>
-          )}
-        </Box>
-      </Form>
+          <Box pad={{ vertical: 'medium', horizontal: 'large' }} align="end">
+            <PrimaryButton
+              primary
+              size="large"
+              type="submit"
+              loading={loading}
+              label={data ? 'Save Changes' : 'Done'}
+            />
+
+            {error && (
+              <Box pad="small">
+                <Text color="status-error">{error}</Text>
+              </Box>
+            )}
+          </Box>
+        </Form>
+      </Box>
     </Layer>
   );
 };

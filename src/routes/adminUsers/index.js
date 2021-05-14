@@ -329,6 +329,7 @@ const Users = ({ pageSize = 20 }) => {
           onClose={() => setNewModalOpen(false)}
           updateTable={refreshData}
           zoos={data?.zoos}
+          habitats={data?.habitats}
         />
       )}
 
@@ -338,6 +339,7 @@ const Users = ({ pageSize = 20 }) => {
           data={selected}
           updateTable={refreshData}
           zoos={data?.zoos}
+          habitats={data?.habitats}
         />
       )}
 
