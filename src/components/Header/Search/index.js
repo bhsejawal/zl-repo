@@ -79,7 +79,7 @@ const Search = ({ className, allHabitats, setHabitatsAction }) => {
   }, []);
 
   const suggestions = useMemo(() => {
-    if (value.trim().length < 2) {
+    if (value.trim().length < 1) {
       return [];
     }
 
