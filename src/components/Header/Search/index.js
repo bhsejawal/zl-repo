@@ -78,12 +78,8 @@ const Search = ({ className, allHabitats, setHabitatsAction }) => {
     setValue('');
   }, []);
 
-  const suggestions = useMemo(() => {
-    if (value.trim().length < 1) {
-      return [];
-    }
-
-    return allHabitats.filter(({ title, animal, hidden }) => !hidden && (
+  const suggestions = useMemo(() => allHabitats
+    .filter(({ title, animal, hidden }) => !hidden && (
       title?.toLowerCase().includes(value)
         || animal?.toLowerCase().includes(value)
     )).sort((h1, h2) => {
@@ -126,8 +122,7 @@ const Search = ({ className, allHabitats, setHabitatsAction }) => {
           </Box>
         </Link>
       ),
-    }));
-  }, [allHabitats, onHabitatClick, value])
+    })), [allHabitats, onHabitatClick, value]);
 
   return (
     <Grommet theme={theme}>
