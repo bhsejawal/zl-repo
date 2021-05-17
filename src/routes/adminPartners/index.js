@@ -34,10 +34,9 @@ const EditLogoRender = ({ logo: logoProp }) => {
             url={logo}
             label="Partner Photo"
             constraints={{
-              // TODO: we need to review these
-              maxResolution: 800,
+              maxResolution: 500,
               maxFileSize: 100_000,
-              acceptedFormats: ['jpeg', 'jpg', 'svg', 'png'],
+              acceptedFormats: ['jpeg', 'jpg'],
             }}
             onChange={setLogo}
           />
