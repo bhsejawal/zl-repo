@@ -1,6 +1,7 @@
-import { useEffect, useRef, useState } from 'preact/hooks';
+import { useEffect, useRef } from 'preact/hooks';
 import { connect } from 'react-redux';
 import { get } from 'lodash-es';
+import classnames from 'classnames';
 
 import InputBox from './InputBox';
 
@@ -8,32 +9,32 @@ import style from './style.module.scss';
 
 import ChatMessage from './ChatMessage';
 
+let autoScroll = true;
+
 const ChatContainer = ({ messages, username }) => {
   const chatContainerRef = useRef(null);
-  const [scroll, setScroll] = useState(true);
 
-  const scrollToBottom = () => {
+  useEffect(() => {
     const bySameUsername = get(messages.slice(-1)[0], 'username') === username;
-    if (messages.length && ((scroll && chatContainerRef.current) || bySameUsername)) {
+
+    if (messages.length && ((autoScroll && chatContainerRef.current) || bySameUsername)) {
       chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
     }
-  };
+  }, [messages, username]);
 
-  useEffect(scrollToBottom, [messages, scroll, username]);
+  const onScroll = () => {
+    const { scrollHeight, scrollTop, offsetHeight } = chatContainerRef.current;
+    autoScroll = false;
 
-  const onScroll = (e) => {
-    const { scrollHeight, scrollTop, offsetHeight } = e.target;
-
-    setScroll(false);
-
-    if (offsetHeight + scrollTop >= scrollHeight) {
-      setScroll(true);
+    // windows edge and chrome dose not reach scroll height fully and it fluctuates from 0.3 to 0.7
+    if ((Math.ceil(offsetHeight + scrollTop)) >= scrollHeight) {
+      autoScroll = true;
     }
   };
 
   return (
     <>
-      <div ref={chatContainerRef} className={style.chatContainer} onScroll={onScroll}>
+      <div ref={chatContainerRef} className={classnames(style.chatContainer, 'customScrollBar')} onScroll={onScroll}>
         {messages.map(({
           username,
           animal,

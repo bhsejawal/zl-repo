@@ -6,17 +6,17 @@
 
   .inputContainer {
     display: flex;
-    width: 100%;
+    flex-grow: 1;
     position: relative;
 
     input {
       border-radius: 100px;
-      flex-grow: 1;
       font-size: 14px;
       border: 0;
       outline: none;
       padding: 8px 32px 9px 10px;
       box-sizing: content-box;
+      width: 100%;
 
       &:placeholder {
         color: white;
