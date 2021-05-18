@@ -127,15 +127,14 @@ const Login = ({
   return (
     <Box fill width={{ max: "1650px", min: "350px" }} height={{ min: 'max-content' }} margin={{ horizontal: 'auto' }}>
       <Layout>
-        <Box direction="row" align="center" height="40px">
+        <Box direction="row" align="center" height="auto">
           <Text size="xxlarge" responsive>
-            Try
-          </Text>
-          <Box pad={{ horizontal: '10px'}} justify="center">
-            <Image src={logo} alt="" />
-          </Box>
-          <Text size="xxlarge" responsive>
-            free
+            Welcome back
+            <br />
+            to
+            <Box pad={{ horizontal: '10px'}} justify="center" style={{ display: 'inline-flex'}}>
+              <Image src={logo} alt="" />
+            </Box>
           </Text>
         </Box>
         <Box fill="horizontal" margin={{ top: 'medium' }}>
@@ -179,7 +178,7 @@ const Login = ({
               </Anchor>
             </Box>
             <PrimaryButton
-              label="Get Started"
+              label="Log in"
               type="submit"
             />
             <Box margin={{ vertical: "large" }}>
