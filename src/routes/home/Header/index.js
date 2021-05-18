@@ -13,7 +13,7 @@ import { goToLogin, goToSignup } from '../helpers';
 import style from './style.scss';
 
 const HeaderComponent = () => (
-  <Header className={style.header}>
+  <Header className={style.header} gap="none">
     <div className={style.logo}>
       <ZoolifeLogo landing />
     </div>
