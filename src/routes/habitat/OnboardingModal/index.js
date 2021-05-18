@@ -59,7 +59,7 @@ const Onboarding = ({ isOnboarded, setUserDataAction }) => {
       plain
       background="transparent"
     >
-      <Box className={style.onboarding} onClick={enterHabitatHandler}>
+      <Box className={style.onboarding}>
         <Box className={style.onboardingWrapper}>
           {showButtons && (
             <Box direction="row" justify="center" className={style.buttonsWrapper}>
