@@ -23,7 +23,7 @@ const DeleteEvent = ({
   isOpen,
   multiple,
   freqHidden,
-  cameraId,
+  habitatId,
   description,
   scheduleId,
   scheduleRuleId,
@@ -52,9 +52,9 @@ const DeleteEvent = ({
     e.preventDefault();
 
     if (multiple) {
-      await del(`/admin/cameras/${cameraId}/schedule-rules/${scheduleRuleId}`);
+      await del(`/admin/habitats/${habitatId}/schedule-rules/${scheduleRuleId}`);
     } else {
-      await del(`/admin/cameras/${cameraId}/schedule-rules/${scheduleRuleId}/schedules/${scheduleId}`);
+      await del(`/admin/habitats/${habitatId}/schedule-rules/${scheduleRuleId}/schedules/${scheduleId}`);
     }
 
     if (response.ok) {
@@ -143,7 +143,7 @@ const DeleteEvent = ({
 export default connect(
   ({
     habitat: {
-      habitatInfo: { camera},
+      habitatInfo: { _id: habitatId },
       calendarEvents: {
         deleteModal: {
           isOpen,
@@ -164,8 +164,7 @@ export default connect(
     isOpen,
     multiple,
     freqHidden,
-    // eslint-disable-next-line no-underscore-dangle
-    cameraId: camera?._id,
+    habitatId,
   }),
   {
     showDeleteEventModalAction: showDeleteEventModal,

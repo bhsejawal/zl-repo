@@ -331,7 +331,7 @@ export default connect(
   ({
     habitat: {
       habitatInfo: {
-        camera: {
+        zoo: {
           timezone,
         } = {},
       },
