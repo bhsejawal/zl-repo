@@ -50,7 +50,7 @@ export const useUpcomingTalks = (habitatId, quantity = 3) => {
           profileImage: habitat?.profileImage,
           link: `/h/${habitat?.zoo?.slug}/${habitat?.slug}`,
           description: habitat?.description,
-          isStreamLive: camera.cameraStatus !== 'off',
+          isStreamLive: !!camera && camera.cameraStatus !== 'off',
         }))
         .filter(({ startTime, isStreamLive }) => startTime > now || isStreamLive);
 
