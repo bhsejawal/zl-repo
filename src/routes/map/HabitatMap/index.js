@@ -1,32 +1,19 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 import { h } from 'preact';
-import {
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from 'preact/hooks';
+import { useRef, useState } from 'preact/hooks';
 import { connect } from 'react-redux';
 import classnames from 'classnames';
 import { Box, Heading } from 'grommet';
-import useFetch from 'use-http';
 
-import { buildURL } from 'Shared/fetch';
 import Can from 'Components/Authorize'
 import { selectHabitat, toggleMapModal } from '../actions';
-import { setHabitats } from '../../../redux/actions';
 
 import style from './style.scss';
 
-const HabitatMap = ({ allHabitats, selectHabitatAction, setHabitatsAction }) => {
+const HabitatMap = ({ habitats, selectHabitatAction }) => {
   const [coordinates, setCoordinates] = useState(null);
   const mapRef = useRef(null);
-  const [refreshed, setRefreshed] = useState();
-  const habitats = useMemo(
-    () => (refreshed ? allHabitats : []),
-    [allHabitats, refreshed],
-  );
 
   const habitatClickHandler = (evt, _id) => {
     evt.stopPropagation();
@@ -41,24 +28,6 @@ const HabitatMap = ({ allHabitats, selectHabitatAction, setHabitatsAction }) => 
     const y = parseInt((offsetY / height) * 100, 10);
     setCoordinates({ x, y });
   }
-
-  const { get, response } = useFetch(buildURL('/habitats/map'), {
-    credentials: 'include',
-    cachePolicy: 'no-cache',
-  });
-
-  useEffect(() => {
-    const fetchData = async () => {
-      await get();
-      if (response.ok) {
-        setHabitatsAction(response.data.habitats);
-        setRefreshed(true);
-      }
-    }
-
-    fetchData();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   return (
     <Box direction="column" fill justify="center" align="center">
@@ -108,10 +77,9 @@ const HabitatMap = ({ allHabitats, selectHabitatAction, setHabitatsAction }) => 
 };
 
 export default connect(
-  ({ allHabitats }) => ({ allHabitats }),
+  ({ allHabitats: habitats }) => ({ habitats }),
   {
     selectHabitatAction: selectHabitat,
     toggleMapModalAction: toggleMapModal,
-    setHabitatsAction: setHabitats,
   },
 )(HabitatMap);

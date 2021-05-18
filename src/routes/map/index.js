@@ -8,6 +8,7 @@ import { OutlineButton } from 'Components/Buttons';
 import EditButton from 'Components/AdminEditWrappers/EditButton';
 import HabitatCard from 'Components/HabitatCard';
 import Can from 'Components/Authorize';
+import HabitatsUpdater from 'Components/HabitatsUpdater';
 
 import HabitatMap from './HabitatMap'
 import HabitatModal from './HabitatModal';
@@ -85,6 +86,7 @@ const Map = ({
       </div>
 
       {showMapModal && <HabitatModal />}
+      <HabitatsUpdater />
     </div>
   );
 };

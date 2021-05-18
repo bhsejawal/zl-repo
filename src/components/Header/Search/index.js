@@ -18,6 +18,7 @@ import {
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch } from '@fortawesome/pro-solid-svg-icons';
 import { deepMerge } from 'grommet/utils';
+import { differenceInMinutes } from 'date-fns';
 import classnames from 'classnames';
 import useFetch from 'use-http';
 
@@ -50,6 +51,7 @@ const Search = ({ className, allHabitats, setHabitatsAction }) => {
   const [suggestionOpen, setSuggestionOpen] = useState(false);
   const [value, setValue] = useState('');
   const boxRef = useRef();
+  const lastFetchRef = useRef();
 
   const { get, response } = useFetch(buildURL('/habitats/map'), {
     credentials: 'include',
@@ -60,10 +62,11 @@ const Search = ({ className, allHabitats, setHabitatsAction }) => {
   const onSuggestionsClose = useCallback(() => setSuggestionOpen(false), []);
 
   const onSearchFocus = async () => {
-    // fetch habitats in case it's empty
-    // it should be refreshed when map page is open
-    if (allHabitats.length === 0) {
-      await get()
+    const now = new Date();
+    // refresh habitats on focus if data is older than a minute
+    if (!lastFetchRef.current || differenceInMinutes(now, lastFetchRef.current) > 1) {
+      lastFetchRef.current = now;
+      await get();
       if (response.ok) {
         setHabitatsAction(response.data.habitats)
       }
