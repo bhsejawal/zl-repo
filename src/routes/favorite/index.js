@@ -6,6 +6,7 @@ import {
   Text,
 } from 'grommet';
 import useFetch from 'use-http';
+import classnames from 'classnames';
 import { connect } from 'react-redux';
 
 import { buildURL } from 'Shared/fetch';
@@ -15,6 +16,8 @@ import NoContentFallback from 'Components/NoContentFallback';
 
 import { useIsInitiallyLoaded, useWindowResize } from '../../hooks';
 import { updateFavoriteHabitat } from '../../redux/actions';
+
+import style from './style.scss';
 
 const SET_DATA = 'SET_DATA';
 const REMOVE_HABITAT = 'REMOVE_HABITAT';
@@ -78,37 +81,34 @@ const Favorite = ({ updateFavoriteHabitatAction }) => {
   }, [del, delResponse, updateFavoriteHabitatAction]);
 
   return (
-    <Box flex overflow="auto">
+    <Box className={style.favorite}>
       <Box
+        className={style.header}
         direction="row"
         align="center"
-        height={{ min: '80px' }}
-        pad={{ horizontal: 'large', vertical: 'medium' }}
       >
-        <Box justify="start" height="26px">
+        <Box justify="start" margin={{ top: '0', bottom: '0', right: '20px' }}>
           <Heading
-            margin={{ top: '0', bottom: '0', right: '20px' }}
             color="var(--charcoal)"
             level="3"
-            style={{ lineHeight: '.8em' }}
           >
             My Favorites
           </Heading>
         </Box>
-        <Box justify="center" height="28px">
-          <Text margin="0" size="xlarge" color="var(--charcoalLight)" style={{ lineHeight: '.8em' }}>
-            Your top habitats in one glance! Tap the heart to remove a favorite.
+        <Box justify="center">
+          <Text margin="0" size="xlarge" color="var(--charcoalLight)">
+            Your top habitats at a glance.
           </Text>
         </Box>
       </Box>
 
       <Box
         wrap
-        pad={{ horizontal: 'large', vertical: 'medium' }}
         background="var(--hunterGreenMediumLight)"
         flex="grow"
         direction="row"
         justify={width < 850 ? 'center' : 'start' }
+        className={classnames(style.content, 'customScrollBar')}
       >
         {!loaded && <Loader fill color="white" />}
 
@@ -143,12 +143,13 @@ const Favorite = ({ updateFavoriteHabitatAction }) => {
               image={image}
               logo={zoo?.logo}
               onFavoriteClick={onFavoriteClick}
+              className={style.listItem}
             />
           </Box>
         ))}
 
         {loaded && !error && habitats.length === 0 && (
-          <Box fill flex="grow" justify="center">
+          <Box fill flex="grow" justify="center" className={style.noContent}>
             <NoContentFallback
               text="Add your favorite animal habitats here for easy access."
               subText="Favorite by tapping the heart on the photo icon in any habitat. "
