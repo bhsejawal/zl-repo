@@ -29,10 +29,11 @@ export default (config, env, helpers) => {
   }
 
   const { plugin: htmlPlugin } = helpers.getPluginsByName(config, 'HtmlWebpackPlugin')[0] || {};
-  const { PREACT_APP_SEGMENT_ID: segmentId } = process.env;
+  const { PREACT_APP_SEGMENT_ID: segmentId, PREACT_APP_OPTIMIZE_ID: optimizeId } = process.env;
 
   if (htmlPlugin) {
     htmlPlugin.options.segmentId = segmentId;
+    htmlPlugin.options.optimizeId = optimizeId;
   }
 
   if (config.devServer) {
