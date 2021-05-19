@@ -44,12 +44,12 @@ const Map = ({
       <div className={style.content}>
         <div className={classnames(style.description, {[style.habitatSelected]: activeHabitat })}>
           <div>
-            <Heading level="1">Explore the animal kingdom.</Heading>
+            <Heading level="1" margin={{ top: 0 }}>Explore the animal kingdom.</Heading>
             <Text size="xlarge">
               Choose a habitat to visit.
             </Text>
           </div>
-          <div style={{ position: 'relative', width: 'fit-content', marginTop: '45px' }}>
+          <div style={{ position: 'relative', width: 'fit-content', marginTop: '25px' }}>
             {activeHabitat && (
               <>
                 <Can
@@ -76,7 +76,7 @@ const Map = ({
           <Can
             perform="maps:edit"
             yes={() => (
-              <Box width="170px" alignSelf="end" margin={{ top: '24px', right: '22px' }}>
+              <Box width="170px" alignSelf="end" margin={{ top: '24px' }}>
                 <OutlineButton label="Map Settings" onClick={handleMapButton} />
               </Box>
             )}
