@@ -11,3 +11,18 @@
 .suggestion {
   text-decoration: none;
 }
+
+:global {
+
+  ol[class^="StyledTextInput__StyledSuggestions"] li {
+    display: flex;
+
+    img {
+      height: 30px;
+    }
+
+    a > div {
+      width: 100%;
+    }
+  }
+}
