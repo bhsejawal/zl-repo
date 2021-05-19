@@ -25,6 +25,7 @@ import {
   passwordRegex,
   getDeviceType,
   getCampaignData,
+  logPageView,
 } from '../../helpers';
 
 import Layout from '../../layouts/LoginSignup';
@@ -94,7 +95,7 @@ const Signup = ({ setUserDataAction, openTermsModalAction }) => {
       } else if (user) {
         setServerError();
         setUserDataAction(user);
-
+        logPageView('/signed-up');
         if (origin === 'phone') {
           route('/mobile', true);
         } else {
