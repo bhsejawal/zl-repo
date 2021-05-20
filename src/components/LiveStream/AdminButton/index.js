@@ -23,8 +23,6 @@ const AdminButton = () => {
 
   return (
     <>
-      <StreamEditModalLoader openSection={openSection} onClose={onClose} />
-
       <Menu
         plain
         className={style.adminButton}
@@ -66,6 +64,8 @@ const AdminButton = () => {
           onClick: () => setOpenSection(OVERLAY_SECTION),
         }]}
       />
+
+      <StreamEditModalLoader openSection={openSection} onClose={onClose} />
     </>
   );
 };
