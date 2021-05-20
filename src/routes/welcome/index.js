@@ -10,6 +10,7 @@ import {
   Anchor,
   Text,
 } from 'grommet';
+import { route } from 'preact-router';
 import useFetch from 'use-http';
 
 import TagInput from 'Components/TagInput';
@@ -66,6 +67,7 @@ const Welcome = () => {
   const onSuccessClose = useCallback(() => {
     setEmails([]);
     setSent();
+    route('/map');
   }, [setEmails, setSent]);
 
   const onAdd = useCallback(
@@ -142,13 +144,13 @@ const Welcome = () => {
       {sent && (
         <Success
           text="An invite has been sent to their inbox! Thanks for sharing Zoolife."
-          onClose={() => onSuccessClose()}
+          onClose={onSuccessClose}
         />
       )}
       {error && (
         <Error
           text="Something went wrong. Please, try again"
-          onClose={() => onErrorClose()}
+          onClose={onErrorClose}
         />
       )}
     </>
