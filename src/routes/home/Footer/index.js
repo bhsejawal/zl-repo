@@ -1,5 +1,5 @@
 import { h } from 'preact';
-import { useState } from 'preact/hooks';
+import { useEffect, useState } from 'preact/hooks';
 import { LandingPrimary } from 'Components/Buttons';
 import useFetch from 'use-http';
 import { buildURL } from 'Shared/fetch';
@@ -20,11 +20,20 @@ const Footer = () => {
   const [email, setEmail] = useState();
   const [errorMessage, setErrorMessage] = useState();
   const [successMessage, setSuccessMessage] = useState();
+  // using this to set these values on the client and prevent basic botsh from spamming
+  const [mailLinks, setMailLinks] = useState();
   // this endpoint is a placeholder and it dose not exist yet
   const { post, response } = useFetch(
     buildURL('/subscribeEmail'),
     { cachePolicy: 'no-cache' },
   );
+
+  useEffect(() => {
+    // this is a bit more complicated on purpose to prevent basic spam bots
+    const m = 'mailto:';
+    const h = 'zoolife.tv';
+    setMailLinks({ info: `${m}info@${h}`, press: `${m}press@${h}` });
+  }, []);
 
   const changeHandler = ({ target: { value }}) => {
     setEmail(value);
@@ -101,8 +110,16 @@ const Footer = () => {
           <img src="https://assets.zoolife.tv/landing/s8_partner_2.png" alt="" />
           <img src="https://assets.zoolife.tv/landing/s8_partner_3.png" alt="" />
           <img src="https://assets.zoolife.tv/landing/s8_partner_4.png" alt="" />
-          <h3>Contact: info@zoolife.tv</h3>
-          <h3>Press: press@zoolife.tv</h3>
+          <h3>
+            Contact:
+            {' '}
+            <a className={style.mLink} href={mailLinks?.info}>{mailLinks?.info}</a>
+          </h3>
+          <h3>
+            Press:
+            {' '}
+            <a className={style.mLink} href={mailLinks?.press}>{mailLinks?.press}</a>
+          </h3>
         </div>
       </div>
       <div className={style.bottom}>
