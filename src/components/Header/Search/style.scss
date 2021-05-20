@@ -2,14 +2,28 @@
 
 .searchWrapper {
   border-radius: 50px;
-
-  @media screen and (max-width: 900px) {
-    display: none !important;
-  }
 }
 
 .suggestion {
   text-decoration: none;
+}
+
+.img {
+  width: 30px;
+  height: 30px;
+
+  &.liveTalk {
+    border: 3px solid var(--oliveMedium);
+  }
+
+  &.online {
+    border: 3px solid var(--oliveLight);
+  }
+
+  &.offline {
+    border: 3px solid var(--purple);
+    opacity: .6;
+  }
 }
 
 :global {

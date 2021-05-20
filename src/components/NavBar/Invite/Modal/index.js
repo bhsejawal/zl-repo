@@ -21,6 +21,7 @@ import { buildURL } from 'Shared/fetch';
 import TagInput from 'Components/TagInput';
 import StatusModalContent from 'Components/modals/StatusContent';
 import { defaultErrorMsg } from 'Components/modals/Error';
+import { useWindowResize } from '../../../../hooks';
 
 import headerImg from './header-img.jpg';
 
@@ -36,6 +37,7 @@ const successText = (
 
 const InviteModal = ({ onClose }) => {
   const tagInputRef = useRef();
+  const { width } = useWindowResize();
   const [emails, setEmails] = useState([]);
   const [sent, setSent] = useState();
   const [error, setError] = useState();
@@ -114,15 +116,16 @@ const InviteModal = ({ onClose }) => {
       )}
 
       {!sent && !error && (
-        <Box width="480px">
+        <Box width="min(480px, 100vw)">
           <Box
             direction="row"
             align="center"
             as="header"
             justify="end"
             overflow="hidden"
+            className={style.header}
           >
-            <img src={headerImg} alt="header" width="410" />
+            <img src={headerImg} alt="header" width={width > 410 ? '410' : width} />
             <Button
               className={style.closeBtn}
               plain

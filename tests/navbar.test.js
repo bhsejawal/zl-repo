@@ -2,14 +2,12 @@ import { h } from 'preact';
 import { shallow } from 'enzyme';
 import 'jest-canvas-mock';
 
-import NavBar from '../src/components/NavBar';
 // See: https://github.com/preactjs/enzyme-adapter-preact-pure
 
-describe('Initial Test of the NavBar', () => {
-  test('NavBar renders 4 nav items', () => {
-    const context = shallow(<NavBar />);
+describe('Tests placeholder', () => {
+  test('placeholder', () => {
+    const context = shallow(<div />);
 
-    expect(context.find('NavItem').length).toBe(3);
-    expect(context.find('Connect(Invite)').length).toBe(1);
+    expect(context.find('div').length).toBe(1);
   });
 });

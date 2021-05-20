@@ -1,25 +1,74 @@
 import { h } from 'preact';
-import { Header } from 'grommet';
+import { connect } from 'react-redux';
+import { Box, Header} from 'grommet';
+import {
+  faHeart,
+  faMapMarkerAlt,
+  faCalendarDay,
+  faCog,
+  faSignOut,
+} from '@fortawesome/pro-solid-svg-icons';
 
-import NavBar from '../NavBar';
+import { openContactUsModal } from 'Components/modals/ContactUs/actions';
+import NavItem from 'Components/NavBar/NavItem';
+import Invite from 'Components/NavBar/Invite';
+import BurgerMenu from 'Components/BurgerMenu';
 import ZoolifeLogo from '../ZoolifeLogo';
 import UserMenu from './Menu';
 import Search from './Search';
 
+import { useWindowResize } from '../../hooks';
+import { useLogout } from './hooks';
+import { unsetUserData } from '../../redux/actions';
+
 import style from './style.scss';
 
-const HeaderComponent = () => (
-  <Header className={style.header}>
-    <div className={style.logo}>
-      <ZoolifeLogo />
-      <Search className={style.search} />
-    </div>
+const cutOffWidth = 950;
 
-    <div>
-      <NavBar />
-      <UserMenu />
-    </div>
-  </Header>
-);
+const HeaderComponent = ({ unsetUserDataAction, openContactUsModalAction }) => {
+  const { width } = useWindowResize();
+  const logout = useLogout(unsetUserDataAction);
 
-export default HeaderComponent;
+  return (
+    <Header className={style.header} gap="none">
+      <div className={style.logo}>
+        <ZoolifeLogo />
+        <Search className={style.desktopSearch} />
+      </div>
+
+      {width > cutOffWidth ? (
+        <div>
+          <div className={style.navBar}>
+            <NavItem text="Map" url="/map" icon={faMapMarkerAlt} />
+            <NavItem text="Talk Schedule" url="/schedule" icon={faCalendarDay} />
+            <NavItem text="Favorites" url="/favorite" icon={faHeart} />
+            <Invite />
+          </div>
+          <UserMenu />
+        </div>
+      ) : (
+        <BurgerMenu>
+          <NavItem clickable text="Map" url="/map" icon={faMapMarkerAlt} />
+          <NavItem clickable text="Talk Schedule" url="/schedule" icon={faCalendarDay} />
+          <NavItem clickable text="Favorites" url="/favorite" icon={faHeart} />
+          <Invite />
+
+          {/* separator */}
+          <Box border={{ color: 'var(--mediumGrey)', position: 'bottom' }} />
+
+          <NavItem clickable text="My Account" url="/account" icon={faCog} />
+          <NavItem clickable text="Help" onClick={openContactUsModalAction} icon={faCog} />
+          <NavItem clickable text="Log Out" onClick={logout} icon={faSignOut} />
+        </BurgerMenu>
+      )}
+    </Header>
+  );
+};
+
+export default connect(
+  null,
+  {
+    unsetUserDataAction: unsetUserData,
+    openContactUsModalAction: openContactUsModal,
+  },
+)(HeaderComponent);
