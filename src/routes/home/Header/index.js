@@ -26,7 +26,7 @@ const HeaderComponent = () => (
       </LandingSecondary>
     </div>
 
-    <BurgerMenu className={style.menu}>
+    <BurgerMenu id={style.burgerMenu}>
       <Invite text="Invite Friends" />
       <NavItem onClick={goToLogin} text="Log In" url="/login" icon={faSignOut} />
       <Box margin={{ left: '15px' }}>

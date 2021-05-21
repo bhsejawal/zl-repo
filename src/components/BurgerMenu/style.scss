@@ -18,6 +18,10 @@
 .burgerBtn {
   display: flex !important;
   justify-content: center;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  font-size: inherit;
 }
 
 .item {

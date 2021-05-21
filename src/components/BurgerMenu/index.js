@@ -7,7 +7,7 @@ import classnames from 'classnames';
 
 import style from './style.scss';
 
-const BurgerMenu = ({ className, children }) => {
+const BurgerMenu = ({ id, className, children }) => {
   const ref = useRef();
   const [showMenu, setShowMenu] = useState(false);
 
@@ -15,7 +15,7 @@ const BurgerMenu = ({ className, children }) => {
   const closeMenu = useCallback(() => setShowMenu(false), []);
 
   return (
-    <div ref={ref} className={classnames(style.menuContainer, className)}>
+    <div id={id} ref={ref} className={classnames(style.menuContainer, className)}>
       <Button plain className={style.burgerBtn} onMouseDown={toggleMenu}>
         <FontAwesomeIcon icon={faBars} />
       </Button>
