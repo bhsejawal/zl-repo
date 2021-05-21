@@ -41,7 +41,9 @@ const Footer = () => {
     setSuccessMessage();
   }
 
-  const subscribeHandler = async () => {
+  const subscribeHandler = async (evt) => {
+    evt.preventDefault();
+
     setErrorMessage();
     setSuccessMessage();
 
@@ -66,14 +68,16 @@ const Footer = () => {
         <div className={style.subscribe}>
           <h2>Join the Community</h2>
           <span className="body">Subscribe for exclusive deals and Zoolife updates.</span>
-          <div className={style.inputContainer}>
-            <input value={email} type="text" placeholder="Enter email" onChange={changeHandler} />
-            <LandingPrimary onClick={subscribeHandler}>
-              <FontAwesomeIcon icon={faLongArrowRight} />
-            </LandingPrimary>
-            {errorMessage && <div className={style.error}>{errorMessage}</div>}
-            {successMessage && <div className={style.success}>{successMessage}</div>}
-          </div>
+          <form onSubmit={subscribeHandler}>
+            <div className={style.inputContainer}>
+              <input value={email} type="text" placeholder="Enter email" onChange={changeHandler} />
+              <LandingPrimary type="submit">
+                <FontAwesomeIcon icon={faLongArrowRight} />
+              </LandingPrimary>
+              {errorMessage && <div className={style.error}>{errorMessage}</div>}
+              {successMessage && <div className={style.success}>{successMessage}</div>}
+            </div>
+          </form>
           <div className={style.social}>
             <a href="https://www.facebook.com/zoolife.tv" target="_blank" rel="noreferrer">
               <FontAwesomeIcon icon={faFacebookF} />
