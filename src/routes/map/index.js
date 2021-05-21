@@ -44,7 +44,7 @@ const Map = ({
       <div className={style.content}>
         <div className={classnames(style.description, {[style.habitatSelected]: activeHabitat })}>
           <div>
-            <Heading level="1">Explore the animal kingdom.</Heading>
+            <Heading margin={{ top: '0' }} level="1">Explore the animal kingdom.</Heading>
             <Text size="xlarge">
               Choose a habitat to visit.
             </Text>

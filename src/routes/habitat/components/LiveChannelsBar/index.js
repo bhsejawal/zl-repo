@@ -42,12 +42,12 @@ const LiveChannelsBar = ({
   return (
     <>
       <div ref={ref} className={style.liveTalktBar} style={{ height, width }}>
-        <div className={classnames(style.expandBar, 'customScrollBar', {[style.active]: expand})}>
+        <div className={classnames(style.expandBar, {[style.active]: expand})}>
           <button type="button" className={style.liveTalkExpandButton} onClick={() => setExpand(!expand)}>
             <Text size="medium" margin={{ right: '5px' }}>Live Now</Text>
             <FontAwesomeIcon icon={faChevronLeft} />
           </button>
-          <div className={style.listWrapper}>
+          <div className={classnames(style.listWrapper, 'customScrollBar')}>
             {currentHabitat && list.map(({
               _id,
               animal,

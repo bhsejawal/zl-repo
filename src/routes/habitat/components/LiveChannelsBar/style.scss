@@ -72,20 +72,20 @@
 .expandBar {
   background: var(--hunterGreenMediumLight);
   position: absolute;
-  left: 0;
   top: 0;
   bottom: 0;
-  width: 0;
-  transition: .5s ease-in-out width;
+  width: 285px;
+  left: -285px;
+  transition: .5s ease-in-out left;
   z-index: 3;
-  overflow: hidden auto;
 
   &.active {
-    width: 285px;
+    left: 0;
   }
 
   .listWrapper {
     padding: 0 0 0 18px;
+    max-height: calc(100% - 39px);
 
     > div {
       margin: 10px 0;

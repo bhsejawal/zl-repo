@@ -142,10 +142,10 @@ const ShareContainer = ({ userId, show, showSnapshotShareAction }) => {
         </button>
         {showMainContent && (
           <>
-            <Box height={{min: '25px'}}>
+            <Box height={{min: '25px'}} className={style.shareHeader}>
               <Heading color="white" textAlign="center" margin="auto" level="6">Here&apos;s your photo</Heading>
             </Box>
-            <img src={snapshotData.snapshot} alt="" />
+            <img src={snapshotData.snapshot} alt="" className={style.shareImage} />
             <Box height={{min: '25px'}} justify="center" alignContent="center" direction="row" className={style.shareButtons}>
               <button onClick={sendEmail} type="button" className={style.shareIcon}>
                 <FontAwesomeIcon icon={faEnvelope} />
