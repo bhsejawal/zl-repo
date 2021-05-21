@@ -12,7 +12,7 @@ import { openTermsModal } from 'Components/TermsAndConditions/actions';
 import { GlobalsContext } from 'Shared/context';
 
 import Chat from './components/Chat';
-import NextTalkBar from './components/NextTalkBar';
+import LiveChannelsBar from './components/LiveChannelsBar';
 import CardTabs from './components/CardTabs';
 import StreamProfile from './components/StreamProfile';
 import OnboardingModal from './OnboardingModal';
@@ -127,7 +127,7 @@ const Habitat = ({
   return (
     <div>
       <div className={style.topSection} style={{ height, maxHeight: height }}>
-        <NextTalkBar width={sideBarWidth} height={height} />
+        <LiveChannelsBar width={sideBarWidth} height={height} />
         <LiveStream
           width={streamWidth}
           height={height}
