@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'preact/hooks';
+import { throttle } from 'lodash-es';
 
 const getSize = () => ({
   width: window.innerWidth,
@@ -11,7 +12,7 @@ export const useWindowResize = () => {
   const [size, setSize] = useState(getSize());
 
   useEffect(() => {
-    const updateSize = () => setSize(getSize());
+    const updateSize = throttle(() => setSize(getSize()), 400);
     window.addEventListener('resize', updateSize);
     updateSize();
     return () => window.removeEventListener('resize', updateSize);

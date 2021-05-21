@@ -2,6 +2,45 @@
 This file keeps track of all relevant change for every release.
 
 ## [Unreleased]
+## [5.2.0] - 2021-05-21
+### Added
+- Mail links on landing footer
+- Google optimize
+- Favorite Page for Mobile
+
+### Changed
+- Make share popup larger
+- Subscribe working on enter key
+- Refactoring live talks bar and increasing font-size on the chat
+- Trial starts when users setup their profile
+- Stream Setting button is visible to admin/partner even when stream is off
+- Move to map after closing mail success modal
+- Header update and some mobile fixes
+- Refactor Data Gathering for Analytics/Better marketing analysis
+- Family members age layout
+- Increase padding to right of map on map page
+- Onboarding video container click will not close modal
+- Copy changes for login page 
+- Landing page logo is moved to the left
+- Schedule rule updates after server refactor
+- Habitats list is updated without refresh
+- Schedule, favorite, and map accessible after trial expiry
+- Align profile cards to the top
+- Replaced overlay placeholder image
+- Open invite modal 2 minutes before trial expiry
+- Promo text to be until jun 1st
+- Partner logo constraints update
+
+### Fixed
+- Un-styled header flash on home page
+- Vertical scroll on trial bar
+- Videos are not loading on Safari (old versions and iPadOs)
+- Emoji alignment, and size fix when dropped
+- Broken search bar on safari
+- Chat scroll fixes for windows browsers
+- Wrong url for reset password
+- Error when there are no active cameras for an event
+
 ## [5.1.0] - 2021-05-14
 ### Added
 - Allow association of habitats to Hosts
@@ -21,6 +60,7 @@ This file keeps track of all relevant change for every release.
 - Allowing all users to go to plans page and resetting button on pass expire
 - Section 1 Animated looping text
 - Adding another url to Orana zoo
+
 ### Changed
 - Force websocket transport protocol
 - Increase species max to 32 
@@ -38,6 +78,7 @@ This file keeps track of all relevant change for every release.
 - Mobile redirect changes, and page titles update
 - Trial bar support date time
 - All files are served from the assets distribution
+
 ### Fixed
 - Habitat search Show search suggestions on focus
 - Habitat search display results on 1+ character inputs

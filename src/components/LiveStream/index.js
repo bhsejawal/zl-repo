@@ -101,6 +101,7 @@ const Stream = ({
         }}
       >
         <Fallback type="offline" />
+        {(interactive && hasPermission('habitat:edit-stream')) && <AdminButton />}
       </div>
     )
   }

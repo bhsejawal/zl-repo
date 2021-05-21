@@ -18,12 +18,14 @@ import {
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch } from '@fortawesome/pro-solid-svg-icons';
 import { deepMerge } from 'grommet/utils';
+import { differenceInMinutes } from 'date-fns';
 import classnames from 'classnames';
 import useFetch from 'use-http';
 
 import HabitatStatus from 'Components/HabitatCard/HabitatStatus';
 import { buildURL } from 'Shared/fetch';
 import { setHabitats } from '../../../redux/actions';
+import { useWindowResize } from '../../../hooks';
 import zoolifeTheme from '../../../grommetTheme';
 
 import style from './style.scss';
@@ -50,6 +52,8 @@ const Search = ({ className, allHabitats, setHabitatsAction }) => {
   const [suggestionOpen, setSuggestionOpen] = useState(false);
   const [value, setValue] = useState('');
   const boxRef = useRef();
+  const lastFetchRef = useRef();
+  const { width: windowWidth } = useWindowResize();
 
   const { get, response } = useFetch(buildURL('/habitats/map'), {
     credentials: 'include',
@@ -60,10 +64,11 @@ const Search = ({ className, allHabitats, setHabitatsAction }) => {
   const onSuggestionsClose = useCallback(() => setSuggestionOpen(false), []);
 
   const onSearchFocus = async () => {
-    // fetch habitats in case it's empty
-    // it should be refreshed when map page is open
-    if (allHabitats.length === 0) {
-      await get()
+    const now = new Date();
+    // refresh habitats on focus if data is older than a minute
+    if (!lastFetchRef.current || differenceInMinutes(now, lastFetchRef.current) > 1) {
+      lastFetchRef.current = now;
+      await get();
       if (response.ok) {
         setHabitatsAction(response.data.habitats)
       }
@@ -115,14 +120,22 @@ const Search = ({ className, allHabitats, setHabitatsAction }) => {
             border={ind < list.length - 1 ? 'bottom' : undefined}
           >
             <Box width="30px" height="30px">
-              <Image src={profileImage} style={{ borderRadius: '100%' }} />
+              <Image
+                src={profileImage}
+                style={{ borderRadius: '100%' }}
+                className={classnames(style.img, {
+                  [style.liveTalk]: windowWidth < 460 && liveTalk,
+                  [style.online]: windowWidth < 460 && online,
+                  [style.offline]: windowWidth < 460 && !online,
+                })}
+              />
             </Box>
             <Text>{title}</Text>
-            <HabitatStatus online={online} liveTalk={liveTalk} />
+            {windowWidth >= 460 && <HabitatStatus online={online} liveTalk={liveTalk} />}
           </Box>
         </Link>
       ),
-    })), [allHabitats, onHabitatClick, value]);
+    })), [allHabitats, onHabitatClick, value, windowWidth]);
 
   return (
     <Grommet theme={theme}>
@@ -131,7 +144,6 @@ const Search = ({ className, allHabitats, setHabitatsAction }) => {
         direction="row"
         align="center"
         round="20px"
-        width="270px"
         className={classnames(style.searchWrapper, className)}
         pad={{ horizontal: 'small' }}
         elevation={suggestionOpen ? 'medium' : undefined}

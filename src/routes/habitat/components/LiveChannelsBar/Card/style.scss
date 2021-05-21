@@ -1,0 +1,36 @@
+$cardWidth: 255px;
+
+.card {
+  display: block;
+  min-width: $cardWidth;
+  width: $cardWidth;
+  min-height: 70px;
+  height: min-content;
+  cursor: pointer;
+
+  .wrapper {
+    width: $cardWidth;
+    background-color: white;
+    border-radius: 5px;
+    min-height: 70px;
+    padding: 10px;
+  }
+
+  .zooName {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .image {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin-right: 15px;
+
+    img {
+      max-width: 50px;
+      border-radius: 50%;
+    }
+  }
+}

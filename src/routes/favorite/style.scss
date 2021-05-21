@@ -1,0 +1,48 @@
+.favorite {
+  height: 100%;
+}
+
+.header {
+  min-height: unset;
+  padding: 35px 35px;
+
+  @media screen and (min-width: 1650px) {
+    padding: 35px 0;
+  }
+
+  h3 {
+    min-width: fit-content;
+    white-space: nowrap;
+    margin: 0;
+  }
+
+  span {
+    line-height: 16px;
+  }
+
+  > div {
+    min-height: max-content;
+    min-width: auto;
+  }
+}
+
+.content {
+  flex: auto;
+  padding: 26px 76px;
+
+  @media screen and (max-width: 520px) {
+    padding: 26px;
+  }
+
+  @media screen and (max-width: 520px) {
+    padding: 26px 10px;
+  }
+
+  .noContent {
+    height: auto;
+  }
+}
+
+.listItem {
+  max-width: 100%;
+}

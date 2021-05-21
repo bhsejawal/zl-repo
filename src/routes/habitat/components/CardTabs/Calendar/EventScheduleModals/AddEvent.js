@@ -10,7 +10,6 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTimes } from '@fortawesome/pro-solid-svg-icons';
 
 import { API_BASE_URL } from 'Shared/fetch';
-import StatusContent from 'Components/modals/StatusContent';
 import { showAddEventModal, updateCalendar } from './actions';
 import Form from './Form';
 
@@ -18,7 +17,7 @@ import style from './style.scss';
 
 const AddEvent = ({
   isOpen,
-  cameraId,
+  habitatId,
   updateCalendarAction,
   showAddEventModalAction,
 }) => {
@@ -37,7 +36,7 @@ const AddEvent = ({
   };
 
   const addEvent = async (formData) => {
-    await post(`/admin/cameras/${cameraId}/schedule-rules`, formData);
+    await post(`/admin/habitats/${habitatId}/schedule-rules`, formData);
 
     if (response.ok) {
       updateCalendarAction();
@@ -57,31 +56,21 @@ const AddEvent = ({
       onClickOutside={closeHandler}
       onEsc={closeHandler}
     >
-      {!cameraId && (
-        <StatusContent
-          type="error"
-          text="This habitat doesn't have a camera associated with. Please contact your administrator."
-          onClose={closeHandler}
-        />
-      )}
+      <div className={style.scheduleEventModal}>
+        <Box direction="row" justify="between">
+          <Heading level="2" margin={{ left: '40px'}}>
+            Add Event
+          </Heading>
+          <Button
+            plain
+            margin="medium"
+            onClick={closeHandler}
+            icon={<FontAwesomeIcon size="2x" icon={faTimes} />}
+          />
+        </Box>
 
-      {cameraId && (
-        <div className={style.scheduleEventModal}>
-          <Box direction="row" justify="between">
-            <Heading level="2" margin={{ left: '40px'}}>
-              Add Event
-            </Heading>
-            <Button
-              plain
-              margin="medium"
-              onClick={closeHandler}
-              icon={<FontAwesomeIcon size="2x" icon={faTimes} />}
-            />
-          </Box>
-
-          <Form onSubmit={addEvent} error={error && response?.data?.error} />
-        </div>
-      )}
+        <Form onSubmit={addEvent} error={error && response?.data?.error} />
+      </div>
     </Layer>
   )
 };
@@ -90,12 +79,11 @@ export default connect(
   ({
     habitat: {
       calendarEvents: { showAddEventModal: isOpen },
-      habitatInfo: { camera },
+      habitatInfo: { _id: habitatId },
     },
   }) => ({
     isOpen,
-    // eslint-disable-next-line no-underscore-dangle
-    cameraId: camera?._id,
+    habitatId,
   }),
   {
     showAddEventModalAction: showAddEventModal,

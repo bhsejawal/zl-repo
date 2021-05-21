@@ -61,9 +61,11 @@ export const LandingPrimary = ({
   className,
   children,
   onClick,
+  type = 'button',
 }) => (
   <button
-    type="button"
+    // eslint-disable-next-line react/button-has-type
+    type={type}
     onClick={onClick}
     className={classnames(className, style.landingPrimary)}
   >

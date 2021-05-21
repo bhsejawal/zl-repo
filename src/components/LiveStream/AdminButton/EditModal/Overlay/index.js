@@ -9,7 +9,7 @@ import { PrimaryButton } from 'Components/Buttons';
 import { buildURL } from 'Shared/fetch';
 import { setHabitatProps } from '../../../../../routes/habitat/actions';
 
-import samplePhoto from './overlay-sample-photo.png';
+import samplePhoto from './overlay-sample-photo.jpeg';
 
 import style from './style.scss';
 
@@ -58,7 +58,7 @@ const Overlay = ({
   return (
     <Box justify="center" align="center" flex="grow">
       <Box fill align="stretch" direction="row">
-        <Box width="600px" pad="medium">
+        <Box width={{ min: '500px' }} pad="medium">
           <Box margin={{ top: 'medium' }} pad={{ horizontal: 'medium' }} className="customScrollBar grey">
             <Heading level="4" margin={{ top: '0' }}>Update Overlay</Heading>
 
@@ -76,7 +76,7 @@ const Overlay = ({
 
         <Box
           border={{ side: 'left', color: 'var(--lightGrey)' }}
-          flex="grow"
+          flex="shrink"
           align="center"
           pad="medium"
           overflow="hidden"
@@ -84,7 +84,7 @@ const Overlay = ({
           <Heading level="4">Preview Changes</Heading>
 
           <Box className={style.photoWrapper} margin={{ bottom: 'xlarge' }} alignSelf="stretch">
-            <img src={samplePhoto} alt="sample" />
+            <img src={samplePhoto} className={style.placeholderImg} alt="sample" />
             <img
               className={style.overlayPreview}
               src={overlayStorageKey}

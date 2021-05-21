@@ -60,17 +60,6 @@ const TimeBar = ({
   const text = isMobileDevice ? 'to access your free trial.' : 'left in your free trial.';
   const ctaText = timestamp === null && isPlanPage ? 'Select a pass to continue exploring!' : 'Want more?';
 
-  // eslint-disable-next-line consistent-return
-  useEffect(() => {
-    if (isTrial) {
-      const timeout = setTimeout(() => {
-        openInviteModalAction();
-      }, 5 * 60 * 1000);
-
-      return () => clearTimeout(timeout);
-    }
-  }, [openInviteModalAction, isTrial]);
-
   useEffect(() => {
     if (validUntil) {
       const diff = new Date(validUntil) - new Date();
@@ -96,10 +85,14 @@ const TimeBar = ({
           updateSubscriptionAction({ active: false })
         }
       }, 1000);
+
+      if (Math.floor(timestamp / 1000) === 120) {
+        openInviteModalAction();
+      }
     }
 
     return () => clearTimeout(timeout);
-  }, [isTrial, timestamp, updateSubscriptionAction, validUntil]);
+  }, [isTrial, openInviteModalAction, timestamp, updateSubscriptionAction, validUntil]);
 
   if (!isTrial || isLandingPage || role !== 'user') {
     return null;

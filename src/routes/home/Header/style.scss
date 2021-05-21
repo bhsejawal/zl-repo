@@ -26,14 +26,9 @@
   }
 
   .logo {
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    transform: translateX(-50%) translateY(-50%);
+    margin-right: auto;
+    padding: 0 18px;
     display: flex;
-    flex-grow: 1;
-    justify-content: center;
-    align-items: center;
 
     div {
       display: flex;
@@ -66,13 +61,14 @@
   margin-right: 14px;
 }
 
-.menu {
+/* stylelint-disable selector-max-id */
+#burgerMenu {
   display: none;
 }
 
 @media screen and (max-width: 768px) {
 
-  .menu {
+  #burgerMenu {
     display: block;
   }
 
@@ -80,3 +76,5 @@
     display: none;
   }
 }
+
+/* stylelint-enable selector-max-id */

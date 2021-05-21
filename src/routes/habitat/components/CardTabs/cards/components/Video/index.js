@@ -30,6 +30,10 @@ const Video = ({ url, className }) => {
     el.addEventListener('loadeddata', onLoadedData);
     el.addEventListener('pause', onPaused);
 
+    // Safari will not load the video if we don't explicity call it
+    // The issue was observed on Safari iPadOs and Older Safaris on MacOs
+    el.load();
+
     return () => {
       el.removeEventListener('pause', onPaused);
       el.removeEventListener('loadeddata', onLoadedData);
@@ -38,7 +42,7 @@ const Video = ({ url, className }) => {
 
   return (
     <div className={classnames(style.video, className)}>
-      <video ref={videoRef} muted src={url}>
+      <video ref={videoRef} muted playsInline src={url}>
         Sorry, your browser doesn&quot;t support embedded videos.
       </video>
 

@@ -79,7 +79,7 @@ const PlanCard = ({
             </Box>
             <Box align="center" margin={{ top: '10px'}}>
               <Text size="10px" style={{ lineHeight: '11.5px'}}>
-                Discount Pricing Ends May 16
+                Discount Pricing Ends Jun 1st
               </Text>
             </Box>
           </Box>

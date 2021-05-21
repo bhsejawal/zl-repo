@@ -6,7 +6,7 @@ import BaseModal from './BaseModal';
 
 const ResetPasswordModal = ({ email, onClose }) => {
   const { post, response } = useFetch(
-    buildURL('/users/password/resetf'),
+    buildURL('/users/password/reset'),
     { credentials: 'include', cachePolicy: 'no-cache' },
   );
 

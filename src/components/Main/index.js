@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 
 import TimeBar from 'Components/TimeBar';
 import AuthGuard from 'Components/Authorize/AuthGuard';
+import Redirect from 'Components/Redirect';
 import TermsAndConditions, { PRIVACY_PDF_URL, TERMS_PDF_URL } from 'Components/TermsAndConditions';
 import ContactUsModalLoader from 'Components/async/ContactUsModalLoader';
 
@@ -46,7 +47,18 @@ const Main = ({
   }, [updateReferralDataAction])
 
   const routerChangeHandler = (props) => {
-    const { url, previous } = props;
+    const { url, previous, current: { props: { matches } } } = props;
+
+    if (url.startsWith('/socialLogin') && matches?.newUser === "true") {
+      logPageView('/signed-up')
+    }
+
+    if (url.startsWith('/checkout-completed')) {
+      const { passType } = matches;
+      if (passType) {
+        logPageView(`/purchased-${passType}`)
+      }
+    }
 
     // Segments sends a beacon when plugin is loaded, hence, we should ignore if previous is empty
     // Its possible to see some duplicated entries on dev due to hot reload
@@ -69,6 +81,10 @@ const Main = ({
         <Home path="/torontozoo" partnerImage={torontoZooLogo} exact title={homeTitle} />
         <Home path="/pmmc" partnerImage={pmmcLogo} exact title={homeTitle} />
         <Home path="/sazoo" partnerImage={sanAntonioLogo} exact title={homeTitle} />
+
+        <Redirect path="/socialLogin" to="/map" />
+        <Redirect path="/checkout-completed" to="/welcome" />
+        <Redirect path="/checkout-cancelled" to="/plans" />
 
         <AuthGuard path="/login" guestOnly title="Log In" redirectTo="/map">
           <Login />

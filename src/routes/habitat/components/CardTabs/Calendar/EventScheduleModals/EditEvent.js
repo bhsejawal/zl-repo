@@ -24,7 +24,7 @@ import style from './style.scss';
 const EditEvent = ({
   scheduleRuleId,
   scheduleId,
-  cameraId,
+  habitatId,
   isOpen,
   eventDate,
   showEditEventModalAction,
@@ -50,14 +50,14 @@ const EditEvent = ({
   const loaded = useIsInitiallyLoaded(loading);
 
   const load = useCallback(() => {
-    get(`/admin/cameras/${cameraId}/schedule-rules/${scheduleRuleId}`);
-  }, [cameraId, get, scheduleRuleId]);
+    get(`/admin/habitats/${habitatId}/schedule-rules/${scheduleRuleId}`);
+  }, [habitatId, get, scheduleRuleId]);
 
   useEffect(() => {
-    if (cameraId && scheduleRuleId) {
+    if (habitatId && scheduleRuleId) {
       load()
     }
-  }, [cameraId, load, scheduleRuleId]);
+  }, [habitatId, load, scheduleRuleId]);
 
   const closeHandler = () => {
     showEditEventModalAction(false, {});
@@ -66,9 +66,9 @@ const EditEvent = ({
   const editEvent = async (formData) => {
     if (formData.singleEvent) {
       const data = { ...formData, date: eventDate };
-      await patch(`/admin/cameras/${cameraId}/schedule-rules/${scheduleRuleId}/schedules/${scheduleId}`, data);
+      await patch(`/admin/habitats/${habitatId}/schedule-rules/${scheduleRuleId}/schedules/${scheduleId}`, data);
     } else {
-      await patch(`/admin/cameras/${cameraId}/schedule-rules/${scheduleRuleId}`, formData);
+      await patch(`/admin/habitats/${habitatId}/schedule-rules/${scheduleRuleId}`, formData);
     }
 
     if (patchResponse.ok) {
@@ -129,7 +129,7 @@ const EditEvent = ({
 export default connect(
   ({
     habitat: {
-      habitatInfo: { camera },
+      habitatInfo: { _id: habitatId },
       calendarEvents: {
         showEditEventModal: isOpen,
         event: {
@@ -144,8 +144,7 @@ export default connect(
     scheduleId,
     isOpen,
     eventDate,
-    // eslint-disable-next-line no-underscore-dangle
-    cameraId: camera?._id,
+    habitatId,
   }),
   {
     showEditEventModalAction: showEditEventModal,

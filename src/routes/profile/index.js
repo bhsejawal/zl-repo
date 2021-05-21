@@ -25,9 +25,11 @@ import { faEyeDropper, faSpinner, faTimes } from '@fortawesome/pro-solid-svg-ico
 import { HexColorPicker } from "react-colorful";
 import { PrimaryButton } from 'Components/Buttons';
 import classnames from 'classnames';
+import useFetch from 'use-http';
 
 import { openTermsModal } from 'Components/TermsAndConditions/actions';
 import { getIconKeys, getIconUrl } from 'Shared/profileIcons';
+import { buildURL } from 'Shared/fetch';
 
 import backgroundImg from './profileBackground.png';
 
@@ -35,6 +37,7 @@ import { useIsInitiallyLoaded, useOnClickOutside } from '../../hooks';
 import { getUser, updateUser } from './api';
 import grommetTheme from '../../grommetTheme';
 import { updateProfile } from './actions';
+import { setSubscriptionData } from '../../redux/actions';
 import { logPageView } from '../../helpers';
 
 import 'react-colorful/dist/index.css';
@@ -99,6 +102,7 @@ const Profile = ({
   user,
   updateProfileAction,
   openTermsModalAction,
+  setSubscriptionDataAction,
 }) => {
   const pickerRef = useRef();
   const size = useContext(ResponsiveContext);
@@ -110,6 +114,14 @@ const Profile = ({
   const [isPickerOpen, setIsPickerOpen] = useState(false);
   const isCustomColor = useMemo(() => !colors.includes(color), [color]);
   const isInitiallyLoaded = useIsInitiallyLoaded(isLoading);
+  const {
+    post,
+    response,
+  } = useFetch(buildURL('/users/subscription/startTrial'), {
+    credentials: 'include',
+    cachePolicy: 'no-cache',
+    headers: { 'Content-Type': 'application/json' },
+  });
 
   useEffect(() => {
     if (user && !user?.termsAccepted) {
@@ -173,10 +185,20 @@ const Profile = ({
       updateProfileAction(color, icon, username);
 
       if (step) {
-        if (user.subscription?.productId === 'TRIAL') {
-          logPageView('/trialStarted');
+        if (user.role === 'user' && !user.subscription?.productId) {
+          const subscriptionData = await post();
+          if (response.ok) {
+            setSubscriptionDataAction(subscriptionData);
+            logPageView('/trialStarted');
+            route('/map');
+          }
+
+          if (response.data?.error) {
+            setErrorMsg(response.data.error);
+          }
+        } else {
+          route('/map');
         }
-        route('/map');
       }
     } catch (err) {
       console.error(err);
@@ -329,5 +351,6 @@ export default connect(
   {
     updateProfileAction: updateProfile,
     openTermsModalAction: openTermsModal,
+    setSubscriptionDataAction: setSubscriptionData,
   },
 )(Profile);

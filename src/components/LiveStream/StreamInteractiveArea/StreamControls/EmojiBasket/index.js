@@ -73,13 +73,13 @@ export const EmojiBasketNoRedux = ({
         <div className={classnames(style.itemsWrapper, style.customScrollBar)}>
           <div className={style.items}>
             {emojiItems.map((url) => (
-              <div key={url}>
+              <div key={url} className={style.basketItem}>
                 <img
                   onDragStart={onDragStart}
                   onDragEnd={onDragEnd}
                   draggable="true"
                   src={encodeURI(url)}
-                  alt="emoji"
+                  alt=""
                 />
               </div>
             ))}

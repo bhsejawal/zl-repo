@@ -1,5 +1,10 @@
 import { h } from 'preact';
-import { useEffect, useContext } from 'preact/hooks';
+import {
+  useEffect,
+  useContext,
+  useRef,
+  useState,
+} from 'preact/hooks';
 import { connect } from 'react-redux';
 import { route } from 'preact-router';
 import useFetch from 'use-http';
@@ -12,7 +17,7 @@ import { openTermsModal } from 'Components/TermsAndConditions/actions';
 import { GlobalsContext } from 'Shared/context';
 
 import Chat from './components/Chat';
-import NextTalkBar from './components/NextTalkBar';
+import LiveChannelsBar from './components/LiveChannelsBar';
 import CardTabs from './components/CardTabs';
 import StreamProfile from './components/StreamProfile';
 import OnboardingModal from './OnboardingModal';
@@ -42,6 +47,8 @@ const Habitat = ({
 }) => {
   const { width: windowWidth } = useWindowResize();
   const { socket } = useContext(GlobalsContext);
+  const pageRef = useRef();
+  const [pageWidth, setPageWidth] = useState();
 
   useEffect(() => {
     if (socket && userId && habitatId) {
@@ -105,9 +112,15 @@ const Habitat = ({
     }
   }, [title]);
 
+  useEffect(() => {
+    // window size may include padding for scroll bar
+    // therefore we need the page width to be accurate
+    setPageWidth(pageRef?.current?.offsetWidth || windowWidth);
+  }, [pageRef?.current?.offsetWidth, windowWidth]);
+
   const sideBarWidth = 84;
   const chatWidth = 285;
-  const calcStreamWidth = windowWidth - sideBarWidth - chatWidth;
+  const calcStreamWidth = pageWidth - sideBarWidth - chatWidth;
   const streamWidth = calcStreamWidth > maxStreamWidth ? maxStreamWidth : calcStreamWidth;
   const height = streamWidth * 0.5625 > maxStreamHeight ? maxStreamHeight : streamWidth * 0.5625;
 
@@ -125,9 +138,9 @@ const Habitat = ({
   }
 
   return (
-    <div>
+    <div ref={pageRef}>
       <div className={style.topSection} style={{ height, maxHeight: height }}>
-        <NextTalkBar width={sideBarWidth} height={height} />
+        <LiveChannelsBar width={sideBarWidth} height={height} />
         <LiveStream
           width={streamWidth}
           height={height}

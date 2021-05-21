@@ -9,15 +9,17 @@ import { toggleShowEmojiBasket } from '../../../../../redux/actions';
 import style from './style.scss';
 
 const EmojiButton = ({ toggleShowEmojiBasketAction }) => (
-  <RoundButton
-    onClick={toggleShowEmojiBasketAction}
-    className={style.emojiButton}
-    width="36"
-    backgroundColor="var(--purple)"
-    color="white"
-  >
-    <FontAwesomeIcon icon={faGrinWink} />
-  </RoundButton>
+  <div>
+    <RoundButton
+      onClick={toggleShowEmojiBasketAction}
+      className={style.emojiButton}
+      width="36"
+      backgroundColor="var(--purple)"
+      color="white"
+    >
+      <FontAwesomeIcon icon={faGrinWink} />
+    </RoundButton>
+  </div>
 );
 
 export default connect(null, {

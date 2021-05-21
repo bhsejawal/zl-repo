@@ -20,10 +20,16 @@
   }
 
   .logo {
-    padding: 25px 18px;
+    padding-left: 18px;
   }
 }
 
-.search {
-  margin-left: 25px;
+.desktopSearch {
+  margin-left: 15px;
+}
+
+.navBar {
+  display: flex;
+  align-items: center;
+  user-select: none;
 }

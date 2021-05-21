@@ -4,6 +4,7 @@
   display: flex;
   flex-grow: 1;
   align-items: center;
+  padding-left: 20px;
 
   .wrapper {
     position: relative;
@@ -46,7 +47,7 @@
   }
 
   img {
-    max-height: 70vh;
+    max-height: 80vh;
     width: auto;
     max-width: 100%;
   }

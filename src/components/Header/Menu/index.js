@@ -1,6 +1,6 @@
 import { h } from 'preact';
 import { route } from 'preact-router';
-import { useRef, useState } from 'preact/hooks';
+import { useCallback, useRef, useState } from 'preact/hooks';
 import { connect } from 'react-redux';
 import { Drop, Box, Text } from 'grommet';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -12,33 +12,25 @@ import {
   faSignOut,
   faUsersCog,
 } from '@fortawesome/pro-solid-svg-icons';
-import useFetch from 'use-http';
 
 import { hasPermission } from 'Components/Authorize';
-import { buildURL } from 'Shared/fetch';
 import AnimalIcon from 'Components/AnimalIcon';
 
 import { unsetUserData } from '../../../redux/actions'
 import { openContactUsModal } from '../../modals/ContactUs/actions'
+import { useLogout } from '../hooks';
 
 import style from './style.scss';
 
 const Menu = ({ unsetUserDataAction, openContactUsModalAction }) => {
   const buttonRef = useRef(null)
   const [showMenu, setShowMenu] = useState(false);
-  const { post, response } = useFetch(
-    buildURL('/admin/users/logout'),
-    { credentials: 'include', cachePolicy: 'no-cache' },
-  );
 
-  const handleLogout = async () => {
-    await post();
-    if (response.ok) {
-      setShowMenu(false);
-      unsetUserDataAction();
-      route('/login');
-    }
-  }
+  const onLogout = useCallback(() => {
+    setShowMenu(false);
+    unsetUserDataAction();
+  }, [unsetUserDataAction]);
+  const logout = useLogout(onLogout);
 
   const contactUsHandler = () => {
     setShowMenu(false);
@@ -146,7 +138,7 @@ const Menu = ({ unsetUserDataAction, openContactUsModalAction }) => {
             pad={{ horizontal: '15px' }}
             direction="row"
             align="center"
-            onClick={handleLogout}
+            onClick={logout}
           >
             <FontAwesomeIcon icon={faSignOut} />
             <Box margin={{ left: '12px' }}>
