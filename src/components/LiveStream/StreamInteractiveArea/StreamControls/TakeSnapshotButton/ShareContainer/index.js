@@ -131,10 +131,7 @@ const ShareContainer = ({ userId, show, showSnapshotShareAction }) => {
   return (
     <Box
       className={style.shareContainer}
-      width={{
-        max: `${videoRef?.current.clientHeight - 60}px`,
-        min: `${videoRef?.current.clientHeight / 2 - 60}px`,
-      }}
+      width={{ min: `${videoRef?.current.clientHeight - 60}px`, max: 'unset' }}
     >
       <Box background="var(--hunterGreenMediumLight)">
         <button onClick={closeHandler} type="button" className={style.close}>
