@@ -16,6 +16,8 @@ export const passwordRegex = /^(?=.*[a-zA-Z])(?=.*[0-9])(?!.*\s).{8,50}$/gm;
 export const iOSDevice = () => !!navigator.platform.match(/iPhone|iPod|iPad/);
 export const androidDevice = () => !!navigator.userAgent.match(/Android/i);
 
+export const isDev = () => process.env.NODE_ENV === 'development';
+
 export const getDeviceType = () => {
   if (typeof window === 'undefined') {
     return 'desktop';
@@ -41,14 +43,24 @@ export const formatAge = (dateOfBirth) => formatDistanceToNowStrict(
 );
 
 export const logPageView = (page) => {
-  if (window.analytics) {
-    if (page) {
-      window.analytics.page(page, {
-        path: `${page}`,
-        url: `${page}`,
-      });
-    } else {
-      window.analytics.page();
+  if (typeof window !== 'undefined') {
+    const context = {
+      referrer: '',
+      page: {
+        referrer: '',
+      },
+    };
+
+    if (window.analytics) {
+      if (page) {
+        window.analytics.page({
+          path: `${page}`,
+          url: `${page}`,
+          ...context,
+        });
+      } else {
+        window.analytics.page();
+      }
     }
   }
 }

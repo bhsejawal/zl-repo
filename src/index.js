@@ -14,6 +14,7 @@ import { deepMerge } from 'grommet/utils';
 import { grommet } from 'grommet/themes';
 import { StripeContext } from 'Shared/context';
 import Main from 'Components/Main';
+import { initializeGA } from 'Shared/ga';
 
 import store from './redux/store';
 import zoolifeTheme from './grommetTheme';
@@ -46,6 +47,7 @@ const App = () => {
     };
 
     initializeStripe();
+    initializeGA();
   }, []);
 
   const onRouteChange = useCallback(({
