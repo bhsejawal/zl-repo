@@ -22,14 +22,19 @@ const Chat = ({
   const [isConnectedToPubnub, setIsConnectedToPubnub] = useState(false);
 
   const addMessageListener = useCallback((msg) => {
-    const { message } = msg;
-    addMessagesAction([message])
+    const { message, timetoken } = msg;
+    const timestamp = new Date(parseInt(timetoken, 10) / 10000);
+    addMessagesAction([{ ...message, timestamp }])
   }, [addMessagesAction]);
 
   const handleFetchedMessages = useCallback((status, response) => {
     if (status.statusCode === 200 && response.channels[habitatId]) {
       const messages = response.channels[habitatId];
-      const messagesList = messages.map(({ message}) => message);
+      const messagesList = messages.map(({ message, timetoken }) => {
+        const timestamp = new Date(parseInt(timetoken, 10) / 10000);
+        return { ...message, timestamp };
+      });
+
       addMessagesAction(messagesList)
     }
   }, [habitatId, addMessagesAction]);
@@ -55,7 +60,7 @@ const Chat = ({
 
       pubnub.fetchMessages({
         channels: [habitatId],
-        count: 10,
+        count: 50,
       }, handleFetchedMessages);
 
       setIsConnectedToPubnub(true);

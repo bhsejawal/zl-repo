@@ -14,6 +14,11 @@
   min-height: max-content;
 }
 
+.headerWrapper {
+  display: flex;
+  align-items: center;
+}
+
 .userName {
   font-size: 14px;
   font-weight: 600;
@@ -22,4 +27,11 @@
 .message {
   font-size: 13px;
   word-break: break-word;
+}
+
+.messageTime {
+  font-size: 10px;
+  line-height: 16px;
+  color: white;
+  margin-left: 4px;
 }
