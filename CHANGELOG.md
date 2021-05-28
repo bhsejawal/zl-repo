@@ -2,6 +2,12 @@
 This file keeps track of all relevant change for every release.
 
 ## [Unreleased]
+
+## [5.3.0] - 2021-05-27
+### Changed
+- Improved chat experience, with message limiting, and timestamps on messages
+- Included ga-react to send hits directly to GA instead of proxying it through Segments
+
 ## [5.2.0] - 2021-05-21
 ### Added
 - Mail links on landing footer
@@ -20,7 +26,7 @@ This file keeps track of all relevant change for every release.
 - Family members age layout
 - Increase padding to right of map on map page
 - Onboarding video container click will not close modal
-- Copy changes for login page 
+- Copy changes for login page
 - Landing page logo is moved to the left
 - Schedule rule updates after server refactor
 - Habitats list is updated without refresh
@@ -49,7 +55,7 @@ This file keeps track of all relevant change for every release.
 - Custom service worker registration
 - Loading wheel when moving camera is based off of voting time
 - Add text length validation to the Admin tables
-- Adding twitch endpoint 
+- Adding twitch endpoint
 - Adding segment id to terms and privacy pages
 - Robots file
 - Privacy and terms pages
@@ -63,7 +69,7 @@ This file keeps track of all relevant change for every release.
 
 ### Changed
 - Force websocket transport protocol
-- Increase species max to 32 
+- Increase species max to 32
 - Search and minor refactoring for header and map page
 - Using origin instead of assets distribution
 - Update partner logo
@@ -93,7 +99,7 @@ This file keeps track of all relevant change for every release.
 - Host UI buttons color & alignment are off
 - Habitat search
 - Removing highlight color on android devices
-- Large image issue on account page on safari 
+- Large image issue on account page on safari
 - Text alignment on the favorite page
 - Permissions for hosts and partners
 - Image upload bug fixes, and overlay improvement
