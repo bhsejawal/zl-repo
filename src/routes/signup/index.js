@@ -18,6 +18,7 @@ import SocialLoginBar from 'Components/SocialLoginBar';
 import logo from 'Components/ZoolifeLogo/zoolife.svg';
 import { PrimaryButton } from 'Components/Buttons';
 import { openTermsModal } from 'Components/TermsAndConditions/actions';
+import { logPageViewGA } from 'Shared/ga';
 
 import { setUserData } from '../../redux/actions';
 import {
@@ -96,6 +97,7 @@ const Signup = ({ setUserDataAction, openTermsModalAction }) => {
         setServerError();
         setUserDataAction(user);
         logPageView('/signed-up');
+        logPageViewGA('/signed-up');
         if (origin === 'phone') {
           route('/mobile', true);
         } else {
