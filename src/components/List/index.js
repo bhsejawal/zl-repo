@@ -17,7 +17,7 @@ import style from './style.scss';
 const STRETCH = 'stretch';
 const SCROLL = 'scroll';
 
-const List = forwardRef(({ children }, ref) => {
+const List = forwardRef(({ children, className }, ref) => {
   const itemsRef = useRef();
   const [layout, setLayout] = useState();
   const [scrolledToLeft, setScrolledToLeft] = useState(true);
@@ -93,7 +93,7 @@ const List = forwardRef(({ children }, ref) => {
   }, [resizeObserver, layout]);
 
   return (
-    <div className={style.wrapper}>
+    <div className={classnames(style.wrapper, className)}>
       {layout === 'scroll' && (
         <div className={style.arrowWrapper}>
           <FontAwesomeIcon

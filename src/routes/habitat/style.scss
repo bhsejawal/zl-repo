@@ -1,4 +1,12 @@
+@import "../../style/media-query.scss";
+
 @import "./variables";
+
+.page {
+  height: calc(100vh - var(--headerHeight));
+  display: flex;
+  flex-direction: column;
+}
 
 .topSection {
   display: flex;
@@ -11,4 +19,13 @@
 
 .bottomSection {
   padding: 0 $ypadding;
+}
+
+@media screen and (max-width: #{$tablet-portrait-width}) {
+
+  .middleSection,
+  .bottomSection {
+    padding-left: $ypadding / 2;
+    padding-right: $ypadding / 2;
+  }
 }

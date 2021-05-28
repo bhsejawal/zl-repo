@@ -52,9 +52,10 @@ const ConservationCard = ({
   text,
   btnLabel,
   btnLink,
+  className,
 }) => (
   <Grommet theme={grommetTheme}>
-    <CardWrapper tag={tag} padding="25px 0px">
+    <CardWrapper className={className} tag={tag} padding="25px 0px">
       <Box align="center" justify="center" fill>
         <img className={style.img} src={consevationImages[status]} alt="" />
 

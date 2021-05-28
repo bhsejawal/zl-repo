@@ -12,7 +12,7 @@ import {
 } from 'date-fns';
 import useFetch from 'use-http';
 
-import Loader from 'Components/async/Loader';
+import Loader from 'Components/Loader';
 
 import { buildURL } from 'Shared/fetch';
 import { connect } from 'react-redux';

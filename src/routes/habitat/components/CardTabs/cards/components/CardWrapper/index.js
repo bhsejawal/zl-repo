@@ -1,5 +1,6 @@
 import { h } from 'preact';
 import { useMemo } from 'preact/hooks';
+import classnames from 'classnames';
 
 import {
   QUICK_LOOK,
@@ -21,6 +22,7 @@ const CardWrapper = ({
   children,
   hideTag, // Tags corresponds to specific colors, some cards don't have tags
   padding,
+  className,
 }) => {
   const color = useMemo(() => {
     switch (tag) {
@@ -105,7 +107,7 @@ const CardWrapper = ({
 
   return (
     <div
-      className={style.card}
+      className={classnames(style.card, className)}
       style={{ backgroundColor: color, padding: padding ?? (noPadding && '0') }}
       data-tag={tag}
     >

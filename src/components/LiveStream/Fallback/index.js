@@ -9,7 +9,7 @@ import {
   Avatar,
 } from 'grommet';
 
-import Loader from 'Components/async/Loader';
+import Loader from 'Components/Loader';
 import { openContactUsModal } from 'Components/modals/ContactUs/actions'
 
 import background from './videoBackground.png';
@@ -74,15 +74,15 @@ const Fallback = ({
     )}
     {type === 'offline' && (
       <>
-        <Avatar src={profileImage} size="xlarge" />
-        <Heading level="3" color="white" margin={{ top: 'large' }}>
+        <Avatar src={profileImage} size="xlarge" margin={{ top: 'small' }} />
+        <Heading level="3" color="white" margin="medium">
           Looks like the animals are busy.
         </Heading>
         <Text color="white" size="xlarge">
           Check the schedule for when they&apos;ll be back
         </Text>
 
-        <Text color="white" margin={{ top: 'large' }} size="large">
+        <Text color="white" className={style.learnText} size="large">
           Learn more about their world below.
         </Text>
       </>

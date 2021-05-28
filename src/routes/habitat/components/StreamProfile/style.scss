@@ -1,8 +1,16 @@
+@import "../../../../style/media-query.scss";
+
 .profile {
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 150px;
+  flex-wrap: wrap;
+
+  @media screen and (max-width: #{$phone-landscape-width}) {
+    flex-direction: column;
+    height: auto;
+    align-items: flex-start;
+  }
 }
 
 .error {

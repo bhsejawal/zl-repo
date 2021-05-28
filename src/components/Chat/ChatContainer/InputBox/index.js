@@ -1,4 +1,5 @@
 import { useState, useContext, useCallback } from 'preact/hooks'
+import { ResponsiveContext } from 'grommet';
 
 import { connect } from 'react-redux';
 
@@ -15,6 +16,8 @@ const InputBox = ({
   color,
 }) => {
   const { pubnub } = useContext(ChatContext);
+  const size = useContext(ResponsiveContext);
+  const isSmallScreen = ['small', 'xsmall'].includes(size);
 
   const [input, setInput] = useState('');
 
@@ -51,7 +54,7 @@ const InputBox = ({
           onKeyDown={onKeyDownHandler}
 
         />
-        <EmoteInput value={input} onSelection={setInput} />
+        {!isSmallScreen && <EmoteInput value={input} onSelection={setInput} />}
       </div>
       <button type="button" onClick={() => sendMessage(input)} className={style.SendButton}>
         Send

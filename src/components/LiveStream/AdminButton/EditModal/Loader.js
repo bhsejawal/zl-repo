@@ -1,7 +1,7 @@
 import { h } from 'preact';
 import { Suspense, lazy } from 'preact/compat';
 
-import LoaderModal from 'Components/async/LoaderModal';
+import LoaderModal from 'Components/LoaderModal';
 
 const EditModal = lazy(() => import('.'));
 

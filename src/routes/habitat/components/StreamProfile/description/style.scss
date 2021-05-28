@@ -1,10 +1,27 @@
+@import "../../../../../style/media-query.scss";
+
 .desc {
   flex: 1;
   min-width: 120px;
+
+  @media screen and (min-width: #{$tablet-portrait-width}) and (max-width: #{$tablet-landscape-width}) {
+    flex-basis: 100%;
+  }
+
+  @media screen and (max-width: #{$tablet-landscape-width}) {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 30px;
+  }
 }
 
 .text {
   font-size: 13px;
   line-height: 18px;
   color: var(--charcoalLight);
+
+  @media screen and (max-width: #{$tablet-landscape-width}) {
+    margin-left: 10px;
+  }
 }

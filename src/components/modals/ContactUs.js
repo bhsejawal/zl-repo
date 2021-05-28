@@ -13,7 +13,7 @@ import { faTimes } from '@fortawesome/pro-solid-svg-icons';
 import useFetch from 'use-http';
 import { connect } from 'react-redux';
 
-import Loader from 'Components/async/Loader';
+import Loader from 'Components/Loader';
 import { PrimaryButton } from 'Components/Buttons';
 import { buildURL } from 'Shared/fetch';
 

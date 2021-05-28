@@ -7,6 +7,7 @@ import {
   useState,
 } from 'preact/hooks';
 import { connect } from 'react-redux';
+import { ResponsiveContext } from 'grommet';
 
 import { GlobalsContext } from 'Shared/context';
 import { hasPermission } from 'Components/Authorize';
@@ -42,7 +43,9 @@ const Stream = ({
   const videoRef = useRef();
   const containerRef = useRef(null);
   const { socket } = useContext(GlobalsContext);
+  const size = useContext(ResponsiveContext);
   const [isInitialized, setIsInitialized] = useState(false);
+  const leftControlsHidden = ['small', 'xsmall'].includes(size);
 
   const logStreamStatus = useCallback((data) => {
     if (data?.startTime && data?.streamId) {
@@ -127,7 +130,7 @@ const Stream = ({
           style={{ width, height }}
         />
 
-        {streamStatus === PLAY_STARTED && interactive && (
+        {streamStatus === PLAY_STARTED && interactive && !leftControlsHidden && (
           <StreamInteractiveArea
             width={width}
             height={height}

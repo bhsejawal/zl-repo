@@ -1,8 +1,19 @@
+@import "../../../../../style/media-query.scss";
+
 .info {
   display: flex;
   min-width: 280px;
   max-width: 600px;
   align-items: center;
+
+  @media screen and (max-width: #{$phone-landscape-width}) {
+    justify-content: center;
+    width: 100%;
+  }
+
+  @media screen and (min-width: #{$tablet-portrait-width}) {
+    max-width: 330px;
+  }
 }
 
 .profileImgWrapper {

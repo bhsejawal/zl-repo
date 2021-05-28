@@ -1,6 +1,11 @@
 import { h } from 'preact';
-import { useCallback, useState } from 'preact/hooks';
-import { Menu } from 'grommet';
+import {
+  useCallback,
+  useContext,
+  useMemo,
+  useState,
+} from 'preact/hooks';
+import { Menu, ResponsiveContext } from 'grommet';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faCamera,
@@ -16,10 +21,54 @@ import { EMOJI_SECTION, OVERLAY_SECTION, POWER_SECTION } from './constants';
 
 const AdminButton = () => {
   const [openSection, setOpenSection] = useState();
+  const size = useContext(ResponsiveContext);
 
   const onClose = useCallback(() => {
     setOpenSection(undefined);
   }, []);
+
+  const items = useMemo(() => {
+    const itemsArr = [{
+      className: style.item,
+      label: 'Power',
+      icon: (
+        <FontAwesomeIcon
+          className={style.icon}
+          icon={faPowerOff}
+          size="lg"
+        />
+      ),
+      onClick: () => setOpenSection(POWER_SECTION),
+    }];
+
+    if (size === 'large') {
+      itemsArr.push({
+        className: style.item,
+        label: 'Emoji Drop',
+        icon: (
+          <FontAwesomeIcon
+            className={style.icon}
+            icon={faLaughWink}
+            size="lg"
+          />
+        ),
+        onClick: () => setOpenSection(EMOJI_SECTION),
+      }, {
+        className: style.item,
+        label: 'Photo Overlay',
+        icon: (
+          <FontAwesomeIcon
+            className={style.icon}
+            icon={faCamera}
+            size="lg"
+          />
+        ),
+        onClick: () => setOpenSection(OVERLAY_SECTION),
+      });
+    }
+
+    return itemsArr;
+  }, [size]);
 
   return (
     <>
@@ -29,40 +78,7 @@ const AdminButton = () => {
         dropAlign={{ right: 'left' }}
         dropProps={{ margin: '0 0 0 -10px' }}
         icon={<FontAwesomeIcon icon={faCog} size="lg" color="white" />}
-        items={[{
-          className: style.item,
-          label: 'Power',
-          icon: (
-            <FontAwesomeIcon
-              className={style.icon}
-              icon={faPowerOff}
-              size="lg"
-            />
-          ),
-          onClick: () => setOpenSection(POWER_SECTION),
-        }, {
-          className: style.item,
-          label: 'Emoji Drop',
-          icon: (
-            <FontAwesomeIcon
-              className={style.icon}
-              icon={faLaughWink}
-              size="lg"
-            />
-          ),
-          onClick: () => setOpenSection(EMOJI_SECTION),
-        }, {
-          className: style.item,
-          label: 'Photo Overlay',
-          icon: (
-            <FontAwesomeIcon
-              className={style.icon}
-              icon={faCamera}
-              size="lg"
-            />
-          ),
-          onClick: () => setOpenSection(OVERLAY_SECTION),
-        }]}
+        items={items}
       />
 
       <StreamEditModalLoader openSection={openSection} onClose={onClose} />

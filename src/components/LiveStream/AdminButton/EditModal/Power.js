@@ -9,7 +9,7 @@ import {
 import useFetch from 'use-http';
 import { buildURL } from 'Shared/fetch';
 import { connect } from 'react-redux';
-import Loader from 'Components/async/Loader';
+import Loader from 'Components/Loader';
 
 const vivConfigKey = 'ffmpeg.video.videoInVideo.mode';
 const camFieldsParams = new URLSearchParams();

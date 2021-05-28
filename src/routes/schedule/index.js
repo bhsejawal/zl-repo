@@ -7,7 +7,7 @@ import {
 } from 'grommet';
 import { connect } from 'react-redux';
 
-import Loader from 'Components/async/Loader';
+import Loader from 'Components/Loader';
 import { API_BASE_URL } from 'Shared/fetch';
 
 import AnimalFilter from './Filters/AnimalFilter';

@@ -11,7 +11,7 @@ import { connect } from 'react-redux';
 
 import { buildURL } from 'Shared/fetch';
 import HabitatCard from 'Components/HabitatCard';
-import Loader from 'Components/async/Loader';
+import Loader from 'Components/Loader';
 import NoContentFallback from 'Components/NoContentFallback';
 
 import { useIsInitiallyLoaded, useWindowResize } from '../../hooks';
