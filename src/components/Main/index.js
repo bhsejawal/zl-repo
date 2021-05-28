@@ -8,6 +8,7 @@ import AuthGuard from 'Components/Authorize/AuthGuard';
 import Redirect from 'Components/Redirect';
 import TermsAndConditions, { PRIVACY_PDF_URL, TERMS_PDF_URL } from 'Components/TermsAndConditions';
 import ContactUsModalLoader from 'Components/async/ContactUsModalLoader';
+import { logPageViewGA } from 'Shared/ga';
 
 import oranaZooLogo from './partners/orana-zoo.png';
 import torontoZooLogo from './partners/toronto-zoo.png';
@@ -44,21 +45,41 @@ const Main = ({
   useEffect(() => {
     const campaignData = logAndGetCampaignData();
     updateReferralDataAction(campaignData);
-  }, [updateReferralDataAction])
+  }, [updateReferralDataAction]);
 
   const routerChangeHandler = (props) => {
-    const { url, previous, current: { props: { matches } } } = props;
+    console.error(props)
+    const {
+      url,
+      previous,
+      current: { props: { matches } },
+    } = props;
 
-    if (url.startsWith('/socialLogin') && matches?.newUser === "true") {
-      logPageView('/signed-up')
+    if (url.startsWith('/socialLogin')) {
+      logPageViewGA('/socialLogin', true);
+
+      if (matches?.newUser === "true") {
+        logPageViewGA('/signed-up');
+        logPageView('/signed-up', true);
+      }
+      onRouteChange(props);
+      setPath(url);
+      return;
     }
 
     if (url.startsWith('/checkout-completed')) {
+      logPageViewGA('/checkout-completed', true);
       const { passType } = matches;
       if (passType) {
-        logPageView(`/purchased-${passType}`)
+        logPageViewGA(`/purchased-${passType}`);
+        logPageView(`/purchased-${passType}`, true);
       }
+      onRouteChange(props);
+      setPath(url);
+      return
     }
+    setPath(url);
+    logPageViewGA(url);
 
     // Segments sends a beacon when plugin is loaded, hence, we should ignore if previous is empty
     // Its possible to see some duplicated entries on dev due to hot reload
@@ -67,7 +88,6 @@ const Main = ({
     }
 
     onRouteChange(props);
-    setPath(url);
   }
 
   return (

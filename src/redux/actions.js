@@ -1,5 +1,6 @@
 import { get } from 'lodash-es';
 import { getConfig } from '../helpers';
+import { setGAUserId } from '../shared/ga';
 
 import {
   SET_USER_DATA,
@@ -25,13 +26,12 @@ import {
 
 export const setSubscriptionData = (payload) => ({ type: SET_SUBSCRIPTION_DATA, payload });
 
-export const setUserData = ({ _id: userId, ...rest}) => ({
-  type: SET_USER_DATA,
-  payload: {
-    userId,
-    ...rest,
-  },
-});
+export const setUserDataAction = (payload) => ({ type: SET_USER_DATA, payload });
+
+export const setUserData = ({ _id: userId, ...rest }) => (dispatch) => {
+  setGAUserId(userId);
+  dispatch(setUserDataAction({ userId, ...rest }));
+}
 
 export const updateFavoriteHabitat = (habitatId) => ({
   type: UPDATE_FAVORITE_HABITATS,

@@ -41,6 +41,7 @@ const ChatContainer = ({ messages, username }) => {
           color,
           text,
           messageId,
+          timestamp,
         }) => (
           <ChatMessage
             username={username}
@@ -48,6 +49,7 @@ const ChatContainer = ({ messages, username }) => {
             color={color}
             text={text}
             key={messageId}
+            timestamp={timestamp}
           />
         ))}
       </div>

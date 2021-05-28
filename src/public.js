@@ -18,8 +18,9 @@ import pmmcLogo from './components/Main/partners/pmmc.png';
 import sanAntonioLogo from './components/Main/partners/san-antonio-zoo.png';
 import zoolifeTheme from './grommetTheme';
 import store from "./redux/store";
+import { initializeGA, logPageViewGA } from './shared/ga';
 
-import { logPageView, logAndGetCampaignData } from './helpers';
+import { logAndGetCampaignData, logPageView } from './helpers';
 import { updateReferralData } from "./redux/actions";
 
 import '@fortawesome/fontawesome-svg-core/styles.css';
@@ -38,6 +39,7 @@ const Content = ({ showContactUs, updateReferralDataAction }) => {
 
   const routerChangeHandler = (props) => {
     const { url, previous } = props;
+    logPageViewGA(url)
 
     // Segments sends a beacon when plugin is loaded, hence, we should ignore if previous is empty
     // Its possible to see some duplicated entries on dev due to hot reload
@@ -45,6 +47,13 @@ const Content = ({ showContactUs, updateReferralDataAction }) => {
       logPageView();
     }
   }
+
+  useEffect(() => {
+    initializeGA();
+    if (typeof window !== 'undefined') {
+      logPageViewGA(window.location.pathname);
+    }
+  }, []);
 
   return (
     <Grommet full theme={customBreakpoints}>

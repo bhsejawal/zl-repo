@@ -30,7 +30,7 @@ import useFetch from 'use-http';
 import { openTermsModal } from 'Components/TermsAndConditions/actions';
 import { getIconKeys, getIconUrl } from 'Shared/profileIcons';
 import { buildURL } from 'Shared/fetch';
-
+import { logPageViewGA } from 'Shared/ga';
 import backgroundImg from './profileBackground.png';
 
 import { useIsInitiallyLoaded, useOnClickOutside } from '../../hooks';
@@ -190,6 +190,7 @@ const Profile = ({
           if (response.ok) {
             setSubscriptionDataAction(subscriptionData);
             logPageView('/trialStarted');
+            logPageViewGA('/trialStarted');
             route('/map');
           }
 
