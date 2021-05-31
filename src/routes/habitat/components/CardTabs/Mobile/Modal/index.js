@@ -72,6 +72,7 @@ const MobileCardsModal = ({
   resetCardIndAction,
 }) => {
   const cardWrapperRef = useRef();
+  const timeoutRef = useRef();
   const card = cards?.[activeCardIndex];
   const cardsLen = cards?.length;
   const [progress, setProgress] = useState(0);
@@ -85,26 +86,22 @@ const MobileCardsModal = ({
     setProgress(0);
   }, [activeCardIndex]);
 
+  // eslint-disable-next-line consistent-return
   useEffect(() => {
-    // TODO: this is not working perfectly.
-    // pause value change, as well as activeCardIndex change
-    // should restart the timeout
-    const timeout = setTimeout(() => {
-      if (paused) {
-        return;
-      }
+    if (!paused) {
+      timeoutRef.current = setTimeout(() => {
+        if (progress >= 100) {
+          setProgress(0);
+          nextCardAction(cardsLen);
+        } else {
+          setProgress(progress + 10);
+        }
+      }, 300);
 
-      if (progress >= 100) {
-        setProgress(0);
-        nextCardAction(cardsLen);
-      } else {
-        setProgress(progress + 10);
-      }
-    }, 300);
-
-    return () => clearInterval(timeout);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [progress, paused]);
+      const timeout = timeoutRef.current;
+      return () => clearInterval(timeout);
+    }
+  }, [progress, paused, nextCardAction, cardsLen, cards, activeCardIndex]);
 
   // eslint-disable-next-line consistent-return
   const onClick = useCallback((evt) => {
@@ -116,24 +113,23 @@ const MobileCardsModal = ({
     }
 
     if (clientX < 60) {
+      clearTimeout(timeoutRef.current)
       return prevCardAction();
     }
 
     if (view.innerWidth - clientX < 60) {
+      clearTimeout(timeoutRef.current)
       return nextCardAction(cardsLen);
     }
 
     if (cardWrapperRef.current?.firstChild === evt.target) {
+      clearTimeout(timeoutRef.current)
       setPaused(!paused);
     }
   }, [cardsLen, nextCardAction, paused, prevCardAction]);
 
   const onVideoPlayStarted = useCallback(() => {
     setPaused(true);
-  }, []);
-
-  const onVideoPlayStopped = useCallback(() => {
-    setPaused(false)
   }, []);
 
   useEffect(() => {
@@ -306,7 +302,6 @@ const MobileCardsModal = ({
             text1={card.data.text1}
             text2={card.data.text2}
             onPlay={onVideoPlayStarted}
-            onStop={onVideoPlayStopped}
           />
         )}
 
@@ -318,7 +313,6 @@ const MobileCardsModal = ({
             title={card.data.title}
             text={card.data.text}
             onPlay={onVideoPlayStarted}
-            onStop={onVideoPlayStopped}
           />
         )}
 
