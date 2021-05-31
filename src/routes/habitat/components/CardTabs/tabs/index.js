@@ -9,6 +9,7 @@ import {
   faPuzzlePiece,
   faUsers,
 } from '@fortawesome/pro-regular-svg-icons';
+import { faPhotoVideo } from '@fortawesome/pro-solid-svg-icons';
 
 import { setActiveTab } from '../actions';
 import {
@@ -17,6 +18,7 @@ import {
   BODY,
   QUIZ,
   CALENDAR,
+  ALBUM,
 } from '../constants';
 
 import ToggleButton from '../toggleButton';
@@ -82,6 +84,16 @@ const Tabs = ({ active, setActiveTabAction }) => {
       >
         <FontAwesomeIcon className={style.icon} icon={faCalendarStar} />
         Calendar
+      </ToggleButton>
+
+      <ToggleButton
+        className={style.tabBtn}
+        active={active === ALBUM}
+        value={ALBUM}
+        onClick={onClick}
+      >
+        <FontAwesomeIcon className={style.icon} icon={faPhotoVideo} />
+        Album
       </ToggleButton>
     </div>
   );

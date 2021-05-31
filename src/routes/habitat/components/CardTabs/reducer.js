@@ -1,5 +1,5 @@
 import { pick } from 'lodash-es';
-import { MEET, QUIZ_CARD_TYPE} from './constants';
+import { MEET, QUIZ_CARD_TYPE } from './constants';
 import {
   ADD_HABITAT_CARD,
   UPDATE_HABITAT_CARD,

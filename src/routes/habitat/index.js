@@ -28,6 +28,7 @@ import CardTabs from './components/CardTabs';
 import StreamProfile from './components/StreamProfile';
 import OnboardingModal from './OnboardingModal';
 import SmallScreenCardTabs from './components/CardTabs/Mobile';
+import ShareModal from './components/ShareModal';
 
 import { useWindowResize } from '../../hooks';
 import { setHabitat, unsetHabitat, setHabitatProps } from './actions';
@@ -189,6 +190,7 @@ const Habitat = ({
       </div>
 
       <OnboardingModal />
+      <ShareModal />
     </div>
   );
 }
