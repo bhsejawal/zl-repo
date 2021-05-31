@@ -1,5 +1,6 @@
-import { useEffect, useState } from 'preact/hooks';
+import { useContext, useEffect, useState } from 'preact/hooks';
 import { throttle } from 'lodash-es';
+import { ResponsiveContext } from 'grommet';
 
 const getSize = () => ({
   width: window.innerWidth,
@@ -58,4 +59,9 @@ export const useIsInitiallyLoaded = (isFetching) => {
   }, [isFetching]);
 
   return !isFetching && loaded;
+};
+
+export const useIsMobileSize = () => {
+  const size = useContext(ResponsiveContext);
+  return ['small', 'xsmall'].includes(size);
 };

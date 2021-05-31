@@ -7,7 +7,6 @@ import {
   useState,
 } from 'preact/hooks';
 import { connect } from 'react-redux';
-import { ResponsiveContext } from 'grommet';
 
 import { GlobalsContext } from 'Shared/context';
 import { hasPermission } from 'Components/Authorize';
@@ -20,6 +19,7 @@ import LiveStreamContext from './LiveStreamContext';
 
 import { useWebRTCStream } from './hooks/useWebRTCStream';
 import { wsMessages } from './helpers/constants';
+import { useIsMobileSize } from '../../hooks';
 
 import style from './style.scss';
 
@@ -43,9 +43,8 @@ const Stream = ({
   const videoRef = useRef();
   const containerRef = useRef(null);
   const { socket } = useContext(GlobalsContext);
-  const size = useContext(ResponsiveContext);
   const [isInitialized, setIsInitialized] = useState(false);
-  const leftControlsHidden = ['small', 'xsmall'].includes(size);
+  const isMobileSize = useIsMobileSize();
 
   const logStreamStatus = useCallback((data) => {
     if (data?.startTime && data?.streamId) {
@@ -130,7 +129,7 @@ const Stream = ({
           style={{ width, height }}
         />
 
-        {streamStatus === PLAY_STARTED && interactive && !leftControlsHidden && (
+        {streamStatus === PLAY_STARTED && interactive && !isMobileSize && (
           <StreamInteractiveArea
             width={width}
             height={height}

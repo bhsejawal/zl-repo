@@ -14,6 +14,7 @@ import HabitatMap from './HabitatMap'
 import HabitatModal from './HabitatModal';
 
 import { toggleMapModal, setEditHabitat } from './actions';
+import { useIsMobileSize } from '../../hooks';
 
 import style from './style.scss';
 
@@ -24,6 +25,8 @@ const Map = ({
   toggleMapModalAction,
   setEditHabitatAction,
 }) => {
+  const isMobileSize = useIsMobileSize();
+
   const activeHabitat = useMemo(
     () => allHabitats.find(({ _id }) => _id === activeHabitatId),
     [allHabitats, activeHabitatId],
@@ -54,7 +57,7 @@ const Map = ({
               <>
                 <Can
                   perform="maps:edit"
-                  yes={() => <EditButton onClick={handleEditButton} />}
+                  yes={() => !isMobileSize && <EditButton onClick={handleEditButton} />}
                 />
                 <HabitatCard
                   className={style.card}
