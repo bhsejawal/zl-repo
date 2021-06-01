@@ -16,7 +16,7 @@ import style from './style.scss';
 const imageConstraints = {
   width: 1920,
   height: 1080,
-  maxFileSize: 60_000,
+  maxFileSize: 300_000,
   aspectRatio: '16:9',
   acceptedFormats: ['png'],
 };
