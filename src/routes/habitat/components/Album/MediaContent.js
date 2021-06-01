@@ -1,6 +1,8 @@
 import { h } from 'preact';
 import { connect } from 'react-redux';
 import { formatDistanceToNow } from 'date-fns';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPlay } from '@fortawesome/pro-solid-svg-icons';
 import { setShareModalMediaId } from '../ShareModal/actions';
 import style from './style.scss';
 
@@ -24,9 +26,7 @@ const MediaContent = ({
     <div className={style.mediaContainer}>
       <button type="button" className={style.button} onClick={onclickHandler}>
         {image && <img src={image} alt="" loading="lazy" />}
-        {/* TODO disable preload and use poster once we have a thumbnail */}
-        {/* eslint-disable-next-line jsx-a11y/media-has-caption */}
-        {video && <video src={video} />}
+        {video && <FontAwesomeIcon icon={faPlay} className={style.playIcon} />}
         <span>{time}</span>
       </button>
       <p>{title}</p>

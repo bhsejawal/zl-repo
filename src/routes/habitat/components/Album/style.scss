@@ -73,15 +73,22 @@
     display: flex;
     min-height: 124px;
     border: 0;
-    padding: 0;
+    padding: 56.25% 0 0 0; // image ratio is 720/1280
     border-radius: 5px;
     cursor: pointer;
+    overflow: hidden;
+    margin-bottom: auto;
 
-    img,
-    video {
+    img {
       border-radius: inherit;
       width: 100%;
       height: auto;
+      position: absolute;
+      top: 50%;
+      right: 0;
+      left: 0;
+      bottom: 0;
+      transform: translateY(-50%);
     }
 
     span {
@@ -95,6 +102,14 @@
       color: white;
       border-radius: 5px;
       padding: 2px 8px;
+    }
+
+    .playIcon {
+      position: absolute;
+      bottom: 12px;
+      left: 12px;
+      color: white;
+      font-size: 15px;
     }
   }
 

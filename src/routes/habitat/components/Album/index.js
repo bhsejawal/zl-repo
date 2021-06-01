@@ -122,14 +122,15 @@ const Album = ({
             {
               album.pastTalks.list.map(({
                 _id,
-                videoURL,
+                previewURL,
                 title,
                 creationDate,
               }) => (
                 <MediaContent
                   key={_id}
                   id={_id}
-                  video={videoURL}
+                  video
+                  image={previewURL}
                   title={title}
                   timestamp={new Date(creationDate)}
                 />
