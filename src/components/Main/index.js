@@ -48,7 +48,6 @@ const Main = ({
   }, [updateReferralDataAction]);
 
   const routerChangeHandler = (props) => {
-    console.error(props)
     const {
       url,
       previous,
