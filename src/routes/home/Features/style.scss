@@ -39,6 +39,23 @@
       line-height: 30px;
       margin: 30px 0 50px 0;
     }
+
+    .newAnimals {
+      background: #F8FEA4;
+      border-radius: 7px;
+      width: fit-content;
+      padding: 10px 18px;
+      font-size: 18px;
+      line-height: 30px;
+      margin-bottom: 35px;
+      white-space: nowrap;
+
+      svg {
+        margin-right: 16px;
+        width: 16px;
+        height: 16px;
+      }
+    }
   }
 }
 

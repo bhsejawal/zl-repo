@@ -145,7 +145,7 @@ const HabitatModal = ({
                           },
                         ]}
                         placeholder="0"
-                        value={editHabitat.mapPosition.left}
+                        value={editHabitat?.mapPosition?.left}
                         size="large"
                         onChange={(evt) => handleInputChange('mapPosition.left', evt.target.value)}
                       />
@@ -164,7 +164,7 @@ const HabitatModal = ({
                         ]}
                         placeholder="0"
                         size="large"
-                        value={editHabitat.mapPosition.top}
+                        value={editHabitat?.mapPosition?.top}
                         onChange={(evt) => handleInputChange('mapPosition.top', evt.target.value)}
                       />
                     </Box>
@@ -212,7 +212,7 @@ const HabitatModal = ({
                         </Text>
                       )}
                     </Box>
-                    <Box flex={{ grow: '1' }}>
+                    <Box flex="grow">
                       <Text textAlign="end">
                         {editHabitat.description?.length ?? 0}
                         /145
