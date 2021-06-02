@@ -21,6 +21,12 @@ const { timeZone } = Intl.DateTimeFormat().resolvedOptions();
 
 const Calendar = lazy(() => import('.'));
 
+const CenteredLoader = () => (
+  <Box fill justify="center">
+    <Loader height="485px" />
+  </Box>
+);
+
 const CalendarLoader = ({ habitatId }) => {
   const url = useMemo(() => {
     const weekStart = startOfWeek(new Date());
@@ -76,7 +82,7 @@ const CalendarLoader = ({ habitatId }) => {
   }, [events]);
 
   if (loading) {
-    return <Loader height="485px" />
+    return <CenteredLoader />
   }
 
   if (error) {
@@ -88,7 +94,7 @@ const CalendarLoader = ({ habitatId }) => {
   }
 
   return (
-    <Suspense fallback={<Loader height="485px" />}>
+    <Suspense fallback={<CenteredLoader />}>
       <Calendar schedules={schedules} />
     </Suspense>
   )

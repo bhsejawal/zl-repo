@@ -1,5 +1,6 @@
 import { h } from 'preact';
 import { connect } from 'react-redux';
+import { Box } from 'grommet';
 
 import { CALENDAR, ALBUM } from './constants';
 
@@ -11,7 +12,11 @@ import Album from '../Album';
 const renderActive = (activeTab) => {
   switch (activeTab) {
     case CALENDAR: {
-      return <CalendarLoader />;
+      return (
+        <Box pad={{ vertical: '35px' }}>
+          <CalendarLoader />
+        </Box>
+      );
     }
 
     case ALBUM: {

@@ -9,16 +9,18 @@ import {
   faPaw,
   faPuzzlePiece,
   faUser,
+  faCalendarStar,
 } from '@fortawesome/pro-light-svg-icons';
 import useFetch from 'use-http';
 
 import { API_BASE_URL } from 'Shared/fetch';
 import LoaderModal from 'Components/LoaderModal';
 import CardButton from './CardButton';
+import CalendarModal from './CalendarModal';
 
 import { fetchCards } from '../api';
 import { setCards, setLoading } from '../actions';
-import { openModalCards } from './actions';
+import { openModalCalendar, openModalCards } from './actions';
 import {
   BODY,
   INFO,
@@ -27,14 +29,16 @@ import {
   QUIZ_CARD_TYPE,
 } from '../constants';
 
-const MobileCardsModal = lazy(() => import('./Modal'));
+const MobileCardsModal = lazy(() => import('./CardsModal'));
 
 const SmallScreenCardTabs = ({
   habitatId,
   activeMobileCardsTab,
+  calendarCardOpen,
   setLoadingAction,
   setCardsAction,
   openModalCardsAction,
+  openModalCalendarAction,
 }) => {
   const { get } = useFetch(API_BASE_URL, {
     credentials: 'include',
@@ -125,19 +129,22 @@ const SmallScreenCardTabs = ({
           color="var(--lavenderLight)"
         />
 
-        {/* <CardButton
-          onClick={() => onCardBtnClick(CALENDAR)}
-          icon={<FontAwesomeIcon size="3x" icon={faCalendarStar} />}
+        <CardButton
+          onClick={openModalCalendarAction}
+          icon={<FontAwesomeIcon size="3x" color="var(--hunterGreen)" icon={faCalendarStar} />}
           label="Calendar"
-          // TODO: update color
-          color=""
-        /> */}
+          color="var(--hunterGreenLight)"
+        />
       </Box>
 
       {activeMobileCardsTab && (
         <Suspense fallback={<LoaderModal />}>
           <MobileCardsModal />
         </Suspense>
+      )}
+
+      {calendarCardOpen && (
+        <CalendarModal />
       )}
     </>
   );
@@ -152,16 +159,19 @@ export default connect(
       cards: {
         mobile: {
           activeMobileCardsTab,
+          calendarCardOpen,
         },
       },
     },
   }) => ({
     habitatId,
     activeMobileCardsTab,
+    calendarCardOpen,
   }),
   {
     setCardsAction: setCards,
     setLoadingAction: setLoading,
     openModalCardsAction: openModalCards,
+    openModalCalendarAction: openModalCalendar,
   },
 )(SmallScreenCardTabs);

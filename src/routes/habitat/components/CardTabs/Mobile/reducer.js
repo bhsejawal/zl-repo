@@ -4,6 +4,8 @@ import {
   MOBILE_CARD_INDEX_NEXT,
   MOBILE_CARD_INDEX_PREV,
   MOBILE_CARD_INDEX_RESET,
+  OPEN_MODAL_CALENDAR,
+  CLOSE_MODAL_CALENDAR,
 } from './types';
 
 const initialState = {
@@ -11,6 +13,7 @@ const initialState = {
   // when this value is -1 or habitat.cards.length
   // modal effect will load previous or next card bucket
   activeCardIndex: 0,
+  calendarCardOpen: false,
 };
 
 export default (state = initialState, { type, payload = {} } = {}) => {
@@ -41,6 +44,14 @@ export default (state = initialState, { type, payload = {} } = {}) => {
 
     case MOBILE_CARD_INDEX_RESET: {
       return { ...state, activeCardIndex: 0 };
+    }
+
+    case OPEN_MODAL_CALENDAR: {
+      return { ...state, calendarCardOpen: true };
+    }
+
+    case CLOSE_MODAL_CALENDAR: {
+      return { ...state, calendarCardOpen: false };
     }
 
     default: {
