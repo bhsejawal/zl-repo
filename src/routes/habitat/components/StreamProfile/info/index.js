@@ -106,7 +106,7 @@ const Info = ({
           postToUrl={`/admin/habitats/${habitatId}/prop`}
           textProp="title"
           minLen={3}
-          maxLen={80}
+          maxLen={20}
           initialText={title}
         >
           {(text) => <h4 className={style.name}>{text}</h4>}
