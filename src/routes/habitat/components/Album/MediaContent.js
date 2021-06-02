@@ -31,7 +31,7 @@ const MediaContent = ({
       </button>
       <p>{title}</p>
       <p>{zoo}</p>
-      {username && <p>{`By: ${username}`}</p>}
+      {username && <p>{username}</p>}
     </div>
   );
 }

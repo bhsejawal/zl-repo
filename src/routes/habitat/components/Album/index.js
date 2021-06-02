@@ -87,6 +87,7 @@ const Album = ({
             {
               album.photos.list.map(({
                 _id,
+                username,
                 createdAt,
                 url,
               }) => {
@@ -98,6 +99,7 @@ const Album = ({
                     image={url}
                     title={format(date, 'MMM Lo, yyyy | h:mmaa')}
                     timestamp={date}
+                    username={username && `By: ${username}`}
                   />
                 )
               })
@@ -122,6 +124,7 @@ const Album = ({
             {
               album.pastTalks.list.map(({
                 _id,
+                username,
                 previewURL,
                 title,
                 creationDate,
@@ -133,6 +136,7 @@ const Album = ({
                   image={previewURL}
                   title={title}
                   timestamp={new Date(creationDate)}
+                  username={username && `Host: ${username}`}
                 />
               ))
             }

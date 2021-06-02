@@ -4,6 +4,7 @@ import {
   useState,
   useEffect,
   useMemo,
+  useContext,
 } from 'preact/hooks';
 
 import {
@@ -22,8 +23,9 @@ import { format } from "date-fns";
 
 import { wsMessages } from 'Components/LiveStream/helpers/constants';
 import { useWebRTCStream } from 'Components/LiveStream/hooks/useWebRTCStream';
-import RoundButton from 'Components/RoundButton';
+import { GlobalsContext } from 'Shared/context';
 import { PrimaryButton } from 'Components/Buttons';
+import RoundButton from 'Components/RoundButton';
 import PreviewTag from './PreviewTag';
 import LiveTag from './LiveTag';
 import Fallback from './Fallback';
@@ -42,12 +44,14 @@ const {
 } = wsMessages;
 
 const Broadcast = ({
+  userId,
   hostStreamKey,
   isHostStreamOn,
   resetBroadcastContainer,
   habitatId,
   toggleIsBroadcastingAction,
 }) => {
+  const { socket } = useContext(GlobalsContext)
   const [showMenu, setShowMenu] = useState(false);
   const [selectedAudioDevice, setSelectedAudioDevice] = useState('');
   const [selectedVideoDevice, setSelectedVideoDevice] = useState('');
@@ -75,6 +79,7 @@ const Broadcast = ({
       setIsLoading(true);
       toggleIsBroadcastingAction();
       startPublishing()
+      socket.emit('viv_started', { streamId: hostStreamKey, userId});
     } else {
       toggleIsBroadcastingAction();
       stopPublishing();
@@ -276,9 +281,15 @@ const Broadcast = ({
 };
 
 export default connect((
-  { habitat: { habitatInfo: { hostStreamKey, isHostStreamOn, _id: habitatId }} },
-) => (
-  { hostStreamKey, isHostStreamOn, habitatId }
-), {
+  {
+    user: { userId },
+    habitat: { habitatInfo: { hostStreamKey, isHostStreamOn, _id: habitatId }},
+  },
+) => ({
+  userId,
+  hostStreamKey,
+  isHostStreamOn,
+  habitatId,
+}), {
   toggleIsBroadcastingAction: toggleIsBroadcasting,
 })(Broadcast);
