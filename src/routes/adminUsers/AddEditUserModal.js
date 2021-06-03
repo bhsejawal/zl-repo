@@ -186,7 +186,7 @@ const AddEditUserModal = ({
                 <DateTimePicker
                   className={style.dateTimePicker}
                   showLeadingZeros
-                  value={!showDatePicker ? new Date(null) : new Date(get(formData, 'subscriptionStatus.validUntil'))}
+                  value={!showDatePicker ? new Date(null) : new Date(get(formData, 'subscriptionStatus.validUntil', new Date()))}
                   clearIcon={null}
                   onChange={(value) => showDatePicker && onInputChange({ target: { name: 'subscriptionStatus.validUntil', value } })}
                   format="dd/MM/y hh:mm a"
@@ -214,7 +214,7 @@ const AddEditUserModal = ({
                   name="habitats"
                   values={habitats}
                   onChange={onInputChange}
-                  selected={formData.habitats}
+                  selected={formData.habitats || []}
                 />
               </Box>
             )}
