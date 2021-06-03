@@ -23,7 +23,12 @@ const initialZoomState = {
 
 const ZOOM_LEVELS = [100, 80, 60, 40, 20, 0];
 
-const ZoomBar = ({ userId, habitatId, configs }) => {
+const ZoomBar = ({
+  horizontal,
+  userId,
+  habitatId,
+  configs,
+}) => {
   const { socket } = useContext(GlobalsContext);
   const [zoomInfo, setZoomInfo] = useState(initialZoomState);
   const [isLoading, setIsLoading] = useState(false);
@@ -66,8 +71,11 @@ const ZoomBar = ({ userId, habitatId, configs }) => {
   }, [habitatId, userId, socket, configs]);
 
   return (
-    <div ref={wrapperRef} className={classnames(style.zoomWrapper)}>
-      <div className={style.zoomWrapperInner}>
+    <div
+      ref={wrapperRef}
+      className={classnames(style.zoomWrapper, { [style.horizontal]: horizontal })}
+    >
+      <div className={classnames(style.zoomWrapperInner, { [style.horizontal]: horizontal })}>
         <div className={style.paddingWrapper}>
           {/* eslint-disable-next-line */}
           <div
@@ -79,8 +87,11 @@ const ZoomBar = ({ userId, habitatId, configs }) => {
             <FontAwesomeIcon icon={faPlus} />
           </div>
         </div>
-        <div>
-          <div ref={barRef} className={style.bar}>
+        <div className={classnames({ [style.horizontalDots]: horizontal })}>
+          <div
+            ref={barRef}
+            className={classnames(style.bar, { [style.horizontal]: horizontal })}
+          >
             {ZOOM_LEVELS.map((zLvl) => (
               // eslint-disable-next-line
               <div

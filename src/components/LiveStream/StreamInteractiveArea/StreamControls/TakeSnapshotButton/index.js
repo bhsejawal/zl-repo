@@ -1,9 +1,10 @@
 import { h } from 'preact';
 import { useContext, useEffect, useState } from 'preact/hooks';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCamera } from '@fortawesome/pro-solid-svg-icons';
+import { faCamera, faSpinner } from '@fortawesome/pro-solid-svg-icons';
 import { GlobalsContext } from 'Shared/context';
 import { connect } from 'react-redux';
+import { Button } from 'grommet';
 
 import RoundButton from 'Components/RoundButton';
 import ShareContainer from './ShareContainer';
@@ -12,7 +13,7 @@ import style from './style.scss';
 
 let timeout;
 
-const TakeSnapshotButton = ({ habitatId, userId }) => {
+const TakeSnapshotButton = ({ plain, habitatId, userId }) => {
   const { socket } = useContext(GlobalsContext);
   const [loading, setLoading] = useState();
 
@@ -42,6 +43,16 @@ const TakeSnapshotButton = ({ habitatId, userId }) => {
       }
     }
   }, [socket, userId]);
+
+  if (plain) {
+    return (
+      <Button plain onClick={clickHandler} disabled={loading}>
+        {loading
+          ? <FontAwesomeIcon color="#fff" size="lg" icon={faSpinner} spin />
+          : <FontAwesomeIcon color="#fff" size="lg" icon={faCamera} />}
+      </Button>
+    );
+  }
 
   return (
     <div className={style.takeSnapshotContainer}>
