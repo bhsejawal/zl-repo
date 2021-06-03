@@ -39,6 +39,7 @@ const Main = ({
   onRouteChange,
   isTrial,
   showContactUs,
+  logged,
   timezone,
   updateReferralDataAction,
 }) => {
@@ -51,11 +52,11 @@ const Main = ({
 
   useEffect(() => {
     const { timeZone: clientTimezone } = Intl.DateTimeFormat().resolvedOptions();
-    if (timezone !== clientTimezone) {
+    if (logged && timezone !== clientTimezone) {
       patch(buildURL('/users/timezone'), { timezone: clientTimezone })
         .catch((error) => console.error('Failed to update timezone', error));
     }
-  }, [timezone]);
+  }, [logged, timezone]);
 
   const routerChangeHandler = (props) => {
     const {
@@ -202,13 +203,14 @@ const Main = ({
   )
 };
 
-export default connect((
-  {
-    user: { timezone, subscription: { productId } },
-    modals: { contactus: { isOpen: showContactUs }},
-  },
-) => (
-  { isTrial: productId === 'TRIAL', showContactUs, timezone }
-), {
+export default connect(({
+  user: { logged, timezone, subscription: { productId } },
+  modals: { contactus: { isOpen: showContactUs }},
+}) => ({
+  isTrial: productId === 'TRIAL',
+  showContactUs,
+  logged,
+  timezone,
+}), {
   updateReferralDataAction: updateReferralData,
 })(Main);
