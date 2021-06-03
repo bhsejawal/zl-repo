@@ -9,6 +9,7 @@ import Redirect from 'Components/Redirect';
 import TermsAndConditions, { PRIVACY_PDF_URL, TERMS_PDF_URL } from 'Components/TermsAndConditions';
 import ContactUsModalLoader from 'Components/async/ContactUsModalLoader';
 import { logPageViewGA } from 'Shared/ga';
+import { patch, buildURL } from 'Shared/fetch';
 
 import oranaZooLogo from './partners/orana-zoo.png';
 import torontoZooLogo from './partners/toronto-zoo.png';
@@ -38,6 +39,7 @@ const Main = ({
   onRouteChange,
   isTrial,
   showContactUs,
+  timezone,
   updateReferralDataAction,
 }) => {
   const [path, setPath] = useState();
@@ -46,6 +48,14 @@ const Main = ({
     const campaignData = logAndGetCampaignData();
     updateReferralDataAction(campaignData);
   }, [updateReferralDataAction]);
+
+  useEffect(() => {
+    const { timeZone: clientTimezone } = Intl.DateTimeFormat().resolvedOptions();
+    if (timezone !== clientTimezone) {
+      patch(buildURL('/users/timezone'), { timezone: clientTimezone })
+        .catch((error) => console.error('Failed to update timezone', error));
+    }
+  }, [timezone]);
 
   const routerChangeHandler = (props) => {
     const {
@@ -193,9 +203,12 @@ const Main = ({
 };
 
 export default connect((
-  { user: { subscription: { productId } }, modals: { contactus: { isOpen: showContactUs }} },
+  {
+    user: { timezone, subscription: { productId } },
+    modals: { contactus: { isOpen: showContactUs }},
+  },
 ) => (
-  { isTrial: productId === 'TRIAL', showContactUs }
+  { isTrial: productId === 'TRIAL', showContactUs, timezone }
 ), {
   updateReferralDataAction: updateReferralData,
 })(Main);
