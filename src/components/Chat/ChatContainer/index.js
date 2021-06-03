@@ -27,7 +27,8 @@ const ChatContainer = ({ messages, username }) => {
     autoScroll = false;
 
     // windows edge and chrome dose not reach scroll height fully and it fluctuates from 0.3 to 0.7
-    if ((Math.ceil(offsetHeight + scrollTop)) >= scrollHeight) {
+    // 15 is additional auto scroll zone so users don't need to scroll to the very bottom
+    if ((Math.ceil(offsetHeight + scrollTop)) >= (scrollHeight - 15)) {
       autoScroll = true;
     }
   };
