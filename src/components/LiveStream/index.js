@@ -11,6 +11,7 @@ import { Box } from 'grommet';
 
 import { GlobalsContext } from 'Shared/context';
 import { hasPermission } from 'Components/Authorize';
+import TimeBar from 'Components/TimeBar';
 
 import Fallback from './Fallback';
 
@@ -20,7 +21,7 @@ import LiveStreamContext from './LiveStreamContext';
 
 import { useWebRTCStream } from './hooks/useWebRTCStream';
 import { wsMessages } from './helpers/constants';
-import { useIsMobileSize } from '../../hooks';
+import { useIsHabitatTabbed, useIsMobileSize } from '../../hooks';
 import { MOBILE_CONTROLS_HEIGHT } from '../../routes/habitat/constants';
 import TakeSnapshotButton from './StreamInteractiveArea/StreamControls/TakeSnapshotButton';
 import ZoomBar from './StreamInteractiveArea/StreamControls/ZoomBar';
@@ -49,6 +50,7 @@ const Stream = ({
   const { socket } = useContext(GlobalsContext);
   const [isInitialized, setIsInitialized] = useState(false);
   const isSmallScreen = useIsMobileSize();
+  const isTabbed = useIsHabitatTabbed();
 
   const logStreamStatus = useCallback((data) => {
     if (data?.startTime && data?.streamId) {
@@ -98,6 +100,8 @@ const Stream = ({
 
   return (
     <LiveStreamContext.Provider value={{ videoRef }}>
+      {interactive && isTabbed && <TimeBar className={style.timeBar} />}
+
       <div
         className={style.streamContainer}
         style={{

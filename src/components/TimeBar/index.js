@@ -3,12 +3,13 @@ import { route } from 'preact-router';
 import { Box, Text } from 'grommet';
 import { connect } from 'react-redux';
 import { useEffect, useState } from 'preact/hooks';
+import classnames from 'classnames';
 
 import { PrimaryButton } from 'Components/Buttons';
 import { openInviteModal } from 'Components/NavBar/Invite/actions';
 
 import { updateSubscription } from '../../redux/actions';
-import { getDeviceType } from '../../helpers';
+import { useIsMobileSize } from '../../hooks';
 
 import style from './style.scss';
 
@@ -49,16 +50,15 @@ const TimeBar = ({
   isTrial,
   path,
   role,
+  className,
   updateSubscriptionAction,
   openInviteModalAction,
 }) => {
   const [timestamp, setTimestamp] = useState(null);
   const isPlanPage = path === '/plans';
   const isLandingPage = path === '/';
-
-  const isMobileDevice = getDeviceType() === 'phone';
-  const text = isMobileDevice ? 'to access your free trial.' : 'left in your free trial.';
-  const ctaText = timestamp === null && isPlanPage ? 'Select a pass to continue exploring!' : 'Want more?';
+  const isSmallScreen = useIsMobileSize();
+  const isPlanPageAndExpired = isPlanPage && !timestamp;
 
   useEffect(() => {
     if (validUntil) {
@@ -100,46 +100,43 @@ const TimeBar = ({
 
   return (
     <Box
-      className={style.timeBar}
+      className={classnames(style.timeBar, className)}
       pad={{vertical: '14px', horizontal: '15px'}}
-      direction="row"
       align="center"
       justify="center"
     >
-      <Text size="16px" className={style.text}>
-        {((timestamp && isMobileDevice) || !isMobileDevice) && (
-          <>
-            {timestamp && (
-              <>
-                <span>You Have&nbsp;</span>
-                <Text size="20px" weight={700}>
-                  {format(timestamp)}
-                  &nbsp;
-                </Text>
-                <span>{text}</span>
-              </>
-            )}
-            {!timestamp && <span>Your free trial has ended,</span> }
-          </>
-        )}
-        {!timestamp && isMobileDevice && (
-          <Text size="16px">Check your inbox to explore Zoolife</Text>
-        )}
-        {!isMobileDevice && (
-          <span>
-            &nbsp;
-            {ctaText}
-          </span>
-        )}
-        {!(isPlanPage && !timestamp) && !isMobileDevice && (
+      <Box
+        width={{ max: '800px', width: '100%' }}
+        direction="row"
+        align="center"
+        justify="evenly"
+      >
+        <Text
+          size={isSmallScreen ? '14px' : '16px'}
+          textAlign={isPlanPageAndExpired ? 'center' : undefined}
+        >
+          {timestamp && (
+            <>
+              {!isSmallScreen && <span>You Have&nbsp;</span>}
+              <Text size="16px" weight={700}>
+                {format(timestamp)}
+                &nbsp;
+              </Text>
+              <span>left in your free trial.</span>
+            </>
+          )}
+          {!timestamp && <span>Your free trial has ended.</span> }
+          {!isSmallScreen && <span>&nbsp;Want more?</span>}
+        </Text>
+        {!isPlanPageAndExpired && (
           <PrimaryButton
             margin={{left: '15px'}}
-            size="medium"
+            size={isSmallScreen ? 'small' : 'medium'}
             label={isPlanPage && timestamp ? 'Back to Trial' : 'Select a Plan'}
             onClick={() => route(isPlanPage && timestamp ? '/map' : '/plans')}
           />
         )}
-      </Text>
+      </Box>
     </Box>
   );
 };

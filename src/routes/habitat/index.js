@@ -30,7 +30,7 @@ import OnboardingModal from './OnboardingModal';
 import SmallScreenCardTabs from './components/CardTabs/Mobile';
 import ShareModal from './components/ShareModal';
 
-import { useIsMobileSize, useWindowResize } from '../../hooks';
+import { useIsHabitatTabbed, useWindowResize } from '../../hooks';
 import { setHabitat, unsetHabitat, setHabitatProps } from './actions';
 import { generateTitle } from '../../helpers';
 import { MOBILE_CONTROLS_HEIGHT } from './constants';
@@ -61,9 +61,8 @@ const Habitat = ({
   const { socket } = useContext(GlobalsContext);
   const pageRef = useRef();
   const [pageWidth, setPageWidth] = useState();
-  const isSmallScreen = windowWidth <= 1024;
   const isTabletOrLarger = ['medium', 'large'].includes(size);
-  const isMobileScreen = useIsMobileSize();
+  const isTabbed = useIsHabitatTabbed();
 
   useEffect(() => {
     if (socket && userId && habitatId) {
@@ -135,10 +134,10 @@ const Habitat = ({
 
   const sideBarWidth = 84;
   const chatWidth = 285;
-  const calcStreamWidth = isSmallScreen ? windowWidth : (pageWidth - sideBarWidth - chatWidth);
+  const calcStreamWidth = isTabbed ? windowWidth : (pageWidth - sideBarWidth - chatWidth);
   const streamWidth = Math.min(maxStreamWidth, calcStreamWidth);
   const height = Math.min(maxStreamHeight, streamWidth * 0.5625);
-  const topSectionHeight = height + (isMobileScreen ? MOBILE_CONTROLS_HEIGHT : 0);
+  const topSectionHeight = height + (isTabbed ? MOBILE_CONTROLS_HEIGHT : 0);
 
   // TODO: there's a minor problem with this approach which should be fixed
   // curretnly when loading changes to "false", habitat data is still not there
@@ -159,7 +158,7 @@ const Habitat = ({
         className={style.topSection}
         style={{ height: topSectionHeight, maxHeight: topSectionHeight }}
       >
-        {!isSmallScreen && <LiveChannelsBar width={sideBarWidth} height={height} />}
+        {!isTabbed && <LiveChannelsBar width={sideBarWidth} height={height} />}
         <LiveStream
           width={streamWidth}
           height={height}
@@ -168,11 +167,11 @@ const Habitat = ({
           mode="stream"
           isStreamOn={isStreamOn}
         />
-        {!isSmallScreen && <Chat width={chatWidth} height={height} />}
+        {!isTabbed && <Chat width={chatWidth} height={height} />}
       </div>
 
       <div style={{ height: `calc(100vh - var(--headerHeight) - ${height + MOBILE_CONTROLS_HEIGHT}px)` }}>
-        <Tabs show={isSmallScreen}>
+        <Tabs show={isTabbed}>
           <Tab label="Explore" icon={<FontAwesomeIcon size="lg" icon={faInfoCircle} />}>
             <div className={style.middleSection}>
               <StreamProfile />

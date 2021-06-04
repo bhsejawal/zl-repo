@@ -32,6 +32,7 @@ import MobileGuard from './MobileGuard';
 
 import { logPageView, logAndGetCampaignData } from '../../helpers';
 import { updateReferralData } from '../../redux/actions';
+import { useIsHabitatTabbed } from '../../hooks';
 
 const homeTitle = "The world's first digital zoo.";
 
@@ -44,6 +45,8 @@ const Main = ({
   updateReferralDataAction,
 }) => {
   const [path, setPath] = useState();
+  const isTabbed = useIsHabitatTabbed();
+  const isTabbedHabitatPath = isTabbed && path?.startsWith('/h/');
 
   useEffect(() => {
     const campaignData = logAndGetCampaignData();
@@ -102,7 +105,7 @@ const Main = ({
 
   return (
     // time bar padding
-    <Box fill pad={{ bottom: isTrial ? '58px' : undefined }}>
+    <Box fill pad={{ bottom: (!isTabbedHabitatPath && isTrial) ? '58px' : undefined }}>
       <Router onChange={routerChangeHandler}>
         <Home path="/" exact title={homeTitle} />
         <Home path="/twitch" exact title={homeTitle} />
@@ -196,7 +199,7 @@ const Main = ({
         <NotFound path=":*" />
       </Router>
 
-      <TimeBar path={path} />
+      {!isTabbedHabitatPath && <TimeBar path={path} />}
       <TermsAndConditions />
       <ContactUsModalLoader isOpen={showContactUs} />
     </Box>

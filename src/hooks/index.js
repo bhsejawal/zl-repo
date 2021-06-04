@@ -8,15 +8,17 @@ const getSize = () => ({
   orientation: window.innerHeight > window.innerWidth ? 'portrait' : 'landscape',
 });
 
-// eslint-disable-next-line import/prefer-default-export
 export const useWindowResize = () => {
-  const [size, setSize] = useState(getSize());
+  const [size, setSize] = useState(typeof window !== 'undefined' && getSize());
 
+  // eslint-disable-next-line consistent-return
   useEffect(() => {
     const updateSize = throttle(() => setSize(getSize()), 400);
-    window.addEventListener('resize', updateSize);
-    updateSize();
-    return () => window.removeEventListener('resize', updateSize);
+    if (typeof window !== 'undefined') {
+      window.addEventListener('resize', updateSize);
+      updateSize();
+      return () => window.removeEventListener('resize', updateSize);
+    }
   }, []);
 
   return size;
@@ -64,4 +66,9 @@ export const useIsInitiallyLoaded = (isFetching) => {
 export const useIsMobileSize = () => {
   const size = useContext(ResponsiveContext);
   return ['small', 'xsmall'].includes(size);
+};
+
+export const useIsHabitatTabbed = () => {
+  const { width: windowWidth } = useWindowResize();
+  return windowWidth <= 1024;
 };
