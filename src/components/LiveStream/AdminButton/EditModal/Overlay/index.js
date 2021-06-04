@@ -1,7 +1,13 @@
 import { h } from 'preact';
 import { connect } from 'react-redux';
 import { useRef, useState } from 'preact/hooks';
-import { Box, Heading, Text } from 'grommet';
+import {
+  Box,
+  Heading,
+  Text,
+  TextArea,
+  TextInput,
+} from 'grommet';
 import useFetch from 'use-http';
 
 import ImageSelector from 'Components/ImageSelector';
@@ -23,16 +29,21 @@ const imageConstraints = {
 
 const Overlay = ({
   habitatId,
+  shareTitle,
+  shareDescription,
+  restShareSettings,
   overlayStorageKey: overlayStorageKeyProp = '',
   setHabitatPropsAction,
 }) => {
   const imageSelectorRef = useRef();
   const imagePreviewRef = useRef();
   const [overlayStorageKey, setOverlayStorageKey] = useState(overlayStorageKeyProp);
+  const [title, setTitle] = useState(shareTitle);
+  const [description, setDescription] = useState(shareDescription);
   const [validationError, setValidationError] = useState();
 
   const {
-    patch: patchOverlay,
+    patch,
     response: patchResponse,
     loading,
     error,
@@ -46,9 +57,16 @@ const Overlay = ({
 
     if (isValid) {
       setValidationError(false);
-      await patchOverlay({ overlayStorageKey });
+      await patch({
+        overlayStorageKey,
+        shareSettings: { title, description },
+      });
       if (patchResponse.ok) {
-        setHabitatPropsAction({ overlayStorageKey });
+        setHabitatPropsAction({
+          overlayStorageKey,
+          shareSettings: { title, description },
+          ...restShareSettings,
+        });
       }
     } else {
       setValidationError('Your input is not valid.');
@@ -71,7 +89,32 @@ const Overlay = ({
               constraints={imageConstraints}
               onChange={setOverlayStorageKey}
             />
+
+            <Box margin={{ bottom: '20px', top: '20px' }}>
+              <Heading margin={{ top: '0', bottom: '5px' }} level="5">
+                Title:
+              </Heading>
+              <TextInput
+                value={title}
+                onChange={({ target }) => setTitle(target.value)}
+              />
+            </Box>
+
+            <Box margin={{ bottom: '20px' }}>
+              <Heading margin={{ top: '0', bottom: '5px' }} level="5">
+                Description:
+              </Heading>
+              <TextArea
+                value={description}
+                className={style.textarea}
+                rows="5"
+                data-prop="text"
+                onChange={(({ target }) => setDescription(target.value))}
+                maxLength="80"
+              />
+            </Box>
           </Box>
+
         </Box>
 
         <Box
@@ -122,11 +165,19 @@ export default connect(
       habitatInfo: {
         _id: habitatId,
         overlayStorageKey,
+        shareSettings: {
+          title: shareTitle,
+          description: shareDescription,
+          ...restShareSettings
+        } = {},
       },
     },
   }) => ({
     habitatId,
     overlayStorageKey,
+    shareTitle,
+    shareDescription,
+    restShareSettings,
   }),
   { setHabitatPropsAction: setHabitatProps },
 )(Overlay);
