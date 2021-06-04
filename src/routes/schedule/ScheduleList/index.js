@@ -113,19 +113,23 @@ const ScheduleList = ({
         description,
         habitatSlug,
         zooSlug,
+        wideImage,
       }) => (
-        <ScheduleItem
-          liveTalks={liveTalks}
-          animal={animal}
-          zoo={zoo}
-          key={habitatId}
-          zooLogo={logo}
-          habitatImage={profileInfo}
-          description={description}
-          onClick={handleScheduleClick}
-          habitatSlug={habitatSlug}
-          zooSlug={zooSlug}
-        />
+        <Box flex="grow" align="center">
+          <ScheduleItem
+            liveTalks={liveTalks}
+            animal={animal}
+            zoo={zoo}
+            key={habitatId}
+            zooLogo={logo}
+            habitatImage={profileInfo}
+            description={description}
+            onClick={handleScheduleClick}
+            habitatSlug={habitatSlug}
+            zooSlug={zooSlug}
+            wideImage={wideImage}
+          />
+        </Box>
       ))}
       {showDialog && (
         <Dialog

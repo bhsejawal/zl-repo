@@ -10,7 +10,9 @@ import {
 import { format } from 'date-fns';
 import { Link } from 'preact-router';
 
+import BaseHabitatCard from 'Components/HabitatCard/HabitatCardBase';
 import { PrimaryButton } from 'Components/Buttons';
+import { useIsMobileSize } from '../../../../hooks';
 
 import HabitatImage from './HabitatImage';
 
@@ -24,17 +26,55 @@ const ScheduleItem = ({
   description,
   habitatSlug,
   zooSlug,
+  wideImage,
   onClick,
 }) => {
   const size = useContext(ResponsiveContext);
   const columns = useMemo(() => (size === 'large' ? ['medium', 'medium'] : ['auto']), [size]);
+  const isSmallScreen = useIsMobileSize();
+
+  if (isSmallScreen) {
+    return (
+      <Box pad="small">
+        <BaseHabitatCard image={wideImage} logo={zooLogo} >
+          <Box flex="grow">
+            <Link href={encodeURI(`/h/${zooSlug}/${habitatSlug}`)}>
+              <Heading level="4" margin="0px">{animal}</Heading>
+            </Link>
+            <Text size="large" margin={{ top: 'small' }}>
+              {description}
+            </Text>
+          </Box>
+          <Box>
+            {liveTalks.map((liveTalk) => (
+              <Box flex="grow">
+                <Box className={style.textBox}>
+                  <Text size="xlarge" margin={{ bottom: 'xsmall', top: 'medium' }}>{liveTalk.title}</Text>
+                  <Text margin={{ bottom: 'small' }}>{liveTalk.description}</Text>
+                </Box>
+                {liveTalk.sessions.map(({ startTime, sessionId }) => (
+                  <div>
+                    <PrimaryButton
+                      size="small"
+                      label={format(Date.parse(startTime), 'hh:mm aa')}
+                      onClick={() => onClick(sessionId)}
+                    />
+                  </div>
+                ))}
+              </Box>
+            ))}
+          </Box>
+        </BaseHabitatCard>
+      </Box>
+    );
+  }
 
   return (
     <Box
       pad="large"
       className={style.scheduleItem}
-      margin={{top: 'medium'}}
-      width={ size === 'large' ? { max: '980px'} : 'large'}
+      margin={{ top: 'medium' }}
+      direction="row"
       responsive
       wrap
     >

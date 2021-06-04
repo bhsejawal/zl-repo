@@ -3,6 +3,7 @@
   border-radius: 10px;
   min-height: 300px;
   position: relative;
+  max-width: unquote("min(100%, 980px)");
 
   a {
     text-decoration: none;
