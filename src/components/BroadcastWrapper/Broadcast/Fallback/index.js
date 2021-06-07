@@ -2,7 +2,7 @@ import { Box, Text } from 'grommet';
 import { faTimesCircle } from '@fortawesome/pro-regular-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-import Loader from 'Components/async/Loader';
+import Loader from 'Components/Loader';
 
 import background from '../../hostBackground.png';
 

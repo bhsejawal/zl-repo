@@ -3,16 +3,21 @@ import { useEffect, useRef, useState } from 'preact/hooks';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPause, faPlayCircle } from '@fortawesome/pro-regular-svg-icons';
 import classnames from 'classnames';
-import Loader from 'Components/async/Loader';
+import Loader from 'Components/Loader';
 
 import style from './style.scss';
 
-const Video = ({ url, className }) => {
+const Video = ({
+  url,
+  className,
+  onPlay,
+  onStop,
+}) => {
   const videoRef = useRef();
   const [isPlaying, setIsPlaying] = useState(false);
   const [showLoader, setShowLoader] = useState(true);
 
-  const onPlay = () => {
+  const onPlayClick = () => {
     videoRef.current.play();
     setIsPlaying(true);
   };
@@ -21,6 +26,14 @@ const Video = ({ url, className }) => {
     videoRef.current.pause();
     setIsPlaying(false);
   };
+
+  useEffect(() => {
+    if (isPlaying) {
+      onPlay?.();
+    } else {
+      onStop?.();
+    }
+  }, [isPlaying]);
 
   useEffect(() => {
     const onPaused = () => setIsPlaying(false);
@@ -52,7 +65,7 @@ const Video = ({ url, className }) => {
         className={classnames(style.control, { [style.hidden]: isPlaying || showLoader })}
         color="#fff"
         size="3x"
-        onClick={onPlay}
+        onClick={onPlayClick}
         icon={faPlayCircle}
       />
 

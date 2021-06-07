@@ -8,10 +8,10 @@ import {
 
 import EditButton from '../EditButton';
 import ImageEditorLoader from '../../async/ImageEditorLoader';
+import { hasPermission } from '../../Authorize';
+import { useIsMobileSize } from '../../../hooks';
 
 import style from '../wrapper.scss';
-
-import { hasPermission } from '../../Authorize';
 
 const ImageEditor = ({
   children,
@@ -24,6 +24,7 @@ const ImageEditor = ({
   const childRef = useRef();
   const [editModalOpen, setEditModalOpen] = useState(false);
   const [imgUrl, setImgUrl] = useState(initialImgUrl);
+  const isMobileSize = useIsMobileSize();
 
   useEffect(() => {
     setImgUrl(initialImgUrl);
@@ -41,7 +42,7 @@ const ImageEditor = ({
     setImgUrl(newUrl);
   }, [setImgUrl]);
 
-  if (!hasPermission('habitat:edit-media')) {
+  if (!hasPermission('habitat:edit-media') || isMobileSize) {
     return children(imgUrl);
   }
 

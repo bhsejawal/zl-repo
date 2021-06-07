@@ -1,6 +1,6 @@
 import { Suspense, lazy } from 'preact/compat';
 
-import LoaderModal from 'Components/async/LoaderModal';
+import LoaderModal from 'Components/LoaderModal';
 
 const ContactUsModal = lazy(() => import('Components/modals/ContactUs'));
 

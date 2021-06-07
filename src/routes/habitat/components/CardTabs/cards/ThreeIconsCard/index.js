@@ -22,8 +22,9 @@ const ThreeIconsCard = ({
   text1,
   text2,
   text3,
+  className,
 }) => (
-  <CardWrapper tag={tag}>
+  <CardWrapper className={className} tag={tag}>
     <Box fill align="center" margin={{ top: '15px' }}>
       <Heading level="4" alignSelf="start" margin={{ bottom: '25px', top: '0px'}}>{title}</Heading>
 

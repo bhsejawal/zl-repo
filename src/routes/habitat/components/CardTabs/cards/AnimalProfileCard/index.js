@@ -17,8 +17,9 @@ const AnimalProfileCard = ({
   text1,
   text2,
   text3,
+  className,
 }) => (
-  <CardWrapper tag={tag} hideTag>
+  <CardWrapper className={className} tag={tag} hideTag>
     <div className={style.wrapper}>
       <img className={classnames('profileImg', style.img)} src={img} alt="" />
       <Heading level="4" margin={{ top: '20px', bottom: '0px' }}>{name}</Heading>

@@ -1,0 +1,16 @@
+.content {
+  overflow: auto;
+  min-height: 100%;
+}
+
+.tabControls {
+  box-shadow: 0 0 5px rgba(41, 31, 31, .5);
+}
+
+.tabBtn {
+  color: var(--grey);
+
+  &.active {
+    color: var(--blueMediumDark);
+  }
+}

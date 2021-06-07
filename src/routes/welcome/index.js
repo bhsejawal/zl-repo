@@ -19,6 +19,7 @@ import Error from 'Components/modals/Error';
 import Success from 'Components/modals/Success';
 
 import { buildURL } from 'Shared/fetch';
+import { useIsMobileSize } from '../../hooks';
 
 import style from './style.scss';
 
@@ -27,6 +28,7 @@ const Welcome = () => {
   const [emails, setEmails] = useState([]);
   const [sent, setSent] = useState();
   const [error, setError] = useState();
+  const isSmallScreen = useIsMobileSize();
 
   const {
     post,
@@ -89,6 +91,16 @@ const Welcome = () => {
   const onErrorClose = useCallback(() => {
     setError(false);
   }, []);
+
+  useEffect(() => {
+    if (isSmallScreen) {
+      route('/map', true);
+    }
+  }, [isSmallScreen]);
+
+  if (isSmallScreen) {
+    return null;
+  }
 
   return (
     <>

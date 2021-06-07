@@ -1,6 +1,6 @@
-import { useEffect, useRef } from 'preact/hooks';
+import { useState, useEffect, useRef } from 'preact/hooks';
 import { connect } from 'react-redux';
-import { get } from 'lodash-es';
+import { get, last } from 'lodash-es';
 import classnames from 'classnames';
 
 import InputBox from './InputBox';
@@ -12,30 +12,31 @@ import ChatMessage from './ChatMessage';
 let autoScroll = true;
 
 const ChatContainer = ({ messages, username }) => {
+  const [internalMessages, setInternalMessages] = useState([]);
   const chatContainerRef = useRef(null);
 
   useEffect(() => {
-    const bySameUsername = get(messages.slice(-1)[0], 'username') === username;
-
-    if (messages.length && ((autoScroll && chatContainerRef.current) || bySameUsername)) {
-      chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
-    }
-  }, [messages, username]);
-
-  const onScroll = () => {
     const { scrollHeight, scrollTop, offsetHeight } = chatContainerRef.current;
-    autoScroll = false;
-
     // windows edge and chrome dose not reach scroll height fully and it fluctuates from 0.3 to 0.7
-    if ((Math.ceil(offsetHeight + scrollTop)) >= scrollHeight) {
-      autoScroll = true;
+    // 15 is additional auto scroll zone so users don't need to scroll to the very bottom
+    autoScroll = (Math.ceil(offsetHeight + scrollTop)) >= (scrollHeight - 15);
+
+    setInternalMessages(messages);
+  }, [messages]);
+
+  useEffect(() => {
+    const bySameUsername = get(last(internalMessages), 'username') === username;
+
+    if (internalMessages.length && ((autoScroll && chatContainerRef.current) || bySameUsername)) {
+      const { scrollHeight, offsetHeight } = chatContainerRef.current;
+      chatContainerRef.current.scrollTop = scrollHeight - offsetHeight;
     }
-  };
+  }, [internalMessages, username]);
 
   return (
     <>
-      <div ref={chatContainerRef} className={classnames(style.chatContainer, 'customScrollBar')} onScroll={onScroll}>
-        {messages.map(({
+      <div ref={chatContainerRef} className={classnames(style.chatContainer, 'customScrollBar')}>
+        {internalMessages.map(({
           username,
           animal,
           color,

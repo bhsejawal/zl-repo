@@ -8,7 +8,7 @@ import {
 } from 'preact/hooks';
 
 import List from 'Components/List';
-import Loader from 'Components/async/Loader';
+import Loader from 'Components/Loader';
 import Member from './member';
 
 import { formatAge } from '../../../../../helpers';
@@ -38,13 +38,13 @@ const Members = ({ loading, familyCards }) => {
   if (!loaded) {
     return (
       <div className={style.loadingWrapper}>
-        <Loader />
+        <Loader height="120px" />
       </div>
     );
   }
 
   return (
-    <List ref={listRef}>
+    <List className={style.list} ref={listRef}>
       {familyCards.map(({
         name,
         dateOfBirth,

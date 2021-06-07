@@ -17,7 +17,7 @@ import { loadStripe } from '@stripe/stripe-js/pure';
 import { buildURL } from 'Shared/fetch';
 import PlanCard from 'Components/PlanCard';
 import Dialog from 'Components/modals/Dialog';
-import LoaderModal from 'Components/async/LoaderModal';
+import LoaderModal from 'Components/LoaderModal';
 
 import { StripeContext } from 'Shared/context';
 

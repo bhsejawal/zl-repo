@@ -9,6 +9,7 @@ import {
 import { hasPermission } from '../../Authorize';
 import EditButton from '../EditButton';
 import TextEditorLoader from '../../async/TextEditorLoader';
+import { useIsMobileSize } from '../../../hooks';
 
 import style from '../wrapper.scss';
 
@@ -23,6 +24,7 @@ const TextEditor = ({
   const childRef = useRef();
   const [editModalOpen, setEditModalOpen] = useState(false);
   const [text, setText] = useState(initialText);
+  const isMobileSize = useIsMobileSize();
 
   // initialText will probably first have "undefined" value
   // also, it will make it possible to change it both from parent and child
@@ -42,7 +44,7 @@ const TextEditor = ({
     setText(newText);
   }, [setText]);
 
-  if (!hasPermission('habitat:edit-text')) {
+  if (!hasPermission('habitat:edit-text') || isMobileSize) {
     return children(text);
   }
 

@@ -10,6 +10,7 @@ import style from './style.scss';
 const AnimalBodyCard = ({
   tag,
   img,
+  className,
   parts = [],
 }) => {
   const [selectedInd, setSelectedInd] = useState(0);
@@ -27,7 +28,7 @@ const AnimalBodyCard = ({
   }, [parts, selectedInd]);
 
   return (
-    <CardWrapper noPadding tag={tag}>
+    <CardWrapper noPadding className={className} tag={tag}>
       <div className={style.wrapper}>
         <div className={style.top}>
           <img className={style.img} src={img} alt="" />

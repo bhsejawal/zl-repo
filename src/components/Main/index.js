@@ -9,6 +9,7 @@ import Redirect from 'Components/Redirect';
 import TermsAndConditions, { PRIVACY_PDF_URL, TERMS_PDF_URL } from 'Components/TermsAndConditions';
 import ContactUsModalLoader from 'Components/async/ContactUsModalLoader';
 import { logPageViewGA } from 'Shared/ga';
+import { patch, buildURL } from 'Shared/fetch';
 
 import oranaZooLogo from './partners/orana-zoo.png';
 import torontoZooLogo from './partners/toronto-zoo.png';
@@ -31,6 +32,7 @@ import MobileGuard from './MobileGuard';
 
 import { logPageView, logAndGetCampaignData } from '../../helpers';
 import { updateReferralData } from '../../redux/actions';
+import { useIsHabitatTabbed } from '../../hooks';
 
 const homeTitle = "The world's first digital zoo.";
 
@@ -38,14 +40,26 @@ const Main = ({
   onRouteChange,
   isTrial,
   showContactUs,
+  logged,
+  timezone,
   updateReferralDataAction,
 }) => {
   const [path, setPath] = useState();
+  const isTabbed = useIsHabitatTabbed();
+  const isTabbedHabitatPath = isTabbed && path?.startsWith('/h/');
 
   useEffect(() => {
     const campaignData = logAndGetCampaignData();
     updateReferralDataAction(campaignData);
   }, [updateReferralDataAction]);
+
+  useEffect(() => {
+    const { timeZone: clientTimezone } = Intl.DateTimeFormat().resolvedOptions();
+    if (logged && timezone !== clientTimezone) {
+      patch(buildURL('/users/timezone'), { timezone: clientTimezone })
+        .catch((error) => console.error('Failed to update timezone', error));
+    }
+  }, [logged, timezone]);
 
   const routerChangeHandler = (props) => {
     const {
@@ -91,7 +105,7 @@ const Main = ({
 
   return (
     // time bar padding
-    <Box fill pad={{ bottom: isTrial ? '58px' : undefined }}>
+    <Box fill pad={{ bottom: (!isTabbedHabitatPath && isTrial) ? '58px' : undefined }}>
       <Router onChange={routerChangeHandler}>
         <Home path="/" exact title={homeTitle} />
         <Home path="/twitch" exact title={homeTitle} />
@@ -185,17 +199,21 @@ const Main = ({
         <NotFound path=":*" />
       </Router>
 
-      <TimeBar path={path} />
+      {!isTabbedHabitatPath && <TimeBar path={path} />}
       <TermsAndConditions />
       <ContactUsModalLoader isOpen={showContactUs} />
     </Box>
   )
 };
 
-export default connect((
-  { user: { subscription: { productId } }, modals: { contactus: { isOpen: showContactUs }} },
-) => (
-  { isTrial: productId === 'TRIAL', showContactUs }
-), {
+export default connect(({
+  user: { logged, timezone, subscription: { productId } },
+  modals: { contactus: { isOpen: showContactUs }},
+}) => ({
+  isTrial: productId === 'TRIAL',
+  showContactUs,
+  logged,
+  timezone,
+}), {
   updateReferralDataAction: updateReferralData,
 })(Main);

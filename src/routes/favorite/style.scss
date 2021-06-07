@@ -28,15 +28,6 @@
 
 .content {
   flex: auto;
-  padding: 26px 76px;
-
-  @media screen and (max-width: 520px) {
-    padding: 26px;
-  }
-
-  @media screen and (max-width: 520px) {
-    padding: 26px 10px;
-  }
 
   .noContent {
     height: auto;

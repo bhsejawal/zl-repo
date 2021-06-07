@@ -9,9 +9,12 @@ import CardEditorLoader from 'async!./CardEditorLoader';
 
 import style from 'Components/AdminEditWrappers/wrapper.scss';
 
+import { useIsMobileSize } from '../../../../../hooks';
+
 const CardEditor = ({ children, card }) => {
   const childRef = useRef();
   const [editModalOpen, setEditModalOpen] = useState(false);
+  const isMobileSize = useIsMobileSize();
 
   const onEditBtnClick = () => {
     setEditModalOpen(true);
@@ -21,7 +24,7 @@ const CardEditor = ({ children, card }) => {
     setEditModalOpen(false);
   }, [setEditModalOpen]);
 
-  if (!hasPermission('habitat:edit-cards')) {
+  if (!hasPermission('habitat:edit-cards') || isMobileSize) {
     return (
       <div className={style.wrapper}>
         {children}

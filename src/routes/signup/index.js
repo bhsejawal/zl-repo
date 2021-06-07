@@ -35,7 +35,7 @@ import style from '../login/style.scss';
 
 const TERMS_VERSION = process.env.PREACT_APP_TERMS_VERSION ?? 1;
 
-const Signup = ({ setUserDataAction, openTermsModalAction }) => {
+const Signup = ({ logged, setUserDataAction, openTermsModalAction }) => {
   const size = useContext(ResponsiveContext);
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
@@ -45,6 +45,10 @@ const Signup = ({ setUserDataAction, openTermsModalAction }) => {
   const [showPassword, setShowPassword] = useState(false);
   const [isTermsAccepted, setIsTermsAccepted] = useState(false);
   const [termsError, setTermsError] = useState();
+
+  if (logged) {
+    return route('/map', true);
+  }
 
   const isLargeScreen = size === 'large';
 

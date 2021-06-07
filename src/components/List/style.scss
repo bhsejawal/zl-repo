@@ -1,9 +1,11 @@
+@import "../../style/media-query.scss";
+
 $arrowMargin: 10px;
 
 .wrapper {
   border: 1px solid #EBEBEB;
-  border-bottom: 0;
-  border-top: 0;
+  border-bottom-width: 0;
+  border-top-width: 0;
   padding: 0 $arrowMargin;
   margin: 0 15px;
   height: 100%;
@@ -43,10 +45,18 @@ $arrowMargin: 10px;
 
 .arrowLeft {
   margin-right: $arrowMargin;
+
+  @media screen and (max-width: #{$tablet-portrait-width - 1}) {
+    margin-right: 0;
+  }
 }
 
 .arrowRight {
   margin-left: $arrowMargin;
+
+  @media screen and (max-width: #{$tablet-portrait-width - 1}) {
+    margin-left: 0;
+  }
 }
 
 .arrowDisabled {

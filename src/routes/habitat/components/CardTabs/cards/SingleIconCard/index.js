@@ -10,8 +10,9 @@ const SingleIconCard = ({
   img,
   title,
   text,
+  className,
 }) => (
-  <CardWrapper tag={tag}>
+  <CardWrapper className={className} tag={tag}>
     <div className={style.wrapper}>
       <div className={style.top}>
         <img className={style.img} src={img} alt="" />

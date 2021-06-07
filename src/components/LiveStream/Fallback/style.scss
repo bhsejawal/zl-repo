@@ -1,3 +1,5 @@
+@import "../../../style/media-query.scss";
+
 .contactUs {
   color: white;
   text-decoration: underline;
@@ -13,4 +15,12 @@
   left: 0;
   height: 100%;
   width: 100%;
+}
+
+.learnText {
+  margin-top: 40px;
+
+  @media screen and (max-width: #{$phone-portrait-width}) {
+    margin-top: 5px;
+  }
 }

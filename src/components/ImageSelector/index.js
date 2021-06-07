@@ -172,7 +172,11 @@ const ImageSelector = forwardRef(({
       let isValid = true;
 
       try {
-        if ((new URL(url)).origin !== window.location.origin) {
+        const parsedUrl = new URL(url);
+        const normalizeAssetHost = parsedUrl.hostname.replace('www.', '');
+        const normalizedLocationHost = window.location.hostname.replace('www.', '');
+
+        if (normalizeAssetHost !== normalizedLocationHost) {
           setErrorMsg(`Only URLs from ${window.location.origin} are allowed`);
           return false;
         }

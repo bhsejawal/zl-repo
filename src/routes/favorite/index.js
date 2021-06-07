@@ -11,10 +11,10 @@ import { connect } from 'react-redux';
 
 import { buildURL } from 'Shared/fetch';
 import HabitatCard from 'Components/HabitatCard';
-import Loader from 'Components/async/Loader';
+import Loader from 'Components/Loader';
 import NoContentFallback from 'Components/NoContentFallback';
 
-import { useIsInitiallyLoaded, useWindowResize } from '../../hooks';
+import { useIsInitiallyLoaded, useIsMobileSize, useWindowResize } from '../../hooks';
 import { updateFavoriteHabitat } from '../../redux/actions';
 
 import style from './style.scss';
@@ -58,6 +58,7 @@ const Favorite = ({ updateFavoriteHabitatAction }) => {
     headers: { 'Content-Type': 'application/json' },
   });
   const loaded = useIsInitiallyLoaded(loading);
+  const isSmallScreen = useIsMobileSize();
 
   useEffect(() => {
     const loadHabitats = async () => {
@@ -109,6 +110,10 @@ const Favorite = ({ updateFavoriteHabitatAction }) => {
         direction="row"
         justify={width < 850 ? 'center' : 'start' }
         className={classnames(style.content, 'customScrollBar')}
+        pad={{
+          horizontal: isSmallScreen ? 'small' : 'xlarge',
+          vertical: 'medium',
+        }}
       >
         {!loaded && <Loader fill color="white" />}
 

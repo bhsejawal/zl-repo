@@ -12,7 +12,7 @@ import {
 } from 'date-fns';
 import useFetch from 'use-http';
 
-import Loader from 'Components/async/Loader';
+import Loader from 'Components/Loader';
 
 import { buildURL } from 'Shared/fetch';
 import { connect } from 'react-redux';
@@ -20,6 +20,12 @@ import { connect } from 'react-redux';
 const { timeZone } = Intl.DateTimeFormat().resolvedOptions();
 
 const Calendar = lazy(() => import('.'));
+
+const CenteredLoader = () => (
+  <Box fill justify="center">
+    <Loader height="485px" />
+  </Box>
+);
 
 const CalendarLoader = ({ habitatId }) => {
   const url = useMemo(() => {
@@ -76,7 +82,7 @@ const CalendarLoader = ({ habitatId }) => {
   }, [events]);
 
   if (loading) {
-    return <Loader height="485px" />
+    return <CenteredLoader />
   }
 
   if (error) {
@@ -88,7 +94,7 @@ const CalendarLoader = ({ habitatId }) => {
   }
 
   return (
-    <Suspense fallback={<Loader height="485px" />}>
+    <Suspense fallback={<CenteredLoader />}>
       <Calendar schedules={schedules} />
     </Suspense>
   )

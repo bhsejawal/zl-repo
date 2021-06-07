@@ -5,7 +5,7 @@ import 'emoji-mart/css/emoji-mart.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSmileWink } from '@fortawesome/pro-light-svg-icons';
 
-import Loader from 'Components/async/Loader';
+import Loader from 'Components/Loader';
 
 import { useOnClickOutside } from '../../../../hooks';
 

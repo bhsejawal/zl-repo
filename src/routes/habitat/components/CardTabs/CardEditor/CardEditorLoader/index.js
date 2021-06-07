@@ -2,7 +2,7 @@ import { h } from 'preact';
 import { Suspense, lazy } from 'preact/compat';
 import { Grommet, Layer } from 'grommet';
 
-import Loader from 'Components/async/Loader';
+import Loader from 'Components/Loader';
 import grommetTheme from '../../../../../../grommetTheme';
 
 const EditModal = lazy(() => import('./EditModal'));

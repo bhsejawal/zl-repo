@@ -1,3 +1,5 @@
+@import "../../../../../../style/media-query.scss";
+
 $circle-size: 10px;
 
 .toolbar {
@@ -6,6 +8,18 @@ $circle-size: 10px;
   display: flex;
   align-items: center;
   justify-content: space-between;
+
+  @media screen and (max-width: #{$phone-portrait-width}) {
+    padding-top: 0;
+    padding-left: 0;
+    text-align: center;
+    display: block;
+
+    span {
+      margin-top: 10px;
+      display: block;
+    }
+  }
 
   * {
     user-select: none;
@@ -36,6 +50,10 @@ $circle-size: 10px;
   composes: arrow;
   right: 0;
   margin-right: 30px;
+
+  @media screen and (max-width: #{$phone-portrait-width}) {
+    margin-right: 0;
+  }
 }
 
 .disabled {

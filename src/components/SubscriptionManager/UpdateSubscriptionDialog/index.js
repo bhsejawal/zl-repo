@@ -4,7 +4,7 @@ import { useMemo } from 'preact/hooks';
 import useFetch from 'use-http';
 
 import Dialog from 'Components/modals/Dialog';
-import Loader from 'Components/async/LoaderModal';
+import Loader from 'Components/LoaderModal';
 
 import { buildURL } from 'Shared/fetch';
 import { setSubscriptionData } from '../../../redux/actions';

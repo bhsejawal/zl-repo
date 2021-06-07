@@ -8,8 +8,8 @@ import { connect } from 'react-redux';
 import { Box } from 'grommet';
 import useFetch from 'use-http'
 
-import Loader from 'Components/async/Loader';
-import LoaderModal from 'Components/async/LoaderModal';
+import Loader from 'Components/Loader';
+import LoaderModal from 'Components/LoaderModal';
 import NoContentFallback from 'Components/NoContentFallback';
 import Dialog from 'Components/modals/Dialog';
 import ErrorModal from 'Components/modals/Error';
@@ -113,19 +113,23 @@ const ScheduleList = ({
         description,
         habitatSlug,
         zooSlug,
+        wideImage,
       }) => (
-        <ScheduleItem
-          liveTalks={liveTalks}
-          animal={animal}
-          zoo={zoo}
-          key={habitatId}
-          zooLogo={logo}
-          habitatImage={profileInfo}
-          description={description}
-          onClick={handleScheduleClick}
-          habitatSlug={habitatSlug}
-          zooSlug={zooSlug}
-        />
+        <Box flex="grow" align="center">
+          <ScheduleItem
+            liveTalks={liveTalks}
+            animal={animal}
+            zoo={zoo}
+            key={habitatId}
+            zooLogo={logo}
+            habitatImage={profileInfo}
+            description={description}
+            onClick={handleScheduleClick}
+            habitatSlug={habitatSlug}
+            zooSlug={zooSlug}
+            wideImage={wideImage}
+          />
+        </Box>
       ))}
       {showDialog && (
         <Dialog

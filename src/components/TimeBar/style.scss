@@ -1,5 +1,6 @@
 div.timeBar {
-  background-color: white;
+  background-color: var(--logoBlue);
+  color: #fff;
   box-shadow: 0px -4px 10px rgba(0, 0, 0, .08);
   min-height: 58px;
   position: fixed;
@@ -7,18 +8,6 @@ div.timeBar {
   width: 100%;
   right: 0;
   left: 0;
-
-  .text {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    justify-content: center;
-
-
-    @media screen and (max-width: 608px) {
-      font-size: 16px !important;
-    }
-  }
 
   button {
     white-space: nowrap;

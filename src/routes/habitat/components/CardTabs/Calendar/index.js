@@ -9,6 +9,8 @@ import {
   getDay,
   addWeeks,
   subWeeks,
+  addDays,
+  subDays,
 } from 'date-fns';
 
 import Event from './Event';
@@ -18,6 +20,7 @@ import Context from './Context';
 import AddEventModal from './EventScheduleModals/AddEvent';
 import EditEventModal from './EventScheduleModals/EditEvent';
 import DeleteEventModal from './EventScheduleModals/DeleteEvent';
+import { useIsMobileSize } from '../../../../../hooks';
 
 import 'react-big-calendar/lib/sass/styles.scss';
 import style from './style.scss';
@@ -38,14 +41,20 @@ const TimeGutterHeader = () => null;
 const Calendar = ({ schedules }) => {
   const [currentDate, setCurrentDate] = useState(new Date());
   const monthYear = useMemo(() => format(currentDate, 'MMM yyyy'), [currentDate]);
+  const isMobileSize = useIsMobileSize();
+  const view = isMobileSize ? Views.DAY : Views.WEEK;
 
   const moveNext = useCallback(() => {
-    setCurrentDate(addWeeks(currentDate, 1));
-  }, [currentDate]);
+    setCurrentDate(view === Views.WEEK
+      ? addWeeks(currentDate, 1)
+      : addDays(currentDate, 1));
+  }, [currentDate, view]);
 
   const movePrev = useCallback(() => {
-    setCurrentDate(subWeeks(currentDate, 1));
-  }, [currentDate]);
+    setCurrentDate(view === Views.WEEK
+      ? subWeeks(currentDate, 1)
+      : subDays(currentDate, 1));
+  }, [currentDate, view]);
 
   const moveToToday = useCallback(() => {
     setCurrentDate(new Date());
@@ -63,8 +72,8 @@ const Calendar = ({ schedules }) => {
           className={style.bigCalendar}
           date={currentDate}
           events={schedules}
-          defaultView={Views.WEEK}
-          views={[Views.WEEK]}
+          defaultView={view}
+          views={[view]}
           localizer={localizer}
           drilldownView={null}
           components={{

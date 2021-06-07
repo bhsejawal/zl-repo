@@ -1,3 +1,32 @@
+@import "../../../../../style/media-query.scss";
+
 .loadingWrapper {
   flex-grow: 1;
+  align-self: center;
+
+  @media screen and (max-width: #{$tablet-portrait-width - 1}) {
+    height: 202px;
+  }
+}
+
+.list {
+  @media screen and (max-width: #{$tablet-portrait-width - 1}) {
+    max-width: 100%;
+    margin: 30px 0 0 0;
+    padding: 30px 0;
+    border-left: 0;
+    border-right: 0;
+    border-top-width: 1px;
+    border-bottom-width: 1px;
+    width: 100%;
+  }
+
+  @media screen and (min-width: #{$tablet-portrait-width}) and (max-width: #{$tablet-landscape-width}) {
+    border-right: 0;
+  }
+
+  @media screen and (min-width: #{$tablet-portrait-width}) {
+    // 330px for habitat info, and 30px for margins
+    max-width: calc(100% - 360px);
+  }
 }

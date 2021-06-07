@@ -5,28 +5,39 @@ import {
   useRef,
   useState,
 } from 'preact/hooks';
+import { lazy, Suspense } from 'preact/compat';
 import { connect } from 'react-redux';
 import { route } from 'preact-router';
+import { Box, ResponsiveContext } from 'grommet';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faComment, faInfoCircle } from '@fortawesome/pro-solid-svg-icons';
 import useFetch from 'use-http';
 
 import { buildURL } from 'Shared/fetch';
 import GlobalsContextProvider from "Components/GlobalsContextProvider";
 import LiveStream from 'Components/LiveStream';
-import Loader from 'Components/async/Loader';
+import Loader from 'Components/Loader';
 import { openTermsModal } from 'Components/TermsAndConditions/actions';
 import { GlobalsContext } from 'Shared/context';
 
+import Tabs from 'Components/Tabs';
+import Tab from 'Components/Tabs/Tab';
 import Chat from './components/Chat';
 import LiveChannelsBar from './components/LiveChannelsBar';
 import CardTabs from './components/CardTabs';
 import StreamProfile from './components/StreamProfile';
 import OnboardingModal from './OnboardingModal';
+import SmallScreenCardTabs from './components/CardTabs/Mobile';
+import ShareModal from './components/ShareModal';
 
-import { useWindowResize } from '../../hooks';
+import { useIsHabitatTabbed, useWindowResize } from '../../hooks';
 import { setHabitat, unsetHabitat, setHabitatProps } from './actions';
 import { generateTitle } from '../../helpers';
+import { MOBILE_CONTROLS_HEIGHT } from './constants';
 
 import style from './style.scss';
+
+const ChatComponent = lazy(() => import('Components/Chat'));
 
 const maxStreamWidth = 1280;
 const maxStreamHeight = 720;
@@ -46,9 +57,12 @@ const Habitat = ({
   setHabitatPropsAction,
 }) => {
   const { width: windowWidth } = useWindowResize();
+  const size = useContext(ResponsiveContext);
   const { socket } = useContext(GlobalsContext);
   const pageRef = useRef();
   const [pageWidth, setPageWidth] = useState();
+  const isTabletOrLarger = ['medium', 'large'].includes(size);
+  const isTabbed = useIsHabitatTabbed();
 
   useEffect(() => {
     if (socket && userId && habitatId) {
@@ -120,9 +134,10 @@ const Habitat = ({
 
   const sideBarWidth = 84;
   const chatWidth = 285;
-  const calcStreamWidth = pageWidth - sideBarWidth - chatWidth;
-  const streamWidth = calcStreamWidth > maxStreamWidth ? maxStreamWidth : calcStreamWidth;
-  const height = streamWidth * 0.5625 > maxStreamHeight ? maxStreamHeight : streamWidth * 0.5625;
+  const calcStreamWidth = isTabbed ? windowWidth : (pageWidth - sideBarWidth - chatWidth);
+  const streamWidth = Math.min(maxStreamWidth, calcStreamWidth);
+  const height = Math.min(maxStreamHeight, streamWidth * 0.5625);
+  const topSectionHeight = height + (isTabbed ? MOBILE_CONTROLS_HEIGHT : 0);
 
   // TODO: there's a minor problem with this approach which should be fixed
   // curretnly when loading changes to "false", habitat data is still not there
@@ -138,9 +153,12 @@ const Habitat = ({
   }
 
   return (
-    <div ref={pageRef}>
-      <div className={style.topSection} style={{ height, maxHeight: height }}>
-        <LiveChannelsBar width={sideBarWidth} height={height} />
+    <div className={style.page} ref={pageRef}>
+      <div
+        className={style.topSection}
+        style={{ height: topSectionHeight, maxHeight: topSectionHeight }}
+      >
+        {!isTabbed && <LiveChannelsBar width={sideBarWidth} height={height} />}
         <LiveStream
           width={streamWidth}
           height={height}
@@ -149,17 +167,35 @@ const Habitat = ({
           mode="stream"
           isStreamOn={isStreamOn}
         />
-        <Chat width={chatWidth} height={height} />
+        {!isTabbed && <Chat width={chatWidth} height={height} />}
       </div>
 
-      <div className={style.middleSection}>
-        <StreamProfile />
+      <div style={{ height: `calc(100vh - var(--headerHeight) - ${height + MOBILE_CONTROLS_HEIGHT}px)` }}>
+        <Tabs show={isTabbed}>
+          <Tab label="Explore" icon={<FontAwesomeIcon size="lg" icon={faInfoCircle} />}>
+            <div className={style.middleSection}>
+              <StreamProfile />
+            </div>
+
+            <div className={style.bottomSection}>
+              {isTabletOrLarger
+                ? <CardTabs />
+                : <SmallScreenCardTabs />}
+            </div>
+          </Tab>
+
+          <Tab label="Chat" icon={<FontAwesomeIcon size="lg" icon={faComment} />}>
+            <Box fill direction="column" justify="center">
+              <Suspense fallback={<Loader />}>
+                <ChatComponent />
+              </Suspense>
+            </Box>
+          </Tab>
+        </Tabs>
       </div>
 
-      <div className={style.bottomSection}>
-        <CardTabs />
-      </div>
       <OnboardingModal />
+      <ShareModal />
     </div>
   );
 }

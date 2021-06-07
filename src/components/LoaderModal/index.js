@@ -1,4 +1,4 @@
-import { Layer } from 'grommet';
+import { Box, Layer } from 'grommet';
 import Loader from '../Loader';
 
 const LoaderModal = ({
@@ -10,7 +10,9 @@ const LoaderModal = ({
     animation="fadeIn"
     full={full}
   >
-    <Loader height={height} width={width} fill={full} />
+    <Box fill justify="center">
+      <Loader height={height} width={width} fill={full} />
+    </Box>
   </Layer>
 );
 

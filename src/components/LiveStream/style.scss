@@ -14,3 +14,15 @@
     visibility: visible;
   }
 }
+
+.videoContainer {
+  position: relative;
+}
+
+.timeBar {
+  position: absolute !important;
+  top: 0;
+  bottom: auto !important;
+  z-index: 5;
+  opacity: .9;
+}

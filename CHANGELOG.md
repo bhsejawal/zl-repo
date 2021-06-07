@@ -3,6 +3,38 @@ This file keeps track of all relevant change for every release.
 
 ## [Unreleased]
 
+## [5.4.0] - 2021-06-04
+### Added
+- Trial time bar improvements for mobile and style changes
+- Schedule page mobile
+- Update user timzone if its differnet than stored in DB
+- Mobile controls (zoom and camera)
+- Send the userId and host stream key to the api when a host starts streaming
+- Mobile calendar
+- New animals label in landing page
+- add preview image for album videos
+- Snapshot button loading state
+- Implement Album for Photos on Habitat Page
+- Implementing react-optimize and hero video AB test
+- Habitat page Responsive support
+
+### Changed
+- Chat auto scroll enhancement
+- Skip welcome page on mobile
+- Allow ignore www. in asset and origin comparison
+- Update max length for habitat name to be as on admin page
+- Update overlay size validation to 300KB
+- Update discount to Jun 30th
+- Logged in users should be redirected to the map page instead of the landing when clicking on Signup
+- Deploy with "cp" instead of "sync"
+- Hide admin controls on mobile
+
+### Fixed
+- Admin users switching a user roles issues
+- Front end errors for newly added habitats
+- Analytics not receiving the signed-up event for emails
+- Mobile cards autoplay
+
 ## [5.3.0] - 2021-05-27
 ### Changed
 - Improved chat experience, with message limiting, and timestamps on messages

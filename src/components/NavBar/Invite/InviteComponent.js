@@ -3,7 +3,7 @@ import { useCallback } from 'preact/hooks';
 import { Suspense, lazy } from 'preact/compat';
 import { faShare } from '@fortawesome/pro-solid-svg-icons';
 
-import LoaderModal from 'Components/async/LoaderModal';
+import LoaderModal from 'Components/LoaderModal';
 import NavItem from '../NavItem';
 
 const InviteModal = lazy(() => import('./Modal'));

@@ -1,12 +1,25 @@
 import { connect } from 'react-redux';
 import { Box, Image, Text } from 'grommet';
+import classnames from 'classnames';
 
 import Clock from './Clock';
+import { useIsMobileSize } from '../../hooks';
+
 import style from './style.scss';
 
 const WeatherWidget = ({ weather, location }) => {
+  const isMobileSize = useIsMobileSize();
+
   if (!weather || !location) {
     return null;
+  }
+
+  if (isMobileSize) {
+    return (
+      <Box pad="small" className={classnames(style.liveTag, style.mobile)}>
+        <Text size="small">LIVE</Text>
+      </Box>
+    );
   }
 
   return (

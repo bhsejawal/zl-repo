@@ -1,10 +1,9 @@
 import { useState, useContext, useCallback } from 'preact/hooks'
-
 import { connect } from 'react-redux';
 
 import { ChatContext } from 'Shared/context';
-
 import EmoteInput from '../EmoteInput';
+import { useIsMobileSize } from '../../../../hooks';
 
 import style from './style.module.scss'
 
@@ -15,6 +14,7 @@ const InputBox = ({
   color,
 }) => {
   const { pubnub } = useContext(ChatContext);
+  const isMobileSize = useIsMobileSize();
 
   const [input, setInput] = useState('');
 
@@ -51,7 +51,7 @@ const InputBox = ({
           onKeyDown={onKeyDownHandler}
 
         />
-        <EmoteInput value={input} onSelection={setInput} />
+        {!isMobileSize && <EmoteInput value={input} onSelection={setInput} />}
       </div>
       <button type="button" onClick={() => sendMessage(input)} className={style.SendButton}>
         Send

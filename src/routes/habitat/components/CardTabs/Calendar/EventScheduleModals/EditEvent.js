@@ -12,7 +12,7 @@ import { faTimes } from '@fortawesome/pro-solid-svg-icons';
 
 import { API_BASE_URL } from 'Shared/fetch';
 import { defaultErrorMsg } from 'Components/modals/Error';
-import Loader from 'Components/async/Loader';
+import Loader from 'Components/Loader';
 import StatusContent from 'Components/modals/StatusContent';
 import Form from './Form';
 

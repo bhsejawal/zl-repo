@@ -1,5 +1,5 @@
 import { pick } from 'lodash-es';
-import { MEET, QUIZ_CARD_TYPE} from './constants';
+import { MEET, QUIZ_CARD_TYPE } from './constants';
 import {
   ADD_HABITAT_CARD,
   UPDATE_HABITAT_CARD,
@@ -9,6 +9,17 @@ import {
   SET_CARDS_LOADING,
   SET_CARDS_SHORTCUT,
 } from './types';
+import {
+  CLOSE_MODAL_CARDS,
+  OPEN_MODAL_CARDS,
+  MOBILE_CARD_INDEX_NEXT,
+  MOBILE_CARD_INDEX_PREV,
+  MOBILE_CARD_INDEX_RESET,
+  OPEN_MODAL_CALENDAR,
+  CLOSE_MODAL_CALENDAR,
+} from './Mobile/types';
+
+import mobile from './Mobile/reducer';
 
 const cardSort = ({ index: i1 }, { index: i2 }) => (i1 - i2);
 
@@ -25,9 +36,12 @@ const initialState = {
   activeTab: MEET,
   canCreateQuizCard: false,
   activeShortcut: null,
+  mobile: mobile(),
 };
 
-export default (state = initialState, { type, payload }) => {
+export default (state = initialState, action = {}) => {
+  const { type, payload = {} } = action;
+
   switch (type) {
     case SET_HABITAT_CARDS: {
       const { cards } = payload;
@@ -104,6 +118,16 @@ export default (state = initialState, { type, payload }) => {
     case SET_CARDS_SHORTCUT: {
       const { activeShortcut } = payload;
       return { ...state, activeShortcut };
+    }
+
+    case MOBILE_CARD_INDEX_NEXT:
+    case MOBILE_CARD_INDEX_PREV:
+    case MOBILE_CARD_INDEX_RESET:
+    case OPEN_MODAL_CARDS:
+    case OPEN_MODAL_CALENDAR:
+    case CLOSE_MODAL_CALENDAR:
+    case CLOSE_MODAL_CARDS: {
+      return { ...state, mobile: mobile(state.mobile, action) };
     }
 
     default: {

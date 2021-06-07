@@ -7,9 +7,11 @@ import {
   useState,
 } from 'preact/hooks';
 import { connect } from 'react-redux';
+import { Box } from 'grommet';
 
 import { GlobalsContext } from 'Shared/context';
 import { hasPermission } from 'Components/Authorize';
+import TimeBar from 'Components/TimeBar';
 
 import Fallback from './Fallback';
 
@@ -19,6 +21,10 @@ import LiveStreamContext from './LiveStreamContext';
 
 import { useWebRTCStream } from './hooks/useWebRTCStream';
 import { wsMessages } from './helpers/constants';
+import { useIsHabitatTabbed, useIsMobileSize } from '../../hooks';
+import { MOBILE_CONTROLS_HEIGHT } from '../../routes/habitat/constants';
+import TakeSnapshotButton from './StreamInteractiveArea/StreamControls/TakeSnapshotButton';
+import ZoomBar from './StreamInteractiveArea/StreamControls/ZoomBar';
 
 import style from './style.scss';
 
@@ -43,6 +49,8 @@ const Stream = ({
   const containerRef = useRef(null);
   const { socket } = useContext(GlobalsContext);
   const [isInitialized, setIsInitialized] = useState(false);
+  const isSmallScreen = useIsMobileSize();
+  const isTabbed = useIsHabitatTabbed();
 
   const logStreamStatus = useCallback((data) => {
     if (data?.startTime && data?.streamId) {
@@ -90,49 +98,61 @@ const Stream = ({
     setIsInitialized(true);
   }, []);
 
-  if (!isStreamOn) {
-    return (
-      <div
-        className={style.streamContainer}
-        style={{
-          width,
-          height,
-          maxWidth: width,
-        }}
-      >
-        <Fallback type="offline" />
-        {(interactive && hasPermission('habitat:edit-stream')) && <AdminButton />}
-      </div>
-    )
-  }
-
   return (
     <LiveStreamContext.Provider value={{ videoRef }}>
+      {interactive && isTabbed && <TimeBar className={style.timeBar} />}
+
       <div
         className={style.streamContainer}
         style={{
           width,
-          height,
+          height: height + (isSmallScreen ? MOBILE_CONTROLS_HEIGHT : 0),
           maxWidth: width,
         }}
         ref={containerRef}
       >
-        <video
-          ref={videoRef}
-          autoPlay
-          controls={!customControls}
-          muted
-          playsInline
-          key={streamId}
-          style={{ width, height }}
-        />
+        <div className={style.videoContainer} style={{ width, height }}>
+          {isStreamOn && (
+            <video
+              ref={videoRef}
+              autoPlay
+              controls={!customControls}
+              muted
+              playsInline
+              key={streamId}
+              style={{ width, height }}
+            />
+          )}
 
-        {streamStatus === PLAY_STARTED && interactive && (
-          <StreamInteractiveArea
-            width={width}
-            height={height}
-            parentRef={containerRef}
-          />
+          {streamStatus === PLAY_STARTED && isStreamOn && interactive && (
+            <StreamInteractiveArea
+              width={width}
+              height={height}
+              parentRef={containerRef}
+            />
+          )}
+
+          {(interactive && hasPermission('habitat:edit-stream')) && <AdminButton />}
+        </div>
+
+        {/* mobile controls */}
+        {streamStatus === PLAY_STARTED && interactive && isSmallScreen && isStreamOn && (
+          <Box
+            width="100%"
+            height={`${MOBILE_CONTROLS_HEIGHT}px`}
+            direction="row"
+            align="center"
+            justify="around"
+            background="var(--hunterGreenMediumLight)"
+            pad={{ horizontal: "medium" }}
+          >
+            <Box justify="center" margin={{ right: '20px' }}>
+              <TakeSnapshotButton plain />
+            </Box>
+            <Box flex="grow">
+              <ZoomBar horizontal />
+            </Box>
+          </Box>
         )}
 
         {![ERROR, PLAY_STARTED, CLOSED].includes(streamStatus) && (
@@ -143,11 +163,12 @@ const Stream = ({
           <Fallback type="error" />
         )}
 
-        {streamStatus === CLOSED && (
-          <Fallback type="offline" />
+        {(streamStatus === CLOSED || !isStreamOn) && (
+          <>
+            <Fallback type="offline" />
+            {(interactive && hasPermission('habitat:edit-stream')) && <AdminButton />}
+          </>
         )}
-
-        {(interactive && hasPermission('habitat:edit-stream')) && <AdminButton />}
       </div>
     </LiveStreamContext.Provider>
   );

@@ -11,7 +11,7 @@ import useFetch from 'use-http';
 
 import { API_BASE_URL } from 'Shared/fetch';
 
-import Loader from 'Components/async/Loader';
+import Loader from 'Components/Loader';
 import Can from 'Components/Authorize';
 import Shortcuts from '../shortcuts';
 import CardEditor from '../CardEditor';
@@ -85,7 +85,7 @@ const Cards = ({
           prevTag = tag;
           tagPositionsRef.current.push({
             tag,
-            pos: nodes[ind].offsetLeft,
+            pos: nodes[ind]?.offsetLeft,
           });
         }
       });

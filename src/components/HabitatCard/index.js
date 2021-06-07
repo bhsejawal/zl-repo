@@ -11,17 +11,13 @@ import {
   Text,
   Box,
 } from 'grommet';
-import classnames from 'classnames';
 import useFetch from 'use-http';
 
 import { buildURL } from 'Shared/fetch';
 import { openTermsModal } from 'Components/TermsAndConditions/actions';
-import HabitatStatus from './HabitatStatus';
-
-import zooPlaceholder from './zooPlaceholder.png';
-import wideImgPlaceholder from './wideImgPlaceholder.png';
-
 import { updateFavoriteHabitat } from '../../redux/actions';
+
+import HabitatCardBase from './HabitatCardBase';
 
 import style from './style.scss';
 
@@ -105,46 +101,46 @@ const HabitatCard = ({
   }
 
   return (
-    <div className={classnames(style.habitatCard, className)}>
-      <div className={style.header}>
-        <img src={image ?? wideImgPlaceholder} alt="" />
-        <div className={style.logo}>
-          <img src={logo ?? zooPlaceholder} alt="" />
-        </div>
-        <HabitatStatus className={style.tag} online={online} liveTalk={liveTalk} />
+    <HabitatCardBase
+      className={className}
+      online={online}
+      liveTalk={liveTalk}
+      image={image}
+      logo={logo}
+    >
+      <div style={{ flexGrow: 1 }}>
+        <Heading level="4" margin={{ top: "0px", bottom: "15px" }}>{title || "Dummy Title"}</Heading>
+        <Text size="xlarge" as="p">
+          {description || "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy"}
+        </Text>
       </div>
-      <div className={style.body}>
-        <div style={{ flexGrow: 1 }}>
-          <Heading level="4" margin={{ top: "0px", bottom: "15px" }}>{title || "Dummy Title"}</Heading>
-          <Text size="xlarge" as="p">
-            {description || "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy"}
-          </Text>
-        </div>
-        <div className={classnames(style.buttons, style.favorite)}>
-          <Box width="170px">
-            <Link onClick={onHabitatClick} href={encodeURI(`/h/${zooSlug}/${slug}`)}>
-              <Button primary label="Enter Habitat" size="large" />
-            </Link>
-          </Box>
-          <Button
-            onClick={handleFavoriteClick}
-            margin={{ right: '5px' }}
-            width="20px"
-            className={style.iconButton}
-          >
-            <FontAwesomeIcon
-              icon={likeIcon}
-              color={isFavorited && !loading ? "var(--pink)" : "var(--grey)"}
-              spin={likeIcon === faSpinner}
-            />
-          </Button>
-        </div>
+      <div className={style.buttons}>
+        <Box width="170px">
+          <Link onClick={onHabitatClick} href={encodeURI(`/h/${zooSlug}/${slug}`)}>
+            <Button primary label="Enter Habitat" size="large" />
+          </Link>
+        </Box>
+        <Button
+          onClick={handleFavoriteClick}
+          margin={{ right: '5px' }}
+          width="20px"
+          className={style.iconButton}
+        >
+          <FontAwesomeIcon
+            icon={likeIcon}
+            color={isFavorited && !loading ? "var(--pink)" : "var(--grey)"}
+            spin={likeIcon === faSpinner}
+          />
+        </Button>
       </div>
-    </div>
+    </HabitatCardBase>
   );
 };
 
 export default connect(
   ({ user: { termsAccepted, favoriteHabitats } = {} }) => ({ termsAccepted, favoriteHabitats }),
-  { openTermsModalAction: openTermsModal, updateFavoriteHabitatAction: updateFavoriteHabitat },
-)(HabitatCard)
+  {
+    openTermsModalAction: openTermsModal,
+    updateFavoriteHabitatAction: updateFavoriteHabitat,
+  },
+)(HabitatCard);
