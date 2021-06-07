@@ -7,7 +7,7 @@ import {
 } from 'preact/hooks';
 
 import { connect } from 'react-redux';
-import { Box, ResponsiveContext } from 'grommet';
+import { Box } from 'grommet';
 
 import useFetch from 'use-http';
 import { route } from 'preact-router';
@@ -26,6 +26,7 @@ import UpdateSubscriptionDialog from './UpdateSubscriptionDialog';
 import { setPlans, setSubscriptionData } from '../../redux/actions';
 
 import background from './plansBackground.png';
+import { useWindowResize } from '../../hooks';
 
 const defaultDialogSettings = {
   show: false,
@@ -45,7 +46,8 @@ const SubscriptionSection = ({
   setSubscriptionDataAction,
 }) => {
   const { stripe } = useContext(StripeContext);
-  const size = useContext(ResponsiveContext);
+  const { width } = useWindowResize();
+  const isSmallScreen = width <= 750;
   const [showCancelDialog, setShowCancelDialog] = useState(false);
 
   const [dialogSettings, setDialogSettings] = useState(defaultDialogSettings);
@@ -261,6 +263,7 @@ const SubscriptionSection = ({
     plans,
     productId,
     subscriptionStatus,
+    isSubscriptionActive,
     checkoutHandler,
     validUntilReadable,
     cancelSubscription,
@@ -287,7 +290,7 @@ const SubscriptionSection = ({
           pad="50px"
         >
           <Box
-            direction={['medium', 'large'].includes(size) ? 'row' : 'column'}
+            direction={isSmallScreen ? 'column' : 'row'}
             fill
             align="center"
             justify="center"
