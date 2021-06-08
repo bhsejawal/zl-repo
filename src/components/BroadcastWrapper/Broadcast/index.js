@@ -17,14 +17,20 @@ import {
 } from 'grommet';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSignalStream, faVideo, faMicrophone } from '@fortawesome/pro-solid-svg-icons';
+import {
+  faSignalStream,
+  faVideo,
+  faMicrophone,
+  faQuestionCircle,
+} from '@fortawesome/pro-solid-svg-icons';
 import { connect } from 'react-redux';
 import { format } from "date-fns";
 
 import { wsMessages } from 'Components/LiveStream/helpers/constants';
 import { useWebRTCStream } from 'Components/LiveStream/hooks/useWebRTCStream';
 import { GlobalsContext } from 'Shared/context';
-import { PrimaryButton } from 'Components/Buttons';
+import { PrimaryButton, OutlineButton } from 'Components/Buttons';
+import { openContactUsModal } from 'Components/modals/ContactUs/actions';
 import RoundButton from 'Components/RoundButton';
 import PreviewTag from './PreviewTag';
 import LiveTag from './LiveTag';
@@ -50,6 +56,7 @@ const Broadcast = ({
   resetBroadcastContainer,
   habitatId,
   toggleIsBroadcastingAction,
+  openContactUsModalAction,
 }) => {
   const { socket } = useContext(GlobalsContext)
   const [showMenu, setShowMenu] = useState(false);
@@ -264,13 +271,25 @@ const Broadcast = ({
                 </select>
               </Box>
             </Box>
-            <Box margin={{ top: '15px' }} basis="2/3" alignSelf="start">
+            <Box margin={{ top: '15px' }} direction="row" justify="between">
               <PrimaryButton
                 size="medium"
                 label={isLoading ? 'Loading...' : buttonMessage}
                 onClick={() => toggleBroadcast(!isBroadcasting)}
                 className={isBroadcasting ? style.online : style.offline}
                 disabled={!selectedAudioDevice || !selectedVideoDevice || isLoading}
+              />
+
+              <OutlineButton
+                size="medium"
+                label={(
+                  <>
+                    <FontAwesomeIcon icon={faQuestionCircle} />
+                    &nbsp;
+                    Help
+                  </>
+                )}
+                onClick={() => openContactUsModalAction()}
               />
             </Box>
           </Box>
@@ -292,4 +311,5 @@ export default connect((
   habitatId,
 }), {
   toggleIsBroadcastingAction: toggleIsBroadcasting,
+  openContactUsModalAction: openContactUsModal,
 })(Broadcast);
