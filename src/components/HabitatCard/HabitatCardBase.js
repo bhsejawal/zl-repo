@@ -4,7 +4,6 @@ import classnames from 'classnames';
 import HabitatStatus from './HabitatStatus';
 
 import zooPlaceholder from './zooPlaceholder.png';
-import wideImgPlaceholder from './wideImgPlaceholder.png';
 
 import style from './style.scss';
 
@@ -17,8 +16,8 @@ const BaseHabitatCard = ({
   children,
 }) => (
   <div className={classnames(style.habitatCard, className)}>
-    <div className={style.header}>
-      <img src={image ?? wideImgPlaceholder} alt="" />
+    <div className={classnames(style.header, {[style.fallback]: !image})}>
+      {image && <img src={image} alt="" />}
       <div className={style.logo}>
         <img src={logo ?? zooPlaceholder} alt="" />
       </div>

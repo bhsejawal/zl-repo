@@ -1,10 +1,31 @@
 @import "../../style/media-query";
 
+.bottomImage {
+  position: absolute;
+  z-index: 1;
+  width: 100%;
+  bottom: 0;
+}
+
+.headerImage {
+  position: absolute;
+  z-index: 1;
+  left: 0;
+  right: 0;
+  margin: auto;
+}
+
+.background {
+  background: linear-gradient(180deg, #FFD1AF 27.08%, #FFDCEE 100%);
+  display: flex;
+  flex-grow: 1;
+  width: 100%;
+}
+
 .map {
   display: flex;
   flex-grow: 1;
   width: 100%;
-  background: linear-gradient(180deg, #FFD1AF 27.08%, #FFDCEE 100%);
 
   .content {
     display: flex;

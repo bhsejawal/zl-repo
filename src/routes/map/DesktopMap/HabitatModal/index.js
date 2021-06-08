@@ -18,10 +18,10 @@ import { PrimaryButton, OutlineButton } from 'Components/Buttons';
 import HabitatCard from 'Components/HabitatCard';
 import ImageSelector from 'Components/ImageSelector';
 
-import { updateHabitatData, setEditHabitat, toggleMapModal } from '../actions';
-import { updateHabitat } from '../../../redux/actions';
+import { updateHabitatData, setEditHabitat, toggleMapModal } from '../../actions';
+import { updateHabitat } from '../../../../redux/actions';
 
-import style from '../style.scss';
+import style from '../../style.scss';
 
 const HabitatModal = ({
   allHabitats,
@@ -62,8 +62,8 @@ const HabitatModal = ({
       formErrors.description = true;
     }
 
-    if (Number.isNaN(parseInt(editHabitat.mapPosition.top, 10))
-      || Number.isNaN(parseInt(editHabitat.mapPosition.left, 10))) {
+    if (Number.isNaN(parseInt(editHabitat.mapPosition?.top, 10))
+      || Number.isNaN(parseInt(editHabitat.mapPosition?.left, 10))) {
       formErrors.mapPosition = true;
     }
 
