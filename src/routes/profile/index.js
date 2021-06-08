@@ -1,28 +1,18 @@
 import { h } from 'preact';
-import {
-  useCallback,
-  useContext,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from 'preact/hooks';
+import { useEffect, useState } from 'preact/hooks';
 import {
   Box,
   Button,
   FormField,
-  Grid,
   Heading,
-  ResponsiveContext,
   Text,
   TextInput,
-  Grommet,
+  Layer,
 } from 'grommet';
 import { route } from 'preact-router';
 import { connect } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEyeDropper, faSpinner, faTimes } from '@fortawesome/pro-solid-svg-icons';
-import { HexColorPicker } from "react-colorful";
+import { faPencil, faSpinner, faTimes } from '@fortawesome/pro-solid-svg-icons';
 import { PrimaryButton } from 'Components/Buttons';
 import classnames from 'classnames';
 import useFetch from 'use-http';
@@ -33,9 +23,8 @@ import { buildURL } from 'Shared/fetch';
 import { logPageViewGA } from 'Shared/ga';
 import backgroundImg from './profileBackground.png';
 
-import { useIsInitiallyLoaded, useOnClickOutside } from '../../hooks';
+import { useIsInitiallyLoaded, useWindowResize } from '../../hooks';
 import { getUser, updateUser } from './api';
-import grommetTheme from '../../grommetTheme';
 import { updateProfile } from './actions';
 import { setSubscriptionData } from '../../redux/actions';
 import { logPageView } from '../../helpers';
@@ -43,51 +32,7 @@ import { logPageView } from '../../helpers';
 import 'react-colorful/dist/index.css';
 import accountPageStyle from '../account/style.scss';
 import style from './style.scss';
-
-const icons = getIconKeys();
-const colors = [
-  '#FFB145',
-  '#FF8A00',
-  '#F85C14',
-  '#CE0C0F',
-  '#7D0555',
-  '#FFA8EC',
-  '#F569A4',
-  '#C930A7',
-  '#A129FF',
-  '#5260DD',
-  '#76A6F2',
-  '#529ADD',
-  '#368185',
-  '#76ADAA',
-];
-
-const ColorItem = ({ color, selected, onClick }) => (
-  <button
-    type="button"
-    aria-label="color"
-    className={classnames(style.circleItem, { [style.selected]: selected })}
-    onClick={() => onClick(color)}
-    style={{ backgroundColor: color }}
-  />
-);
-
-const IconItem = ({
-  icon,
-  selected,
-  onClick,
-  color,
-}) => (
-  <button
-    type="button"
-    aria-label="color"
-    className={classnames(style.circleItem, style.animalIcon, { [style.selected]: selected })}
-    onClick={() => onClick(icon)}
-    style={{ backgroundColor: color }}
-  >
-    <div className={style.icon} style={{ backgroundImage: `url('${icon}')` }} />
-  </button>
-);
+import IconPicker from './IconPicker';
 
 const background = {
   image: `url('${backgroundImg}')`,
@@ -104,16 +49,16 @@ const Profile = ({
   openTermsModalAction,
   setSubscriptionDataAction,
 }) => {
-  const pickerRef = useRef();
-  const size = useContext(ResponsiveContext);
   const [isLoading, setIsLoading] = useState(true);
   const [color, setColor] = useState('#FFB145');
-  const [icon, setIcon] = useState(icons[0]);
+  const [icon, setIcon] = useState(getIconKeys()[0]);
   const [username, setUsername] = useState();
   const [errorMsg, setErrorMsg] = useState();
-  const [isPickerOpen, setIsPickerOpen] = useState(false);
-  const isCustomColor = useMemo(() => !colors.includes(color), [color]);
+  const [showModal, setShowModal] = useState();
   const isInitiallyLoaded = useIsInitiallyLoaded(isLoading);
+  const { width } = useWindowResize();
+  const isSmallScreen = width <= 800; // this threshold is based on the component layout
+
   const {
     post,
     response,
@@ -155,14 +100,6 @@ const Profile = ({
 
     fetchUser();
   }, []);
-
-  // use only 3 columns for extra small screen on mobile phones
-  const circlesGridConfig = useMemo(() => ({
-    columns: size !== 'xsmall'
-      ? ['xxsmall', 'xxsmall', 'xxsmall', 'xxsmall', 'xxsmall']
-      : ['xxsmall', 'xxsmall', 'xxsmall'],
-    gap: { column: '25px', row: '20px' },
-  }), [size]);
 
   const onUsernameChange = ({ target }) => {
     setUsername(target.value);
@@ -211,97 +148,29 @@ const Profile = ({
     }
   };
 
-  const onPickerBtn = () => {
-    setIsPickerOpen(true);
-  };
-
-  const onPickerCloseBtn = useCallback((evt) => {
-    evt.stopPropagation();
-    setIsPickerOpen(false);
-  }, []);
-
-  useOnClickOutside(pickerRef, onPickerCloseBtn);
-
   return (
     <Box
       className={classnames(style.container, { [style.step]: step })}
       background={background}
       overflow="auto"
     >
-      <Grommet
-        theme={grommetTheme}
+      <Box
         className={style.wrapper}
       >
-        <div className={style.pickSection}>
-          <Box>
-            <Box>
-              <Text margin={{ bottom: 'small' }} size="xlarge">
-                Pick your favorite colour:
-              </Text>
-              {/* eslint-disable-next-line react/jsx-props-no-spreading */}
-              <Grid {...circlesGridConfig}>
-                {colors.map((col) => (
-                  <ColorItem
-                    key={col}
-                    selected={color === col}
-                    color={col}
-                    onClick={setColor}
-                  />
-                ))}
-
-                <div className={style.colorPickerWrapper}>
-                  <button
-                    type="button"
-                    aria-label="close picker"
-                    className={classnames(
-                      style.pickerBtn,
-                      { [style.selected]: isCustomColor },
-                    )}
-                    // set color only if it's not in the list
-                    style={{ backgroundColor: !isCustomColor ? undefined : color }}
-                    onClick={onPickerBtn}
-                  >
-                    <FontAwesomeIcon
-                      icon={faEyeDropper}
-                      color={!isCustomColor ? 'var(--grey)' : '#fff'}
-                    />
-                  </button>
-                  {isPickerOpen && (
-                    <div ref={pickerRef} className={style.picker}>
-                      <div>
-                        <p>Pick a custom color:</p>
-                        <Button
-                          icon={<FontAwesomeIcon icon={faTimes} />}
-                          onClick={onPickerCloseBtn}
-                        />
-                      </div>
-                      <HexColorPicker color={color} onChange={setColor} />
-                    </div>
-                  )}
-                </div>
-              </Grid>
-            </Box>
-
-            <Box>
-              <Text margin={{ top: 'large', bottom: 'small' }} size="xlarge">
-                And your favorite animal:
-              </Text>
-              {/* eslint-disable-next-line react/jsx-props-no-spreading */}
-              <Grid {...circlesGridConfig}>
-                {icons.map((ico) => (
-                  <IconItem
-                    key={ico}
-                    selected={icon === ico}
-                    icon={getIconUrl(ico)}
-                    onClick={() => setIcon(ico)}
-                    color={color}
-                  />
-                ))}
-              </Grid>
-            </Box>
-          </Box>
-        </div>
-        <div className={style.divider} />
+        {!isSmallScreen && (
+          <>
+            <div className={style.pickSection}>
+              <IconPicker
+                icon={icon}
+                color={color}
+                setColor={setColor}
+                setIcon={setIcon}
+                showColorPicker={true}
+              />
+            </div>
+            <div className={style.divider} />
+          </>
+        )}
         <div className={style.characterSection}>
           <Box>
             {step && (
@@ -317,7 +186,15 @@ const Profile = ({
             <div className={style.largeImgWrapper}>
               {isInitiallyLoaded && (
                 <div className={style.largeImg} style={{ backgroundColor: color }}>
-                  {/* cheking for .svg as because the type was changed */}
+                  {isSmallScreen && (
+                    <Button
+                      plain
+                      margin="medium"
+                      onClick={() => setShowModal(true)}
+                      icon={<FontAwesomeIcon icon={faPencil} />}
+                    />
+                  )}
+                  {/* checking for .svg as because the type was changed */}
                   {/* old version had Webpack generated path */}
                   {/* we can remove this in future */}
                   {/* NOTE: this will not work locally which is fine */}
@@ -342,7 +219,34 @@ const Profile = ({
             </Box>
           </Box>
         </div>
-      </Grommet>
+      </Box>
+      {isSmallScreen && showModal && (
+        <Layer background="rgba(0, 0, 0, 0.65)">
+          <div className={style.modalContainer}>
+            <Button
+              className={style.close}
+              plain
+              onClick={() => setShowModal(false)}
+              icon={<FontAwesomeIcon size="2x" icon={faTimes} />}
+            />
+            <div className={style.pickSection}>
+              <IconPicker
+                icon={icon}
+                color={color}
+                setColor={setColor}
+                setIcon={setIcon}
+              />
+              <Box align="end" margin={{ top: '30px' }}>
+                <PrimaryButton
+                  loading={isLoading}
+                  label="Apply"
+                  onClick={() => setShowModal(false)}
+                />
+              </Box>
+            </div>
+          </div>
+        </Layer>
+      )}
     </Box>
   );
 };
