@@ -1,5 +1,7 @@
 .album {
   min-height: 690px;
+  display: flex;
+  flex-direction: column;
 
   :global {
 
@@ -136,28 +138,28 @@
   &.featured {
     @media screen and (min-width: 1150px) and (max-width: 1412px) {
 
-      div:nth-last-child(1) {
+      div:not(:nth-child(-n+4)) {
         display: none;
       }
     }
 
     @media screen and (min-width: 900px) and (max-width: 1150px) {
 
-      div:nth-last-child(-n+2) {
+      div:not(:nth-child(-n+3)) {
         display: none;
       }
     }
 
     @media screen and (min-width: 640px) and (max-width: 900px) {
 
-      div:nth-last-child(-n+3) {
+      div:not(:nth-child(-n+2)) {
         display: none;
       }
     }
 
     @media screen and (max-width: 640px) {
 
-      div:nth-last-child(-n+4) {
+      div:not(:first-child) {
         display: none;
       }
     }
