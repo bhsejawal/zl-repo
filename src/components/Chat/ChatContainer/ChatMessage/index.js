@@ -5,8 +5,11 @@ import {
   useRef,
   useMemo,
 } from 'preact/hooks';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faTimes } from '@fortawesome/pro-solid-svg-icons';
 
 import { getIconUrl } from 'Shared/profileIcons';
+import Can from 'Components/Authorize';
 import AnimalIcon from '../../../AnimalIcon';
 
 import style from './style.module.scss';
@@ -17,11 +20,13 @@ const ChatMessage = ({
   username,
   text,
   timestamp,
+  timetoken,
+  onDeleteHandler,
 }) => {
   const initialMessage = useMemo(() => {
     const message = formatDistanceToNowStrict(timestamp, { roundingMethod: 'ceil'});
     return message.startsWith('0') ? '1 minute' : message;
-  }, []);
+  }, [timestamp]);
   const [messageTime, setMessageTime] = useState(initialMessage);
   const intervalRef = useRef(null);
 
@@ -49,7 +54,15 @@ const ChatMessage = ({
           <span className={style.messageTime}>
             {` ${messageTime} ago`}
           </span>
-
+          <Can
+              perform="chat:moderate"
+              yes={() => (
+                // eslint-disable-next-line
+                <span className={style.delete} onClick={() => onDeleteHandler(timetoken)}>
+                  <FontAwesomeIcon icon={faTimes} />
+                </span>
+              )}
+          />
         </div>
         <span className={style.message}>
           {text}

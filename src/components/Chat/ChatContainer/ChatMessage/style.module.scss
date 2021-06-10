@@ -34,4 +34,13 @@
   line-height: 16px;
   color: white;
   margin-left: 4px;
+  flex-grow: 1;
+}
+
+.delete {
+  color: white;
+  padding-right: 10px;
+  font-size: 12px;
+  text-align: right;
+  cursor: pointer;
 }

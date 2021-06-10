@@ -10,6 +10,7 @@ import {
   TOGGLE_SHOW_EMOJI_BASKET,
   ADD_MESSAGES,
   CLEAR_MESSAGES,
+  MARK_MESSAGE_AS_DELETED,
   SHOW_SNAPSHOT_SHARE_POPUP,
   SET_SESSION_CHECHED,
   UNSET_USER_DATA,
@@ -79,6 +80,11 @@ export const addMessages = (messages) => (dispatch) => {
 export const clearMessages = () => ({
   type: CLEAR_MESSAGES,
 });
+
+export const markMessageAsDeleted = (messageId) => ({
+  type: MARK_MESSAGE_AS_DELETED,
+  payload: { messageId },
+})
 
 export const showSnapshotShare = (show) => ({
   type: SHOW_SNAPSHOT_SHARE_POPUP,
