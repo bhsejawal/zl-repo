@@ -1,10 +1,15 @@
 import { h } from 'preact';
-import { useContext, useEffect, useState } from 'preact/hooks';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCamera, faSpinner } from '@fortawesome/pro-solid-svg-icons';
 import { GlobalsContext } from 'Shared/context';
 import { connect } from 'react-redux';
-import { Button } from 'grommet';
+import { Button, Drop } from 'grommet';
+import {
+  useContext,
+  useEffect,
+  useState,
+  useRef,
+} from 'preact/hooks';
 
 import RoundButton from 'Components/RoundButton';
 import ShareContainer from './ShareContainer';
@@ -16,18 +21,24 @@ let timeout;
 const TakeSnapshotButton = ({ plain, habitatId, userId }) => {
   const { socket } = useContext(GlobalsContext);
   const [loading, setLoading] = useState();
+  const [tryAgain, setTryAgain] = useState();
+  const ref = useRef();
 
   const clickHandler = () => {
     socket.emit('zl_takeSnapshot', { room: habitatId, userId });
     setLoading(true);
-    // This is a fallback in case socket didnt return any photo in 8 seconds
-    timeout = setTimeout(setLoading, 8000);
+    // This is a fallback in case socket didn't return any photo in 8 seconds
+    timeout = setTimeout(() => {
+      setLoading(false);
+      setTryAgain(true);
+    }, 8000);
   };
 
   useEffect(() => {
     const stopLoading = (data = {}) => {
       if (data?.userId === userId) {
-        setLoading();
+        setLoading(false);
+        setTryAgain(false);
         clearTimeout(timeout);
         timeout = undefined;
       }
@@ -46,16 +57,43 @@ const TakeSnapshotButton = ({ plain, habitatId, userId }) => {
 
   if (plain) {
     return (
-      <Button plain onClick={clickHandler} disabled={loading}>
+      <Button ref={ref} plain onClick={clickHandler} disabled={loading}>
         {loading
           ? <FontAwesomeIcon color="#fff" size="lg" icon={faSpinner} spin />
           : <FontAwesomeIcon color="#fff" size="lg" icon={faCamera} />}
+        {ref.current && tryAgain && (
+          <Drop
+            background="var(--red)"
+            margin={{ bottom: '25px' }}
+            align={{ bottom: 'top', left: 'left' }}
+            target={ref.current}
+            round="7px"
+            onClickOutside={() => setTryAgain(false)}
+          >
+            <div className={style.tryAgain}>
+              Oops, try again!
+            </div>
+          </Drop>
+        )}
       </Button>
     );
   }
-
   return (
-    <div className={style.takeSnapshotContainer}>
+    <div ref={ref} className={style.takeSnapshotContainer}>
+      {ref.current && tryAgain && (
+        <Drop
+          background="var(--red)"
+          margin={{ left: '10px' }}
+          align={{ left: 'right' }}
+          target={ref.current}
+          round="7px"
+          onClickOutside={() => setTryAgain(false)}
+        >
+          <div className={style.tryAgain}>
+            Oops, try again!
+          </div>
+        </Drop>
+      )}
       <RoundButton
         onClick={clickHandler}
         width="36"
