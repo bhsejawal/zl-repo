@@ -25,6 +25,7 @@ export const PRIVACY_PDF_URL = 'https://assets.zoolife.tv/Brizi_-_Privacy_Policy
 
 const TermsAndConditions = ({
   user,
+  file,
   isOpen,
   isCloseDisabled,
   onCloseAction,
@@ -52,6 +53,9 @@ const TermsAndConditions = ({
     }
   };
 
+  const title = file === 'terms' ? 'Terms & Conditions' : 'Privacy Policy';
+  const pdfFile = file === 'terms' ? TERMS_PDF_URL : PRIVACY_PDF_URL;
+
   if (!isOpen) {
     return null;
   }
@@ -72,7 +76,7 @@ const TermsAndConditions = ({
           justify="between"
         >
           <Heading level="2" margin={{ vertical: 'medium', horizontal: 'large' }}>
-            Terms &amp; Conditions
+            {title}
           </Heading>
           <Button
             plain
@@ -88,7 +92,7 @@ const TermsAndConditions = ({
             className={style.pdfContainer}
             width="100%"
             height="100%"
-            src={`${TERMS_PDF_URL}#toolbar=0`}
+            src={`${pdfFile}#toolbar=0`}
             title="Terms and Conditions"
           />
         </Box>
@@ -164,12 +168,14 @@ export default connect(
       terms: {
         isOpen,
         isCloseDisabled,
+        file,
       },
     },
   }) => ({
     user,
     isOpen,
     isCloseDisabled,
+    file,
   }),
   {
     onCloseAction: closeTermsModal,

@@ -135,9 +135,9 @@ const Signup = ({ logged, setUserDataAction, openTermsModalAction }) => {
     }
   };
 
-  const onTermsAndPrivacyClick = (evt) => {
+  const onTermsAndPrivacyClick = (evt, type) => {
     evt.preventDefault();
-    openTermsModalAction();
+    openTermsModalAction(false, type);
   };
 
   return (
@@ -203,13 +203,13 @@ const Signup = ({ logged, setUserDataAction, openTermsModalAction }) => {
                     <Text>
                       I agree to Zoolife&apos;s&nbsp;
                       {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
-                      <Link href="#" className="small" onClick={onTermsAndPrivacyClick}>
-                        Terms
+                      <Link href="#" className="small" onClick={(evt) => onTermsAndPrivacyClick(evt, 'terms')}>
+                        Terms &amp; Conditions
                       </Link>
                       &nbsp;&amp;&nbsp;
                       {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
-                      <Link href="#" className="small" onClick={onTermsAndPrivacyClick}>
-                        Privacy
+                      <Link href="#" className="small" onClick={(evt) => onTermsAndPrivacyClick(evt, 'privacy')}>
+                        Privacy Policy
                       </Link>
                     </Text>
                   </Box>
@@ -244,12 +244,12 @@ const Signup = ({ logged, setUserDataAction, openTermsModalAction }) => {
           <Text>
             By using social signup, I agree to&nbsp;
             {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
-            <Link href="#" className="small" onClick={onTermsAndPrivacyClick}>
+            <Link href="#" className="small" onClick={(evt) => onTermsAndPrivacyClick(evt, 'terms')}>
               Terms
             </Link>
             &nbsp;&amp;&nbsp;
             {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
-            <Link href="#" className="small" onClick={onTermsAndPrivacyClick}>
+            <Link href="#" className="small" onClick={(evt) => onTermsAndPrivacyClick(evt, 'privacy')}>
               Privacy
             </Link>
           </Text>
