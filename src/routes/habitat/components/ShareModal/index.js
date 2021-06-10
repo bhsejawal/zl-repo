@@ -68,7 +68,7 @@ const ShareModal = ({
     htmlURL,
     url,
     videoURL,
-  } = data
+  } = data;
   const { socket } = useContext(GlobalsContext);
   const [showEmailError, setShowEmailError] = useState();
   const [showEmailSuccess, setShowEmailSuccess] = useState();
@@ -130,7 +130,6 @@ const ShareModal = ({
 
   return (
     <Layer
-      background="transparent"
       animation="fadeIn"
       position="center"
       onClickOutside={closeShareModalAction}

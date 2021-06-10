@@ -1,3 +1,5 @@
+@import "../../../../style/media-query";
+
 .shareModalContainer {
   border-radius: 5px;
   background: black;
@@ -35,7 +37,6 @@
 
   .shareMedia {
     width: 100%;
-    //min-height: calc(85vw * (72/128));
     position: relative;
 
     video,
@@ -43,6 +44,10 @@
       display: flex;
       width: 75vw;
       max-height: 90vh;
+
+      @media screen and (max-width: #{$tablet-portrait-width}) {
+        width: auto;
+      }
     }
   }
 

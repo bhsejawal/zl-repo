@@ -234,4 +234,19 @@ export default {
       minHeight: '30px',
     },
   },
+  layer: {
+    responsiveBreakpoint: null,
+    container: {
+      extend: {
+        maxWidth: 'calc(100vw - 30px)',
+        maxHeight: 'calc(100vh - 30px)',
+      },
+    },
+    overlay: {
+      background: 'rgba(0, 0, 0, 0.75)',
+    },
+    border: {
+      radius: '5px',
+    },
+  },
 };
