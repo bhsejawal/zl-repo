@@ -20,7 +20,7 @@ import { get as lodashGet, debounce } from 'lodash-es';
 import useFetch from 'use-http';
 
 import { buildURL } from 'Shared/fetch';
-import { format, add, addSeconds } from 'date-fns';
+import { format, add } from 'date-fns';
 
 import { PrimaryButton, OutlineButton } from 'Components/Buttons';
 import AddEditUserModal from './AddEditUserModal';
@@ -154,10 +154,10 @@ const Users = ({ pageSize = 20 }) => {
     header: <Text size="large">Minutes Spent</Text>,
     // eslint-disable-next-line react/display-name
     render: (rowData) => (
-      <div style={{ opacity: rowData.disabled ? '.5' : undefined }}>
+      <div style={{ opacity: rowData.disabled ? ".5" : undefined }}>
         <Text size="large">
           {rowData.sessionDurationInSec
-            ? format(addSeconds(new Date(null), rowData.sessionDurationInSec), 'm')
+            ? Math.floor(parseInt(rowData.sessionDurationInSec, 10) / 60)
             : ''}
         </Text>
       </div>
