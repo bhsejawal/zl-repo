@@ -1,5 +1,5 @@
 import { h } from 'preact';
-import { useState, useContext } from 'preact/hooks';
+import { useState, useContext, useEffect } from 'preact/hooks';
 import { Link, route } from 'preact-router';
 import { connect } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -31,11 +31,18 @@ import {
 
 import Layout from '../../layouts/LoginSignup';
 
+import signupImage from './zoolife-signup.jpeg';
+
 import style from '../login/style.scss';
 
 const TERMS_VERSION = process.env.PREACT_APP_TERMS_VERSION ?? 1;
 
-const Signup = ({ logged, setUserDataAction, openTermsModalAction }) => {
+const Signup = ({
+  logged,
+  setUserDataAction,
+  openTermsModalAction,
+  matches,
+}) => {
   const size = useContext(ResponsiveContext);
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
@@ -45,6 +52,13 @@ const Signup = ({ logged, setUserDataAction, openTermsModalAction }) => {
   const [showPassword, setShowPassword] = useState(false);
   const [isTermsAccepted, setIsTermsAccepted] = useState(false);
   const [termsError, setTermsError] = useState();
+
+  useEffect(() => {
+    const { socialLoginError = false } = matches;
+    if (socialLoginError && !emailError) {
+      setEmailError('Error logging in with social media. Make sure you share your email to proceed.');
+    }
+  }, [matches]);
 
   if (logged) {
     return route('/map', true);
@@ -135,14 +149,14 @@ const Signup = ({ logged, setUserDataAction, openTermsModalAction }) => {
     }
   };
 
-  const onTermsAndPrivacyClick = (evt) => {
+  const onTermsAndPrivacyClick = (evt, type) => {
     evt.preventDefault();
-    openTermsModalAction();
+    openTermsModalAction(false, type);
   };
 
   return (
     <Box fill width={{ max: "1650px", min: "350px" }} height={{ min: 'max-content' }} margin={{ horizontal: 'auto' }}>
-      <Layout>
+      <Layout image={signupImage}>
         {isLargeScreen && (
           <Heading margin={{top: '30px', bottom: '5px'}} level="4" color="var(--grey)">Step 1 of 2</Heading>
         )}
@@ -203,13 +217,13 @@ const Signup = ({ logged, setUserDataAction, openTermsModalAction }) => {
                     <Text>
                       I agree to Zoolife&apos;s&nbsp;
                       {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
-                      <Link href="#" className="small" onClick={onTermsAndPrivacyClick}>
-                        Terms
+                      <Link href="#" className="small" onClick={(evt) => onTermsAndPrivacyClick(evt, 'terms')}>
+                        Terms &amp; Conditions
                       </Link>
                       &nbsp;&amp;&nbsp;
                       {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
-                      <Link href="#" className="small" onClick={onTermsAndPrivacyClick}>
-                        Privacy
+                      <Link href="#" className="small" onClick={(evt) => onTermsAndPrivacyClick(evt, 'privacy')}>
+                        Privacy Policy
                       </Link>
                     </Text>
                   </Box>
@@ -244,12 +258,12 @@ const Signup = ({ logged, setUserDataAction, openTermsModalAction }) => {
           <Text>
             By using social signup, I agree to&nbsp;
             {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
-            <Link href="#" className="small" onClick={onTermsAndPrivacyClick}>
+            <Link href="#" className="small" onClick={(evt) => onTermsAndPrivacyClick(evt, 'terms')}>
               Terms
             </Link>
             &nbsp;&amp;&nbsp;
             {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
-            <Link href="#" className="small" onClick={onTermsAndPrivacyClick}>
+            <Link href="#" className="small" onClick={(evt) => onTermsAndPrivacyClick(evt, 'privacy')}>
               Privacy
             </Link>
           </Text>

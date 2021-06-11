@@ -9,10 +9,12 @@ $circle-size: 40px;
   height: 100%;
 
   .wrapper {
-    max-width: 1200px;
-    height: 100%;
     display: flex;
+    flex-direction: row;
     align-self: center;
+    max-width: 1200px;
+    width: 100%;
+    height: 100%;
   }
 }
 
@@ -23,12 +25,17 @@ $circle-size: 40px;
 
 .pickSection {
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
   padding: 76px;
 
   @media screen and (max-width: 1000px) {
     padding: 40px;
+  }
+
+  @media screen and (max-width: 450px) and (min-width: 415px) {
+    padding: 40px 15px;
   }
 }
 
@@ -49,7 +56,8 @@ $circle-size: 40px;
   }
 
   > div {
-    width: 500px;
+    max-width: 500px;
+    flex-grow: 1;
 
     @media screen and (max-width: 1000px) {
       width: auto;
@@ -95,6 +103,29 @@ $circle-size: 40px;
   background-color: #FFB145;
   padding: 20px;
   display: flex;
+  position: relative;
+
+  button {
+    width: 50px;
+    height: 50px;
+    color: var(--blueDark);
+    background: white;
+    border-radius: 50%;
+    position: absolute;
+    border: 0;
+    filter: drop-shadow(0px 4px 10px rgba(0, 0, 0, .25));
+    right: -15px;
+    top: 15px;
+    font-size: 25px;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    &:hover {
+      opacity: .9;
+    }
+  }
 
   img {
     width: 100%;
@@ -145,10 +176,34 @@ $circle-size: 40px;
   }
 }
 
+.modalContainer {
+  position: relative;
+  border-radius: 7px;
+  max-width: 90vw;
+  max-height: 90vh;
+  overflow: auto;
+  margin: auto;
+  background: white;
+  color: black;
+
+  .close {
+    position: absolute;
+    right: 15px;
+    top: 15px;
+    color: var(--grey);
+
+    svg {
+      width: 16px;
+      height: auto;
+    }
+  }
+}
+
 @media screen and (max-width: #{$widthThreshold}) {
 
-  .wrapper {
+  .container .wrapper {
     flex-direction: column-reverse;
+    justify-content: flex-end;
   }
 
   .pickSection {
@@ -159,21 +214,8 @@ $circle-size: 40px;
     display: none;
   }
 
-  .characterSection {
-    text-align: center;
-
-    > div {
-      max-width: unset;
-    }
-
-    input,
-    label {
-      text-align: center;
-    }
-
-    button {
-      margin: auto;
-    }
+  .characterSection button {
+    margin: auto;
   }
 }
 

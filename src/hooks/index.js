@@ -13,7 +13,14 @@ export const useWindowResize = () => {
 
   // eslint-disable-next-line consistent-return
   useEffect(() => {
-    const updateSize = throttle(() => setSize(getSize()), 400);
+    const updateSize = throttle(() => {
+      setSize(getSize());
+
+      // iPad/iPhone full height is ~98vh because they count the space under the browser controls
+      // this will calculate --vh variabel for actual view port for more accuracy
+      const vh = window.innerHeight * 0.01;
+      document.documentElement.style.setProperty('--vh', `${vh}px`);
+    }, 400);
     if (typeof window !== 'undefined') {
       window.addEventListener('resize', updateSize);
       updateSize();

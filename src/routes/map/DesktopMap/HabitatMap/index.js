@@ -7,11 +7,11 @@ import classnames from 'classnames';
 import { Box, Heading } from 'grommet';
 
 import Can from 'Components/Authorize'
-import { selectHabitat, toggleMapModal } from '../actions';
-
+import { selectHabitat, toggleMapModal } from '../../actions';
+import PinIcon from './PinIcon';
 import style from './style.scss';
 
-const HabitatMap = ({ habitats, selectHabitatAction }) => {
+const HabitatMap = ({ habitats, selectHabitatAction, activeHabitatId }) => {
   const [coordinates, setCoordinates] = useState(null);
   const mapRef = useRef(null);
 
@@ -51,7 +51,15 @@ const HabitatMap = ({ habitats, selectHabitatAction }) => {
               })}
               onClick={(evt) => habitatClickHandler(evt, _id)}
             >
-              <img src={profileImage} alt="" />
+              <div className={classnames(
+                style.pinWrapper,
+                {[style.selected]: _id === activeHabitatId },
+              )}>
+                <div className={classnames(style.pin, { [style.offline]: !online })}>
+                  <PinIcon />
+                </div>
+                <img src={profileImage} alt="Habitat" className={style.profile} />
+              </div>
             </div>
           ))}
 
@@ -77,7 +85,7 @@ const HabitatMap = ({ habitats, selectHabitatAction }) => {
 };
 
 export default connect(
-  ({ allHabitats: habitats }) => ({ habitats }),
+  ({ allHabitats: habitats, map: { activeHabitatId } }) => ({ habitats, activeHabitatId }),
   {
     selectHabitatAction: selectHabitat,
     toggleMapModalAction: toggleMapModal,

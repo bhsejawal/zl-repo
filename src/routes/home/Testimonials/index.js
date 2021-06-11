@@ -90,7 +90,7 @@ const Testimonials = () => (
         <Testimonial
           text="An incredible way to experience & protect nature as a family."
           image="https://assets.zoolife.tv/landing/s6_testimonial_3.png"
-          name="JP, Sao Paulo"
+          name="JP, São Paulo"
         />
         <Testimonial
           text="... and I've never felt more connected with nature than I do on Zoolife."

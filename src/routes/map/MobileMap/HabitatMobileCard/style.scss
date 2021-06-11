@@ -1,0 +1,34 @@
+.offline {
+  opacity: .5;
+
+  .habitatImage {
+    border-color: #3B499C !important;
+  };
+}
+
+.habitatImage {
+  border-radius: 50%;
+  max-width: 42px;
+  max-height: 42px;
+  border: 4px solid #C1E000;
+}
+
+.zooLogo {
+  width: 70px;
+}
+
+.accordion {
+  box-shadow: unset;
+
+  > button {
+    padding: 0px !important;
+
+    svg {
+      right: 0px !important;
+    }
+  }
+
+  >div {
+    border: unset !important;
+  }
+}

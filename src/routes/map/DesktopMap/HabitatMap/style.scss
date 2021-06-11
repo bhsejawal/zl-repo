@@ -1,0 +1,87 @@
+.map {
+  align-self: center;
+  margin-left: auto;
+  display: flex;
+  flex-grow: 1;
+  align-items: center;
+  padding-left: 20px;
+
+  .wrapper {
+    position: relative;
+    max-width: 100%;
+    max-height: 100%;
+    height: fit-content;
+  }
+
+  .habitat {
+    width: 45px;
+    height: 60px;
+    position: absolute;
+    transform: translate(-25%, -100%);
+    cursor: pointer;
+
+
+    &.liveTalk {
+      border-color: var(--oliveMedium);
+    }
+
+    &.offline {
+      border-color: var(--purple);
+      opacity: .75;
+    }
+
+    .pinWrapper {
+      position: relative;
+
+      @keyframes bounce {
+
+        0%,
+        100% {
+          transform: translateY(0);
+        }
+
+        50% {
+          transform: translateY(-5px);
+        }
+      }
+
+      &.selected {
+        animation-duration: .75s;
+        animation-fill-mode: both;
+        animation-timing-function: linear;
+        animation-iteration-count: infinite;
+        animation-name: bounce;
+      }
+
+
+      .pin {
+        position: absolute;
+
+        svg {
+          fill: #F8FEA4;
+          stroke: #F8FEA4;
+        }
+
+        &.offline svg {
+          fill: #3B499C;
+          stroke: #3B499C;
+        }
+      }
+    }
+
+    .profile {
+      position: absolute;
+      width: 35px;
+      transform: translate(5px, 5px);
+      border-radius: 50%;
+    }
+  }
+
+  img {
+    max-height: 80vh;
+    width: auto;
+    max-width: 100%;
+  }
+}
+
+

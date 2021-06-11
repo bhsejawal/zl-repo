@@ -26,6 +26,8 @@ import { emailRegex, identifyUser } from '../../helpers';
 
 import { showModal, validateToken } from './ResetModal/actions';
 
+import loginImage from './login.png';
+
 import style from './style.scss';
 
 const Login = ({
@@ -35,12 +37,21 @@ const Login = ({
   setShowModalAction,
   token, // from URL
   validateTokenAction,
+  matches,
 }) => {
   const [email, setEmail] = useState();
   const [emailError, setEmailError] = useState();
   const [password, setPassword] = useState();
   const [hasError, setHasError] = useState();
   const [showPassword, setShowPassword] = useState(false);
+
+  useEffect(() => {
+    const { socialLoginError = false } = matches;
+    if (socialLoginError && !hasError) {
+      setHasError(true);
+      setEmailError('Error logging in with social media. Make sure you share your email to proceed.');
+    }
+  }, [matches]);
 
   useEffect(() => {
     if (logged && profile) {
@@ -126,7 +137,7 @@ const Login = ({
 
   return (
     <Box fill width={{ max: "1650px", min: "350px" }} height={{ min: 'max-content' }} margin={{ horizontal: 'auto' }}>
-      <Layout>
+      <Layout image={loginImage}>
         <Box direction="row" align="center" height="auto">
           <Text size="xxlarge" responsive>
             Welcome back

@@ -32,7 +32,9 @@
   }
 
   button {
-    min-width: 103px;
+    min-width: unset;
+    display: flex;
+    align-items: center;
 
     &.online,
     &.online:hover {

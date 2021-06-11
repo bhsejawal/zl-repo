@@ -137,7 +137,7 @@ const Habitat = ({
   const calcStreamWidth = isTabbed ? windowWidth : (pageWidth - sideBarWidth - chatWidth);
   const streamWidth = Math.min(maxStreamWidth, calcStreamWidth);
   const height = Math.min(maxStreamHeight, streamWidth * 0.5625);
-  const topSectionHeight = height + (isTabbed ? MOBILE_CONTROLS_HEIGHT : 0);
+  const topSectionHeight = height + (isTabletOrLarger ? 0 : MOBILE_CONTROLS_HEIGHT);
 
   // TODO: there's a minor problem with this approach which should be fixed
   // curretnly when loading changes to "false", habitat data is still not there

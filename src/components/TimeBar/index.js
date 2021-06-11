@@ -57,7 +57,7 @@ const TimeBar = ({
   const [timestamp, setTimestamp] = useState(null);
   const isPlanPage = path === '/plans';
   const isLandingPage = path === '/';
-  const isSmallScreen = useIsMobileSize();
+  const isMobileSize = useIsMobileSize();
   const isPlanPageAndExpired = isPlanPage && !timestamp;
 
   useEffect(() => {
@@ -86,13 +86,14 @@ const TimeBar = ({
         }
       }, 1000);
 
-      if (Math.floor(timestamp / 1000) === 120) {
+      if (!isMobileSize && Math.floor(timestamp / 1000) === 120) {
         openInviteModalAction();
       }
     }
 
     return () => clearTimeout(timeout);
-  }, [isTrial, openInviteModalAction, timestamp, updateSubscriptionAction, validUntil]);
+  }, [isTrial, openInviteModalAction, timestamp,
+    updateSubscriptionAction, validUntil, isMobileSize]);
 
   if (!isTrial || isLandingPage || role !== 'user') {
     return null;
@@ -112,12 +113,12 @@ const TimeBar = ({
         justify="evenly"
       >
         <Text
-          size={isSmallScreen ? '14px' : '16px'}
+          size={isMobileSize ? '14px' : '16px'}
           textAlign={isPlanPageAndExpired ? 'center' : undefined}
         >
           {timestamp && (
             <>
-              {!isSmallScreen && <span>You Have&nbsp;</span>}
+              {!isMobileSize && <span>You Have&nbsp;</span>}
               <Text size="16px" weight={700}>
                 {format(timestamp)}
                 &nbsp;
@@ -126,12 +127,12 @@ const TimeBar = ({
             </>
           )}
           {!timestamp && <span>Your free trial has ended.</span> }
-          {!isSmallScreen && <span>&nbsp;Want more?</span>}
+          {!isMobileSize && <span>&nbsp;Want more?</span>}
         </Text>
         {!isPlanPageAndExpired && (
           <PrimaryButton
             margin={{left: '15px'}}
-            size={isSmallScreen ? 'small' : 'medium'}
+            size={isMobileSize ? 'small' : 'medium'}
             label={isPlanPage && timestamp ? 'Back to Trial' : 'Select a Plan'}
             onClick={() => route(isPlanPage && timestamp ? '/map' : '/plans')}
           />

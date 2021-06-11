@@ -8,9 +8,11 @@ import {
 } from 'grommet';
 import { useState } from 'preact/hooks';
 import { merge } from 'lodash-es';
+import classnames from 'classnames';
 
 import { hasPermission } from 'Components/Authorize';
 
+import { useIsMobileSize } from '../../hooks';
 import grommetTheme from '../../grommetTheme';
 import Profile from '../profile';
 import EmailSection from './MyAccount/EmailSection';
@@ -35,6 +37,7 @@ const tabsTheme = {
 
 const Account = () => {
   const [activeIndex, setActiveIndex] = useState(1);
+  const isMobileSize = useIsMobileSize();
 
   return (
     <Grommet theme={merge(tabsTheme, grommetTheme)} className="full-height">
@@ -43,7 +46,7 @@ const Account = () => {
           <Tabs
             activeIndex={activeIndex}
             onActive={setActiveIndex}
-            className={style.tabs}
+            className={classnames(style.tabs, {[style.mobile]: isMobileSize})}
             flex
           >
             <Tab title="My Character">
@@ -59,12 +62,12 @@ const Account = () => {
                 style={{ display: 'block' }}
               >
                 <Box
-                  width={{max: '885px'}}
+                  width={{max: 'min(885px, calc(100vw - 40px))'}}
                   margin="auto"
                   fill="horizontal"
                   pad={{ vertical: '20px', top: '20px', bottom: '40px' }}
                 >
-                  <Heading fill textAlign="center" level="2">Account Information</Heading>
+                  <Heading fill textAlign="center" level="2" margin={isMobileSize && '0 10px 20px'}>Account Information</Heading>
                   <EmailSection />
                   <Box pad="20px" />
                   <PasswordSection />

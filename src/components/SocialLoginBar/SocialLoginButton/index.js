@@ -24,6 +24,9 @@ const SocialLoginButton = ({ variant, referralData }) => {
   });
   queryParams.append('platform', variant);
 
+  const origin = window.location.pathname;
+  queryParams.append('origin', origin);
+
   return (
     <a
       href={buildURL('connect', variant, `?${queryParams}`)}

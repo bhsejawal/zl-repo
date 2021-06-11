@@ -31,9 +31,11 @@ const CalendarModal = ({ closeAction }) => {
 
   return (
     <Layer onEsc={closeAction}>
-      {closeButton}
-      <Box fill pad="small" overflow="auto">
-        <CalendarLoader />
+      <Box width="max-content">
+        {closeButton}
+        <Box fill pad="small" overflow="auto">
+          <CalendarLoader />
+        </Box>
       </Box>
     </Layer>
   );

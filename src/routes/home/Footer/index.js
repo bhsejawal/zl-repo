@@ -124,6 +124,16 @@ const Footer = () => {
             {' '}
             <a className={style.mLink} href={mailLinks?.press}>{mailLinks?.press}</a>
           </h3>
+          <h3>
+            <a
+              className={`${style.mLink} ${style.bold}`}
+              href="https://brizi.applytojob.com/apply/lQ3Gm5NILz/Director-Of-Partnerships"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              We&apos;re Hiring! 🦋
+            </a>
+          </h3>
         </div>
       </div>
       <div className={style.bottom}>

@@ -81,6 +81,7 @@ const ScheduleCarousel = ({
           partialVisible
           renderDotsOutside
           showDots
+          keyBoardControl={false}
           className={classnames(style.carousel, { [style.singleItem]: list.length === 0 }) }
           responsive={{
             generic: {

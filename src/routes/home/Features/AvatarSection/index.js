@@ -8,10 +8,10 @@ import { goToSignup } from '../../helpers';
 import style from "../style.scss";
 
 const AvatarSection = () => (
-  <div className={style.top}>
+  <div className={style.top} id="animalsSection">
     <div className={style.left}>
       <img
-        src="https://assets.zoolife.tv/landing/s4_animal_grid.png"
+        src="https://assets.zoolife.tv/landing/s4_animal_grid_v2.png"
         alt="animals"
         loading="lazy"
       />

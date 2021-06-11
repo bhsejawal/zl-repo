@@ -15,6 +15,15 @@
   min-height: 102px;
   max-height: 102px;
 
+  &.fallback {
+    background: #5B8EF6;
+
+    .logo img {
+      width: 54px;
+      border-radius: 0;
+    }
+  }
+
   > img {
     height: 102px;
     width: 100%;
