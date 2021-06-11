@@ -102,7 +102,11 @@ const PasswordSection = ({ expand = true, setUserDataAction, setShowModalAction 
   const disableUpdate = !currentPassword || !newPassword || !passwordConf;
 
   return (
-    <Accordion expanded={expand} header={<Heading level="4">Password</Heading>}>
+    <Accordion
+      expanded={expand}
+      header={<Heading level="4">Password</Heading>}
+      className={classnames(style.mobileAccordion, style.passowrd)}
+    >
       <Box>
         <Box
           direction="row"

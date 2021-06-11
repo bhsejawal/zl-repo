@@ -68,15 +68,25 @@
   }
 }
 
-.tabs > div:first-child {
-  padding: 20px;
-  justify-content: left;
+.tabs {
 
-  button {
-    padding-top: 5px;
+  &.mobile {
 
-    span {
-      font-size: 16px;
+    > div:first-child {
+      padding: 10px 0 10px;
+    }
+  }
+
+  > div:first-child {
+    padding: 20px;
+    justify-content: left;
+
+    button {
+      padding-top: 5px;
+
+      span {
+        font-size: 16px;
+      }
     }
   }
 }
@@ -87,4 +97,74 @@
   color: inherit;
   text-decoration: underline;
   cursor: pointer;
+}
+
+.mobileAccordion {
+
+  &.passowrd {
+
+    .inputContainer {
+      width: calc(100% - 90px);
+      padding-top: 10px;
+    }
+
+    .label {
+      width: 90px;
+    }
+
+    > div > div > div {
+      padding: 0 22px;
+
+      &:first-child {
+        padding: 22px;
+      }
+    }
+
+    .updateButton {
+      margin-bottom: 34px;
+    }
+
+    .errorSection {
+      font-size: 12px;
+      line-height: 18px;
+      padding-top: 6px;
+
+      &:not(.active) {
+        color: var(--grey);
+      }
+    }
+  }
+
+
+  button[class^="header"] {
+    padding: 0 22px;
+
+    svg {
+      right: 22px;
+    }
+  }
+
+  > div > div > div {
+    padding: 22px 22px 34px;
+  }
+
+  .note {
+    font-size: 12px;
+    line-height: 18px;
+    color: var(--grey);
+    margin-bottom: 20px;
+  }
+
+  .label {
+    padding-top: 6px;
+    width: 58px;
+  }
+
+  .inputContainer {
+    width: calc(100% - 50px);
+  }
+
+  .updateButton {
+    float: right;
+  }
 }
