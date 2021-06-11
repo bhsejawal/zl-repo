@@ -1,39 +1,58 @@
 /* eslint-disable no-param-reassign */
-import { useEffect } from 'preact/hooks';
+import { useEffect, useRef } from 'preact/hooks';
+
 // eslint-disable-next-line import/prefer-default-export
 export const useCursorHook = ({ containerRef, ownCursorRef }) => {
+  const isTouchRef = useRef();
+
   // eslint-disable-next-line consistent-return
   useEffect(() => {
     if (containerRef.current && ownCursorRef?.current) {
       const onLeave = () => {
-        ownCursorRef.current.style.opacity = 0;
+        if (!isTouchRef.current) {
+          ownCursorRef.current.style.opacity = 0;
+        }
       };
 
       const onEnter = () => {
-        ownCursorRef.current.style.opacity = 1;
+        if (!isTouchRef.current) {
+          ownCursorRef.current.style.opacity = 1;
+        }
       };
 
       const onMove = (event) => {
-        ownCursorRef.current.style.top = `${event.clientY}px`;
-        ownCursorRef.current.style.left = `${event.clientX}px`;
+        if (!isTouchRef.current) {
+          ownCursorRef.current.style.top = `${event.clientY}px`;
+          ownCursorRef.current.style.left = `${event.clientX}px`;
+        }
       };
+
+      const onTouch = () => {
+        isTouchRef.current = true;
+      }
 
       containerRef.current.addEventListener('mouseleave', onLeave);
       containerRef.current.addEventListener('mouseenter', onEnter);
       containerRef.current.addEventListener('mousemove', onMove);
+      // we need this for touch devices to fix the bug where
+      // cursor stays after touching the stream
+      containerRef.current.addEventListener('touchstart', onTouch);
+      const el = containerRef.current;
 
       return () => {
-        containerRef.current.removeEventListener('mouseleave', onLeave);
-        containerRef.current.removeEventListener('mouseenter', onEnter);
-        containerRef.current.removeEventListener('mousemove', onMove);
+        el.removeEventListener('mouseleave', onLeave);
+        el.removeEventListener('mouseenter', onEnter);
+        el.removeEventListener('mousemove', onMove);
+        el.removeEventListener('touchstart', onTouch);
       };
     }
   }, [ownCursorRef, containerRef]);
 
   useEffect(() => {
     containerRef.current.style.cursor = 'none';
+    const el = containerRef.current;
     return () => {
-      delete containerRef.current.style.cursor;
+      delete el.style.cursor;
     };
   }, [containerRef]);
 };
