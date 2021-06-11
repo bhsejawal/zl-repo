@@ -1,0 +1,12 @@
+.emojiImg {
+  max-height: 80%;
+  max-width: 30px;
+  min-width: 25px;
+}
+
+.emojiBtn {
+
+  &[disabled] {
+    opacity: .6;
+  }
+}

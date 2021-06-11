@@ -7,7 +7,6 @@ import {
   useState,
 } from 'preact/hooks';
 import { connect } from 'react-redux';
-import { Box } from 'grommet';
 
 import { GlobalsContext } from 'Shared/context';
 import { hasPermission } from 'Components/Authorize';
@@ -23,8 +22,7 @@ import { useWebRTCStream } from './hooks/useWebRTCStream';
 import { wsMessages } from './helpers/constants';
 import { useIsHabitatTabbed, useIsMobileSize } from '../../hooks';
 import { MOBILE_CONTROLS_HEIGHT } from '../../routes/habitat/constants';
-import TakeSnapshotButton from './StreamInteractiveArea/StreamControls/TakeSnapshotButton';
-import ZoomBar from './StreamInteractiveArea/StreamControls/ZoomBar';
+import MobileControls from './MobileControls.js';
 
 import style from './style.scss';
 
@@ -137,22 +135,7 @@ const Stream = ({
 
         {/* mobile controls */}
         {streamStatus === PLAY_STARTED && interactive && isSmallScreen && isStreamOn && (
-          <Box
-            width="100%"
-            height={`${MOBILE_CONTROLS_HEIGHT}px`}
-            direction="row"
-            align="center"
-            justify="around"
-            background="var(--hunterGreenMediumLight)"
-            pad={{ horizontal: "medium" }}
-          >
-            <Box justify="center" margin={{ right: '20px' }}>
-              <TakeSnapshotButton plain />
-            </Box>
-            <Box flex="grow">
-              <ZoomBar horizontal />
-            </Box>
-          </Box>
+          <MobileControls />
         )}
 
         {![ERROR, PLAY_STARTED, CLOSED].includes(streamStatus) && (

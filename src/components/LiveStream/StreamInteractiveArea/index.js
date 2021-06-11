@@ -8,6 +8,7 @@ import InteractiveAreaHandler from './InteractiveAreaHandler';
 
 import { addUserInteraction } from '../../../redux/actions';
 import { useIsMobileSize } from '../../../hooks';
+import EmojiBubbles from './EmojiBubbles';
 
 const StreamInteractiveArea = () => {
   const isMobileSize = useIsMobileSize();
@@ -18,6 +19,7 @@ const StreamInteractiveArea = () => {
       <StreamInteractions />
       <InteractiveAreaHandler />
       <WeatherWidget />
+      <EmojiBubbles />
     </>
   );
 };
