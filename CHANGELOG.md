@@ -2,6 +2,35 @@
 This file keeps track of all relevant change for every release.
 
 ## [Unreleased]
+- Emote bar on the habitat page for mobile devices
+## [5.5.0] - 2021-06-11
+### Added
+- Mobile version of the Account Tab
+- Mobile version of the Map Page
+- Mobile version of the Plans Page
+- Pins to the desktop version of the Map Page
+- Google Tag Manager
+- A/B Test for the video on the hero section, and the Meet the Animals button
+- Error handling for social login
+- Popup on the habitat page if take picture process fails
+- Delete message functionality
+- Contact us button on the Livestream container
+
+### Changed
+- Invite popup will no longer auto trigger on mobile devices
+- Modals are now consistent on mobile devices
+- Max height for maps cards
+- Image on the signup page
+- Added the We're hiring link on the landing page
+- Text changes on the landing pages
+- Better usage of space when trial bar is not visible
+### Fixed
+- Minutes Spent on Users Page is now showing the proper values
+- Fixed terms and privacy popup on the signup page to show the proper files
+- Removed unnecessary empty space on the habitat page when using tablets
+- Schedule Cards on the habitat page will no longer move if a user user the arrows on the keyboard
+- Issue with the load more button on the album component when using Safari
+
 
 ## [5.4.0] - 2021-06-04
 ### Added
