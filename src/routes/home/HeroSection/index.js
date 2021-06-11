@@ -85,6 +85,18 @@ const VideoSectionB = () => {
   )
 }
 
+const MeetTheAnimalsA = () => (
+  <LandingSecondary onClick={goToSignup}>Meet the Animals</LandingSecondary>
+);
+
+const MeetTheAnimalsB = () => (
+  <LandingSecondary
+    onClick={() => document.getElementById('animalsSection').scrollIntoView({ behavior: 'smooth' })}
+  >
+    Meet the Animals
+  </LandingSecondary>
+);
+
 const HeroSection = ({ partnerImage }) => {
   const [index, setIndex] = useState(0);
 
@@ -125,17 +137,31 @@ const HeroSection = ({ partnerImage }) => {
               <h4>
                 Live animal experiences from the world&apos;s top zoos, hosted by nature experts.
               </h4>
-              <LandingSecondary onClick={goToSignup}>Meet the Animals</LandingSecondary>
+              <Experiment id="EwlYbPucSNeAABm4k0rMzA">
+                <Variant id="0">
+                  <MeetTheAnimalsA />
+                </Variant>
+                <Variant id="1">
+                  <MeetTheAnimalsA />
+                </Variant>
+                <Variant id="2">
+                  <MeetTheAnimalsB />
+                </Variant>
+              </Experiment>
+
             </div>
           </div>
         </div>
         <div className={style.right}>
-          <Experiment id="VApN2F3gSXemhsEH6HjCBQ">
+          <Experiment id="EwlYbPucSNeAABm4k0rMzA">
             <Variant id="0">
               <VideoSectionA />
             </Variant>
             <Variant id="1">
               <VideoSectionB />
+            </Variant>
+            <Variant id="2">
+              <VideoSectionA />
             </Variant>
           </Experiment>
         </div>

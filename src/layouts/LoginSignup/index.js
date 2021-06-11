@@ -1,13 +1,11 @@
 import { h } from 'preact';
 
-import loginImage from './login.png';
-
 import './style.scss';
 
-const LoginSignup = ({ children }) => (
+const LoginSignup = ({ children, image }) => (
   <div className="loginSignup">
     <div className="imageSection">
-      <img src={loginImage} alt="" />
+      <img src={image} alt="" />
     </div>
     <div className="formSection">
       <div>

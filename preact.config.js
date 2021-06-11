@@ -29,11 +29,16 @@ export default (config, env, helpers) => {
   }
 
   const { plugin: htmlPlugin } = helpers.getPluginsByName(config, 'HtmlWebpackPlugin')[0] || {};
-  const { PREACT_APP_SEGMENT_ID: segmentId, PREACT_APP_OPTIMIZE_ID: optimizeId } = process.env;
+  const {
+    PREACT_APP_SEGMENT_ID: segmentId,
+    PREACT_APP_OPTIMIZE_ID: optimizeId,
+    PREACT_APP_GA_APPID: gaId,
+  } = process.env;
 
   if (htmlPlugin) {
     htmlPlugin.options.segmentId = segmentId;
     htmlPlugin.options.optimizeId = optimizeId;
+    htmlPlugin.options.gaId = gaId;
   }
 
   if (config.devServer) {

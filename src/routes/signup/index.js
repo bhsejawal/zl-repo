@@ -31,6 +31,8 @@ import {
 
 import Layout from '../../layouts/LoginSignup';
 
+import signupImage from './zoolife-signup.jpeg';
+
 import style from '../login/style.scss';
 
 const TERMS_VERSION = process.env.PREACT_APP_TERMS_VERSION ?? 1;
@@ -142,7 +144,7 @@ const Signup = ({ logged, setUserDataAction, openTermsModalAction }) => {
 
   return (
     <Box fill width={{ max: "1650px", min: "350px" }} height={{ min: 'max-content' }} margin={{ horizontal: 'auto' }}>
-      <Layout>
+      <Layout image={signupImage}>
         {isLargeScreen && (
           <Heading margin={{top: '30px', bottom: '5px'}} level="4" color="var(--grey)">Step 1 of 2</Heading>
         )}
