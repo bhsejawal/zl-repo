@@ -1,5 +1,5 @@
 import { h } from 'preact';
-import { useState, useContext } from 'preact/hooks';
+import { useState, useContext, useEffect } from 'preact/hooks';
 import { Link, route } from 'preact-router';
 import { connect } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -37,7 +37,12 @@ import style from '../login/style.scss';
 
 const TERMS_VERSION = process.env.PREACT_APP_TERMS_VERSION ?? 1;
 
-const Signup = ({ logged, setUserDataAction, openTermsModalAction }) => {
+const Signup = ({
+  logged,
+  setUserDataAction,
+  openTermsModalAction,
+  matches,
+}) => {
   const size = useContext(ResponsiveContext);
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
@@ -47,6 +52,13 @@ const Signup = ({ logged, setUserDataAction, openTermsModalAction }) => {
   const [showPassword, setShowPassword] = useState(false);
   const [isTermsAccepted, setIsTermsAccepted] = useState(false);
   const [termsError, setTermsError] = useState();
+
+  useEffect(() => {
+    const { socialLoginError = false } = matches;
+    if (socialLoginError && !emailError) {
+      setEmailError('Error logging in with social media. Make sure you share your email to proceed.');
+    }
+  }, [matches]);
 
   if (logged) {
     return route('/map', true);
