@@ -20,9 +20,11 @@
 }
 
 .timeBar {
-  position: absolute !important;
+  position: absolute;
   top: 0;
-  bottom: auto !important;
+  right: 0;
+  left: 0;
+  bottom: auto;
   z-index: 5;
   opacity: .9;
 }

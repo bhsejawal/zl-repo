@@ -38,7 +38,6 @@ const homeTitle = "The world's first digital zoo.";
 
 const Main = ({
   onRouteChange,
-  isTrial,
   showContactUs,
   logged,
   timezone,
@@ -104,8 +103,7 @@ const Main = ({
   }
 
   return (
-    // time bar padding
-    <Box fill pad={{ bottom: (!isTabbedHabitatPath && isTrial) ? '58px' : undefined }}>
+    <Box fill className="calculated-full-height">
       <Router onChange={routerChangeHandler}>
         <Home path="/" exact title={homeTitle} />
         <Home path="/twitch" exact title={homeTitle} />
@@ -207,10 +205,9 @@ const Main = ({
 };
 
 export default connect(({
-  user: { logged, timezone, subscription: { productId } },
+  user: { logged, timezone },
   modals: { contactus: { isOpen: showContactUs }},
 }) => ({
-  isTrial: productId === 'TRIAL',
   showContactUs,
   logged,
   timezone,
