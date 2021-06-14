@@ -53,12 +53,7 @@ const Onboarding = ({ isOnboarded, setUserDataAction }) => {
   }
 
   return (
-    <Layer
-      responsive
-      full
-      plain
-      background="transparent"
-    >
+    <Layer background="transparent">
       <Box className={style.onboarding}>
         <Box className={style.onboardingWrapper}>
           {showButtons && (
