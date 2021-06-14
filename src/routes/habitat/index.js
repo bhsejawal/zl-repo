@@ -170,7 +170,7 @@ const Habitat = ({
         {!isTabbed && <Chat width={chatWidth} height={height} />}
       </div>
 
-      <div style={{ height: `calc(100vh - var(--headerHeight) - ${height + MOBILE_CONTROLS_HEIGHT}px)` }}>
+      <div style={{ height: `calc(100vh - var(--headerHeight) - ${height + (isTabletOrLarger ? 0 : MOBILE_CONTROLS_HEIGHT)}px)` }}>
         <Tabs show={isTabbed}>
           <Tab label="Explore" icon={<FontAwesomeIcon size="lg" icon={faInfoCircle} />}>
             <div className={style.middleSection}>
