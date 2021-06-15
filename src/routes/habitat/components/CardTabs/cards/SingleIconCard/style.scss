@@ -21,21 +21,19 @@ $img-size: 140px;
   border-radius: 100%;
 }
 
-.bottom {
-  flex: 3;
-  justify-content: center;
-}
+.mobile .wrapper {
 
-.title {
-  font-size: 25px;
-  text-align: center;
-  margin-top: 0;
-  margin-bottom: 20px;
-}
+  .img {
+    width: 180px;
+    height: 180px;
+  }
 
-.text {
-  font-size: 15px;
-  text-align: center;
-  margin: 0;
-  line-height: 20px;
+  h4 {
+    font-size: 20px;
+    margin: 20px 0;
+  }
+
+  span {
+    font-size: 16px;
+  }
 }

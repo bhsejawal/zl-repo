@@ -265,6 +265,7 @@ const MobileCardsModal = ({
               title={card.data.title}
               img={card.data.img}
               text={card.data.text}
+              mobile
             />
           )}
 
@@ -279,6 +280,7 @@ const MobileCardsModal = ({
               text2={card.data.text2}
               img3={card.data.img3}
               text3={card.data.text3}
+              mobile
             />
           )}
 
@@ -296,6 +298,7 @@ const MobileCardsModal = ({
               icon3Txt={card.data.icon3Txt}
               img4={card.data.img4}
               icon4Txt={card.data.icon4Txt}
+              mobile
             />
           )}
 
@@ -311,6 +314,7 @@ const MobileCardsModal = ({
               text1={card.data.text1}
               text2={card.data.text2}
               text3={card.data.text3}
+              mobile
             />
           )}
 
@@ -323,6 +327,7 @@ const MobileCardsModal = ({
               text={card.data.text}
               btnLabel={card.data.btnLabel}
               btnLink={card.data.btnLink}
+              mobile
             />
           )}
 
@@ -335,6 +340,7 @@ const MobileCardsModal = ({
               text1={card.data.text1}
               text2={card.data.text2}
               onPlay={onVideoPlayStarted}
+              mobile
             />
           )}
 
@@ -346,6 +352,7 @@ const MobileCardsModal = ({
               title={card.data.title}
               text={card.data.text}
               onPlay={onVideoPlayStarted}
+              mobile
             />
           )}
 
@@ -356,6 +363,7 @@ const MobileCardsModal = ({
               title={card.data.title}
               img={card.data.img}
               text={card.data.text}
+              mobile
             />
           )}
 
@@ -365,16 +373,18 @@ const MobileCardsModal = ({
               tag={card.tag}
               img={card.data.img}
               parts={card.data.parts}
+              mobile
             />
           )}
 
           {card?.type === QUIZ_CARD_TYPE && (
             <QuizCard
-              className={classnames(style.card, style.quiz)}
+              className={style.card}
               cardId={card._id}
               questions={card.data.questions}
               answers={card.data.answers}
               correctAnswers={card.data.correctAnswers}
+              mobile
             />
           )}
         </div>

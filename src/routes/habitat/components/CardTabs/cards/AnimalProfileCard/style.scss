@@ -15,46 +15,28 @@ $img-size: 150px;
   border: 7px solid var(--mossMedium);
 }
 
-.name {
-  font-size: 25px;
-  margin: 10px 0;
-}
-
-.title {
-  font-size: 20px;
-  margin-top: 0;
-  margin-bottom: 5px;
-}
-
-.subtitle {
-  font-size: 14px;
-  line-height: 14px;
-  margin-top: 0px;
-  margin-bottom: 15px;
-}
-
 .list {
   padding-left: 20px;
 }
 
-.text {
-  font-size: 15px;
-  margin: 0;
-  line-height: 20px;
-  margin-bottom: 15px;
-  position: relative;
+.mobile .wrapper {
 
-  &:before {
-    background-image: none;
-    background-color: var(--sage);
-    border-radius: 100%;
-    width: 10px;
-    height: 10px;
-    content: "";
-    display: block;
-    position: absolute;
-    left: -20px;
-    top: 50%;
-    transform: translateY(-50%);
+  img {
+    width: 180px;
+    height: 180px;
+  }
+
+  h4 {
+    font-size: 20px;
+    margin-bottom: 20px;
+  }
+
+  span {
+    font-size: 16px;
+    margin-bottom: 10px;
+  }
+
+  li span {
+    font-size: 15px;
   }
 }

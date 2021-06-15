@@ -1,5 +1,6 @@
 import { h } from 'preact';
 import { Heading, Text, Box } from 'grommet';
+import classnames from 'classnames';
 
 import CardWrapper from '../components/CardWrapper';
 
@@ -11,8 +12,9 @@ const SingleIconCard = ({
   title,
   text,
   className,
+  mobile,
 }) => (
-  <CardWrapper className={className} tag={tag}>
+  <CardWrapper className={classnames(className, { [style.mobile]: mobile })} tag={tag}>
     <div className={style.wrapper}>
       <div className={style.top}>
         <img className={style.img} src={img} alt="" />

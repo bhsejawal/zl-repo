@@ -1,6 +1,7 @@
 import { h } from 'preact';
 
 import { Box, Text, Heading } from 'grommet';
+import classnames from 'classnames';
 
 import CardWrapper from '../components/CardWrapper';
 
@@ -23,8 +24,9 @@ const ThreeIconsCard = ({
   text2,
   text3,
   className,
+  mobile,
 }) => (
-  <CardWrapper className={className} tag={tag}>
+  <CardWrapper className={classnames(className, { [style.mobile]: mobile })} tag={tag}>
     <Box fill align="center" margin={{ top: '15px' }}>
       <Heading level="4" alignSelf="start" margin={{ bottom: '25px', top: '0px'}}>{title}</Heading>
 
