@@ -1,8 +1,10 @@
 import { h } from 'preact';
-import { createRef } from 'preact/compat';
 import { connect } from 'react-redux';
 import classnames from 'classnames';
+
 import LiveStream from '../LiveStream';
+
+import { useIsHabitatTabbed, useIsMobileSize } from '../../hooks';
 
 import style from './style.scss';
 
@@ -13,16 +15,17 @@ const LiveTalk = ({
   name,
   disabled,
 }) => {
+  const isMobileView = useIsHabitatTabbed();
+  const isSmallScreen = useIsMobileSize();
+
   if (disabled) {
     return null;
   }
-
-  const videoRef = createRef();
-
   return (
-    <div className={classnames(style.card, style.liveTalk)}>
+    <div className={classnames(style.card, style.liveTalk, {
+      [style.tablet]: isMobileView, [style.phone]: isSmallScreen,
+    })}>
       <LiveStream
-        ref={videoRef}
         width="auto"
         height="140px"
         streamId={hostStreamKey}

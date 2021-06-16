@@ -7,10 +7,12 @@ import {
   useState,
 } from 'preact/hooks';
 import { connect } from 'react-redux';
+import classnames from 'classnames';
 
 import { GlobalsContext } from 'Shared/context';
 import { hasPermission } from 'Components/Authorize';
 import TimeBar from 'Components/TimeBar';
+import VideoControls from 'Components/VideoControls';
 
 import Fallback from './Fallback';
 
@@ -38,7 +40,6 @@ const Stream = ({
   height = 355,
   streamId,
   interactive,
-  customControls,
   userId,
   isStreamOn,
   mode,
@@ -49,6 +50,7 @@ const Stream = ({
   const [isInitialized, setIsInitialized] = useState(false);
   const isSmallScreen = useIsMobileSize();
   const isTabbed = useIsHabitatTabbed();
+  const [showControls, setShowControls] = useState(false);
 
   const logStreamStatus = useCallback((data) => {
     if (data?.startTime && data?.streamId) {
@@ -108,18 +110,33 @@ const Stream = ({
           maxWidth: width,
         }}
         ref={containerRef}
+        onMouseEnter={() => setShowControls(true)}
+        onMouseLeave={() => setShowControls(false)}
       >
-        <div className={style.videoContainer} style={{ width, height }}>
+        <div
+          className={classnames(style.videoContainer, {
+            [style.loading]: streamStatus !== PLAY_STARTED,
+          })}
+          style={{ width, height }}
+        >
           {isStreamOn && (
-            <video
-              ref={videoRef}
-              autoPlay
-              controls={!customControls}
-              muted
-              playsInline
-              key={streamId}
-              style={{ width, height }}
-            />
+            <div style={{ width, height }}>
+              <video
+                ref={videoRef}
+                autoPlay
+                controls={false}
+                muted
+                playsInline
+                key={streamId}
+                style={{ width, height }}
+              />
+              <VideoControls
+                ref={videoRef}
+                showControls={showControls || isTabbed}
+                showPlayControl={mode !== 'liveTalk'}
+                showVolumeControl
+              />
+            </div>
           )}
 
           {streamStatus === PLAY_STARTED && isStreamOn && interactive && (

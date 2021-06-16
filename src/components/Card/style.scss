@@ -88,12 +88,37 @@ $cardWidth: 240px;
   }
 }
 
+.tablet {
+  width: fit-content !important;
+  height: fit-content !important;
+  min-height: fit-content !important;
+  position: absolute !important;
+  bottom: 10px;
+  right: 2.5%;
+}
+
+.phone {
+  width: fit-content !important;
+  height: fit-content !important;
+  min-height: fit-content !important;
+  position: absolute !important;
+  // 55px from the zoom bar + 10px padding for regular control buttons
+  bottom: 65px;
+  right: 2.5%;
+}
+
 .liveTalk {
   width: 240px;
   height: 140px;
   border-radius: 5px;
   overflow: hidden;
   position: relative;
+
+  &.tablet,
+  &.mobile {
+    width: fit-content;
+    height: fit-content;
+  }
 
   .bottomSection {
     position: absolute;
@@ -115,7 +140,7 @@ $cardWidth: 240px;
     }
   }
 
-  video:-webkit-media-controls-timeline {
+  video::-webkit-media-controls-timeline {
     display: none;
   }
 }

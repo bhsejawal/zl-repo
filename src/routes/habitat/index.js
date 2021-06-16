@@ -22,6 +22,7 @@ import { GlobalsContext } from 'Shared/context';
 
 import Tabs from 'Components/Tabs';
 import Tab from 'Components/Tabs/Tab';
+import LiveTalk from 'Components/Card/LiveTalk';
 import Chat from './components/Chat';
 import LiveChannelsBar from './components/LiveChannelsBar';
 import CardTabs from './components/CardTabs';
@@ -50,6 +51,8 @@ const Habitat = ({
   habitatSlug,
   zooName,
   userId,
+  hostStreamKey,
+  isHostStreamOn,
   setHabitatAction,
   unsetHabitatAction,
   openTermsModalAction,
@@ -159,14 +162,17 @@ const Habitat = ({
         style={{ height: topSectionHeight, maxHeight: topSectionHeight }}
       >
         {!isTabbed && <LiveChannelsBar width={sideBarWidth} height={height} />}
-        <LiveStream
-          width={streamWidth}
-          height={height}
-          streamId={streamKey}
-          interactive
-          mode="stream"
-          isStreamOn={isStreamOn}
-        />
+        <div className={style.livestreamWrapper}>
+          <LiveStream
+            width={streamWidth}
+            height={height}
+            streamId={streamKey}
+            interactive
+            mode="stream"
+            isStreamOn={isStreamOn}
+          />
+          {isTabbed && hostStreamKey && isHostStreamOn && <LiveTalk streamId={hostStreamKey} />}
+        </div>
         {!isTabbed && <Chat width={chatWidth} height={height} />}
       </div>
 
@@ -208,6 +214,8 @@ const ConnectedHabitat = connect(
         _id: habitatId,
         title,
         isStreamOn,
+        hostStreamKey,
+        isHostStreamOn,
       },
     },
     user: { userId, termsAccepted = false },
@@ -218,6 +226,8 @@ const ConnectedHabitat = connect(
     userId,
     isStreamOn,
     termsAccepted,
+    hostStreamKey,
+    isHostStreamOn,
   }),
   {
     setHabitatAction: setHabitat,
