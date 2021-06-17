@@ -19,7 +19,6 @@ import Error from 'Components/modals/Error';
 import Success from 'Components/modals/Success';
 
 import { buildURL } from 'Shared/fetch';
-import { useIsMobileSize } from '../../hooks';
 
 import style from './style.scss';
 
@@ -28,7 +27,6 @@ const Welcome = () => {
   const [emails, setEmails] = useState([]);
   const [sent, setSent] = useState();
   const [error, setError] = useState();
-  const isSmallScreen = useIsMobileSize();
 
   const {
     post,
@@ -92,66 +90,52 @@ const Welcome = () => {
     setError(false);
   }, []);
 
-  useEffect(() => {
-    if (isSmallScreen) {
-      route('/map', true);
-    }
-  }, [isSmallScreen]);
-
-  if (isSmallScreen) {
-    return null;
-  }
-
   return (
     <>
       <Box className={style.welcomeWrapper} fill direction="row">
-        <Box pad={{ left: '80px', top: '100px' }}>
-          <Box width={{ max: "360px", min: "360px" }}>
-            <Heading level="1">
-              Welcome to the Zoolife family!
-            </Heading>
-            <Heading level="4">
-              Send your friends a free trial.
-            </Heading>
-            <Box width={{ max: '325px'}} align="center">
-              <TagInput
-                  label="Friend’s Email(s):"
-                  name="emails"
-                  ref={tagInputRef}
-                  value={emails}
-                  onAdd={onAdd}
-                  onValidate={onValidate}
-                  onRemove={onRemove}
-                />
+        <Box className={style.welcomeForm}>
+          <Heading level="1">
+            Welcome to the Zoolife family!
+          </Heading>
+          <Heading level="4">
+            Send your friends a free trial.
+          </Heading>
+          <Box width={{ max: '325px'}} align="center">
+            <TagInput
+                label="Friend’s Email(s):"
+                name="emails"
+                ref={tagInputRef}
+                value={emails}
+                onAdd={onAdd}
+                onValidate={onValidate}
+                onRemove={onRemove}
+              />
+          </Box>
+          <Box direction="row" margin={{ top: '40px' }}>
+            <Box margin={{ right: '20px' }}>
+              <PrimaryButton
+                label="Send"
+                loading={loading && 'Sending...'}
+                onClick={onSend}
+                disabled={!emails.length}
+              />
             </Box>
-            <Box direction="row" margin={{ top: '40px' }}>
-              <Box margin={{ right: '20px' }}>
-                <PrimaryButton
-                  label="Send"
-                  loading={loading && 'Sending...'}
-                  onClick={onSend}
-                  disabled={!emails.length}
-                />
-              </Box>
-              <Box justify="center">
-                <Anchor color="var(--charcoal)" href="/map">
-                  <Text
-                    size="xlarge"
-                    weight={400}
-                    style={{ textDecorationLine: 'underline', lineHeight: '16px' }}
-                  >
-                    Take me to Zoolife.
-                  </Text>
-                </Anchor>
-              </Box>
+            <Box justify="center">
+              <Anchor color="var(--charcoal)" href="/map">
+                <Text
+                  size="xlarge"
+                  weight={400}
+                  style={{ textDecorationLine: 'underline', lineHeight: '16px' }}
+                >
+                  Take me to Zoolife.
+                </Text>
+              </Anchor>
             </Box>
           </Box>
         </Box>
-        <Box align="end" justify="center" fill>
-          <Box alignSelf="end">
-            <img src="https://assets.zoolife.tv/zoolifeMap.png" alt="" width="853" height="567" />
-          </Box>
-        </Box>
+        <div className={style.imageContainer}>
+          <img src="https://assets.zoolife.tv/zoolifeMap.png" alt="" />
+        </div>
       </Box>
       {sent && (
         <Success
