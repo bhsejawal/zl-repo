@@ -12,16 +12,25 @@ import {
 } from 'preact/hooks';
 
 import RoundButton from 'Components/RoundButton';
+import { useIsMobileSize } from '../../../../../hooks';
+import { setShareModalData } from '../../../../../routes/habitat/components/ShareModal/actions';
 import ShareContainer from './ShareContainer';
 
 import style from './style.scss';
 
 let timeout;
 
-const TakeSnapshotButton = ({ plain, habitatId, userId }) => {
+const TakeSnapshotButton = ({
+  plain,
+  habitatId,
+  userId,
+  setShareModalDataAction,
+}) => {
   const { socket } = useContext(GlobalsContext);
   const [loading, setLoading] = useState();
   const [tryAgain, setTryAgain] = useState();
+  const isMobileSize = useIsMobileSize();
+
   const ref = useRef();
 
   const clickHandler = () => {
@@ -41,6 +50,20 @@ const TakeSnapshotButton = ({ plain, habitatId, userId }) => {
         setTryAgain(false);
         clearTimeout(timeout);
         timeout = undefined;
+
+        if (isMobileSize) {
+          setShareModalDataAction({
+            open: true,
+            data: {
+              _id: data.snapshotId,
+              htmlURL: data.html,
+              url: data.snapshot,
+              userId,
+            },
+            nextId: null,
+            prevId: null,
+          });
+        }
       }
     };
 
@@ -57,7 +80,13 @@ const TakeSnapshotButton = ({ plain, habitatId, userId }) => {
 
   if (plain) {
     return (
-      <Button ref={ref} plain onClick={clickHandler} disabled={loading}>
+      <Button
+        ref={ref}
+        plain
+        onClick={clickHandler}
+        disabled={loading}
+        className={style.mobileButton}
+      >
         {loading
           ? <FontAwesomeIcon color="#fff" size="lg" icon={faSpinner} spin />
           : <FontAwesomeIcon color="#fff" size="lg" icon={faCamera} />}
@@ -104,7 +133,7 @@ const TakeSnapshotButton = ({ plain, habitatId, userId }) => {
       >
         <FontAwesomeIcon icon={faCamera} />
       </RoundButton>
-      <ShareContainer />
+      {!isMobileSize && <ShareContainer />}
     </div>
   );
 };
@@ -115,4 +144,5 @@ export default connect(({
 }) => ({
   userId,
   habitatId,
-}))(TakeSnapshotButton);
+}),
+{ setShareModalDataAction: setShareModalData })(TakeSnapshotButton);

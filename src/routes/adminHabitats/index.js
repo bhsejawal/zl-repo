@@ -38,11 +38,15 @@ const EditHabitatRender = ({ profileImage: profileImageProp }) => {
       <Box direction="row" justify="between" align="center">
         <input type="hidden" name="profileImage" value={profileImage} />
 
-        <Box margin={{ right: 'medium' }} width="80px" height="80px">
-          <img ref={previewImgRef} src={profileImage || editImagePlaceholder} alt="preview" />
+        <Box margin={{ right: '30px' }} width="80px" height="80px">
+          <img
+            ref={previewImgRef}
+            src={profileImage || editImagePlaceholder}
+            className={style.preview} alt="preview"
+          />
         </Box>
 
-        <Box flex="grow">
+        <Box flex="grow" width={{ max: 'calc(100% - (80px + 30px))'}}>
           <ImageSelector
             required
             ref={imgRef}

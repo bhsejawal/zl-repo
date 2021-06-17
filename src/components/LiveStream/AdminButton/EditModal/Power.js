@@ -92,7 +92,7 @@ const Power = ({ cameraId }) => {
   }
 
   return (
-    <Box pad={{ vertical: 'medium', horizontal: 'large' }}>
+    <Box pad={{ vertical: 'medium', horizontal: 'large' }} width="350px">
       <Heading level="4">On/Off Controls</Heading>
 
       <Box pad="small">

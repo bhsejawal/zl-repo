@@ -170,7 +170,7 @@ const Form = ({
           {/* eslint-disable-next-line no-underscore-dangle */}
           {!isEdit && (
             <Box direction="column">
-              <Text size="xlarge" className={style.label}>Event Type:</Text>
+              <Text size="xlarge" className={classnames(style.label, style.eventType)}>Event Type:</Text>
               <div className="simpleSelect">
                 <select onChange={changeHandler('type', 'select')}>
                   <option selected={data.type === TALK} value={TALK}>Talk</option>

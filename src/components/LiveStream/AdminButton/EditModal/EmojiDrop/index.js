@@ -239,6 +239,7 @@ const EmojiDrop = ({
             align="center"
             pad="medium"
             overflow="hidden"
+            width={{ min: '400px'}}
           >
             <Heading level="4">Preview Changes</Heading>
 

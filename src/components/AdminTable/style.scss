@@ -11,3 +11,9 @@
     line-height: 18px;
   }
 }
+
+.form {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}

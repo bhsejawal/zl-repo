@@ -2,18 +2,15 @@ import { h } from 'preact';
 import { useState } from 'preact/hooks';
 import {
   Box,
-  Button,
   Heading,
   Layer,
   Text,
 } from 'grommet';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import { PrimaryButton } from 'Components/Buttons';
 import StatusModalContent from 'Components/modals/StatusContent';
 import { defaultErrorMsg } from 'Components/modals/Error';
-
-import { faTimes } from '@fortawesome/pro-solid-svg-icons';
+import CloseButton from 'Components/modals/CloseButton';
 
 const BaseModal = ({
   heading,
@@ -57,12 +54,7 @@ const BaseModal = ({
             justify="end"
             overflow="hidden"
           >
-            <Button
-              plain
-              margin="small"
-              onClick={onClose}
-              icon={<FontAwesomeIcon size="lg" color="--var(grey)" icon={faTimes} />}
-            />
+            <CloseButton varient="plain" onClick={onClose} />
           </Box>
 
           <Box pad={{ vertical: '0', horizontal: 'large' }}>

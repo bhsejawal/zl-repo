@@ -5,22 +5,33 @@
 
 .content {
   text-align: center;
+  background: white;
+
+  @media screen and (max-width: 400px) {
+    padding: 30px 20px;
+  }
+
+  // tag input
+  h3 + div {
+    min-height: fit-content;
+
+    > div {
+      min-width: unset;
+      width: 100%;
+    }
+  }
 }
 
 .closeBtn {
   position: absolute;
-  top: 0;
-  right: 0;
-  background: rgba(255, 255, 255, .75);
-  width: 35px;
-  height: 35px;
-  border-radius: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-width: unset !important;
+  top: 23px;
+  right: 7px;
 }
 
 .header {
   position: relative;
+
+  img {
+    width: 100%;
+  }
 }

@@ -23,23 +23,22 @@ const Map = ({ allHabitats }) => {
   ), [allHabitats]);
 
   return (
-    <Box
-      className={style.map}
-    >
+    <Box className={style.map}>
       <img src={background} className={style.bottomImage} alt="Map Top" />
       <img src={headerImage} className={style.headerImage} alt="Map Background" />
-      <Box pad={{ horizontal: "20px", top: '90px', bottom: '20px' }} style={{ zIndex: 2 }} height={{ min: 'unset'}} >
+      <Box pad={{ horizontal: "20px", top: '90px', bottom: '20px' }} style={{ zIndex: 2 }} height={{ min: 'fit-content'}} >
         <Box
           background="white"
           style={{ borderRadius: '10px'}}
           pad={{ horizontal: '30px' }}
+          height={{ min: 'fit-content'}}
         >
           <Heading level="2">Explore the animal kingdom.</Heading>
           <Text size="xlarge" color="var(--charcoal)">Start by selecting an animal</Text>
           {liveTalkHabitats.length > 0 && (
-            <Box height={{ min: 'unset'}}>
+            <Box height={{ min: 'fit-content'}}>
               <Heading level="3">Live Talks</Heading>
-              <Box>
+              <Box height={{ min: 'fit-content'}}>
                 {liveTalkHabitats.map((habitat) => (
                   <HabitatMobileCard habitat={habitat} />
                 ))}
@@ -47,9 +46,9 @@ const Map = ({ allHabitats }) => {
             </Box>
           )}
           {onlineHabitats.length > 0 && (
-            <Box height={{ min: 'unset'}} >
+            <Box height={{ min: 'fit-content'}}>
               <Heading level="3">Online</Heading>
-              <Box flexGrow="1">
+              <Box flexGrow="1" height={{ min: 'fit-content'}}>
                 {onlineHabitats.map((habitat) => (
                   <HabitatMobileCard habitat={habitat} />
                 ))}
@@ -57,9 +56,9 @@ const Map = ({ allHabitats }) => {
             </Box>
           )}
           {offlineHabitats.length > 0 && (
-            <Box height={{ min: 'unset'}} >
+            <Box height={{ min: 'fit-content'}} >
               <Heading level="3">Offline</Heading>
-              <Box>
+              <Box height={{ min: 'fit-content'}}>
                 {offlineHabitats.map((habitat) => (
                   <HabitatMobileCard habitat={habitat} isOffline />
                 ))}

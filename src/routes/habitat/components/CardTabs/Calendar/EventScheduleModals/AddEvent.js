@@ -1,15 +1,11 @@
 import { connect } from 'react-redux';
-import {
-  Box,
-  Button,
-  Heading,
-  Layer,
-} from 'grommet';
+import { Layer } from 'grommet';
 import { useFetch } from 'use-http';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTimes } from '@fortawesome/pro-solid-svg-icons';
 
 import { API_BASE_URL } from 'Shared/fetch';
+import Header from 'Components/modals/Header';
+import Body from 'Components/modals/Body';
+
 import { showAddEventModal, updateCalendar } from './actions';
 import Form from './Form';
 
@@ -57,19 +53,14 @@ const AddEvent = ({
       onEsc={closeHandler}
     >
       <div className={style.scheduleEventModal}>
-        <Box direction="row" justify="between">
-          <Heading level="2" margin={{ left: '40px'}}>
-            Add Event
-          </Heading>
-          <Button
-            plain
-            margin="medium"
-            onClick={closeHandler}
-            icon={<FontAwesomeIcon size="2x" icon={faTimes} />}
-          />
-        </Box>
 
-        <Form onSubmit={addEvent} error={error && response?.data?.error} />
+        <Header onClose={closeHandler}>
+          Add Event
+        </Header>
+
+        <Body>
+          <Form onSubmit={addEvent} error={error && response?.data?.error} />
+        </Body>
       </div>
     </Layer>
   )

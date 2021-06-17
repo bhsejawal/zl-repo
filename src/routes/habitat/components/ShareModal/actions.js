@@ -3,6 +3,8 @@ import { SET_SHARE_MODAL_DATA, CLOSE_SHARE_MODAL } from './types';
 
 export const closeShareModal = () => ({ type: CLOSE_SHARE_MODAL });
 
+export const setShareModalData = (payload) => ({ type: SET_SHARE_MODAL_DATA, payload });
+
 export const setShareModalMediaId = (mediaId) => (dispatch, getState) => {
   const state = getState();
   const album = get(state, 'habitat.album');
@@ -19,13 +21,10 @@ export const setShareModalMediaId = (mediaId) => (dispatch, getState) => {
     }
   });
 
-  dispatch({
-    type: SET_SHARE_MODAL_DATA,
-    payload: {
-      mediaId,
-      data,
-      nextId,
-      prevId,
-    },
-  });
+  dispatch(setShareModalData({
+    mediaId,
+    data,
+    nextId,
+    prevId,
+  }))
 };
