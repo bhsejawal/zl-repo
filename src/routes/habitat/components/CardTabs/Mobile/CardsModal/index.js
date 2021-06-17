@@ -76,6 +76,18 @@ const fullLayerTheme = deepMerge(grommetTheme, {
   },
 });
 
+const findVideoControlBtnAncestor = (el) => {
+  let cur = el;
+  // search only 3 levels up
+  for (let i = 0; i < 3; i += 1) {
+    if (cur.classList.contains('videoControlBtn')) {
+      return cur;
+    }
+    cur = el.parentNode;
+  }
+  return null;
+};
+
 const MobileCardsModal = ({
   habitatId,
   loading,
@@ -96,6 +108,7 @@ const MobileCardsModal = ({
   const cardsLen = cards?.length;
   const [progress, setProgress] = useState(0);
   const [paused, setPaused] = useState(false);
+  const noTimedMove = [ANIMAL_BODY_CARD_TYPE, QUIZ_CARD_TYPE].includes(card?.type);
   const { get } = useFetch(API_BASE_URL, {
     credentials: 'include',
     cachePolicy: 'no-cache',
@@ -103,7 +116,12 @@ const MobileCardsModal = ({
 
   useLayoutEffect(() => {
     setProgress(0);
-  }, [activeCardIndex]);
+    if (noTimedMove) {
+      setPaused(true);
+    } else {
+      setPaused(false);
+    }
+  }, [activeCardIndex, noTimedMove]);
 
   // eslint-disable-next-line consistent-return
   useEffect(() => {
@@ -140,12 +158,28 @@ const MobileCardsModal = ({
       clearTimeout(timeoutRef.current)
       return nextCardAction(cardsLen);
     }
+  }, [cardsLen, nextCardAction, prevCardAction]);
 
-    if (cardWrapperRef.current?.firstChild === evt.target) {
+  const onTouchStart = useCallback((evt) => {
+    const { view } = evt;
+    const { clientX, clientY } = evt.touches[0] || {};
+    const isInCardCore = clientY >= 60 && clientX > 60 && view.innerWidth - clientX > 60;
+    const videoControlBtn = findVideoControlBtnAncestor(evt.target);
+
+    if (isInCardCore && !videoControlBtn) {
+      evt.preventDefault();
+      evt.stopPropagation();
       clearTimeout(timeoutRef.current)
-      setPaused(!paused);
+      setPaused(true);
     }
-  }, [cardsLen, nextCardAction, paused, prevCardAction]);
+  }, []);
+
+  const onTouchEnd = useCallback((evt) => {
+    const videoControlBtn = findVideoControlBtnAncestor(evt.target);
+    if (!videoControlBtn) {
+      setPaused(false);
+    }
+  }, []);
 
   const onVideoPlayStarted = useCallback(() => {
     setPaused(true);
@@ -239,7 +273,13 @@ const MobileCardsModal = ({
 
   return (
     <Grommet theme={fullLayerTheme}>
-      <Layer full onEsc={closeAction} onClick={onClick}>
+      <Layer
+        full
+        onEsc={closeAction}
+        onClick={onClick}
+        onTouchStart={noTimedMove ? undefined : onTouchStart}
+        onTouchEnd={noTimedMove ? undefined : onTouchEnd}
+      >
         <Box className={style.controls} direction="row" pad={{ top: 'medium', horizontal: 'medium' }}>
           {cards.map((_el, ind) => (
             <div className={style.indIndicator}>
