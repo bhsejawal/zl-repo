@@ -59,15 +59,7 @@ const Chat = ({
     }
   }, [habitatId, addMessagesAction]);
 
-  useEffect(() => {
-    if (isConnectedToPubnub) {
-      pubnub.addListener({
-        message: addMessageListener,
-        messageAction: deleteMessageListener,
-      });
-    }
-  }, [isConnectedToPubnub, addMessagesAction, addMessageListener, deleteMessageListener])
-
+  // eslint-disable-next-line consistent-return
   useEffect(() => {
     if (habitatId && animal && color && userId && username) {
       pubnub = new PubNub({
@@ -76,6 +68,12 @@ const Chat = ({
         uuid: userId,
         autoNetworkDetection: true,
       });
+
+      const listeners = {
+        message: addMessageListener,
+        messageAction: deleteMessageListener,
+      };
+      pubnub.addListener(listeners);
 
       pubnub.subscribe({ channels: [habitatId], withPresence: true });
 
@@ -86,17 +84,26 @@ const Chat = ({
       }, handleFetchedMessages);
 
       setIsConnectedToPubnub(true);
-    }
-  }, [habitatId, animal, color, userId, username, handleFetchedMessages])
 
-  useEffect(() => () => {
-    if (pubnub) {
-      pubnub.unsubscribeAll();
-      pubnub.removeListener({ message: addMessageListener, messageAction: deleteMessageListener});
-      clearMessagesAction();
-      setIsConnectedToPubnub(false);
+      return () => {
+        pubnub.removeListener(listeners);
+        pubnub.unsubscribeAll();
+        clearMessagesAction();
+        setIsConnectedToPubnub(false);
+        pubnub = undefined;
+      };
     }
-  }, [clearMessagesAction, habitatId, addMessageListener, deleteMessageListener]);
+  }, [
+    habitatId,
+    animal,
+    color,
+    userId,
+    username,
+    handleFetchedMessages,
+    clearMessagesAction,
+    addMessageListener,
+    deleteMessageListener,
+  ]);
 
   if (!isConnectedToPubnub) {
     return null;

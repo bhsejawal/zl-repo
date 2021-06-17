@@ -21,9 +21,9 @@ export const useWindowResize = () => {
       const vh = window.innerHeight * 0.01;
       document.documentElement.style.setProperty('--vh', `${vh}px`);
     }, 400);
+
     if (typeof window !== 'undefined') {
       window.addEventListener('resize', updateSize);
-      updateSize();
       return () => window.removeEventListener('resize', updateSize);
     }
   }, []);

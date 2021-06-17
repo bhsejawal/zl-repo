@@ -1,10 +1,5 @@
 import { h } from 'preact';
-import {
-  useEffect,
-  useContext,
-  useRef,
-  useState,
-} from 'preact/hooks';
+import { useEffect, useContext, useRef } from 'preact/hooks';
 import { lazy, Suspense } from 'preact/compat';
 import { connect } from 'react-redux';
 import { route } from 'preact-router';
@@ -63,9 +58,9 @@ const Habitat = ({
   const size = useContext(ResponsiveContext);
   const { socket } = useContext(GlobalsContext);
   const pageRef = useRef();
-  const [pageWidth, setPageWidth] = useState();
   const isTabletOrLarger = ['medium', 'large'].includes(size);
   const isTabbed = useIsHabitatTabbed();
+  const pageWidth = pageRef?.current?.offsetWidth || windowWidth;
 
   useEffect(() => {
     if (socket && userId && habitatId) {
@@ -129,11 +124,14 @@ const Habitat = ({
     }
   }, [title]);
 
-  useEffect(() => {
-    // window size may include padding for scroll bar
-    // therefore we need the page width to be accurate
-    setPageWidth(pageRef?.current?.offsetWidth || windowWidth);
-  }, [pageRef?.current?.offsetWidth, windowWidth]);
+  if (error) {
+    // TODO: we need UI for this
+    return (
+      <Box fill align="center" justify="center">
+        <p>There was an error. Please try again</p>
+      </Box>
+    );
+  }
 
   const sideBarWidth = 84;
   const chatWidth = 285;
@@ -142,66 +140,63 @@ const Habitat = ({
   const height = Math.min(maxStreamHeight, streamWidth * 0.5625);
   const topSectionHeight = height + (isTabletOrLarger ? 0 : MOBILE_CONTROLS_HEIGHT);
 
-  // TODO: there's a minor problem with this approach which should be fixed
-  // curretnly when loading changes to "false", habitat data is still not there
-  // it's present on the next update, so we have one excess render
-  // which we should avoid to have better rendering performance
-  if (loading) {
-    return <Loader />;
-  }
-
-  if (error) {
-    // TODO: we need UI for this
-    <p>There was an error. Please try again</p>
-  }
-
   return (
     <div className={style.page} ref={pageRef}>
-      <div
-        className={style.topSection}
-        style={{ height: topSectionHeight, maxHeight: topSectionHeight }}
-      >
-        {!isTabbed && <LiveChannelsBar width={sideBarWidth} height={height} />}
-        <div className={style.livestreamWrapper}>
-          <LiveStream
-            width={streamWidth}
-            height={height}
-            streamId={streamKey}
-            interactive
-            mode="stream"
-            isStreamOn={isStreamOn}
-          />
-          {isTabbed && hostStreamKey && isHostStreamOn && <LiveTalk streamId={hostStreamKey} />}
-        </div>
-        {!isTabbed && <Chat width={chatWidth} height={height} />}
-      </div>
-
-      <div style={{ height: `calc(100vh - var(--headerHeight) - ${height + (isTabletOrLarger ? 0 : MOBILE_CONTROLS_HEIGHT)}px)` }}>
-        <Tabs show={isTabbed}>
-          <Tab label="Explore" icon={<FontAwesomeIcon size="lg" icon={faInfoCircle} />}>
-            <div className={style.middleSection}>
-              <StreamProfile />
+      {/* using habitatId to prevent render where we recieve data,
+      loading becomes false, but habitat data is set later in useEffect */}
+      {(loading || !habitatId) ? (
+        <Box fill align="center" justify="center">
+          <Loader />
+        </Box>
+      ) : (
+        <>
+          <div
+            className={style.topSection}
+            style={{ height: topSectionHeight, maxHeight: topSectionHeight }}
+          >
+            {!isTabbed && <LiveChannelsBar width={sideBarWidth} height={height} />}
+            <div className={style.livestreamWrapper}>
+              <LiveStream
+                width={streamWidth}
+                height={height}
+                streamId={streamKey}
+                interactive
+                mode="stream"
+                isStreamOn={isStreamOn}
+              />
+              {isTabbed && hostStreamKey && isHostStreamOn && <LiveTalk streamId={hostStreamKey} />}
             </div>
+            {!isTabbed && <Chat width={chatWidth} height={height} />}
+          </div>
 
-            <div className={style.bottomSection}>
-              {isTabletOrLarger
-                ? <CardTabs />
-                : <SmallScreenCardTabs />}
-            </div>
-          </Tab>
+          <div style={{ height: `calc(100vh - var(--headerHeight) - ${height + (isTabletOrLarger ? 0 : MOBILE_CONTROLS_HEIGHT)}px)` }}>
+            <Tabs show={isTabbed}>
+              <Tab label="Explore" icon={<FontAwesomeIcon size="lg" icon={faInfoCircle} />}>
+                <div className={style.middleSection}>
+                  <StreamProfile />
+                </div>
 
-          <Tab label="Chat" icon={<FontAwesomeIcon size="lg" icon={faComment} />}>
-            <Box fill direction="column" justify="center">
-              <Suspense fallback={<Loader />}>
-                <ChatComponent />
-              </Suspense>
-            </Box>
-          </Tab>
-        </Tabs>
-      </div>
+                <div className={style.bottomSection}>
+                  {isTabletOrLarger
+                    ? <CardTabs />
+                    : <SmallScreenCardTabs />}
+                </div>
+              </Tab>
 
-      <OnboardingModal />
-      <ShareModal />
+              <Tab label="Chat" icon={<FontAwesomeIcon size="lg" icon={faComment} />}>
+                <Box fill direction="column" justify="center">
+                  <Suspense fallback={<Loader />}>
+                    <ChatComponent />
+                  </Suspense>
+                </Box>
+              </Tab>
+            </Tabs>
+          </div>
+
+          <OnboardingModal />
+          <ShareModal />
+        </>
+      )}
     </div>
   );
 }

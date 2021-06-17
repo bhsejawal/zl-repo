@@ -4,7 +4,7 @@ import classnames from 'classnames';
 import style from './style.scss';
 
 const Loader = ({
-  color = 'black',
+  color = 'var(--logoBlue)',
   height = '200px',
   width = '200px',
   fill,
