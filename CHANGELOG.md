@@ -2,7 +2,34 @@
 This file keeps track of all relevant change for every release.
 
 ## [Unreleased]
+
+## [5.6.0] - 2021-06-18
+### Added
+- Integrating mouseflow
+- Album Download raw image button, delete/undelete content button
+- Album mobile View
+- Welcome page mobile view
+- Host Video is available for mobile
+- Mobile emoji bubble
 - Emote bar on the habitat page for mobile devices
+
+### Changed
+- Update env variable for isDev check
+- Cards improvements
+- Performance improvements
+- Update modals with reusable components for consistency
+- Redirect to mobile is skipped on dev env
+- Update Cards UI on Mobile
+- Grommet update
+### Fixed
+- Close mobile modals on unmount [PT178587179]
+- Calendar mobile popup
+- Reset password page image
+- Habitat page tabs size
+- Habitat mobile trial bar layout, and onboarding layout
+- Mobile habitat card, mobile popup size, no data handling
+- Stuck cursor after click on touch devices
+
 ## [5.5.0] - 2021-06-11
 ### Added
 - Mobile version of the Account Tab
@@ -30,7 +57,6 @@ This file keeps track of all relevant change for every release.
 - Removed unnecessary empty space on the habitat page when using tablets
 - Schedule Cards on the habitat page will no longer move if a user user the arrows on the keyboard
 - Issue with the load more button on the album component when using Safari
-
 
 ## [5.4.0] - 2021-06-04
 ### Added
