@@ -123,3 +123,9 @@ export const getCampaignData = () => {
 export const getConfig = (configs = [], key) => (
   configs.find(({ configKey }) => configKey === key) || {}
 );
+
+export const handleDownloadMediaURL = (url) => {
+  const { pathname } = new URL(url);
+  const host = isDev() ? 'zoolife.brizi.tech' : document.location.host;
+  return `https://${host}${pathname}`;
+}

@@ -55,6 +55,7 @@ const rules = {
       "habitat:edit-album": canEditZoo,
       "habitat:edit-schedule": canEditZoo,
       "habitat:broadcast": canEditZoo,
+      "habitat:edit-album-media": canEditZoo,
       // TODO: do we need to separate buttons
       // or one permission is enough for all 3 items
       "habitat:edit-stream": canEditZoo,
