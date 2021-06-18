@@ -2,7 +2,11 @@ import { h } from 'preact';
 import { connect } from 'react-redux';
 import { useEffect, useState } from 'preact/hooks';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faChevronDown, faChevronRight, faSpinner } from '@fortawesome/pro-solid-svg-icons';
+import {
+  faChevronDown,
+  faChevronRight,
+  faSpinner,
+} from '@fortawesome/pro-solid-svg-icons';
 import { format } from 'date-fns';
 import classnames from 'classnames';
 import useFetch from 'use-http';
@@ -16,6 +20,7 @@ import style from './style.scss';
 
 const Album = ({
   album,
+  tab,
   habitatId,
   setAlbumDataAction,
   appendAlbumDataAction,
@@ -57,7 +62,7 @@ const Album = ({
   }
 
   return (
-    <div className={style.album}>
+    <div className={classnames(style.album, { [style.tab]: tab })}>
 
       <div className="simpleSelect">
         <select onChange={onChangeHandler}>

@@ -11,6 +11,7 @@ import {
 } from '@fortawesome/pro-regular-svg-icons';
 import { faPhotoVideo } from '@fortawesome/pro-solid-svg-icons';
 
+import { useIsHabitatTabbed } from '../../../../../hooks';
 import { setActiveTab } from '../actions';
 import {
   MEET,
@@ -26,6 +27,7 @@ import ToggleButton from '../toggleButton';
 import style from './style.scss';
 
 const Tabs = ({ active, setActiveTabAction }) => {
+  const isTabbed = useIsHabitatTabbed();
   const onClick = useCallback(({ target }) => {
     setActiveTabAction(target.dataset.value);
   }, [setActiveTabAction]);
@@ -86,15 +88,17 @@ const Tabs = ({ active, setActiveTabAction }) => {
         Calendar
       </ToggleButton>
 
-      <ToggleButton
-        className={style.tabBtn}
-        active={active === ALBUM}
-        value={ALBUM}
-        onClick={onClick}
-      >
-        <FontAwesomeIcon className={style.icon} icon={faPhotoVideo} />
-        Album
-      </ToggleButton>
+      {!isTabbed && (
+        <ToggleButton
+          className={style.tabBtn}
+          active={active === ALBUM}
+          value={ALBUM}
+          onClick={onClick}
+        >
+          <FontAwesomeIcon className={style.icon} icon={faPhotoVideo} />
+          Album
+        </ToggleButton>
+      )}
     </div>
   );
 };

@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import { route } from 'preact-router';
 import { Box, ResponsiveContext } from 'grommet';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faComment, faInfoCircle } from '@fortawesome/pro-solid-svg-icons';
+import { faComment, faInfoCircle, faPhotoVideo } from '@fortawesome/pro-solid-svg-icons';
 import useFetch from 'use-http';
 
 import { buildURL } from 'Shared/fetch';
@@ -25,6 +25,7 @@ import StreamProfile from './components/StreamProfile';
 import OnboardingModal from './OnboardingModal';
 import SmallScreenCardTabs from './components/CardTabs/Mobile';
 import ShareModal from './components/ShareModal';
+import Album from './components/Album';
 
 import { useIsHabitatTabbed, useWindowResize } from '../../hooks';
 import { setHabitat, unsetHabitat, setHabitatProps } from './actions';
@@ -169,7 +170,7 @@ const Habitat = ({
             {!isTabbed && <Chat width={chatWidth} height={height} />}
           </div>
 
-          <div style={{ height: `calc(100vh - var(--headerHeight) - ${height + (isTabletOrLarger ? 0 : MOBILE_CONTROLS_HEIGHT)}px)` }}>
+          <div style={{ height: `calc((var(--vh) * 100) - var(--headerHeight) - ${height + (isTabletOrLarger ? 0 : MOBILE_CONTROLS_HEIGHT)}px)` }}>
             <Tabs show={isTabbed}>
               <Tab label="Explore" icon={<FontAwesomeIcon size="lg" icon={faInfoCircle} />}>
                 <div className={style.middleSection}>
@@ -187,6 +188,14 @@ const Habitat = ({
                 <Box fill direction="column" justify="center">
                   <Suspense fallback={<Loader />}>
                     <ChatComponent />
+                  </Suspense>
+                </Box>
+              </Tab>
+
+              <Tab label="Album" icon={<FontAwesomeIcon size="lg" icon={faPhotoVideo} />}>
+                <Box fill direction="column" justify="start" pad="20px 0">
+                  <Suspense fallback={<Loader />}>
+                    <Album tab />
                   </Suspense>
                 </Box>
               </Tab>

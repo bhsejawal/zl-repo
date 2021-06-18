@@ -3,7 +3,7 @@
 @import "./variables";
 
 .page {
-  height: calc(100vh - var(--headerHeight));
+  height: calc((var(--vh) * 100) - var(--headerHeight));
   display: flex;
   flex-direction: column;
 }
