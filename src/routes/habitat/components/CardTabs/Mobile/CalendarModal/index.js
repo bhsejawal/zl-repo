@@ -1,14 +1,32 @@
 import { h } from 'preact';
 import { useMemo } from 'preact/hooks';
 import { connect } from 'react-redux';
-import { Layer, Box, Button } from 'grommet';
+import {
+  Layer,
+  Box,
+  Button,
+  Grommet,
+} from 'grommet';
+import { deepMerge } from 'grommet/utils';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTimes } from '@fortawesome/pro-solid-svg-icons';
 
 import CalendarLoader from '../../Calendar/CalendarLoader';
 import { closeModalCalendar } from '../actions';
+import grommetTheme from '../../../../../../grommetTheme';
 
 import style from './style.scss';
+
+const fullLayerTheme = deepMerge(grommetTheme, {
+  layer: {
+    container: {
+      extend: {
+        maxWidth: 'auto',
+        maxHeight: 'auto',
+      },
+    },
+  },
+});
 
 const CalendarModal = ({ closeAction }) => {
   const closeButton = useMemo(() => (
@@ -30,14 +48,16 @@ const CalendarModal = ({ closeAction }) => {
   ), [closeAction]);
 
   return (
-    <Layer onEsc={closeAction}>
-      <Box width="max-content">
-        {closeButton}
-        <Box fill pad="small" overflow="auto">
-          <CalendarLoader />
+    <Grommet theme={fullLayerTheme}>
+      <Layer full onEsc={closeAction}>
+        <Box fill>
+          {closeButton}
+          <Box fill pad="small" overflow="auto">
+            <CalendarLoader />
+          </Box>
         </Box>
-      </Box>
-    </Layer>
+      </Layer>
+    </Grommet>
   );
 };
 
