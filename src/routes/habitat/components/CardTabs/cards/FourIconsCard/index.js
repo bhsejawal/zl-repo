@@ -1,5 +1,6 @@
 import { h } from 'preact';
 import { Text, Heading, Box } from 'grommet';
+import classnames from 'classnames';
 
 import CardWrapper from '../components/CardWrapper';
 
@@ -25,8 +26,9 @@ const FourIconsCard = ({
   icon3Txt,
   icon4Txt,
   className,
+  mobile,
 }) => (
-  <CardWrapper className={className} tag={tag}>
+  <CardWrapper className={classnames(className, { [style.mobile]: mobile })} tag={tag}>
     <div className={style.wrapper}>
       <div className={style.top}>
         {img1 && icon1Txt && (

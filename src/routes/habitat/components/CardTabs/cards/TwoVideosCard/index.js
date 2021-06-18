@@ -1,5 +1,6 @@
 import { h } from 'preact';
 import { Text } from 'grommet';
+import classnames from 'classnames';
 
 import CardWrapper from '../components/CardWrapper';
 import Video from '../components/Video';
@@ -15,8 +16,9 @@ const TwoVideosCard = ({
   className,
   onPlay,
   onStop,
+  mobile,
 }) => (
-  <CardWrapper className={className} tag={tag} padding="20px 10px 10px">
+  <CardWrapper className={classnames(className, { [style.mobile]: mobile })} tag={tag} padding="20px 10px 10px">
     <div className={style.wrapper}>
       <Video url={video1Url} onPlay={onPlay} onStop={onStop} />
       <Text as="p" size="medium">{text1}</Text>

@@ -5,15 +5,14 @@ import {
   Box,
   Heading,
   TextArea,
-  Button,
   Text,
 } from 'grommet';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTimes } from '@fortawesome/pro-solid-svg-icons';
 import useFetch from 'use-http';
 import { connect } from 'react-redux';
 
 import Loader from 'Components/Loader';
+import Header from 'Components/modals/Header';
+import Body from 'Components/modals/Body';
 import { PrimaryButton } from 'Components/Buttons';
 import { buildURL } from 'Shared/fetch';
 
@@ -59,25 +58,13 @@ const ContactUsModal = ({ closeContactUsModalAction }) => {
   return (
     <Layer position="center" style={{ borderRadius: '10px' }}>
       {!hasSubmitted && (
-        <Box width="580px" height="520px">
-          <Box
-            pad={{ vertical: '27px', left: '46px', right: '26px' }}
-            style={{ borderBottom: '1px solid #EBEBEB' }}
-            direction="row"
-            justify="between"
-            align="center"
-          >
-            <Heading level="2" margin="0px">
-              Contact Us
-            </Heading>
-            <Button plain onClick={closeModalHandler}>
-              <FontAwesomeIcon icon={faTimes} size="2x" />
-            </Button>
-          </Box>
-          <Box
-            pad={{ horizontal: '48px', vertical: '10px'}}
-          >
-            <Heading level="4">
+        <Box width="580px">
+          <Header onClose={closeModalHandler}>
+            Contact Us
+          </Header>
+
+          <Body>
+            <Heading level="4" margin={{ top: '0' }}>
               How can we help you? We&apos;ll get back to you as soon as possible through email.
             </Heading>
             <Box height="190px" margin={{ top: '5px' }}>
@@ -101,7 +88,7 @@ const ContactUsModal = ({ closeContactUsModalAction }) => {
                 onClick={submitHandler}
               />
             </Box>
-          </Box>
+          </Body>
         </Box>
       )}
       {error && (

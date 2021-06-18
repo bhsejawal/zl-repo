@@ -10,6 +10,7 @@ module.exports = [
     segmentId: process.env.PREACT_APP_SEGMENT_ID,
     optimizeId: process.env.PREACT_APP_OPTIMIZE_ID,
     gaId: process.env.PREACT_APP_GA_APPID,
+    mouseflowId: process.env.PREACT_APP_MOUSEFLOW_ID,
   },
   {
     url: '/twitch',
@@ -17,6 +18,7 @@ module.exports = [
     segmentId: process.env.PREACT_APP_SEGMENT_ID,
     optimizeId: process.env.PREACT_APP_OPTIMIZE_ID,
     gaId: process.env.PREACT_APP_GA_APPID,
+    mouseflowId: process.env.PREACT_APP_MOUSEFLOW_ID,
   },
   {
     url: '/oranapark',
@@ -24,6 +26,7 @@ module.exports = [
     segmentId: process.env.PREACT_APP_SEGMENT_ID,
     optimizeId: process.env.PREACT_APP_OPTIMIZE_ID,
     gaId: process.env.PREACT_APP_GA_APPID,
+    mouseflowId: process.env.PREACT_APP_MOUSEFLOW_ID,
   },
   {
     url: '/orana',
@@ -31,6 +34,7 @@ module.exports = [
     segmentId: process.env.PREACT_APP_SEGMENT_ID,
     optimizeId: process.env.PREACT_APP_OPTIMIZE_ID,
     gaId: process.env.PREACT_APP_GA_APPID,
+    mouseflowId: process.env.PREACT_APP_MOUSEFLOW_ID,
   },
   {
     url: '/torontozoo',
@@ -38,6 +42,7 @@ module.exports = [
     segmentId: process.env.PREACT_APP_SEGMENT_ID,
     optimizeId: process.env.PREACT_APP_OPTIMIZE_ID,
     gaId: process.env.PREACT_APP_GA_APPID,
+    mouseflowId: process.env.PREACT_APP_MOUSEFLOW_ID,
   },
   {
     url: '/pmmc',
@@ -45,6 +50,7 @@ module.exports = [
     segmentId: process.env.PREACT_APP_SEGMENT_ID,
     optimizeId: process.env.PREACT_APP_OPTIMIZE_ID,
     gaId: process.env.PREACT_APP_GA_APPID,
+    mouseflowId: process.env.PREACT_APP_MOUSEFLOW_ID,
   },
   {
     url: '/sazoo',
@@ -52,6 +58,7 @@ module.exports = [
     segmentId: process.env.PREACT_APP_SEGMENT_ID,
     optimizeId: process.env.PREACT_APP_OPTIMIZE_ID,
     gaId: process.env.PREACT_APP_GA_APPID,
+    mouseflowId: process.env.PREACT_APP_MOUSEFLOW_ID,
   },
   {
     url: '/terms-and-conditions',
@@ -59,6 +66,7 @@ module.exports = [
     segmentId: process.env.PREACT_APP_SEGMENT_ID,
     optimizeId: process.env.PREACT_APP_OPTIMIZE_ID,
     gaId: process.env.PREACT_APP_GA_APPID,
+    mouseflowId: process.env.PREACT_APP_MOUSEFLOW_ID,
   },
   {
     url: '/privacy-policy',
@@ -66,6 +74,7 @@ module.exports = [
     segmentId: process.env.PREACT_APP_SEGMENT_ID,
     optimizeId: process.env.PREACT_APP_OPTIMIZE_ID,
     gaId: process.env.PREACT_APP_GA_APPID,
+    mouseflowId: process.env.PREACT_APP_MOUSEFLOW_ID,
   },
 
   // this will prerender only loading indicator
@@ -75,5 +84,6 @@ module.exports = [
     segmentId: process.env.PREACT_APP_SEGMENT_ID,
     optimizeId: process.env.PREACT_APP_OPTIMIZE_ID,
     gaId: process.env.PREACT_APP_GA_APPID,
+    mouseflowId: process.env.PREACT_APP_MOUSEFLOW_ID,
   },
 ];

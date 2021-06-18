@@ -18,18 +18,6 @@ $img-size: 60px;
   flex-grow: 1;
 }
 
-.bottom {
-  flex-grow: 2;
-  justify-content: start;
-  width: 100%;
-}
-
-.title {
-  font-size: 25px;
-  margin: 0 0 10px 0;
-  width: 100%;
-}
-
 .item {
   display: flex;
   flex-direction: column;
@@ -42,5 +30,29 @@ $img-size: 60px;
     height: $img-size;
     border-radius: 100%;
     margin-bottom: 5px;
+  }
+}
+
+.mobile .wrapper {
+
+  h4 {
+    font-size: 20px;
+    margin-bottom: 20px;
+
+    + span {
+      font-size: 16px;
+    }
+  }
+
+  .item {
+
+    img {
+      width: 80px;
+      height: 80px;
+    }
+
+    span {
+      font-size: 16px;
+    }
   }
 }

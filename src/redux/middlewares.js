@@ -2,7 +2,7 @@ import thunk from 'redux-thunk';
 
 const middlewares = [thunk];
 
-if (process.env.NODE_ENV === 'development') {
+if (process.env.PREACT_APP_ENVIRONMENT === 'development') {
   // eslint-disable-next-line global-require
   middlewares.push(require('redux-logger').default);
 }

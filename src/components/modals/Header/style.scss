@@ -1,0 +1,18 @@
+.header {
+  position: relative;
+  font-weight: bold;
+  font-size: 35px;
+  line-height: 42px;
+  display: flex;
+  align-items: center;
+  color: #262627;
+  width: 100%;
+  border-bottom: 1px solid #EBEBEB;
+  padding: 30px 48px;
+
+  .close {
+    position: absolute;
+    top: 35px;
+    right: 20px;
+  }
+}

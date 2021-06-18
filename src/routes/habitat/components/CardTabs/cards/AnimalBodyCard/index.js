@@ -1,7 +1,7 @@
 import { h } from 'preact';
 import { useEffect, useMemo, useState } from 'preact/hooks';
-import classnames from 'classnames';
 import { Heading, Text } from 'grommet';
+import classnames from 'classnames';
 
 import CardWrapper from '../components/CardWrapper';
 
@@ -12,6 +12,7 @@ const AnimalBodyCard = ({
   img,
   className,
   parts = [],
+  mobile,
 }) => {
   const [selectedInd, setSelectedInd] = useState(0);
   useMemo(() => parts.forEach((part) => {
@@ -28,7 +29,7 @@ const AnimalBodyCard = ({
   }, [parts, selectedInd]);
 
   return (
-    <CardWrapper noPadding className={className} tag={tag}>
+    <CardWrapper noPadding className={classnames(className, { [style.mobile]: mobile })} tag={tag}>
       <div className={style.wrapper}>
         <div className={style.top}>
           <img className={style.img} src={img} alt="" />

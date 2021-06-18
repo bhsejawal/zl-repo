@@ -14,6 +14,7 @@ import {
 import { OutlineButton, PrimaryButton } from 'Components/Buttons';
 import { buildURL } from 'Shared/fetch';
 import useFetch from 'use-http';
+import classnames from 'classnames';
 import { setUserData } from '../../../redux/actions';
 
 import style from './style.scss';
@@ -54,7 +55,7 @@ const Onboarding = ({ isOnboarded, setUserDataAction }) => {
 
   return (
     <Layer background="transparent">
-      <Box className={style.onboarding}>
+      <Box className={classnames(style.onboarding, { [style.mobile]: isSmallScreen })}>
         <Box className={style.onboardingWrapper}>
           {showButtons && (
             <Box direction="row" justify="center" className={style.buttonsWrapper}>

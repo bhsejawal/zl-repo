@@ -8,22 +8,26 @@ const getSize = () => ({
   orientation: window.innerHeight > window.innerWidth ? 'portrait' : 'landscape',
 });
 
+const calculateViewHeight = () => {
+  // iPad/iPhone full height is ~98vh because they count the space under the browser controls
+  // this will calculate --vh variable for actual view port for more accuracy
+  const vh = window.innerHeight * 0.01;
+  document.documentElement.style.setProperty('--vh', `${vh}px`);
+}
+
 export const useWindowResize = () => {
   const [size, setSize] = useState(typeof window !== 'undefined' && getSize());
 
   // eslint-disable-next-line consistent-return
   useEffect(() => {
+    calculateViewHeight();
     const updateSize = throttle(() => {
       setSize(getSize());
-
-      // iPad/iPhone full height is ~98vh because they count the space under the browser controls
-      // this will calculate --vh variabel for actual view port for more accuracy
-      const vh = window.innerHeight * 0.01;
-      document.documentElement.style.setProperty('--vh', `${vh}px`);
+      calculateViewHeight();
     }, 400);
+
     if (typeof window !== 'undefined') {
       window.addEventListener('resize', updateSize);
-      updateSize();
       return () => window.removeEventListener('resize', updateSize);
     }
   }, []);

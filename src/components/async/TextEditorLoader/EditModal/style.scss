@@ -1,0 +1,6 @@
+.textArea {
+  width: unquote("min(600px, 90vw)");
+  max-height: calc(100vh - 305px);
+  max-width: calc(100vw - 128px);
+  font-weight: initial;
+}

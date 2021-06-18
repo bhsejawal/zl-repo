@@ -5,8 +5,8 @@ import {
   Text,
   Box,
 } from 'grommet';
-
 import { OutlineButton } from 'Components/Buttons';
+import classnames from 'classnames';
 
 import criticallyEndangered from './conservationCards/critically_endangered.png';
 import dataDeficient from './conservationCards/data_deficient.png';
@@ -53,10 +53,11 @@ const ConservationCard = ({
   btnLabel,
   btnLink,
   className,
+  mobile,
 }) => (
   <Grommet theme={grommetTheme}>
-    <CardWrapper className={className} tag={tag} padding="25px 0px">
-      <Box align="center" justify="center" fill>
+    <CardWrapper className={classnames(className, { [style.mobile]: mobile })} tag={tag} padding="25px 0px">
+      <Box align="center" justify="center" fill className={style.wrapper}>
         <img className={style.img} src={consevationImages[status]} alt="" />
 
         <Box align="center" pad={{ horizontal: '20px' }}>

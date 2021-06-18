@@ -1,4 +1,4 @@
-import { SET_ALBUM_DATA, APPEND_ALBUM_DATA } from './types';
+import { SET_ALBUM_DATA, APPEND_ALBUM_DATA, CHANGE_CONTENT_VISIBILITY } from './types';
 
 const initialState = {
   photos: {
@@ -31,7 +31,20 @@ export default (state = initialState, { type, payload }) => {
         },
       };
     }
-
+    case CHANGE_CONTENT_VISIBILITY: {
+      const { mediaId, mediaType, action } = payload;
+      const disabled = action === 'hide';
+      console.log(mediaId, mediaType, action);
+      return {
+        ...state,
+        [mediaType]: {
+          ...state[mediaType],
+          list: state[mediaType].list.map((media) => (
+            media._id === mediaId ? { ...media, disabled } : media
+          )),
+        },
+      };
+    }
     default: {
       return state;
     }

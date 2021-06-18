@@ -73,3 +73,18 @@
   top: -43px;
   left: calc(50% - 43px);
 }
+
+.mobile .wrapper {
+  width: 100%;
+  max-width: 380px;
+  min-height: 400px;
+
+  h4 {
+    font-size: 20px;
+    margin-bottom: 20px;
+  }
+
+  span {
+    font-size: 16px;
+  }
+}

@@ -61,16 +61,20 @@ const Video = ({
 
       {showLoader && <Loader className={style.videoLoader} />}
 
+      {/* videoControlBtn class is used on mobile for touch events and pausing */}
       <FontAwesomeIcon
-        className={classnames(style.control, { [style.hidden]: isPlaying || showLoader })}
+        className={classnames(style.control, 'videoControlBtn', {
+          [style.hidden]: isPlaying || showLoader,
+        })}
         color="#fff"
         size="3x"
         onClick={onPlayClick}
         icon={faPlayCircle}
       />
 
+      {/* videoControlBtn class is used on mobile for touch events and pausing */}
       <FontAwesomeIcon
-        className={classnames(style.control, style.pause, {
+        className={classnames(style.control, style.pause, 'videoControlBtn', {
           [style.hidden]: !isPlaying || showLoader,
         })}
         color="#fff"

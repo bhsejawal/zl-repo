@@ -33,12 +33,14 @@ export default (config, env, helpers) => {
     PREACT_APP_SEGMENT_ID: segmentId,
     PREACT_APP_OPTIMIZE_ID: optimizeId,
     PREACT_APP_GA_APPID: gaId,
+    PREACT_APP_MOUSEFLOW_ID: mouseflowId,
   } = process.env;
 
   if (htmlPlugin) {
     htmlPlugin.options.segmentId = segmentId;
     htmlPlugin.options.optimizeId = optimizeId;
     htmlPlugin.options.gaId = gaId;
+    htmlPlugin.options.mouseflowId = mouseflowId;
   }
 
   if (config.devServer) {

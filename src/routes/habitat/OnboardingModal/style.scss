@@ -1,5 +1,9 @@
 .onboarding {
   width: 80vw;
+
+  &.mobile {
+    width: calc(100vw - 30px);
+  }
 }
 
 .onboardingWrapper {

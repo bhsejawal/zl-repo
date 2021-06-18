@@ -3,7 +3,7 @@
 @import "./variables";
 
 .page {
-  height: calc(100vh - var(--headerHeight));
+  height: calc((var(--vh) * 100) - var(--headerHeight));
   display: flex;
   flex-direction: column;
 }
@@ -12,6 +12,7 @@
   display: flex;
   overflow: hidden;
   position: relative;
+  min-height: fit-content;
 }
 
 .middleSection {
@@ -20,6 +21,11 @@
 
 .bottomSection {
   padding: 0 $ypadding;
+}
+
+.livestreamWrapper {
+  position: relative;
+  height: fit-content;
 }
 
 @media screen and (max-width: #{$tablet-portrait-width}) {

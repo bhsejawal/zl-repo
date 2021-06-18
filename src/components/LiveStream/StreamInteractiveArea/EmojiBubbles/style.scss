@@ -1,0 +1,32 @@
+.wrapper {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  pointer-events: none;
+}
+
+.emoji {
+  position: absolute;
+  width: 30px;
+  bottom: -20px;
+  animation: float 2.5s;
+
+  img {
+    width: 100%;
+  }
+}
+
+@keyframes float {
+
+  0% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  100% {
+    opacity: 0;
+    transform: translateY(calc(-100vw * .5625)) scale(.7);
+  }
+}

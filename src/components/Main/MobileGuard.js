@@ -2,18 +2,18 @@ import { cloneElement, toChildArray } from 'preact';
 import { route } from 'preact-router';
 import { useEffect, useMemo } from 'preact/hooks';
 
-import { getDeviceType } from '../../helpers';
+import { getDeviceType, isDev } from '../../helpers';
 
 const MobileGuard = ({ children, ...props }) => {
   const deviceType = useMemo(() => getDeviceType(), []);
 
   useEffect(() => {
-    if (deviceType === 'phone') {
+    if (deviceType === 'phone' && !isDev()) {
       route('/mobile', true);
     }
   }, [deviceType]);
 
-  if (deviceType === 'phone') {
+  if (deviceType === 'phone' && !isDev()) {
     return null;
   }
 

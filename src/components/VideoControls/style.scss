@@ -1,49 +1,86 @@
-.controls {
-  display: flex;
+.videoControls {
   position: absolute;
-  top: unset;
   bottom: 0;
-  right: 0;
-  left: 0;
-  background: #00000059;
-  padding: 6px;
   width: 100%;
-  max-width: unset;
+  display: flex;
+  padding-bottom: 10px;
+  padding-left: 16px;
+}
+
+.volumeWrapper {
+  display: flex;
+  flex-direction: row;
+  width: 28px;
+  transition: width .25s ease-in-out;
+  align-items: flex-start;
 
   button {
-    background-color: transparent;
-    border: 0;
-    color: white;
+    min-width: 28px;
   }
 
-  .rangeInput {
-    width: 75px;
-    display: inline-flex;
-    margin-right: auto;
 
-    input {
-      box-shadow: none;
+  .volumeContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--hunterGreenMediumDark);
+    height: 28px;
+    transition: width .25s ease-in-out;
+    opacity: 0;
+
+    &.expanded {
+      animation: fadeIn .25s ease-in-out forwards;
     }
   }
 
-  .soundButton {
-    font-size: 20px;
-    width: 38px;
-    justify-items: left;
-    display: flex;  }
+  .rangeInput {
+    padding: 0px 5px;
 
+
+    input {
+      box-shadow: none;
+      width: 0px;
+    }
+  }
+
+  &.expanded {
+    border-left: 0px;
+    width: 100px;
+
+    button {
+      animation: adjustBorder .25s linear forwards;
+
+      &:hover {
+        opacity: 1 !important;
+      }
+    }
+
+    .volumeContainer {
+      border-top-right-radius: 14px;
+      border-bottom-right-radius: 14px;
+    }
+
+    .rangeInput input {
+      width: 60px;
+    }
+  }
 }
 
-.controlsHidden {
-  display: flex;
-  position: absolute;
-  bottom: 0;
-  left: 0;
+@keyframes fadeIn {
 
-  button {
-    background-color: transparent;
-    border: 0;
-    color: white;
-    padding: 5px 10px;
+  0% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes adjustBorder {
+
+  100% {
+    border-top-right-radius: 0px;
+    border-bottom-right-radius: 0px;
   }
 }

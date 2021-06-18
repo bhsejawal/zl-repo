@@ -7,11 +7,12 @@ import {
   useState,
 } from 'preact/hooks';
 import { connect } from 'react-redux';
-import { Box } from 'grommet';
+import classnames from 'classnames';
 
 import { GlobalsContext } from 'Shared/context';
 import { hasPermission } from 'Components/Authorize';
 import TimeBar from 'Components/TimeBar';
+import VideoControls from 'Components/VideoControls';
 
 import Fallback from './Fallback';
 
@@ -23,8 +24,7 @@ import { useWebRTCStream } from './hooks/useWebRTCStream';
 import { wsMessages } from './helpers/constants';
 import { useIsHabitatTabbed, useIsMobileSize } from '../../hooks';
 import { MOBILE_CONTROLS_HEIGHT } from '../../routes/habitat/constants';
-import TakeSnapshotButton from './StreamInteractiveArea/StreamControls/TakeSnapshotButton';
-import ZoomBar from './StreamInteractiveArea/StreamControls/ZoomBar';
+import MobileControls from './MobileControls.js';
 
 import style from './style.scss';
 
@@ -40,7 +40,6 @@ const Stream = ({
   height = 355,
   streamId,
   interactive,
-  customControls,
   userId,
   isStreamOn,
   mode,
@@ -51,6 +50,7 @@ const Stream = ({
   const [isInitialized, setIsInitialized] = useState(false);
   const isSmallScreen = useIsMobileSize();
   const isTabbed = useIsHabitatTabbed();
+  const [showControls, setShowControls] = useState(false);
 
   const logStreamStatus = useCallback((data) => {
     if (data?.startTime && data?.streamId) {
@@ -110,18 +110,33 @@ const Stream = ({
           maxWidth: width,
         }}
         ref={containerRef}
+        onMouseEnter={() => setShowControls(true)}
+        onMouseLeave={() => setShowControls(false)}
       >
-        <div className={style.videoContainer} style={{ width, height }}>
+        <div
+          className={classnames(style.videoContainer, {
+            [style.loading]: streamStatus !== PLAY_STARTED,
+          })}
+          style={{ width, height }}
+        >
           {isStreamOn && (
-            <video
-              ref={videoRef}
-              autoPlay
-              controls={!customControls}
-              muted
-              playsInline
-              key={streamId}
-              style={{ width, height }}
-            />
+            <div style={{ width, height }}>
+              <video
+                ref={videoRef}
+                autoPlay
+                controls={false}
+                muted
+                playsInline
+                key={streamId}
+                style={{ width, height }}
+              />
+              <VideoControls
+                ref={videoRef}
+                showControls={showControls || isTabbed}
+                showPlayControl={mode !== 'liveTalk'}
+                showVolumeControl
+              />
+            </div>
           )}
 
           {streamStatus === PLAY_STARTED && isStreamOn && interactive && (
@@ -137,22 +152,7 @@ const Stream = ({
 
         {/* mobile controls */}
         {streamStatus === PLAY_STARTED && interactive && isSmallScreen && isStreamOn && (
-          <Box
-            width="100%"
-            height={`${MOBILE_CONTROLS_HEIGHT}px`}
-            direction="row"
-            align="center"
-            justify="around"
-            background="var(--hunterGreenMediumLight)"
-            pad={{ horizontal: "medium" }}
-          >
-            <Box justify="center" margin={{ right: '20px' }}>
-              <TakeSnapshotButton plain />
-            </Box>
-            <Box flex="grow">
-              <ZoomBar horizontal />
-            </Box>
-          </Box>
+          <MobileControls />
         )}
 
         {![ERROR, PLAY_STARTED, CLOSED].includes(streamStatus) && (

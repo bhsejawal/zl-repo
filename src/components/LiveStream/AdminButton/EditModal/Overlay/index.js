@@ -76,7 +76,7 @@ const Overlay = ({
   return (
     <Box justify="center" align="center" flex="grow">
       <Box fill align="stretch" direction="row">
-        <Box width={{ min: '500px' }} pad="medium">
+        <Box width="500px" pad="medium">
           <Box margin={{ top: 'medium' }} pad={{ horizontal: 'medium' }} className="customScrollBar grey">
             <Heading level="4" margin={{ top: '0' }}>Update Overlay</Heading>
 
@@ -106,7 +106,6 @@ const Overlay = ({
               </Heading>
               <TextArea
                 value={description}
-                className={style.textarea}
                 rows="5"
                 data-prop="text"
                 onChange={(({ target }) => setDescription(target.value))}
@@ -123,6 +122,7 @@ const Overlay = ({
           align="center"
           pad="medium"
           overflow="hidden"
+          width="350px"
         >
           <Heading level="4">Preview Changes</Heading>
 

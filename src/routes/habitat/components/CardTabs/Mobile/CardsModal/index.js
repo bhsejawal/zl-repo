@@ -8,7 +8,14 @@ import {
   useState,
 } from 'preact/hooks';
 import { batch, connect } from 'react-redux';
-import { Box, Button, Layer } from 'grommet';
+import {
+  Box,
+  Button,
+  Grommet,
+  Layer,
+  Text,
+} from 'grommet';
+import { deepMerge } from 'grommet/utils';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTimes } from '@fortawesome/pro-solid-svg-icons';
 import classnames from 'classnames';
@@ -24,7 +31,7 @@ import SingleVideoCard from 'Cards/SingleVideoCard';
 import OriginAndHabitatCard from 'Cards/OriginAndHabitatCard';
 import AnimalBodyCard from 'Cards/AnimalBodyCard';
 import QuizCard from 'Cards/QuizCard';
-import LoaderModal from 'Components/LoaderModal';
+import Loader from 'Components/Loader';
 
 import { API_BASE_URL } from 'Shared/fetch';
 import { fetchCards } from '../../api';
@@ -52,10 +59,34 @@ import {
   BODY,
   QUIZ,
 } from '../../constants';
+import grommetTheme from '../../../../../../grommetTheme';
 
 import style from './style.scss';
 
 const allCardTypes = [MEET, INFO, BODY, QUIZ];
+
+const fullLayerTheme = deepMerge(grommetTheme, {
+  layer: {
+    container: {
+      extend: {
+        maxWidth: 'auto',
+        maxHeight: 'auto',
+      },
+    },
+  },
+});
+
+const findVideoControlBtnAncestor = (el) => {
+  let cur = el;
+  // search only 3 levels up
+  for (let i = 0; i < 3; i += 1) {
+    if (cur.classList.contains('videoControlBtn')) {
+      return cur;
+    }
+    cur = el.parentNode;
+  }
+  return null;
+};
 
 const MobileCardsModal = ({
   habitatId,
@@ -77,6 +108,7 @@ const MobileCardsModal = ({
   const cardsLen = cards?.length;
   const [progress, setProgress] = useState(0);
   const [paused, setPaused] = useState(false);
+  const noTimedMove = [ANIMAL_BODY_CARD_TYPE, QUIZ_CARD_TYPE].includes(card?.type);
   const { get } = useFetch(API_BASE_URL, {
     credentials: 'include',
     cachePolicy: 'no-cache',
@@ -84,7 +116,12 @@ const MobileCardsModal = ({
 
   useLayoutEffect(() => {
     setProgress(0);
-  }, [activeCardIndex]);
+    if (noTimedMove) {
+      setPaused(true);
+    } else {
+      setPaused(false);
+    }
+  }, [activeCardIndex, noTimedMove]);
 
   // eslint-disable-next-line consistent-return
   useEffect(() => {
@@ -121,12 +158,28 @@ const MobileCardsModal = ({
       clearTimeout(timeoutRef.current)
       return nextCardAction(cardsLen);
     }
+  }, [cardsLen, nextCardAction, prevCardAction]);
 
-    if (cardWrapperRef.current?.firstChild === evt.target) {
+  const onTouchStart = useCallback((evt) => {
+    const { view } = evt;
+    const { clientX, clientY } = evt.touches[0] || {};
+    const isInCardCore = clientY >= 60 && clientX > 60 && view.innerWidth - clientX > 60;
+    const videoControlBtn = findVideoControlBtnAncestor(evt.target);
+
+    if (isInCardCore && !videoControlBtn) {
+      evt.preventDefault();
+      evt.stopPropagation();
       clearTimeout(timeoutRef.current)
-      setPaused(!paused);
+      setPaused(true);
     }
-  }, [cardsLen, nextCardAction, paused, prevCardAction]);
+  }, []);
+
+  const onTouchEnd = useCallback((evt) => {
+    const videoControlBtn = findVideoControlBtnAncestor(evt.target);
+    if (!videoControlBtn) {
+      setPaused(false);
+    }
+  }, []);
 
   const onVideoPlayStarted = useCallback(() => {
     setPaused(true);
@@ -179,6 +232,11 @@ const MobileCardsModal = ({
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [activeCardIndex, cardsLen]);
 
+  // close on unmount
+  useEffect(() => () => {
+    closeAction();
+  }, [closeAction]);
+
   const closeButton = useMemo(() => (
     <Box className={style.controls}>
       <Box
@@ -197,155 +255,186 @@ const MobileCardsModal = ({
     </Box>
   ), [closeAction]);
 
+  if (!loading && cards.length === 0) {
+    return (
+      <Layer>
+        {closeButton}
+        <Box pad="xlarge" align="center" justify="center">
+          <Text size="large">No data</Text>
+        </Box>
+      </Layer>
+    );
+  }
+
   if (loading || activeCardIndex === cardsLen || activeCardIndex === -1) {
     return (
       <Layer>
         <Box pad={{ top: 'medium' }} height="3px" />
         {closeButton}
-        <LoaderModal />
+        <Loader />
       </Layer>
     );
   }
 
   return (
-    <Layer onEsc={closeAction} onClick={onClick}>
-      <Box className={style.controls} direction="row" pad={{ top: 'medium', horizontal: 'medium' }}>
-        {cards.map((_el, ind) => (
-          <div className={style.indIndicator}>
-            {ind <= activeCardIndex && (
-              <div
-                className={classnames(style.timeIndicator, { [style.done]: ind < activeCardIndex })}
-                style={{ width: ind === activeCardIndex ? `${progress}%` : undefined }}
-              />
-            )}
-          </div>
-        ))}
-      </Box>
+    <Grommet theme={fullLayerTheme}>
+      <Layer
+        full
+        onEsc={closeAction}
+        onClick={onClick}
+        onTouchStart={noTimedMove ? undefined : onTouchStart}
+        onTouchEnd={noTimedMove ? undefined : onTouchEnd}
+      >
+        <Box className={style.controls} direction="row" pad={{ top: 'medium', horizontal: 'medium' }}>
+          {cards.map((_el, ind) => (
+            <div className={style.indIndicator}>
+              {ind <= activeCardIndex && (
+                <div
+                  className={classnames(style.timeIndicator, {
+                    [style.done]: ind < activeCardIndex,
+                  })}
+                  style={{ width: ind === activeCardIndex ? `${progress}%` : undefined }}
+                />
+              )}
+            </div>
+          ))}
+        </Box>
 
-      {closeButton}
+        {closeButton}
 
-      <div className={style.cardWrapper} ref={cardWrapperRef}>
-        {card?.type === SINGLE_ICON_CARD_TYPE && (
-          <SingleIconCard
-            className={style.card}
-            tag={card.tag}
-            title={card.data.title}
-            img={card.data.img}
-            text={card.data.text}
-          />
-        )}
+        <div className={style.cardWrapper} ref={cardWrapperRef}>
+          {card?.type === SINGLE_ICON_CARD_TYPE && (
+            <SingleIconCard
+              className={style.card}
+              tag={card.tag}
+              title={card.data.title}
+              img={card.data.img}
+              text={card.data.text}
+              mobile
+            />
+          )}
 
-        {card?.type === THREE_ICONS_CARD_TYPE && (
-          <ThreeIconsCard
-            className={style.card}
-            tag={card.tag}
-            title={card.data.title}
-            img1={card.data.img1}
-            text1={card.data.text1}
-            img2={card.data.img2}
-            text2={card.data.text2}
-            img3={card.data.img3}
-            text3={card.data.text3}
-          />
-        )}
+          {card?.type === THREE_ICONS_CARD_TYPE && (
+            <ThreeIconsCard
+              className={style.card}
+              tag={card.tag}
+              title={card.data.title}
+              img1={card.data.img1}
+              text1={card.data.text1}
+              img2={card.data.img2}
+              text2={card.data.text2}
+              img3={card.data.img3}
+              text3={card.data.text3}
+              mobile
+            />
+          )}
 
-        {card?.type === FOUR_ICONS_CARD_TYPE && (
-          <FourIconsCard
-            className={style.card}
-            tag={card.tag}
-            title={card.data.title}
-            text={card.data.text}
-            img1={card.data.img1}
-            icon1Txt={card.data.icon1Txt}
-            img2={card.data.img2}
-            icon2Txt={card.data.icon2Txt}
-            img3={card.data.img3}
-            icon3Txt={card.data.icon3Txt}
-            img4={card.data.img4}
-            icon4Txt={card.data.icon4Txt}
-          />
-        )}
+          {card?.type === FOUR_ICONS_CARD_TYPE && (
+            <FourIconsCard
+              className={style.card}
+              tag={card.tag}
+              title={card.data.title}
+              text={card.data.text}
+              img1={card.data.img1}
+              icon1Txt={card.data.icon1Txt}
+              img2={card.data.img2}
+              icon2Txt={card.data.icon2Txt}
+              img3={card.data.img3}
+              icon3Txt={card.data.icon3Txt}
+              img4={card.data.img4}
+              icon4Txt={card.data.icon4Txt}
+              mobile
+            />
+          )}
 
-        {card?.type === ANIMAL_PROFILE_CARD_TYPE && (
-          <AnimalProfileCard
-            className={style.card}
-            tag={card.tag}
-            img={card.data.img}
-            name={card.data.name}
-            title={card.data.title}
-            sex={card.data.sex}
-            dateOfBirth={card.data.dateOfBirth}
-            text1={card.data.text1}
-            text2={card.data.text2}
-            text3={card.data.text3}
-          />
-        )}
+          {card?.type === ANIMAL_PROFILE_CARD_TYPE && (
+            <AnimalProfileCard
+              className={style.card}
+              tag={card.tag}
+              img={card.data.img}
+              name={card.data.name}
+              title={card.data.title}
+              sex={card.data.sex}
+              dateOfBirth={card.data.dateOfBirth}
+              text1={card.data.text1}
+              text2={card.data.text2}
+              text3={card.data.text3}
+              mobile
+            />
+          )}
 
-        {card?.type === CONSERVATION_CARD_TYPE && (
-          <ConservationCard
-            className={style.card}
-            tag={card.tag}
-            status={card.data.status}
-            title={card.data.title}
-            text={card.data.text}
-            btnLabel={card.data.btnLabel}
-            btnLink={card.data.btnLink}
-          />
-        )}
+          {card?.type === CONSERVATION_CARD_TYPE && (
+            <ConservationCard
+              className={style.card}
+              tag={card.tag}
+              status={card.data.status}
+              title={card.data.title}
+              text={card.data.text}
+              btnLabel={card.data.btnLabel}
+              btnLink={card.data.btnLink}
+              mobile
+            />
+          )}
 
-        {card?.type === TWO_VIDEOS_CARD_TYPE && (
-          <TwoVideosCard
-            className={style.card}
-            tag={card.tag}
-            video1Url={card.data.video1Url}
-            video2Url={card.data.video2Url}
-            text1={card.data.text1}
-            text2={card.data.text2}
-            onPlay={onVideoPlayStarted}
-          />
-        )}
+          {card?.type === TWO_VIDEOS_CARD_TYPE && (
+            <TwoVideosCard
+              className={style.card}
+              tag={card.tag}
+              video1Url={card.data.video1Url}
+              video2Url={card.data.video2Url}
+              text1={card.data.text1}
+              text2={card.data.text2}
+              onPlay={onVideoPlayStarted}
+              mobile
+            />
+          )}
 
-        {card?.type === SINGLE_VIDEO_CARD_TYPE && (
-          <SingleVideoCard
-            className={classnames(style.card, style.video)}
-            tag={card.tag}
-            videoUrl={card.data.videoUrl}
-            title={card.data.title}
-            text={card.data.text}
-            onPlay={onVideoPlayStarted}
-          />
-        )}
+          {card?.type === SINGLE_VIDEO_CARD_TYPE && (
+            <SingleVideoCard
+              className={classnames(style.card, style.video)}
+              tag={card.tag}
+              videoUrl={card.data.videoUrl}
+              title={card.data.title}
+              text={card.data.text}
+              onPlay={onVideoPlayStarted}
+              mobile
+            />
+          )}
 
-        {card?.type === ORIGIN_AND_HABITAT_CARD_TYPE && (
-          <OriginAndHabitatCard
-            className={style.card}
-            tag={card.tag}
-            title={card.data.title}
-            img={card.data.img}
-            text={card.data.text}
-          />
-        )}
+          {card?.type === ORIGIN_AND_HABITAT_CARD_TYPE && (
+            <OriginAndHabitatCard
+              className={style.card}
+              tag={card.tag}
+              title={card.data.title}
+              img={card.data.img}
+              text={card.data.text}
+              mobile
+            />
+          )}
 
-        {card?.type === ANIMAL_BODY_CARD_TYPE && (
-          <AnimalBodyCard
-            className={style.card}
-            tag={card.tag}
-            img={card.data.img}
-            parts={card.data.parts}
-          />
-        )}
+          {card?.type === ANIMAL_BODY_CARD_TYPE && (
+            <AnimalBodyCard
+              className={style.card}
+              tag={card.tag}
+              img={card.data.img}
+              parts={card.data.parts}
+              mobile
+            />
+          )}
 
-        {card?.type === QUIZ_CARD_TYPE && (
-          <QuizCard
-            className={classnames(style.card, style.quiz)}
-            cardId={card._id}
-            questions={card.data.questions}
-            answers={card.data.answers}
-            correctAnswers={card.data.correctAnswers}
-          />
-        )}
-      </div>
-    </Layer>
+          {card?.type === QUIZ_CARD_TYPE && (
+            <QuizCard
+              className={style.card}
+              cardId={card._id}
+              questions={card.data.questions}
+              answers={card.data.answers}
+              correctAnswers={card.data.correctAnswers}
+              mobile
+            />
+          )}
+        </div>
+      </Layer>
+    </Grommet>
   );
 };
 

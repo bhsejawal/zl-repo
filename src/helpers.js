@@ -16,7 +16,7 @@ export const passwordRegex = /^(?=.*[a-zA-Z])(?=.*[0-9])(?!.*\s).{8,50}$/gm;
 export const iOSDevice = () => !!navigator.platform.match(/iPhone|iPod|iPad/);
 export const androidDevice = () => !!navigator.userAgent.match(/Android/i);
 
-export const isDev = () => process.env.NODE_ENV === 'development';
+export const isDev = () => process.env.PREACT_APP_ENVIRONMENT === 'development';
 
 export const getDeviceType = () => {
   if (typeof window === 'undefined') {
@@ -123,3 +123,9 @@ export const getCampaignData = () => {
 export const getConfig = (configs = [], key) => (
   configs.find(({ configKey }) => configKey === key) || {}
 );
+
+export const handleDownloadMediaURL = (url) => {
+  const { pathname } = new URL(url);
+  const host = isDev() ? 'zoolife.brizi.tech' : document.location.host;
+  return `https://${host}${pathname}`;
+}

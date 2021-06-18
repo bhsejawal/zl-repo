@@ -6,7 +6,6 @@ import { isEmpty, isNil } from 'lodash-es';
 import { faFacebookF, faTwitter } from '@fortawesome/free-brands-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
-  faTimes,
   faEnvelope,
   faDownload,
   faShareSquare,
@@ -17,17 +16,21 @@ import {
 } from '@fortawesome/pro-solid-svg-icons';
 import { faSpinner } from '@fortawesome/pro-duotone-svg-icons';
 import useFetch from 'use-http';
+import classnames from 'classnames';
 
 import ErrorModal from 'Components/modals/Error';
+import CloseButton from 'Components/modals/CloseButton';
 import { API_BASE_URL } from 'Shared/fetch';
 import { GlobalsContext } from 'Shared/context';
 import { closeShareModal, setShareModalMediaId } from './actions';
 import { androidDevice, iOSDevice } from '../../../../helpers';
+import { useIsMobileSize } from '../../../../hooks';
 
 import style from './style.scss';
 
 export const generateTwitterURL = (html, text, hashtag, handle) => {
   const shareURL = new URL('https://twitter.com/intent/tweet');
+
   if (!isNil(hashtag) && !isEmpty(hashtag)) {
     shareURL.searchParams.append('hashtags', hashtag);
   }
@@ -70,6 +73,7 @@ const ShareModal = ({
     videoURL,
   } = data;
   const { socket } = useContext(GlobalsContext);
+  const isMobileSize = useIsMobileSize();
   const [showEmailError, setShowEmailError] = useState();
   const [showEmailSuccess, setShowEmailSuccess] = useState();
   const {
@@ -135,11 +139,21 @@ const ShareModal = ({
       onClickOutside={closeShareModalAction}
       onEsc={closeShareModalAction}
     >
-      <Box className={style.shareModalContainer}>
+      {isMobileSize && (
+        <>
+          <div className={style.absoluteClose}>
+            <CloseButton onClick={closeShareModalAction} className={style.close} />
+          </div>
+          {!videoURL && userId === data?.userId && (
+            <div className={style.title}>Here’s your photo!</div>
+          )}
+        </>
+      )}
+      <Box className={classnames(style.shareModalContainer, { [style.mobile]: isMobileSize })}>
         <Box>
-          <button onClick={closeShareModalAction} type="button" className={style.close}>
-            <FontAwesomeIcon icon={faTimes} />
-          </button>
+          {!isMobileSize && (
+            <CloseButton onClick={closeShareModalAction} className={style.close} varient="green" />
+          )}
           <Box className={style.shareMedia} >
             {nextId && (
               <button
@@ -168,9 +182,7 @@ const ShareModal = ({
             )}
           </Box>
           <Box className={style.footer}>
-            <div>
-              {`${zoo} | ${animal}`}
-            </div>
+            {!isMobileSize && <div>{`${zoo} | ${animal}`}</div>}
             <div className={style.shareButtons}>
               {!videoURL && (
                 <button

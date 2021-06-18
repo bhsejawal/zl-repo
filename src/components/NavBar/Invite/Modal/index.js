@@ -5,23 +5,22 @@ import {
   useRef,
   useState,
 } from 'preact/hooks';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTimes } from '@fortawesome/pro-solid-svg-icons';
 import {
   Layer,
   Box,
-  Button,
   Heading,
   Text,
 } from 'grommet';
 import useFetch from 'use-http';
+import classnames from 'classnames';
 
 import { PrimaryButton } from 'Components/Buttons';
 import { buildURL } from 'Shared/fetch';
 import TagInput from 'Components/TagInput';
 import StatusModalContent from 'Components/modals/StatusContent';
+import CloseButton from 'Components/modals/CloseButton';
+import Body from 'Components/modals/Body';
 import { defaultErrorMsg } from 'Components/modals/Error';
-import { useWindowResize } from '../../../../hooks';
 
 import headerImg from './header-img.jpg';
 
@@ -37,7 +36,6 @@ const successText = (
 
 const InviteModal = ({ onClose }) => {
   const tagInputRef = useRef();
-  const { width } = useWindowResize();
   const [emails, setEmails] = useState([]);
   const [sent, setSent] = useState();
   const [error, setError] = useState();
@@ -98,7 +96,7 @@ const InviteModal = ({ onClose }) => {
   );
 
   return (
-    <Layer position="center" className={style.layer} onEsc={onClose}>
+    <Layer position="center" className={style.layer} onEsc={onClose} background="transparent">
       {sent && (
         <StatusModalContent
           type="success"
@@ -116,30 +114,20 @@ const InviteModal = ({ onClose }) => {
       )}
 
       {!sent && !error && (
-        <Box width="min(480px, 100vw)">
+        <Box width="min(480px, 100vw)" className="customScrollBar grey" background="white">
           <Box
             direction="row"
             align="center"
             as="header"
             justify="end"
-            overflow="hidden"
+            height={{ min: 'unset'}}
             className={style.header}
           >
-            <img src={headerImg} alt="header" width={width > 410 ? '410' : width} />
-            <Button
-              className={style.closeBtn}
-              plain
-              margin="small"
-              onClick={onClose}
-              icon={<FontAwesomeIcon size="lg" color="--var(grey)" icon={faTimes} />}
-            />
+            <img src={headerImg} alt="header" />
+            <CloseButton varient="grey" onClick={onClose} className={style.closeBtn} />
           </Box>
 
-          <Box
-            pad={{ vertical: '0', horizontal: 'large' }}
-            margin={{ top: '35px'}}
-            className={style.content}
-          >
+          <Body className={classnames(style.content, '')}>
             <Text size="xlarge">
               These days, we all need a nature escape.
             </Text>
@@ -164,7 +152,7 @@ const InviteModal = ({ onClose }) => {
 
             <Box
               alignSelf="center"
-              pad={{ top: 'medium', bottom: 'large' }}
+              pad={{ top: 'medium' }}
               width={{ min: '140px' }}
             >
               <PrimaryButton
@@ -173,7 +161,7 @@ const InviteModal = ({ onClose }) => {
                 onClick={onSend}
               />
             </Box>
-          </Box>
+          </Body>
         </Box>
       )}
     </Layer>

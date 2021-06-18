@@ -106,7 +106,7 @@ const ShareContainer = ({ userId, show, showSnapshotShareAction }) => {
         socket.off('snapshotTaken', socketHandler);
       }
     }
-  }, [socket, showSnapshotShareAction]);
+  }, [socket, showSnapshotShareAction, userId]);
 
   const sendEmail = async () => {
     await post('/email/snapshot', { imageUrl: snapshotData.snapshot });

@@ -1,19 +1,18 @@
 import { h } from 'preact';
 import {
   Box,
-  Button,
   Form,
   Text,
-  Heading,
   Layer,
   TextInput,
   TextArea,
 } from 'grommet';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faChevronDown, faTimes } from '@fortawesome/pro-solid-svg-icons';
+import { faChevronDown } from '@fortawesome/pro-solid-svg-icons';
 import { useEffect, useMemo, useState } from 'preact/hooks';
 import { pick, get } from 'lodash-es';
 
+import Header from 'Components/modals/Header';
 import { PrimaryButton } from 'Components/Buttons';
 import {
   SELECT,
@@ -151,124 +150,111 @@ const ItemModal = ({
 
   return (
     <Layer onEsc={onClose} onClickOutside={onClose}>
-      <Box
-        width="large"
-        direction="row"
-        align="center"
-        as="header"
-        elevation="small"
-        justify="between"
-      >
-        <Heading level="2" margin={{ vertical: 'medium', horizontal: 'large' }}>
+      <Box height={{ max: '100%' }}>
+        <Header onClose={onClose}>
           {item ? `Edit ${entity}` : `New ${entity}`}
-        </Heading>
-        <Button
-          plain
-          margin="medium"
-          onClick={onClose}
-          icon={<FontAwesomeIcon size="2x" icon={faTimes} />}
-        />
-      </Box>
+        </Header>
 
-      <Form onSubmit={onSubmit}>
-        <Box
-          overflow="auto"
-          height={{ max: 'calc(100vh - 200px)' }}
-          pad={{ vertical: 'medium', horizontal: 'large' }}
-        >
-          {editableColumns.map(({
-            property,
-            postProperty,
-            title,
-            required = true,
-            type = TEXT,
-            selectValues,
-            editRender,
-            maxLength,
-          }) => (
-            <Box key={property} className={style.inputWrapper}>
-              <Text margin={{ top: 'medium', bottom: 'small' }} size="large">
-                {title}
-              </Text>
-              {!editRender && type === TEXT && (
-                <TextInput
-                  required={required}
-                  name={property}
-                  value={get(values, property)}
-                  onChange={onInputChange}
-                  maxLength={maxLength}
-                />
-              )}
-
-              {!editRender && type === SELECT && (
-                <div className="simpleSelect">
-                  <select
-                    name={property}
-                    required={required}
-                    onChange={onInputChange}
-                  >
-                    {selectValues.map(({ label, value }, ind) => (
-                      <option
-                        selected={get(values, property)
-                          ? value === get(values, property)
-                          : ind === 0}
-                        value={value}
-                      >
-                        {label}
-                      </option>
-                    ))}
-                  </select>
-
-                  <FontAwesomeIcon icon={faChevronDown} color="var(--blue)" />
-                </div>
-              )}
-
-              {!editRender && type === TEXT_AUTOCOMPLETE && (
-                <AutocompleteTextInput
-                  postProperty={postProperty || property}
-                  required={required}
-                  selectValues={selectValues}
-                  value={get(values, property)}
-                />
-              )}
-
-              {!editRender && type === TEXTAREA && (
-                <Box height={{ min: '150px', max: '150px' }}>
-                  <TextArea
+        <Form onSubmit={onSubmit} className={style.form}>
+          <Box
+            overflow="auto"
+            height={{ max: 'calc(100vh - 200px)' }}
+            pad={{ vertical: 'medium', horizontal: 'large' }}
+          >
+            {editableColumns.map(({
+              property,
+              postProperty,
+              title,
+              required = true,
+              type = TEXT,
+              selectValues,
+              editRender,
+              maxLength,
+            }) => (
+              <Box key={property} className={style.inputWrapper}>
+                <Text margin={{ top: 'medium', bottom: 'small' }} size="large">
+                  {title}
+                </Text>
+                {!editRender && type === TEXT && (
+                  <TextInput
                     required={required}
                     name={property}
                     value={get(values, property)}
                     onChange={onInputChange}
-                    fill
-                    resize={false}
-                    rows={10}
                     maxLength={maxLength}
                   />
-                </Box>
-              )}
+                )}
 
-              {editRender && editRender(values)}
-              {maxLength && <div className={style.counter}>{`${get(values, property, '').length}/${maxLength}`}</div>}
-            </Box>
-          ))}
-        </Box>
+                {!editRender && type === SELECT && (
+                  <div className="simpleSelect">
+                    <select
+                      name={property}
+                      required={required}
+                      onChange={onInputChange}
+                    >
+                      {selectValues.map(({ label, value }, ind) => (
+                        <option
+                          selected={get(values, property)
+                            ? value === get(values, property)
+                            : ind === 0}
+                          value={value}
+                        >
+                          {label}
+                        </option>
+                      ))}
+                    </select>
 
-        <Box pad={{ vertical: 'medium', horizontal: 'large' }} align="end">
-          <PrimaryButton
-            primary
-            size="large"
-            type="submit"
-            loading={loading}
-            label={item ? 'Save Changes' : 'Done'}
-          />
+                    <FontAwesomeIcon icon={faChevronDown} color="var(--blue)" />
+                  </div>
+                )}
 
-          {error && (
-            <Box pad="small">
-              <Text color="status-error">{error}</Text>
-            </Box>
-          )}
-        </Box>
-      </Form>
+                {!editRender && type === TEXT_AUTOCOMPLETE && (
+                  <AutocompleteTextInput
+                    postProperty={postProperty || property}
+                    required={required}
+                    selectValues={selectValues}
+                    value={get(values, property)}
+                  />
+                )}
+
+                {!editRender && type === TEXTAREA && (
+                  <Box height={{ min: '150px', max: '150px' }}>
+                    <TextArea
+                      required={required}
+                      name={property}
+                      value={get(values, property)}
+                      onChange={onInputChange}
+                      fill
+                      resize={false}
+                      rows={10}
+                      maxLength={maxLength}
+                    />
+                  </Box>
+                )}
+
+                {editRender && editRender(values)}
+                {maxLength && <div className={style.counter}>{`${get(values, property, '').length}/${maxLength}`}</div>}
+              </Box>
+            ))}
+          </Box>
+
+          <Box pad={{ vertical: 'medium', horizontal: 'large' }} align="end" height={{ min: 'fit-content' }}>
+            <PrimaryButton
+              primary
+              size="large"
+              type="submit"
+              loading={loading}
+              label={item ? 'Save Changes' : 'Done'}
+            />
+
+            {error && (
+              <Box pad="small">
+                <Text color="status-error">{error}</Text>
+              </Box>
+            )}
+          </Box>
+        </Form>
+      </Box>
     </Layer>
   );
 };

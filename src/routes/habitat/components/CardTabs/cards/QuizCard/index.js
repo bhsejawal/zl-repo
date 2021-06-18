@@ -21,6 +21,7 @@ const QuizCard = ({
   answers: answersArg = 0,
   profileImage,
   className,
+  mobile,
 }) => {
   const [answers, setAnswers] = useState(answersArg);
   const [selectedAnswerInd, setSelectedAnswerInd] = useState();
@@ -85,7 +86,11 @@ const QuizCard = ({
   };
 
   return (
-    <CardWrapper className={className} tag={QUIZ_CARD_TYPE} hideTag>
+    <CardWrapper
+      className={classnames(className, { [style.mobile]: mobile })}
+      tag={QUIZ_CARD_TYPE}
+      hideTag
+    >
       <div className={style.wrapper}>
         <div className={style.top}>
           <Heading level="4" margin="0" className={style.title}>

@@ -1,21 +1,20 @@
 import { h } from 'preact';
 import { useMemo, useState } from 'preact/hooks';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTimes } from '@fortawesome/pro-solid-svg-icons';
 import { PrimaryButton } from 'Components/Buttons';
 import {
   Layer,
   Box,
-  Button,
   Text,
   Form,
-  FormField,
   TextArea,
-  Heading,
 } from 'grommet';
 import useFetch from 'use-http';
 
 import { buildURL } from 'Shared/fetch';
+import Header from 'Components/modals/Header';
+import Body from 'Components/modals/Body';
+
+import style from './style.scss';
 
 const TEXT_INPUT = 'text'
 
@@ -73,57 +72,43 @@ const EditModal = ({
 
   return (
     <Layer position="center" onClickOutside={onClose}>
-      <Box fill style={{ minWidth: '378px' }}>
-        <Form value={value} onSubmit={onSubmit} onChange={onChange}>
-          <Box
-            direction="row"
-            align="center"
-            as="header"
-            elevation="small"
-            justify="between"
-          >
-            <Heading level="2" margin={{ vertical: 'medium', horizontal: 'large' }}>
-              Edit Text
-            </Heading>
-            <Button
-              plain
-              margin="medium"
-              onClick={onClose}
-              icon={<FontAwesomeIcon size="2x" icon={faTimes} />}
-            />
-          </Box>
+      <Box>
+        <Header onClose={onClose}>
+          Edit Text
+        </Header>
 
-          <Box flex overflow="auto" pad="medium">
-            <FormField name="text">
-              <TextArea name={TEXT_INPUT} type="text" />
-            </FormField>
-            <Box justify="between" direction="row">
-              {error && (
-                <Box pad={{ horizontal: 'small' }}>
-                  <Text color="status-error">{error}</Text>
+        <Body>
+          <Form value={value} onSubmit={onSubmit} onChange={onChange}>
+            <Box flex overflow="auto">
+              <Box margin={{ bottom: '20px' }}>
+                <TextArea
+                  type="text"
+                  rows="5"
+                  name={TEXT_INPUT}
+                  className={style.textArea}
+                />
+              </Box>
+              <Box justify="between" direction="row">
+                {error && (
+                  <Box pad={{ horizontal: 'small' }}>
+                    <Text color="status-error">{error}</Text>
+                  </Box>
+                )}
+                <Box margin={{ left: 'auto' }}>
+                  <Text color={error ? 'status-error' : ''}>
+                    {value.text?.length ?? 0}
+                    /
+                    {maxLen}
+                  </Text>
                 </Box>
-              )}
-              <Box margin={{ left: 'auto' }}>
-                <Text color={error ? 'status-error' : ''}>
-                  {value.text?.length ?? 0}
-                  /
-                  {maxLen}
-                </Text>
               </Box>
             </Box>
-          </Box>
 
-          <Box
-            as="footer"
-            border={{ side: 'top' }}
-            pad="small"
-            justify="center"
-            direction="row"
-            align="center"
-          >
-            <PrimaryButton loading={loading} type="submit" label="Save" />
-          </Box>
-        </Form>
+            <Box align="end" margin={{ top: '30px' }}>
+              <PrimaryButton loading={loading} type="submit" label="Save" />
+            </Box>
+          </Form>
+        </Body>
       </Box>
     </Layer>
   );
