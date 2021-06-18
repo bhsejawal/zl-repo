@@ -232,6 +232,11 @@ const MobileCardsModal = ({
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [activeCardIndex, cardsLen]);
 
+  // close on unmount
+  useEffect(() => () => {
+    closeAction();
+  }, [closeAction]);
+
   const closeButton = useMemo(() => (
     <Box className={style.controls}>
       <Box

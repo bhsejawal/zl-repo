@@ -1,5 +1,5 @@
 import { h } from 'preact';
-import { useMemo } from 'preact/hooks';
+import { useEffect, useMemo } from 'preact/hooks';
 import { connect } from 'react-redux';
 import {
   Layer,
@@ -29,6 +29,11 @@ const fullLayerTheme = deepMerge(grommetTheme, {
 });
 
 const CalendarModal = ({ closeAction }) => {
+  // close on unmount
+  useEffect(() => () => {
+    closeAction();
+  }, [closeAction]);
+
   const closeButton = useMemo(() => (
     <Box className={style.controls}>
       <Box
