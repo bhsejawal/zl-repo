@@ -12,9 +12,12 @@ import { Heading, Box, Text } from 'grommet';
 
 import ZoolifeLogo from 'Components/ZoolifeLogo/zoolife.svg';
 
+import Layout from '../../layouts/LoginSignup';
+
 import { validateToken } from '../login/ResetModal/actions';
 import { passwordRegex } from '../../helpers';
-import Layout from '../../layouts/LoginSignup';
+
+import loginImage from '../login/login.png';
 
 import style from '../login/style.scss';
 
@@ -71,7 +74,7 @@ const PasswordReset = ({ token, logged }) => {
   };
 
   return (
-    <Layout>
+    <Layout image={loginImage}>
       <div className={style.login}>
         <div className={style.formWrapper}>
           <img src={ZoolifeLogo} alt="zoolife" />
