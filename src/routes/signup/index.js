@@ -116,11 +116,7 @@ const Signup = ({
         setUserDataAction(user);
         logPageView('/signed-up');
         logPageViewGA('/signed-up');
-        if (origin === 'phone') {
-          route('/mobile', true);
-        } else {
-          route('/profile', true);
-        }
+        route('/profile', true);
 
         try {
           localStorage.setItem('returningUser', true);
