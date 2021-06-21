@@ -4,14 +4,13 @@ import { connect } from 'react-redux';
 import { buildURL } from 'Shared/fetch';
 import useFetch, { Provider as UseFetchProvider } from 'use-http';
 
+import AppLoader from 'Components/AppLoader';
 import { setUserData, setUserSessionChecked, unsetUserData } from '../../redux/actions';
 import { hasPermission } from '.';
 import { authRedirect } from './helpers';
 import { getDeviceType, identifyUser } from '../../helpers';
 
 import ErrorPage from '../ErrorPage';
-
-import style from './style.scss';
 
 const AuthGuard = ({
   permission,
@@ -135,11 +134,8 @@ const AuthGuard = ({
     );
   }
 
-  // TODO: we might wanna change this and have something nicer
   return (
-    <div className={style.appLoader}>
-      Loading...
-    </div>
+    <AppLoader />
   );
 };
 
