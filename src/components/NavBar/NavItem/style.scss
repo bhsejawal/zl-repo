@@ -31,13 +31,6 @@
     text-decoration: unset;
     cursor: pointer;
 
-    @media screen and (min-width: #{$phone-portrait-width}) and (max-width: #{$phone-landscape-width - 1}) {
-
-      svg {
-        display: none !important;
-      }
-    }
-
     svg {
       margin-right: 6px;
     }
