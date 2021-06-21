@@ -6,8 +6,9 @@ import style from './style.scss';
 const Tag = ({
   label,
   varient, // online, light, offline
+  className,
 }) => (
-  <Text size="small" weight={700} className={classnames(style.tag, style[varient])}>
+  <Text size="small" weight={700} className={classnames(style.tag, className, style[varient])}>
     {label}
   </Text>
 );
