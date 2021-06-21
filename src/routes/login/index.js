@@ -11,6 +11,7 @@ import {
   Box,
   Text,
   Anchor,
+  Heading,
 } from 'grommet';
 
 import { buildURL, post } from 'Shared/fetch';
@@ -136,17 +137,17 @@ const Login = ({
   };
 
   return (
-    <Box fill width={{ max: "1650px", min: "350px" }} height={{ min: 'max-content' }} margin={{ horizontal: 'auto' }}>
+    <Box fill width={{ max: "1650px", min: "350px" }} height={{ min: 'max-content' }}>
       <Layout image={loginImage}>
         <Box direction="row" align="center" height="auto">
-          <Text size="xxlarge" responsive>
+          <Heading level="2">
             Welcome back
             <br />
             to
             <Box pad={{ horizontal: '10px'}} justify="center" style={{ display: 'inline-flex'}}>
               <Image src={logo} alt="" />
             </Box>
-          </Text>
+          </Heading>
         </Box>
         <Box fill="horizontal" margin={{ top: 'medium' }}>
           <form onSubmit={onSubmit}>
@@ -184,7 +185,7 @@ const Login = ({
               </div>
             </div>
             <Box margin={{ bottom: 'large' }}>
-              <Anchor className={style.reset} onClick={() => setShowModalAction(true)}>
+              <Anchor onClick={() => setShowModalAction(true)}>
                 Forgot password?
               </Anchor>
             </Box>
