@@ -24,7 +24,7 @@ const ZoolifeBenefits = () => {
   return (
     <Box
       background="var(--hunterGreenMediumLight)"
-      pad="medium"
+      pad={width <= 600 ? 'large' : 'medium'}
       align="center"
       height={{ min: 'max-content' }}
     >
