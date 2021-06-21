@@ -79,11 +79,14 @@ const List = forwardRef(({ children, className }, ref) => {
 
   useImperativeHandle(ref, () => ({ updateLayout }));
 
-  const resizeObserver = useMemo(() => new ResizeObserver(updateLayout), [updateLayout]);
+  const resizeObserver = useMemo(
+    () => typeof ResizeObserver !== 'undefined' && new ResizeObserver(updateLayout),
+    [updateLayout],
+  );
 
   // eslint-disable-next-line consistent-return
   useEffect(() => {
-    if (layout) {
+    if (layout && resizeObserver) {
       const domEl = itemsRef.current;
       resizeObserver.observe(domEl);
       return () => {
