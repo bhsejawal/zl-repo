@@ -4,7 +4,7 @@ import { authRedirect } from 'Components/Authorize/helpers';
 import store from '../redux/store';
 import { unsetUserData } from '../redux/actions';
 
-const baseUrl = urlJoin(process.env.PREACT_APP_HTTP_PROTOCOL, process.env.PREACT_APP_API_AUTHORITY);
+const baseUrl = '/api';
 
 export const API_BASE_URL = baseUrl;
 

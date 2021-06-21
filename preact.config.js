@@ -49,6 +49,11 @@ export default (config, env, helpers) => {
       secure: false,
       changeOrigin: true,
       target: 'https://zoolife.brizi.tech/',
+    }, {
+      path: '/api/**',
+      secure: false,
+      changeOrigin: true,
+      target: `${process.env.PREACT_APP_HTTP_PROTOCOL}${process.env.PREACT_APP_API_AUTHORITY}`,
     }];
   }
 };
