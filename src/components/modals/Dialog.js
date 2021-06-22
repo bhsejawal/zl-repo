@@ -24,14 +24,18 @@ const DialogModal = ({
         direction="row"
         align="center"
         as="header"
-        justify="end"
+        justify="center"
         overflow="hidden"
+        style={{ position: 'relative' }}
+        fill="horizontal"
       >
+        <Heading level="3">{title}</Heading>
         <Button
           plain
           margin="small"
           onClick={onCancel}
           icon={<FontAwesomeIcon size="lg" color="--var(grey)" icon={faTimes} />}
+          style={{ position: 'absolute', right: 0 }}
         />
       </Box>
       <Box
@@ -39,7 +43,6 @@ const DialogModal = ({
         align="center"
         pad={{ vertical: '0', horizontal: 'large' }}
       >
-        <Heading level="3">{title}</Heading>
         <Text textAlign="center" size="large">{text}</Text>
 
         <Box width={{ min: '140px' }} margin={{ vertical: 'large' }}>
