@@ -135,6 +135,7 @@ const Stream = ({
                 showControls={showControls || isTabbed}
                 showPlayControl={mode !== 'liveTalk'}
                 showVolumeControl
+                showFullscreenControl={mode !== 'liveTalk'}
               />
             </div>
           )}
