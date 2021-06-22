@@ -78,11 +78,10 @@ const Onboarding = ({ isOnboarded, setUserDataAction }) => {
             muted
             autoPlay
             controls={false}
+            playsInline
             onEnded={() => setShowButtons(true)}
           >
-            <source src="https://assets.zoolife.tv/onboarding.mp4" type="video/mp4" />
-            <source src="https://assets.zoolife.tv/onboarding.webm" type="video/webm" />
-            <source src="https://assets.zoolife.tv/onboarding2.mp4" />
+            <source src="https://assets.zoolife.tv/zoolife_onboarding.mp4" />
           </video>
         </Box>
       </Box>
