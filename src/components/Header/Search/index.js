@@ -166,6 +166,7 @@ const Search = ({ className, allHabitats, setHabitatsAction }) => {
           onSuggestionsOpen={onSuggestionsOpen}
           onSuggestionsClose={onSuggestionsClose}
           onFocus={onSearchFocus}
+          onSelect={() => boxRef.current.querySelector('input').blur()}
           style={{ padding: '8px' }}
           dropHeight="medium"
         />
