@@ -5,6 +5,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHeart as faHeartSolid, faSpinner, faTimes } from '@fortawesome/pro-solid-svg-icons';
 import { faHeart } from '@fortawesome/pro-light-svg-icons';
 import useFetch from 'use-http';
+import classnames from 'classnames';
+import { Heading } from 'grommet';
 
 import { buildURL } from 'Shared/fetch';
 
@@ -12,6 +14,7 @@ import TextEditor from 'Components/AdminEditWrappers/TextEditor';
 import ImageEditor from 'Components/AdminEditWrappers/ImageEditor';
 
 import { setHabitatLiked } from '../../../actions';
+import { useIsHabitatTabbed } from '../../../../../hooks';
 
 import profileMask from './profile-mask.svg';
 
@@ -27,6 +30,8 @@ const Info = ({
   setLikedAction,
 }) => {
   const [error, setError] = useState();
+  const isTabbedLayout = useIsHabitatTabbed();
+
   const {
     post,
     del,
@@ -70,7 +75,9 @@ const Info = ({
 
   return (
     <div className={style.info}>
-      <div className={style.profileImgWrapper}>
+      <div
+        className={classnames(style.profileImgWrapper, {[style.mobile]: isTabbedLayout})}
+      >
         <ImageEditor
           initialImgUrl={profileImage}
           postToUrl={`/admin/habitats/${habitatId}/prop`}
@@ -109,7 +116,7 @@ const Info = ({
           maxLen={20}
           initialText={title}
         >
-          {(text) => <h4 className={style.name}>{text}</h4>}
+          {(text) => <Heading level="3" className={style.name}>{text}</Heading>}
         </TextEditor>
 
         <p className={style.zooNameWrapper}>
