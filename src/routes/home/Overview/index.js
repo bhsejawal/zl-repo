@@ -24,7 +24,7 @@ const Overview = () => (
             <span>Streaming Live</span>
           </div>
           <h2>Immersive animal experiences designed to bring you closer to nature.</h2>
-          <ul>
+          <ul className={style.perksList}>
             <li>Meet dozens of remarkable animals from around the globe</li>
             <li>Observe up-close with live audience-guided cameras. </li>
             <li>Join daily keeper talks and interactive Q&As with experts.</li>
