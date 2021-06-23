@@ -37,6 +37,7 @@ const initialState = {
   isOnboarded: false,
   termsAccepted: null,
   referralData: null,
+  showContentExplorer: false,
 };
 
 export default (state = initialState, { type, payload }) => {
