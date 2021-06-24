@@ -2,6 +2,7 @@
 
 .welcomeWrapper {
   background: linear-gradient(180deg, #FFD1AF 27.08%, #FFDCEE 100%);
+  overflow-y: auto;
 }
 
 .imageContainer {
@@ -9,20 +10,19 @@
   justify-content: center;
   flex-grow: 1;
   display: flex;
-  overflow: hidden;
   padding-top: 100px;
 
   img {
     max-width: calc(min(50vw, 750px));
-    overflow: hidden;
   }
 }
 
 .welcomeForm {
   min-width: 440px;
   max-width: 440px;
-  padding: 100px 0 0 80px;
-
+  padding: 100px 0 20px 80px;
+  z-index: 2;
+  min-height: fit-content;
 }
 
 @media screen and (max-width: #{$tablet-portrait-width}) {
@@ -33,18 +33,17 @@
 
   .welcomeForm {
     flex-grow: 1;
-    padding: 30px 20px;
-
+    padding-right: 20px;
+    padding-left: 20px;
   }
 
   .imageContainer {
-    align-items: flex-end;
     padding-bottom: 10px;
+    padding-top: 10px;
 
     img {
       max-width: 75vw;
     }
-
   }
 }
 

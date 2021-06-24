@@ -100,7 +100,7 @@ const Welcome = () => {
           <Heading level="4">
             Send your friends a free trial.
           </Heading>
-          <Box width={{ max: '325px'}} align="center">
+          <Box width={{ max: '325px'}} height={{ min: 'fit-content' }}>
             <TagInput
                 label="Friend’s Email(s):"
                 name="emails"
@@ -111,7 +111,7 @@ const Welcome = () => {
                 onRemove={onRemove}
               />
           </Box>
-          <Box direction="row" margin={{ top: '40px' }}>
+          <Box direction="row" margin={{ top: '40px' }} height={{ min: 'fit-content' }}>
             <Box margin={{ right: '20px' }}>
               <PrimaryButton
                 label="Send"

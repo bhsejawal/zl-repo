@@ -113,7 +113,6 @@ const TagInput = forwardRef(({
         ref={ref}
         direction="row"
         align="center"
-        pad={{ horizontal: 'xsmall' }}
         wrap
       >
         <FormField className={style.input} label={label} name={name}>
