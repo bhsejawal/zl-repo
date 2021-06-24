@@ -46,20 +46,12 @@ const ZooFilter = ({
     label={<span>{label}</span>}
     dropAlign={{ top: 'bottom' }}
     size="small"
-    icon={showZooFilter ? <FormUp /> : <FormDown />}
+    icon={showZooFilter ? <FormUp size="20px" /> : <FormDown size="20px" />}
     reverse
     onOpen={toggleZooFilterAction}
     onClose={toggleZooFilterAction}
     dropContent={
-      <Box
-        pad={{
-          top: "medium",
-          left: "medium",
-          right: "medium",
-          bottom: "small",
-        }}
-        className={style.filterBox}
-      >
+      <Box className={style.filterBox}>
         <CheckBoxGroup
           options={availableZoos}
           className={style.customCheckbox}
@@ -68,8 +60,8 @@ const ZooFilter = ({
         />
         <hr className={style.divider} />
         <Box direction="row" justify="between">
-          <OutlineButton onClick={onClearHandler} size="small" label="Clear" style={{minWidth: '50px', padding: '3px 10px'}} />
-          <PrimaryButton onClick={() => setZooFilterAction(selectedZoos)} size="small" label="Save" style={{minWidth: '50px', padding: '3px 10px'}} />
+          <OutlineButton onClick={onClearHandler} size="small" label="Clear" style={{minWidth: '60px', padding: '3px 10px'}} />
+          <PrimaryButton onClick={() => setZooFilterAction(selectedZoos)} size="small" label="Save" style={{minWidth: '60px', padding: '3px 10px'}} />
         </Box>
       </Box>
     }
