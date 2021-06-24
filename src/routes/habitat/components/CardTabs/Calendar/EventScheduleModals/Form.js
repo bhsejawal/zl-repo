@@ -7,12 +7,11 @@ import {
   DateInput,
   Grommet,
   RadioButton,
+  Select,
   Text,
   TextInput,
 } from 'grommet';
 import { formatISO, parseISO } from 'date-fns';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faChevronDown } from '@fortawesome/pro-solid-svg-icons';
 import classnames from 'classnames';
 import useFetch from 'use-http';
 
@@ -171,12 +170,17 @@ const Form = ({
           {!isEdit && (
             <Box direction="column">
               <Text size="xlarge" className={classnames(style.label, style.eventType)}>Event Type:</Text>
-              <div className="simpleSelect">
-                <select onChange={changeHandler('type', 'select')}>
-                  <option selected={data.type === TALK} value={TALK}>Talk</option>
-                  <option selected={data.type === STREAM} value={STREAM}>Stream</option>
-                </select>
-                <FontAwesomeIcon icon={faChevronDown} />
+              <div className={style.selectContainer}>
+                <Select
+                  labelKey="label"
+                  valueKey={{ key: 'value', reduce: true }}
+                  value={data.type || undefined}
+                  options={[
+                    { label: 'Talk', value: TALK},
+                    { label: 'Stream', value: STREAM},
+                  ]}
+                  onChange={changeHandler('type', 'select')}
+                />
               </div>
             </Box>
           )}
@@ -232,32 +236,34 @@ const Form = ({
             <Text size="xlarge" alignSelf="center">
               <Box margin={{ horizontal: '13px' }}>for</Box>
             </Text>
-            <Box flex={{ grow: 1 }}>
-              <div className="simpleSelect">
-                <select onChange={changeHandler(null, 'durationH')}>
-                  {new Array(24).fill(null).map((item, index) => {
-                    const [value] = getDuration(data.durationMs);
-                    return <option selected={value === index} value={index}>{`${index} hour${index !== 1 ? 's' : ''}`}</option>;
-                  })}
-                </select>
-                <FontAwesomeIcon icon={faChevronDown} />
-              </div>
+            <Box flex={{ grow: 1 }} width="30%" className={style.selectContainer}>
+              <Select
+                classname={style.select}
+                labelKey="label"
+                valueKey={{ key: 'value', reduce: true }}
+                value={getDuration(data.durationMs)[0] || undefined}
+                options={new Array(24).fill(null).map((item, index) => (
+                  { label: `${index} hour${index !== 1 ? 's' : ''}`, value: index}
+                ))}
+                onChange={changeHandler(null, 'durationH')}
+              />
             </Box>
             &nbsp;
             &nbsp;
-            <Box flex={{ grow: 1 }}>
-              <div className="simpleSelect">
-                <select onChange={changeHandler(null, 'durationM')}>
-                  {new Array(59).fill(null).map((item, index) => {
-                    const [, value] = getDuration(data.durationMs);
-                    if (index % 5 === 0 ) {
-                      return <option selected={value === index} value={index}>{`${index} minute${index !== 1 ? 's' : ''}`}</option>;
-                    }
-                    return null;
-                  })}
-                </select>
-                <FontAwesomeIcon icon={faChevronDown} />
-              </div>
+            <Box flex={{ grow: 1 }} width="30%" className={style.selectContainer}>
+              <Select
+                classname={style.select}
+                labelKey="label"
+                valueKey={{ key: 'value', reduce: true }}
+                value={getDuration(data.durationMs)[1] || undefined}
+                options={new Array(59).fill(null).map((item, index) => {
+                  if (index % 5 === 0 ) {
+                    return { label: `${index} minute${index !== 1 ? 's' : ''}`, value: index}
+                  }
+                  return null;
+                }).filter((item) => item !== null)}
+                onChange={changeHandler(null, 'durationM')}
+              />
             </Box>
           </Box>
           {!data.singleEvent && (

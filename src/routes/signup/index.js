@@ -116,11 +116,7 @@ const Signup = ({
         setUserDataAction(user);
         logPageView('/signed-up');
         logPageViewGA('/signed-up');
-        if (origin === 'phone') {
-          route('/mobile', true);
-        } else {
-          route('/profile', true);
-        }
+        route('/profile', true);
 
         try {
           localStorage.setItem('returningUser', true);
@@ -160,7 +156,7 @@ const Signup = ({
         {isLargeScreen && (
           <Heading margin={{top: '30px', bottom: '5px'}} level="4" color="var(--grey)">Step 1 of 2</Heading>
         )}
-        <Box direction="row" align="center" height="40px" margin={{ top: !isLargeScreen ? 'xlarge' : ''}}>
+        <Box direction="row" align="center" height="40px">
           <Heading level="2">
             Try
           </Heading>

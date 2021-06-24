@@ -138,7 +138,11 @@ const MobileCardsModal = ({
       const timeout = timeoutRef.current;
       return () => clearInterval(timeout);
     }
-  }, [progress, paused, nextCardAction, cardsLen, cards, activeCardIndex]);
+  }, [progress, paused, nextCardAction, cardsLen, activeCardIndex]);
+
+  useEffect(() => {
+    setProgress(0);
+  }, [cards]);
 
   // eslint-disable-next-line consistent-return
   const onClick = useCallback((evt) => {

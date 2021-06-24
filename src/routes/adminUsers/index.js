@@ -20,7 +20,7 @@ import { get as lodashGet, debounce } from 'lodash-es';
 import useFetch from 'use-http';
 
 import { buildURL } from 'Shared/fetch';
-import { format, add } from 'date-fns';
+import { format } from 'date-fns';
 
 import { PrimaryButton, OutlineButton } from 'Components/Buttons';
 import AddEditUserModal from './AddEditUserModal';
@@ -47,7 +47,6 @@ const theme = deepMerge(grommetTheme, {
   },
 });
 
-const timezoneOffset = new Date().getTimezoneOffset();
 // eslint-disable-next-line react/display-name
 const cellRender = (property, isDate) => (item) => {
   const content = lodashGet(item, property);
@@ -57,8 +56,7 @@ const cellRender = (property, isDate) => (item) => {
     <div style={{ opacity: item.disabled ? '.5' : undefined }}>
       <Text size="large">
         {!isDate && content}
-        {/* offset is added to show time in UTC because its converted to local time by default */}
-        {date && format(add(date, { minutes: timezoneOffset }), 'dd/MM/yyyy hh:mm:ss a')}
+        {date && format(date, 'dd/MM/yyyy hh:mm:ss a')}
       </Text>
     </div>
   )

@@ -12,9 +12,8 @@ import {
   Heading,
   TextArea,
   TextInput,
+  Select,
 } from 'grommet';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faChevronDown } from '@fortawesome/pro-solid-svg-icons';
 import DatePicker from 'react-date-picker'
 import { parseISO } from 'date-fns';
 import ImageSelector from 'Components/ImageSelector';
@@ -123,18 +122,17 @@ const AnimalProfileCardForm = forwardRef(({
       </Box>
 
       <Box margin={{ bottom: '20px' }}>
-        <div className="simpleSelect">
-          <select onChange={onInputChange} data-prop="sex">
-            <option selected={sex === 'Male'} value="Male">
-              Male
-            </option>
-            <option selected={sex === 'Female'} value="Female">
-              Female
-            </option>
-          </select>
-
-          <FontAwesomeIcon icon={faChevronDown} color="var(--blue)" />
-        </div>
+        <Select
+          data-prop="sex"
+          labelKey="label"
+          valueKey={{ key: 'value', reduce: true }}
+          value={sex}
+          options={[
+            { label: 'Male', value: 'Male'},
+            { label: 'Female', value: 'Female'},
+          ]}
+          onChange={onInputChange}
+        />
       </Box>
 
       <Box margin={{ bottom: '20px' }}>

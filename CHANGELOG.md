@@ -3,8 +3,45 @@ This file keeps track of all relevant change for every release.
 
 ## [Unreleased]
 
-## [5.6.0] - 2021-06-18
+## [5.7.0] - 2021-06-24
 ### Added
+- Timeout of 2s before sending GA Hits
+- Implement the "scroll for content" element on the habitat only for desktops
+- Fullscreen button to the main video container
+- Live talk label to the live talk bar
+
+### Changed
+- Update filters and calendar dropdowns in schedule page
+- Use grommet select and update it across application
+- Onboarding video
+- Blur habitat search input on selection
+- Full burger menu list items are clickable
+- Users with permissions should be able to delete live events
+- Admin tables show pass and last login dates in local time
+- Increasing circles size on Body Cards when on Mobile
+- Different routing and proxy
+- Mobile users no longer gets redirect to mobile page after signup
+
+### Fixed
+- Welcome page after pass purchasing mobile layout bugs
+- Fixing header styling for phones
+- Bullet list is aligned with the title in landing page section 3
+- Adjusting Dialog for better mobile UI
+- CSS adjustments on Habitat Profile area
+- Using 1 pixel empty png as cursor for Cursor Container to fix issue on Windows
+- Fixing transparent success background on invite modal
+- My Character icon popup mobile enhancement
+- Space on top of the chat container
+- Layout fixes for subscription page
+- Reset cards progress on cards load/change
+- disappearing mobile menu icons
+- Habitat page on older Safari versions
+- Brief loading page render while moving from home to loading page
+- Login/Signup page formatting, spacing and font styling
+- White line on the side of the habitat stream, red line on loading screen
+
+## [5.6.0] - 2021-06-18
+### Added    
 - Integrating mouseflow
 - Album Download raw image button, delete/undelete content button
 - Album mobile View

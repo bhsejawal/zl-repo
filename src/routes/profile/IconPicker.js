@@ -3,12 +3,10 @@ import {
   Box,
   Button,
   Grid,
-  ResponsiveContext,
   Text,
 } from 'grommet';
 import {
   useCallback,
-  useContext,
   useMemo,
   useRef,
   useState,
@@ -75,18 +73,14 @@ const IconPicker = ({
   setIcon,
   showColorPicker,
 }) => {
-  const size = useContext(ResponsiveContext);
   const pickerRef = useRef();
   const [isPickerOpen, setIsPickerOpen] = useState(false);
   const isCustomColor = useMemo(() => !colors.includes(color), [color]);
 
-  // use only 3 columns for extra small screen on mobile phones
   const circlesGridConfig = useMemo(() => ({
-    columns: size !== 'xsmall'
-      ? ['xxsmall', 'xxsmall', 'xxsmall', 'xxsmall', 'xxsmall']
-      : ['xxsmall', 'xxsmall', 'xxsmall'],
-    gap: { column: '25px', row: '20px' },
-  }), [size]);
+    columns: ['auto', 'auto', 'auto', 'auto', 'auto'],
+    gap: { column: '20px', row: '20px' },
+  }), []);
 
   const onPickerBtn = () => {
     setIsPickerOpen(true);

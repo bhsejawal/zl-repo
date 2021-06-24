@@ -41,10 +41,17 @@
     }
 
     .formSection {
-      width: fit-content;
+      width: 100vw;
       max-width: unset;
       min-height: fit-content;
-      margin: auto;
+
+      h2 {
+        margin: 0;
+      }
+
+      > div {
+        margin: 0;
+      }
     }
   }
 }
@@ -53,6 +60,6 @@
 @media screen and (max-width: 400px) {
 
   .loginSignup .formSection {
-    padding: 50px 20px;
+    padding: 20px;
   }
 }

@@ -31,7 +31,7 @@ $circle-size: 40px;
   padding: 76px;
 
   @media screen and (max-width: 1000px) {
-    padding: 40px;
+    padding: 40px 20px;
   }
 
   @media screen and (max-width: 450px) and (min-width: 415px) {

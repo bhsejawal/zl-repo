@@ -30,6 +30,11 @@
   background-color: var(--coral) !important;
 }
 
+.editable {
+  pointer-events: all !important;
+  cursor: pointer !important;
+}
+
 .drop {
   border-radius: 5px;
   overflow: initial;

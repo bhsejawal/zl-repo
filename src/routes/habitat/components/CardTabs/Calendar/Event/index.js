@@ -36,6 +36,7 @@ const Event = ({
         [style.normalEvent]: event.eventType === 'live',
         // TODO: we currently don't have support for this but it's in Figma
         [style.specialEvent]: event.eventType === 'special',
+        [style.editable]: hasPermission('habitat:edit-schedule') && event.end > new Date(),
       })}
       ref={eventRef}
       style={{ top: `${top}%`, height: `${height}%` }}
@@ -61,7 +62,7 @@ const Event = ({
             <EditButton onClick={() => showEditEventModalAction(true, event)} />
           )}
           <Card
-            header={`STARTS IN ${formatDistanceToNow(event.start).toUpperCase()}`}
+            header={new Date() >= event.start && new Date() <= event.end ? 'THIS EVENT IS LIVE' : `STARTS IN ${formatDistanceToNow(event.start).toUpperCase()}`}
             description={event.title}
             image={profileImage}
             scheduleId={event._id}

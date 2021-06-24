@@ -13,6 +13,7 @@ import { GlobalsContext } from 'Shared/context';
 import { hasPermission } from 'Components/Authorize';
 import TimeBar from 'Components/TimeBar';
 import VideoControls from 'Components/VideoControls';
+import ContentExplorer from 'Components/ContentExplorer';
 
 import Fallback from './Fallback';
 
@@ -41,6 +42,7 @@ const Stream = ({
   streamId,
   interactive,
   userId,
+  showContentExplorer,
   isStreamOn,
   mode,
 }) => {
@@ -119,6 +121,7 @@ const Stream = ({
           })}
           style={{ width, height }}
         >
+          {!isTabbed && mode !== 'liveTalk' && isStreamOn && showContentExplorer && <ContentExplorer />}
           {isStreamOn && (
             <div style={{ width, height }}>
               <video
@@ -135,6 +138,7 @@ const Stream = ({
                 showControls={showControls || isTabbed}
                 showPlayControl={mode !== 'liveTalk'}
                 showVolumeControl
+                showFullscreenControl={mode !== 'liveTalk'}
               />
             </div>
           )}
@@ -175,7 +179,7 @@ const Stream = ({
 };
 
 export default connect((
-  { user: { userId } },
+  { user: { userId, showContentExplorer } },
 ) => (
-  { userId }
+  { userId, showContentExplorer }
 ))(Stream);

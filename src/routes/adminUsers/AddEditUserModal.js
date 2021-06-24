@@ -5,11 +5,10 @@ import {
   Text,
   Layer,
   TextInput,
+  Select,
 } from 'grommet';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faChevronDown } from '@fortawesome/pro-solid-svg-icons';
 import { useState, useEffect, useMemo } from 'preact/hooks';
-import { set, get } from 'lodash-es';
+import { set, get, first } from 'lodash-es';
 
 import { PrimaryButton } from 'Components/Buttons';
 import { add } from 'date-fns';
@@ -23,15 +22,6 @@ import TagsInput from './TagsInput';
 import style from './style.scss';
 
 const now = new Date();
-const initialValues = {
-  email: '',
-  username: '',
-  role: 'user',
-  zooId: null,
-  subscriptionStatus: {
-    validUntil: add(now, { days: 1 }),
-  },
-};
 
 const USER = 'user';
 const VIP = 'vip';
@@ -39,6 +29,16 @@ const HOST = 'host';
 const ADMIN = 'admin';
 const PARTNER = 'partner';
 const TRIAL = 'TRIAL';
+
+const initialValues = {
+  email: '',
+  username: '',
+  role: USER,
+  zooId: null,
+  subscriptionStatus: {
+    validUntil: add(now, { days: 1 }),
+  },
+};
 
 const AddEditUserModal = ({
   data,
@@ -62,6 +62,11 @@ const AddEditUserModal = ({
 
   const onInputChange = ({ target: { name, value } }) => {
     const updatedFormData = set({ ...formData }, name, value);
+
+    if (name === 'role' && value === PARTNER && !formData.zooId) {
+      set(updatedFormData, 'zooId', first(availableZoos)._id);
+    }
+
     setFormData(updatedFormData);
   };
 
@@ -154,17 +159,21 @@ const AddEditUserModal = ({
               </Box>
               <Box>
                 <Text margin={{ top: 'medium', bottom: 'small' }} size="large">Role</Text>
-                <div className="simpleSelect">
-                  <select name="role" required onChange={onInputChange} value={formData.role}>
-                    <option value={USER}>User</option>
-                    <option value={PARTNER}>Partner</option>
-                    <option value={HOST}>Host</option>
-                    <option value={VIP}>VIP</option>
-                    <option value={ADMIN}>Admin</option>
-                  </select>
-
-                  <FontAwesomeIcon icon={faChevronDown} color="var(--blue)" />
-                </div>
+                <Select
+                  name="role"
+                  placeholder="Select"
+                  labelKey="label"
+                  valueKey={{ key: 'value', reduce: true }}
+                  value={formData.role || undefined}
+                  options={[
+                    { label: 'User', value: USER},
+                    { label: 'Partner', value: PARTNER},
+                    { label: 'Host', value: HOST},
+                    { label: 'VIP', value: VIP},
+                    { label: 'Admin', value: ADMIN},
+                  ]}
+                  onChange={onInputChange}
+                />
               </Box>
               {(formData.role === VIP || (formData.role === USER && trialSubscription)) && (
                 <Box>
@@ -182,15 +191,15 @@ const AddEditUserModal = ({
               {(formData.role === PARTNER) && (
                 <Box>
                   <Text margin={{ top: 'medium', bottom: 'small' }} size="large">Zoo</Text>
-                  <div className="simpleSelect">
-                    <select name="zooId" required onChange={onInputChange} value={formData.zooId}>
-                      {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
-                      <option value="" />
-                      {availableZoos.map((item) => (<option value={item._id}>{item.name}</option>))}
-                    </select>
-
-                    <FontAwesomeIcon icon={faChevronDown} color="var(--blue)" />
-                  </div>
+                  <Select
+                    name="zooId"
+                    placeholder="Select"
+                    labelKey="name"
+                    valueKey={{ key: '_id', reduce: true }}
+                    value={formData.zooId || undefined}
+                    options={availableZoos}
+                    onChange={onInputChange}
+                  />
                 </Box>
               )}
               {(formData.role === HOST) && (

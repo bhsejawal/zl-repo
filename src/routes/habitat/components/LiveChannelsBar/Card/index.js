@@ -1,8 +1,9 @@
 import { route } from 'preact-router';
 import { useCallback } from 'preact/hooks';
 import { Box, Text } from 'grommet';
-import { faArrowRight } from '@fortawesome/pro-solid-svg-icons';
+import { faArrowRight, faCircle } from '@fortawesome/pro-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import Tag from 'Components/Tag';
 
 import style from './style.scss';
 
@@ -12,6 +13,7 @@ const LiveHabitatCard = ({
   habitatSlug,
   zoo,
   zooSlug,
+  liveTalk,
 }) => {
   const goToHabitat = useCallback(() => route(`/h/${zooSlug}/${habitatSlug}`), [habitatSlug, zooSlug]);
 
@@ -20,6 +22,18 @@ const LiveHabitatCard = ({
       <Box className={style.wrapper} direction="row" align="center">
         <div className={style.image}>
           <img src={image} alt="" />
+          {liveTalk && (
+            <Tag
+              className={style.liveTag}
+              label={(
+                <>
+                  <FontAwesomeIcon icon={faCircle} color="black" />
+                  Talk
+                </>
+              )}
+              varient="online"
+            />
+          )}
         </div>
         <Box fill>
           <Text size="large" color="var(--charcoal)" margin={{ bottom: '3px' }}>

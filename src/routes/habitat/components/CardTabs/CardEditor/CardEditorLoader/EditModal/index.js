@@ -7,12 +7,13 @@ import {
 } from 'preact/hooks';
 import { connect } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faChevronDown, faTimes } from '@fortawesome/pro-solid-svg-icons';
+import { faTimes } from '@fortawesome/pro-solid-svg-icons';
 import {
   Box,
   Text,
   Button,
   Heading,
+  Select,
 } from 'grommet';
 import { OutlineButton, PrimaryButton } from 'Components/Buttons';
 import classnames from 'classnames';
@@ -210,7 +211,7 @@ const EditModal = ({
 
   // this is used for input fields in the forms
   const onInputChange = useCallback(({ target }) => {
-    const { prop } = target.dataset;
+    const { dataset: { prop }} = target;
     dispatchData({ type: UPDATE_CARD_DATA, payload: { [prop]: target.value } })
   }, []);
 
@@ -280,60 +281,24 @@ const EditModal = ({
                 {![QUIZ_CARD_TYPE, ANIMAL_PROFILE_CARD_TYPE].includes(type) && (
                   <Box margin={{ bottom: '20px' }}>
                     <Heading margin={{ top: '0', bottom: '5px' }} level="5">Card Tag:</Heading>
-                    <div className="simpleSelect">
-                      <select onChange={onTagChange}>
-                        <option
-                          selected={tag === EMPTY_TAG}
-                          value={EMPTY_TAG}
-                        >
-                          Hide Tag
-                        </option>
-                        <option
-                          selected={tag === QUICK_LOOK}
-                          value={QUICK_LOOK}
-                        >
-                          {QUICK_LOOK}
-                        </option>
-                        <option
-                          selected={tag === FOOD_AND_DIET}
-                          value={FOOD_AND_DIET}
-                        >
-                          {FOOD_AND_DIET}
-                        </option>
-                        <option
-                          selected={tag === ORIGIN_AND_HABITAT}
-                          value={ORIGIN_AND_HABITAT}
-                        >
-                          {ORIGIN_AND_HABITAT}
-                        </option>
-                        <option
-                          selected={tag === THE_ANIMAL_BODY}
-                          value={THE_ANIMAL_BODY}
-                        >
-                          {THE_ANIMAL_BODY}
-                        </option>
-                        <option
-                          selected={tag === CONSERVATION}
-                          value={CONSERVATION}
-                        >
-                          {CONSERVATION}
-                        </option>
-                        <option
-                          selected={tag === BEHAVIOR}
-                          value={BEHAVIOR}
-                        >
-                          {BEHAVIOR}
-                        </option>
-                        <option
-                          selected={tag === FAMILY_LIFE}
-                          value={FAMILY_LIFE}
-                        >
-                          {FAMILY_LIFE}
-                        </option>
-                      </select>
-
-                      <FontAwesomeIcon icon={faChevronDown} color="var(--blue)" />
-                    </div>
+                    <Box margin={{ bottom: '20px' }}>
+                      <Select
+                        labelKey="label"
+                        valueKey={{ key: 'value', reduce: true }}
+                        value={tag}
+                        options={[
+                          { label: 'Hide Tag', value: EMPTY_TAG },
+                          { label: QUICK_LOOK, value: QUICK_LOOK },
+                          { label: FOOD_AND_DIET, value: FOOD_AND_DIET },
+                          { label: ORIGIN_AND_HABITAT, value: ORIGIN_AND_HABITAT },
+                          { label: THE_ANIMAL_BODY, value: THE_ANIMAL_BODY },
+                          { label: CONSERVATION, value: CONSERVATION },
+                          { label: BEHAVIOR, value: BEHAVIOR },
+                          { label: FAMILY_LIFE, value: FAMILY_LIFE },
+                        ]}
+                        onChange={onTagChange}
+                      />
+                    </Box>
                   </Box>
                 )}
 

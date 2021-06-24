@@ -6,12 +6,13 @@ import {
   TextArea,
   MaskedInput,
   Button,
+  Select,
 } from 'grommet';
 import { connect } from 'react-redux';
 import { useMemo, useRef, useState } from 'preact/hooks';
 import useFetch from 'use-http';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faChevronDown, faTimes } from '@fortawesome/pro-solid-svg-icons';
+import { faTimes } from '@fortawesome/pro-solid-svg-icons';
 
 import { buildURL } from 'Shared/fetch';
 import { PrimaryButton, OutlineButton } from 'Components/Buttons';
@@ -111,22 +112,15 @@ const HabitatModal = ({
           </Box>
           <Box margin={{ top: '25px' }}>
             <Heading level="4" as="label">Habitat:</Heading>
-            <Box className="simpleSelect" margin={{ top: '16px' }}>
-              <select
-                value={editHabitat?._id}
+            <Box margin={{ top: '16px' }}>
+              <Select
+                labelKey="title"
+                placeholder="Select a habitat"
+                valueKey={{ key: '_id', reduce: true }}
+                value={editHabitat?._id || undefined}
                 onChange={onSelectEditHabitat}
-              >
-                {!editHabitat?._id && (
-                  <option value="" selected> Select a habitat</option>
-                )}
-                {habitatList.map(({ _id, title }) => (
-                  <option selected={editHabitat?._id === _id} value={_id}>
-                    {title}
-                  </option>
-
-                ))}
-              </select>
-              <FontAwesomeIcon icon={faChevronDown} color="var(--blue)" />
+                options={habitatList}
+              />
             </Box>
           </Box>
           {editHabitat?._id && (

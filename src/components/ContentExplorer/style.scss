@@ -1,0 +1,22 @@
+.contentExplorer {
+  min-width: 210px;
+  min-height: 80px;
+  width: 210px;
+  height: 80px;
+  background-color: var(--blueDark);
+  border-radius: 5px;
+  display: flex;
+  flex-direction: row;
+  position: absolute;
+  bottom: 15px;
+  right: 25px;
+  color: white;
+  padding: 15px;
+  align-items: center;
+  cursor: pointer !important;
+  z-index: 1;
+}
+
+.actionButton {
+  background: white;
+}

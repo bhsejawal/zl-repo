@@ -34,7 +34,7 @@ const SubscriptionSection = () => {
           }}
         >
           <Box pad={{ vertical: "large", horizontal: "25%" }}>
-            <Heading level={1} textAlign="center" fill size="25px" weight={700}>
+            <Heading level={['xsmall', 'small'].includes(size) ? 3 : 1} textAlign="center" fill size="25px" weight={700}>
               Manage Subscription
             </Heading>
             <Text textAlign="center" size="16px">

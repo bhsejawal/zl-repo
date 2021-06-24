@@ -5,6 +5,7 @@ import {
   useMemo,
 } from 'preact/hooks';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCircle } from '@fortawesome/pro-solid-svg-icons';
 import { faChevronLeft, faChevronRight } from '@fortawesome/pro-regular-svg-icons';
 import { Text } from 'grommet';
 import classnames from 'classnames';
@@ -12,6 +13,7 @@ import { connect } from 'react-redux';
 import { Link } from 'preact-router';
 
 import HabitatsUpdater from 'Components/HabitatsUpdater';
+import Tag from 'Components/Tag';
 
 import Card from './Card';
 
@@ -57,6 +59,7 @@ const LiveChannelsBar = ({
                 slug: zooSlug,
                 name: zooName,
               },
+              liveTalk,
             }) => (
               <Card
                 key={_id}
@@ -65,6 +68,7 @@ const LiveChannelsBar = ({
                 habitatSlug={habitatSlug}
                 zoo={zooName}
                 zooSlug={zooSlug}
+                liveTalk={liveTalk}
               />
             ))}
           </div>
@@ -83,10 +87,23 @@ const LiveChannelsBar = ({
               zoo: {
                 slug: zooSlug,
               },
+              liveTalk,
             }) => (
-              <li key={_id}>
+              <li key={_id} className={style.item}>
                 <Link href={encodeURI(`/h/${zooSlug}/${habitatSlug}`)}>
                   <img src={profileImage} alt="" />
+                  {liveTalk && (
+                    <Tag
+                      className={style.liveTag}
+                      label={(
+                        <>
+                          <FontAwesomeIcon icon={faCircle} color="black" />
+                          Talk
+                        </>
+                      )}
+                      varient="online"
+                    />
+                  )}
                 </Link>
               </li>
             ))}

@@ -9,12 +9,8 @@
   }
 }
 
-.loading {
-  background: red;
-
-  video::-webkit-media-controls {
-    visibility: hidden;
-  }
+.loading video::-webkit-media-controls {
+  visibility: hidden;
 }
 
 .videoContainer {

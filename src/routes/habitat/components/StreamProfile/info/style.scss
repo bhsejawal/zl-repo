@@ -7,7 +7,6 @@
   align-items: center;
 
   @media screen and (max-width: #{$phone-landscape-width}) {
-    justify-content: center;
     width: 100%;
   }
 
@@ -61,7 +60,7 @@
 }
 
 .name {
-  margin: 3px;
+  margin-bottom: 10px;
 }
 
 .zooNameWrapper {
@@ -69,9 +68,26 @@
   color: var(--charcoalLight);
   display: flex;
   align-items: center;
+  line-height: 22px;
 
   img {
     max-width: 100px;
     max-height: 60px;
+  }
+}
+
+.mobile {
+
+  &.profileImgWrapper {
+    margin-right: 30px;
+  }
+
+  .profileImg {
+    margin-right: 0px;
+    z-index: 0;
+  }
+
+  .mask {
+    display: none;
   }
 }

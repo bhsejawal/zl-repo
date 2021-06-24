@@ -32,11 +32,11 @@ const BurgerMenu = ({ id, className, children }) => {
         >
           {toChildArray(children).map((child = null) => (
             child?.props?.clickable ? (
-              <Button margin={{ vertical: '10px' }} className={style.item} plain onClick={toggleMenu}>
+              <Button plain onClick={toggleMenu}>
                 {child}
               </Button>
             ) : (
-              <Box margin={{ vertical: '10px' }}>
+              <Box>
                 {child}
               </Box>
             )

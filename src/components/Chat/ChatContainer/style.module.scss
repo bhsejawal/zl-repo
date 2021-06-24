@@ -1,3 +1,5 @@
+@import "../../../style/media-query.scss";
+
 .messagesContainer {
   flex-grow: 1;
 }
@@ -7,4 +9,8 @@
   flex-grow: 1;
   display: flex;
   flex-direction: column;
+
+  @media screen and (max-width: #{$tablet-landscape-width}) {
+    padding-top: 10px;
+  }
 }

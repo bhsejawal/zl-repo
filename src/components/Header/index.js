@@ -54,7 +54,7 @@ const HeaderComponent = ({ unsetUserDataAction, openContactUsModalAction }) => {
           <Invite />
 
           {/* separator */}
-          <Box border={{ color: 'var(--mediumGrey)', position: 'bottom' }} />
+          <Box border={{ color: 'var(--mediumGrey)', position: 'bottom' }} margin={{ bottom: '5px' }} />
 
           <NavItem clickable text="My Account" url="/account" icon={faCog} />
           <NavItem clickable text="Help" onClick={openContactUsModalAction} icon={faCog} />

@@ -1,5 +1,10 @@
 import { useState, useEffect } from 'preact/hooks';
-import { Box, CheckBoxGroup, DropButton } from 'grommet';
+import {
+  Box,
+  CheckBoxGroup,
+  DropButton,
+  Text,
+} from 'grommet';
 import classnames from 'classnames';
 import { connect } from 'react-redux';
 import { FormDown, FormUp } from 'grommet-icons';
@@ -45,20 +50,13 @@ const AnimalFilter = ({
     label={<span>{label}</span>}
     dropAlign={{ top: 'bottom' }}
     size="small"
-    icon={showAnimalFilter ? <FormUp /> : <FormDown />}
+    icon={showAnimalFilter ? <FormUp size="20px" /> : <FormDown size="20px" />}
     reverse
     onOpen={toggleAnimalFilterAction}
     onClose={toggleAnimalFilterAction}
     dropContent={
-      <Box
-        pad={{
-          top: "medium",
-          left: "medium",
-          right: "medium",
-          bottom: "small",
-        }}
-        className={style.filterBox}
-      >
+      <Box className={style.filterBox}>
+        <Text size="medium" margin={{ bottom: '20px' }}>Select your animal(s) of interest:</Text>
         <CheckBoxGroup
           options={availableAnimals}
           className={style.customCheckbox}
@@ -67,8 +65,8 @@ const AnimalFilter = ({
         />
         <hr className={style.divider} />
         <Box direction="row" justify="between">
-          <OutlineButton onClick={onClearHandler} size="small" label="Clear" style={{minWidth: '50px', padding: '3px 10px'}} />
-          <PrimaryButton onClick={() => setAnimalFilterAction(selectedAnimals)} size="small" label="Save" style={{minWidth: '50px', padding: '3px 10px'}} />
+          <OutlineButton onClick={onClearHandler} size="small" label="Clear" style={{minWidth: '60px', padding: '3px 10px'}} />
+          <PrimaryButton onClick={() => setAnimalFilterAction(selectedAnimals)} size="small" label="Save" style={{minWidth: '60px', padding: '3px 10px'}} />
         </Box>
       </Box>
     }

@@ -1,4 +1,9 @@
 export default {
+  anchor: {
+    color: 'var(--charcoalLight)',
+    fontWeight: '400',
+    textDecoration: 'underline',
+  },
   checkBox: {
     size: '20px',
     color: {
@@ -247,6 +252,15 @@ export default {
     },
     border: {
       radius: '5px',
+    },
+  },
+  select: {
+    container: {
+      extend: {
+        button: {
+          borderRadius: '0',
+        },
+      },
     },
   },
 };

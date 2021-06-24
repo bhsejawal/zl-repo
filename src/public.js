@@ -12,6 +12,7 @@ import Home from "./routes/home";
 import TermsAndPrivacy from "./routes/TermsAndPrivacy";
 import NotFound from "./routes/notFound";
 
+import AppLoader from "./components/AppLoader";
 import oranaZooLogo from './components/Main/partners/orana-zoo.png';
 import torontoZooLogo from './components/Main/partners/toronto-zoo.png';
 import pmmcLogo from './components/Main/partners/pmmc.png';
@@ -65,6 +66,11 @@ const Content = ({ showContactUs, updateReferralDataAction }) => {
         <Home path="/torontozoo" partnerImage={torontoZooLogo} exact title={homeTitle} />
         <Home path="/pmmc" partnerImage={pmmcLogo} exact title={homeTitle} />
         <Home path="/sazoo" partnerImage={sanAntonioLogo} exact title={homeTitle} />
+        {/* these routes can be briefly rendered on slow devices
+        while waiting for the full page load */}
+        <AppLoader path="/login" title="Log In" />
+        <AppLoader path="/login/token/:token" title="Log In" />
+        <AppLoader path="/signup" title="Sign Up" />
 
         <TermsAndPrivacy
           path="/terms-and-conditions"

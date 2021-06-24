@@ -6,9 +6,8 @@ import {
   Layer,
   TextInput,
   TextArea,
+  Select,
 } from 'grommet';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faChevronDown } from '@fortawesome/pro-solid-svg-icons';
 import { useEffect, useMemo, useState } from 'preact/hooks';
 import { pick, get } from 'lodash-es';
 
@@ -186,26 +185,16 @@ const ItemModal = ({
                 )}
 
                 {!editRender && type === SELECT && (
-                  <div className="simpleSelect">
-                    <select
+                  <Box>
+                    <Select
                       name={property}
-                      required={required}
+                      labelKey="label"
+                      valueKey={{ key: 'value', reduce: true }}
+                      value={get(values, property)}
+                      options={selectValues}
                       onChange={onInputChange}
-                    >
-                      {selectValues.map(({ label, value }, ind) => (
-                        <option
-                          selected={get(values, property)
-                            ? value === get(values, property)
-                            : ind === 0}
-                          value={value}
-                        >
-                          {label}
-                        </option>
-                      ))}
-                    </select>
-
-                    <FontAwesomeIcon icon={faChevronDown} color="var(--blue)" />
-                  </div>
+                    />
+                  </Box>
                 )}
 
                 {!editRender && type === TEXT_AUTOCOMPLETE && (
