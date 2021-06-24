@@ -203,18 +203,29 @@
   opacity: .5;
 }
 
+.selectContainer {
+  max-width: 160px;
+  font-weight: 800;
+  font-size: 16px;
+  color: var(--grey);
+  margin: 25px 0;
+
+  button {
+    border-radius: 30px;
+    border: 1.5px solid var(--grey);
+  }
+
+  input {
+    padding: 13px 0 12px 15px;
+  }
+}
+
 .album.tab {
   min-height: fit-content;
   z-index: 0;
 
-  :global {
-
-    .simpleSelect {
-      min-width: 160px;
-      display: flex;
-      width: fit-content;
-      margin: 0 0 0 20px;
-    }
+  .selectContainer {
+    margin: 0 0 0 20px;
   }
 
   .section {

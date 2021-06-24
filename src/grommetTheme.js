@@ -254,4 +254,13 @@ export default {
       radius: '5px',
     },
   },
+  select: {
+    container: {
+      extend: {
+        button: {
+          borderRadius: '0',
+        },
+      },
+    },
+  },
 };

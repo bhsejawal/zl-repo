@@ -1,19 +1,14 @@
 import { connect } from 'react-redux';
 import { useCallback, useEffect } from 'preact/hooks';
 import { useFetch } from 'use-http';
-import {
-  Box,
-  Button,
-  Heading,
-  Layer,
-} from 'grommet';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTimes } from '@fortawesome/pro-solid-svg-icons';
+import { Box, Layer } from 'grommet';
 
 import { API_BASE_URL } from 'Shared/fetch';
 import { defaultErrorMsg } from 'Components/modals/Error';
 import Loader from 'Components/Loader';
 import StatusContent from 'Components/modals/StatusContent';
+import Header from 'Components/modals/Header';
+import Body from 'Components/modals/Body';
 import Form from './Form';
 
 import { showEditEventModal, updateCalendar } from './actions';
@@ -99,17 +94,9 @@ const EditEvent = ({
 
       {!error && (
         <div className={style.scheduleEventModal}>
-          <Box direction="row" justify="between">
-            <Heading level="2" margin={{ left: '40px'}}>
-              Edit Event
-            </Heading>
-            <Button
-              plain
-              margin="medium"
-              onClick={closeHandler}
-              icon={<FontAwesomeIcon size="2x" icon={faTimes} />}
-            />
-          </Box>
+          <Header onClose={closeHandler}>
+            Edit Event
+          </Header>
 
           {!loaded && (
             <Box pad={{ horizontal: 'large', bottom: 'large' }}>
@@ -118,7 +105,9 @@ const EditEvent = ({
           )}
 
           {loaded && !error && (
-            <Form onSubmit={editEvent} scheduleData={response.data} />
+            <Body>
+              <Form onSubmit={editEvent} scheduleData={response.data} />
+            </Body>
           )}
         </div>
       )}

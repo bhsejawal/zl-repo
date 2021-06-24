@@ -8,10 +8,10 @@ import {
   TextArea,
   TextInput,
   Button,
+  Select,
 } from 'grommet';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrashAlt } from '@fortawesome/pro-light-svg-icons';
-import { faChevronDown } from '@fortawesome/pro-solid-svg-icons';
 import { isEmpty, omit } from 'lodash-es';
 
 import CollapsibleCard from 'Components/CollapsibleCard';
@@ -36,8 +36,8 @@ const QuestionCard = memo(({
   };
 
   const onChangeHandler = ({ target }) => {
-    const { prop } = target.dataset;
-    onChange({ ...question, [prop]: target.value });
+    const { dataset: { prop }, value } = target;
+    onChange({ ...question, [prop]: value });
   };
 
   const onOpen = useCallback(() => onCardOpen(ind), [onCardOpen, ind]);
@@ -153,14 +153,18 @@ const QuestionCard = memo(({
           )}
         </Box>
 
-        <div className="simpleSelect">
-          <select data-prop="correctAnswer" onChange={onChangeHandler}>
-            <option value="1" selected={question.correctAnswer === 1}>1</option>
-            <option value="2" selected={question.correctAnswer === 2}>2</option>
-            {question.answer3 && <option value="3" selected={question.correctAnswer === 3}>3</option>}
-          </select>
-          <FontAwesomeIcon icon={faChevronDown} color="var(--blue)" />
-        </div>
+        <Box>
+          <Select
+            data-prop="correctAnswer"
+            labelKey="label"
+            valueKey={{ key: 'value', reduce: true }}
+            value={Number(question.correctAnswer)}
+            options={[1, 2, 3]
+              .map((item) => ({ label: item, value: item, hide: item === 3 && !question.answer3 }))
+              .filter(({ hide }) => !hide)}
+            onChange={onChangeHandler}
+          />
+        </Box>
       </CollapsibleCard>
     </Box>
   )

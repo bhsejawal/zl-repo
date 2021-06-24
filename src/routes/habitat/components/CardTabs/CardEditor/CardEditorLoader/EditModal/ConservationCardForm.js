@@ -6,10 +6,8 @@ import {
   Text,
   Heading,
   TextArea,
-  TextInput,
+  TextInput, Select,
 } from 'grommet';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faChevronDown } from '@fortawesome/pro-solid-svg-icons';
 
 import {
   CRITICALLY_ENDANGERED,
@@ -78,18 +76,17 @@ const ConservationCardForm = forwardRef(({
 
   return (
     <>
-      <div className="simpleSelect">
-        <select onChange={onInputChange} data-prop="status" className={style.capitalize}>
-          {endangeredOptions.map((option) => (
-            <option selected={status === option} value={option}>
-              {option.replace(/-/g, ' ')}
-            </option>
-
-          ))}
-        </select>
-
-        <FontAwesomeIcon icon={faChevronDown} color="var(--blue)" />
-      </div>
+      <Box margin={{ bottom: '20px' }}>
+        <Select
+          data-prop="status"
+          className={style.capitalize}
+          labelKey="l"
+          valueKey={{ key: 'v', reduce: true }}
+          value={status}
+          options={endangeredOptions.map((opt) => ({ l: opt.replace(/-/g, ' '), v: opt}))}
+          onChange={onInputChange}
+        />
+      </Box>
 
       <Box margin={{ bottom: '20px' }}>
         <Heading margin={{ top: '0', bottom: '5px' }} level="5">Title:</Heading>

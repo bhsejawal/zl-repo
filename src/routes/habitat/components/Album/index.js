@@ -2,12 +2,9 @@ import { h } from 'preact';
 import { connect } from 'react-redux';
 import { useEffect, useState } from 'preact/hooks';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {
-  faChevronDown,
-  faChevronRight,
-  faSpinner,
-} from '@fortawesome/pro-solid-svg-icons';
+import { faChevronRight, faSpinner } from '@fortawesome/pro-solid-svg-icons';
 import { format } from 'date-fns';
+import { Select } from 'grommet';
 import classnames from 'classnames';
 import useFetch from 'use-http';
 
@@ -113,14 +110,18 @@ const Album = ({
   return (
     <>
       <div className={classnames(style.album, { [style.tab]: tab })}>
-        <div className="simpleSelect">
-          <select onChange={onChangeHandler}>
-            <option selected={!type} value={FEATURED}>Featured</option>
-            <option selected={type === PHOTOS} value={PHOTOS}>Photos</option>
-            <option selected={type === PAST_TALKS} value={PAST_TALKS}>Past Talks</option>
-          </select>
-
-          <FontAwesomeIcon icon={faChevronDown} color="var(--blue)" />
+        <div className={style.selectContainer}>
+          <Select
+            labelKey="label"
+            valueKey={{ key: 'value', reduce: true }}
+            value={type}
+            options={[
+              { label: 'Featured', value: FEATURED},
+              { label: 'Photos', value: PHOTOS},
+              { label: 'Past Talks', value: PAST_TALKS},
+            ]}
+            onChange={onChangeHandler}
+          />
         </div>
 
         {loading && page === 1 && <Loader fill />}

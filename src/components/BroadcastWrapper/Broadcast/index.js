@@ -14,6 +14,7 @@ import {
   CardFooter,
   Text,
   Drop,
+  Select,
 } from 'grommet';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -253,22 +254,28 @@ const Broadcast = ({
             <span className={style.title}>Stream Setup</span>
             <Box direction="row" pad={{vertical: '7px' }} align="center">
               <FontAwesomeIcon icon={faVideo} size="1x" style={{ minWidth: '20px' }} color="#CDCDCD" />
-              <Box margin={{ left: "14px"}} flex="grow">
-                <select value={selectedVideoDevice} onChange={selectNewSource}>
-                  {videoSources.map((source) => (
-                    <option value={source.deviceId} key={source.deviceId}>{source.label}</option>
-                  ))}
-                </select>
+              <Box margin={{ left: "14px"}} flex="grow" width={{ max: 'calc(100% - 34px)' }}>
+                <Select
+                  options={videoSources}
+                  labelKey="label"
+                  value={selectedVideoDevice}
+                  valueKey={{ key: 'deviceId', reduce: true }}
+                  onChange={selectNewSource}
+                  style={{ textOverflow: 'ellipsis', padding: '5px 0 5px 10px' }}
+                />
               </Box>
             </Box>
             <Box direction="row" pad={{vertical: '7px' }} align="center" flex="grow">
               <FontAwesomeIcon icon={faMicrophone} size="1x" style={{ minWidth: '20px' }} color="#CDCDCD" />
-              <Box margin={{ left: "14px"}} flex="grow">
-                <select value={selectedAudioDevice} onChange={selectNewSource}>
-                  {audioSources.map((source) => (
-                    <option value={source.deviceId} key={source.deviceId}>{source.label}</option>
-                  ))}
-                </select>
+              <Box margin={{ left: "14px"}} flex="grow" width={{ max: 'calc(100% - 34px)' }}>
+                <Select
+                  options={audioSources}
+                  value={selectedAudioDevice}
+                  labelKey="label"
+                  valueKey={{ key: 'deviceId', reduce: true }}
+                  onChange={selectNewSource}
+                  style={{ textOverflow: 'ellipsis', padding: '5px 0 5px 10px' }}
+                />
               </Box>
             </Box>
             <Box margin={{ top: '15px' }} direction="row" justify="between">
