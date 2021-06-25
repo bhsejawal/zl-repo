@@ -121,11 +121,11 @@ const Main = ({
           <Login />
         </AuthGuard>
 
-        <AuthGuard path="/signup" guestOnly title="Sign Up" redirectTo="/">
+        <AuthGuard path="/signup" guestOnly title="Sign Up" redirectTo="/map">
           <Signup />
         </AuthGuard>
 
-        <AuthGuard path="/login/token/:token" title="Log In" redirectTo="/" guestOnly>
+        <AuthGuard path="/login/token/:token" title="Log In" redirectTo="/map" guestOnly>
           <Login />
         </AuthGuard>
 

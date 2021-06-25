@@ -1,6 +1,6 @@
 import { h } from 'preact';
 import { useState, useContext, useEffect } from 'preact/hooks';
-import { Link, route } from 'preact-router';
+import { Link } from 'preact-router';
 import { connect } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faEyeSlash } from "@fortawesome/pro-solid-svg-icons";
@@ -27,6 +27,7 @@ import {
   getDeviceType,
   getCampaignData,
   logPageView,
+  loadPage,
 } from '../../helpers';
 
 import Layout from '../../layouts/LoginSignup';
@@ -37,12 +38,7 @@ import style from '../login/style.scss';
 
 const TERMS_VERSION = process.env.PREACT_APP_TERMS_VERSION ?? 1;
 
-const Signup = ({
-  logged,
-  setUserDataAction,
-  openTermsModalAction,
-  matches,
-}) => {
+const Signup = ({ setUserDataAction, openTermsModalAction, matches }) => {
   const size = useContext(ResponsiveContext);
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
@@ -58,11 +54,8 @@ const Signup = ({
     if (socialLoginError && !emailError) {
       setEmailError('Error logging in with social media. Make sure you share your email to proceed.');
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [matches]);
-
-  if (logged) {
-    return route('/map', true);
-  }
 
   const isLargeScreen = size === 'large';
 
@@ -116,7 +109,7 @@ const Signup = ({
         setUserDataAction(user);
         logPageView('/signed-up');
         logPageViewGA('/signed-up');
-        route('/profile', true);
+        loadPage('/profile');
 
         try {
           localStorage.setItem('returningUser', true);
@@ -270,7 +263,7 @@ const Signup = ({
 };
 
 export default connect(
-  ({ user: { logged } }) => ({ logged }),
+  null,
   {
     setUserDataAction: setUserData,
     openTermsModalAction: openTermsModal,

@@ -1,6 +1,5 @@
 import { h } from 'preact';
 import { useEffect, useState } from 'preact/hooks';
-import { route } from 'preact-router';
 import { connect } from 'react-redux';
 import { get } from 'lodash-es';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -23,7 +22,7 @@ import PasswordResetModal from './ResetModal';
 import Layout from '../../layouts/LoginSignup';
 
 import { setUserData } from '../../redux/actions';
-import { emailRegex, identifyUser } from '../../helpers';
+import { emailRegex, identifyUser, loadPage } from '../../helpers';
 
 import { showModal, validateToken } from './ResetModal/actions';
 
@@ -32,8 +31,6 @@ import loginImage from './login.png';
 import style from './style.scss';
 
 const Login = ({
-  logged,
-  profile,
   setUserDataAction,
   setShowModalAction,
   token, // from URL
@@ -52,17 +49,8 @@ const Login = ({
       setHasError(true);
       setEmailError('Error logging in with social media. Make sure you share your email to proceed.');
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [matches]);
-
-  useEffect(() => {
-    if (logged && profile) {
-      route('/map', true);
-    } else if (logged) {
-      // users who have not followed the regular signup process
-      // do not have profile set, redirecting them to generate one
-      route('/profile', true);
-    }
-  }, [logged, profile]);
 
   useEffect(() => {
     if (token) {
@@ -109,7 +97,7 @@ const Login = ({
       const { user } = await post(url, { email, password });
       setUserDataAction({ ...user, sessionChecked: true });
       identifyUser(user);
-      route('/map');
+      loadPage('/map');
       try {
         localStorage.setItem('returningUser', true);
       } catch (err) {
@@ -214,7 +202,7 @@ const Login = ({
 };
 
 export default connect(
-  ({ user: { logged, profile } }) => ({ logged, profile }),
+  null,
   {
     setUserDataAction: setUserData,
     setShowModalAction: showModal,
