@@ -5,10 +5,13 @@ import {
   useState,
 } from 'preact/hooks';
 import { lazy, Suspense } from 'preact/compat';
-import useFetch from 'use-http';
+import { Grommet } from 'grommet';
+import { deepMerge } from 'grommet/utils';
+import { grommet } from 'grommet/themes';
 import { format } from 'date-fns';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSpinner, faTimesCircle } from '@fortawesome/pro-solid-svg-icons';
+import useFetch from 'use-http';
 
 import { buildURL } from 'Shared/fetch';
 import { LandingPrimary } from 'Components/Buttons';
@@ -20,10 +23,12 @@ import Header from '../home/Header';
 import FilterButton from './FilterButton';
 
 import { goToSignup } from '../home/helpers';
+import zoolifeTheme from '../../grommetTheme';
 
 import style from './style.scss';
 
 const ShareModal = lazy(() => import('Components/ShareModal/WithSocket'));
+const customBreakpoints = deepMerge(grommet, zoolifeTheme);
 
 const Album = ({ matches: { photoId } = {} }) => {
   const [loading, setLoading] = useState(true);
@@ -118,137 +123,139 @@ const Album = ({ matches: { photoId } = {} }) => {
   );
 
   return (
-    <div className={style.page}>
-      <Header />
+    <Grommet full theme={customBreakpoints}>
+      <div className={style.page}>
+        <Header />
 
-      <div className={style.container}>
-        <div className={style.wrapper}>
-          <div className={style.main}>
-            <div className={style.text}>
-              <h4 className={style.blue}>Welcome to</h4>
-              <img src={zoolifeLogo} alt="logo" />
-              <h4>Explore nature, from home!</h4>
-              <p>
-                Join us for incredible animal experiences from
-                <br />
-                the world&apos;s top zoos, hosted by nature experts.
-              </p>
-              <LandingPrimary onClick={goToSignup}>
-                Start Your Free Trial
-              </LandingPrimary>
-            </div>
-            <div className={style.mainPhoto}>
-              {!mediaError && loading && <Loader className={style.mainLoader} />}
-              {url && <img src={url} onLoad={onPhotoLoad} alt="" />}
-              {mediaError && (
-                <div className={style.error}>
-                  <FontAwesomeIcon
-                    icon={faTimesCircle}
-                    size="8x"
-                    color="var(--red)"
-                  />
-                  <h3>Uh oh!</h3>
-                  <p>There was an error.</p>
-                </div>
-              )}
-            </div>
-          </div>
-
-          <div className={style.thumbs}>
-            <div className={style.filtersHeader}>
-              <h4>Explore more animal moments!</h4>
-              <div className={style.filters}>
-                <FilterButton
-                  label="All Zoos"
-                  items={allZoos}
-                  filteredItems={filteredZoos}
-                  onFilter={onZoosFilterChange}
-                  onClear={clearZoosFilter}
-                />
-                <FilterButton
-                  label="All Animals"
-                  items={allAnimals}
-                  filteredItems={filteredAnimals}
-                  onFilter={onAnimalsFilterChange}
-                  onClear={clearAnimalsFilter}
-                />
+        <div className={style.container}>
+          <div className={style.wrapper}>
+            <div className={style.main}>
+              <div className={style.text}>
+                <h4 className={style.blue}>Welcome to</h4>
+                <img src={zoolifeLogo} alt="logo" />
+                <h4>Explore nature, from home!</h4>
+                <p>
+                  Join us for incredible animal experiences from
+                  <br />
+                  the world&apos;s top zoos, hosted by nature experts.
+                </p>
+                <LandingPrimary onClick={goToSignup}>
+                  Start Your Free Trial
+                </LandingPrimary>
+              </div>
+              <div className={style.mainPhoto}>
+                {!mediaError && loading && <Loader className={style.mainLoader} />}
+                {url && <img src={url} onLoad={onPhotoLoad} alt="" />}
+                {mediaError && (
+                  <div className={style.error}>
+                    <FontAwesomeIcon
+                      icon={faTimesCircle}
+                      size="8x"
+                      color="var(--red)"
+                    />
+                    <h3>Uh oh!</h3>
+                    <p>There was an error.</p>
+                  </div>
+                )}
               </div>
             </div>
 
-            <div>
-              {itemsLoading && page === 1 && <Loader />}
-              {itemsError && (
-                <div className={style.error}>
-                  <FontAwesomeIcon
-                    icon={faTimesCircle}
-                    size="8x"
-                    color="var(--red)"
+            <div className={style.thumbs}>
+              <div className={style.filtersHeader}>
+                <h4>Explore more animal moments!</h4>
+                <div className={style.filters}>
+                  <FilterButton
+                    label="All Zoos"
+                    items={allZoos}
+                    filteredItems={filteredZoos}
+                    onFilter={onZoosFilterChange}
+                    onClear={clearZoosFilter}
                   />
-                  <h3>Uh oh!</h3>
-                  <p>There was an error.</p>
+                  <FilterButton
+                    label="All Animals"
+                    items={allAnimals}
+                    filteredItems={filteredAnimals}
+                    onFilter={onAnimalsFilterChange}
+                    onClear={clearAnimalsFilter}
+                  />
                 </div>
-              )}
+              </div>
 
-              {!(itemsLoading && page === 1) && photos.map(({
-                _id,
-                username,
-                date,
-                url,
-                disabled,
-                rawURL,
-                habitat,
-              }) => (
-                <MediaContent
-                  key={_id}
-                  id={_id}
-                  image={url}
-                  title={format(date, 'MMM Lo, yyyy | h:mmaa')}
-                  timestamp={date}
-                  disabled={disabled}
-                  username={username && `By: ${username}`}
-                  type="photos"
-                  rawURL={rawURL}
-                  className={style.thumb}
-                  zooName={habitat?.zoo?.name}
-                  animal={habitat?.animal}
-                  onClick={onModalMediaChange}
-                />
-              ))}
+              <div>
+                {itemsLoading && page === 1 && <Loader />}
+                {itemsError && (
+                  <div className={style.error}>
+                    <FontAwesomeIcon
+                      icon={faTimesCircle}
+                      size="8x"
+                      color="var(--red)"
+                    />
+                    <h3>Uh oh!</h3>
+                    <p>There was an error.</p>
+                  </div>
+                )}
 
-              {!itemsLoading && !itemsError && photos.length === 0 && (
-                <div className={style.noData}>
-                  <p>There are no photos.</p>
-                </div>
-              )}
+                {!(itemsLoading && page === 1) && photos.map(({
+                  _id,
+                  username,
+                  date,
+                  url,
+                  disabled,
+                  rawURL,
+                  habitat,
+                }) => (
+                  <MediaContent
+                    key={_id}
+                    id={_id}
+                    image={url}
+                    title={format(date, 'MMM Lo, yyyy | h:mmaa')}
+                    timestamp={date}
+                    disabled={disabled}
+                    username={username && `By: ${username}`}
+                    type="photos"
+                    rawURL={rawURL}
+                    className={style.thumb}
+                    zooName={habitat?.zoo?.name}
+                    animal={habitat?.animal}
+                    onClick={onModalMediaChange}
+                  />
+                ))}
 
-              {!(itemsLoading && page === 1) && totalPhotos > photos.length && (
-                <button className={style.loadMore} type="button" onClick={incrementPage}>
-                  {!itemsLoading && 'Load More'}
-                  {itemsLoading && <FontAwesomeIcon icon={faSpinner} spin size="2x" />}
-                </button>
-              )}
+                {!itemsLoading && !itemsError && photos.length === 0 && (
+                  <div className={style.noData}>
+                    <p>There are no photos.</p>
+                  </div>
+                )}
+
+                {!(itemsLoading && page === 1) && totalPhotos > photos.length && (
+                  <button className={style.loadMore} type="button" onClick={incrementPage}>
+                    {!itemsLoading && 'Load More'}
+                    {itemsLoading && <FontAwesomeIcon icon={faSpinner} spin size="2x" />}
+                  </button>
+                )}
+              </div>
             </div>
+
+            <Benefits />
           </div>
-
-          <Benefits />
         </div>
-      </div>
 
-      {typeof window !== 'undefined' && (
-        <Suspense>
-          <ShareModal
-            open={!!modalPhoto}
-            animal={modalPhoto?.habitat?.animal}
-            zoo={modalPhoto?.habitat?.zoo?.name}
-            data={modalPhoto ?? {}}
-            nextId={photos[modalPhotoInd + 1]?._id}
-            prevId={photos[modalPhotoInd - 1]?._id}
-            onClose={onShareModalClose}
-            setShareModalMediaId={onModalMediaChange}
-          />
-        </Suspense>
-      )}
-    </div>
+        {typeof window !== 'undefined' && (
+          <Suspense>
+            <ShareModal
+              open={!!modalPhoto}
+              animal={modalPhoto?.habitat?.animal}
+              zoo={modalPhoto?.habitat?.zoo?.name}
+              data={modalPhoto ?? {}}
+              nextId={photos[modalPhotoInd + 1]?._id}
+              prevId={photos[modalPhotoInd - 1]?._id}
+              onClose={onShareModalClose}
+              setShareModalMediaId={onModalMediaChange}
+            />
+          </Suspense>
+        )}
+      </div>
+    </Grommet>
   );
 };
 
