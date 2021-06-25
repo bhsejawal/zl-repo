@@ -1,5 +1,10 @@
 import { h } from 'preact';
-import { useEffect, useContext, useRef } from 'preact/hooks';
+import {
+  useEffect,
+  useContext,
+  useRef,
+  useState,
+} from 'preact/hooks';
 import { lazy, Suspense } from 'preact/compat';
 import { connect } from 'react-redux';
 import { route } from 'preact-router';
@@ -55,6 +60,11 @@ const Habitat = ({
   termsAccepted,
   setHabitatPropsAction,
 }) => {
+  // this will be undefined most of the time
+  // but in case camera is changed, this value will be set by from socket message
+  // and it will trigger habitat request to update it
+  const [cameraId, setCameraId] = useState();
+  const loadedRef = useRef(false);
   const { width: windowWidth } = useWindowResize();
   const size = useContext(ResponsiveContext);
   const { socket } = useContext(GlobalsContext);
@@ -75,21 +85,34 @@ const Habitat = ({
   }, [socket, habitatId, userId]);
 
   useEffect(() => {
+    const onStreamUpdated = ({ isHostStreamOn, isStreamOn }) => {
+      setHabitatPropsAction({ isHostStreamOn, isStreamOn })
+    };
+
+    const onCameraChange = ({ camId }) => {
+      setCameraId(camId);
+    };
+
     if (socket) {
-      socket.on('streamUpdated', ({ isHostStreamOn, isStreamOn }) => setHabitatPropsAction({ isHostStreamOn, isStreamOn }));
+      socket.on('streamUpdated', onStreamUpdated);
+      socket.on('cameraChanged', onCameraChange);
     }
+
     return () => {
       if (socket) {
-        socket.off('streamUpdated', ({ isHostStreamOn, isStreamOn }) => setHabitatPropsAction({ isHostStreamOn, isStreamOn }));
+        socket.off('streamUpdated', onStreamUpdated);
+        socket.off('cameraChanged', onCameraChange);
       }
     }
   }, [socket, setHabitatPropsAction]);
 
-  const { loading, error, response } = useFetch(
+  const { loading: habitatLoading, error, response } = useFetch(
     buildURL(`/zoos/${zooName}/habitats/${habitatSlug}`),
     { credentials: 'include', cachePolicy: 'no-cache' },
-    [zooName, habitatSlug],
+    [zooName, habitatSlug, cameraId],
   );
+
+  loadedRef.current = loadedRef.current || !habitatLoading;
 
   useEffect(() => {
     if (!termsAccepted) {
@@ -98,7 +121,7 @@ const Habitat = ({
   }, [openTermsModalAction, termsAccepted]);
 
   useEffect(() => {
-    if (loading && habitatId) {
+    if (!loadedRef.current && habitatId) {
       unsetHabitatAction();
     } else if (response.ok && response.data) {
       setHabitatAction(response.data);
@@ -106,7 +129,6 @@ const Habitat = ({
       route('/404', true);
     }
   }, [
-    loading,
     habitatId,
     response,
     response.ok,
@@ -145,7 +167,7 @@ const Habitat = ({
     <div className={style.page} ref={pageRef}>
       {/* using habitatId to prevent render where we recieve data,
       loading becomes false, but habitat data is set later in useEffect */}
-      {(loading || !habitatId) ? (
+      {(!loadedRef.current || !habitatId) ? (
         <Box fill align="center" justify="center">
           <Loader />
         </Box>
