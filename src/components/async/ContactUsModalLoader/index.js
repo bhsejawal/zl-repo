@@ -13,7 +13,6 @@ const ContactUsModalLoader = ({ isOpen }) => {
     <Suspense fallback={<LoaderModal />}>
       <ContactUsModal />
     </Suspense>
-
   );
 }
 

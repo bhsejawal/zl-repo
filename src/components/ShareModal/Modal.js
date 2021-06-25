@@ -1,5 +1,3 @@
-import { h } from 'preact';
-import { connect } from 'react-redux';
 import { useContext, useEffect, useState } from 'preact/hooks';
 import { Box, Layer } from 'grommet';
 import { isEmpty, isNil } from 'lodash-es';
@@ -22,9 +20,8 @@ import ErrorModal from 'Components/modals/Error';
 import CloseButton from 'Components/modals/CloseButton';
 import { API_BASE_URL } from 'Shared/fetch';
 import { GlobalsContext } from 'Shared/context';
-import { closeShareModal, setShareModalMediaId } from './actions';
-import { androidDevice, iOSDevice } from '../../../../helpers';
-import { useIsMobileSize } from '../../../../hooks';
+import { androidDevice, iOSDevice } from '../../helpers';
+import { useIsMobileSize } from '../../hooks';
 
 import style from './style.scss';
 
@@ -63,8 +60,8 @@ const ShareModal = ({
   nextId,
   prevId,
   cameraId,
-  closeShareModalAction,
-  setShareModalMediaIdAction,
+  onClose,
+  setShareModalMediaId,
 }) => {
   const {
     _id,
@@ -72,6 +69,7 @@ const ShareModal = ({
     url,
     videoURL,
   } = data;
+  const shareUrl = videoURL ? htmlURL : `${window.location.origin}/album/${_id}`;
   const { socket } = useContext(GlobalsContext);
   const isMobileSize = useIsMobileSize();
   const [showEmailError, setShowEmailError] = useState();
@@ -119,7 +117,7 @@ const ShareModal = ({
   };
 
   const webShareHandler = async () => {
-    const data = { url: htmlURL};
+    const data = { url: shareUrl };
     try {
       await navigator.share(data);
       logShare('webShare');
@@ -136,13 +134,13 @@ const ShareModal = ({
     <Layer
       animation="fadeIn"
       position="center"
-      onClickOutside={closeShareModalAction}
-      onEsc={closeShareModalAction}
+      onClickOutside={onClose}
+      onEsc={onClose}
     >
       {isMobileSize && (
         <>
           <div className={style.absoluteClose}>
-            <CloseButton onClick={closeShareModalAction} className={style.close} />
+            <CloseButton onClick={onClose} className={style.close} />
           </div>
           {!videoURL && userId === data?.userId && (
             <div className={style.title}>Here’s your photo!</div>
@@ -152,14 +150,14 @@ const ShareModal = ({
       <Box className={classnames(style.shareModalContainer, { [style.mobile]: isMobileSize })}>
         <Box>
           {!isMobileSize && (
-            <CloseButton onClick={closeShareModalAction} className={style.close} varient="green" />
+            <CloseButton onClick={onClose} className={style.close} varient="green" />
           )}
           <Box className={style.shareMedia} >
             {nextId && (
               <button
                 type="button"
                 className={style.next}
-                onClick={() => setShareModalMediaIdAction(nextId)}
+                onClick={() => setShareModalMediaId(nextId)}
               >
                 <FontAwesomeIcon icon={faChevronRight} />
               </button>
@@ -168,7 +166,7 @@ const ShareModal = ({
               <button
                 type="button"
                 className={style.prev}
-                onClick={() => setShareModalMediaIdAction(prevId)}
+                onClick={() => setShareModalMediaId(prevId)}
               >
                 <FontAwesomeIcon icon={faChevronLeft} />
               </button>
@@ -215,11 +213,11 @@ const ShareModal = ({
                   {iOSDevice() && <FontAwesomeIcon icon={faShareSquare} />}
                 </button>
               )}
-              {(htmlURL && !androidDevice() && !iOSDevice()) && (
+              {!androidDevice() && !iOSDevice() && (
                 <>
                   <a
                     className={style.shareIcon}
-                    href={generateFacebookURL(htmlURL)}
+                    href={generateFacebookURL(shareUrl)}
                     target="_blank"
                     rel="noreferrer"
                     onClick={() => logShare('facebook')}
@@ -228,7 +226,7 @@ const ShareModal = ({
                   </a>
                   <a
                     className={style.shareIcon}
-                    href={generateTwitterURL(htmlURL)}
+                    href={generateTwitterURL(shareUrl)}
                     target="_blank"
                     rel="noreferrer"
                     onClick={() => logShare('twitter')}
@@ -241,36 +239,10 @@ const ShareModal = ({
           </Box>
         </Box>
       </Box>
+
       {showEmailError && <ErrorModal onClose={() => setShowEmailError(false)} />}
     </Layer>
   );
 };
 
-export default connect(
-  ({
-    user: { userId },
-    habitat: {
-      habitatInfo: {
-        animal,
-        zoo: { name: zoo } = {},
-        camera: { _id: cameraId } = {},
-      },
-      shareModal: {
-        open,
-        nextId,
-        prevId,
-        data,
-      },
-    },
-  }) => ({
-    userId,
-    animal,
-    zoo,
-    nextId,
-    prevId,
-    open,
-    data,
-    cameraId,
-  }),
-  { closeShareModalAction: closeShareModal, setShareModalMediaIdAction: setShareModalMediaId },
-)(ShareModal);
+export default ShareModal;

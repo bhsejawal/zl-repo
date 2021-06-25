@@ -12,8 +12,8 @@ import {
 } from 'preact/hooks';
 
 import RoundButton from 'Components/RoundButton';
+import { setShareModalData } from 'Components/ShareModal/actions';
 import { useIsMobileSize } from '../../../../../hooks';
-import { setShareModalData } from '../../../../../routes/habitat/components/ShareModal/actions';
 import ShareContainer from './ShareContainer';
 
 import style from './style.scss';

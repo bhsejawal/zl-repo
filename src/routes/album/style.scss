@@ -1,0 +1,136 @@
+@import "../../style/media-query.scss";
+$horizontal-padding: 62px;
+
+.page {
+  padding-top: var(--headerHeight);
+  overflow-y: auto;
+}
+
+.container {
+  overflow-y: scroll;
+  max-height: calc(100vh - var(--headerHeight));
+}
+
+.wrapper {
+  height: calc(100vh - var(--headerHeight));
+  max-width: 1650px;
+  width: 100%;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.main {
+  background: linear-gradient(180deg, #FFDCEE 23.96%, #FFD1AF 100%);
+  display: flex;
+  align-items: center;
+  padding: 100px $horizontal-padding;
+
+  @media screen and (max-width: #{$tablet-landscape-width}) {
+    padding: 35px $horizontal-padding / 3;
+    flex-direction: column-reverse;
+  }
+}
+
+.text {
+  margin-right: 72px;
+
+  @media screen and (max-width: #{$tablet-landscape-width}) {
+    text-align: center;
+    margin-right: 0;
+    margin-top: 20px;
+  }
+
+  .blue {
+    color: var(--logoBlue);
+  }
+
+  img {
+    height: 60px;
+    margin-bottom: 50px;
+  }
+
+  p {
+    margin: 25px 0;
+  }
+}
+
+.mainPhoto {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 5px solid #fff;
+  border-radius: 5px;
+  background-color: #fff;
+  height: fit-content;
+  position: relative;
+  box-sizing: content-box;
+
+  /* this is not supported in some older browsers and Safari,
+  so there will be some layout shift which is not a big problem */
+  aspect-ratio: 16 / 9;
+
+  img {
+    width: 100%;
+  }
+}
+
+.mainLoader {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.thumbs {
+  padding: 0 $horizontal-padding;
+  flex-grow: 1;
+
+  @media screen and (max-width: #{$tablet-landscape-width}) {
+    padding: 0 $horizontal-padding / 3;
+  }
+}
+
+.filtersHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 25px 0;
+
+  @media screen and (max-width: #{$tablet-portrait-width}) {
+    flex-direction: column;
+  }
+}
+
+.filters {
+
+  > *:first-child {
+    margin-right: 12px;
+  }
+}
+
+.error {
+  text-align: center;
+}
+
+.thumb {
+  @media screen and (max-width: #{$phone-portrait-width}) {
+    width: 100% !important;
+  }
+}
+
+.loadMore {
+  background-color: transparent;
+  padding: 0;
+  color: var(--blueDark);
+  border: 0;
+  display: flex;
+  margin: 10px auto 45px auto;
+  cursor: pointer;
+}
+
+.noData {
+  text-align: center;
+  padding-bottom: 40px;
+}

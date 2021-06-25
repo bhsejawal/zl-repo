@@ -6,7 +6,8 @@ import { connect } from 'react-redux';
 import TimeBar from 'Components/TimeBar';
 import AuthGuard from 'Components/Authorize/AuthGuard';
 import Redirect from 'Components/Redirect';
-import TermsAndConditions, { PRIVACY_PDF_URL, TERMS_PDF_URL } from 'Components/TermsAndConditions';
+import TermsAndConditions from 'Components/TermsAndConditions';
+import { PRIVACY_PDF_URL, TERMS_PDF_URL } from 'Components/TermsAndConditions/constants';
 import ContactUsModalLoader from 'Components/async/ContactUsModalLoader';
 import { logPageViewGA } from 'Shared/ga';
 import { patch, buildURL } from 'Shared/fetch';
@@ -29,6 +30,7 @@ import TermsAndPrivacy from '../../routes/TermsAndPrivacy';
 import AdminRouter from './AdminRouter';
 import AppRouter from './AppRouter';
 import MobileGuard from './MobileGuard';
+import Album from '../../routes/album';
 
 import { logPageView, logAndGetCampaignData } from '../../helpers';
 import { updateReferralData } from '../../redux/actions';
@@ -192,6 +194,8 @@ const Main = ({
           title="Privacy Policy"
           pdfLink={PRIVACY_PDF_URL}
         />
+
+        <Album path="/album/:photoId" />
 
         {/* NOTE: NotFound need to be at the end */}
         <NotFound path=":*" />

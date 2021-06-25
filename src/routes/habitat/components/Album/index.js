@@ -36,6 +36,7 @@ const Album = ({
   album,
   tab,
   habitatId,
+  zooName,
   setAlbumDataAction,
   appendAlbumDataAction,
   changeContentVisibilityAction,
@@ -161,6 +162,7 @@ const Album = ({
                       accessControlButtonHandler={openConfirmActionModal}
                       type="photos"
                       rawURL={rawURL}
+                      zooName={zooName}
                     />
                   )
                 })
@@ -202,6 +204,7 @@ const Album = ({
                     accessControlButtonHandler={openConfirmActionModal}
                     disabled={disabled}
                     type="pastTalks"
+                    zooName={zooName}
                   />
                 ))
               }
@@ -234,16 +237,21 @@ const Album = ({
   );
 };
 
-export default connect(
-  ({
-    habitat: {
-      habitatInfo: { _id: habitatId },
-      album,
+export default connect(({
+  habitat: {
+    album,
+    habitatInfo: {
+      _id: habitatId,
+      zoo: { name: zooName } = {},
     },
-  }) => ({ habitatId, album }),
-  {
-    setAlbumDataAction: setAlbumData,
-    appendAlbumDataAction: appendAlbumData,
-    changeContentVisibilityAction: changeContentVisibility,
   },
-)(Album);
+}) => ({
+  habitatId,
+  album,
+  zooName,
+}),
+{
+  setAlbumDataAction: setAlbumData,
+  appendAlbumDataAction: appendAlbumData,
+  changeContentVisibilityAction: changeContentVisibility,
+})(Album);

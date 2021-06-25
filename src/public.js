@@ -1,23 +1,24 @@
 import Router from "preact-router";
 import { useEffect, useErrorBoundary } from "preact/hooks";
-import { Grommet } from 'grommet';
-import { deepMerge } from 'grommet/utils';
-import { grommet } from 'grommet/themes';
 import { connect, Provider } from "react-redux";
 import { config as faConfig } from "@fortawesome/fontawesome-svg-core";
 
-import { PRIVACY_PDF_URL, TERMS_PDF_URL } from 'Components/TermsAndConditions';
+/* eslint-disable import/no-webpack-loader-syntax */
+/* eslint-disable import/no-unresolved */
+import TermsAndPrivacy from "async!./routes/TermsAndPrivacy";
+import NotFound from "async!./routes/notFound";
+/* eslint-enable import/no-webpack-loader-syntax */
+/* eslint-enable import/no-unresolved */
+import { PRIVACY_PDF_URL, TERMS_PDF_URL } from 'Components/TermsAndConditions/constants';
 import ContactUsModalLoader from "Components/async/ContactUsModalLoader";
 import Home from "./routes/home";
-import TermsAndPrivacy from "./routes/TermsAndPrivacy";
-import NotFound from "./routes/notFound";
+import Album from "./routes/album";
 
 import AppLoader from "./components/AppLoader";
 import oranaZooLogo from './components/Main/partners/orana-zoo.png';
 import torontoZooLogo from './components/Main/partners/toronto-zoo.png';
 import pmmcLogo from './components/Main/partners/pmmc.png';
 import sanAntonioLogo from './components/Main/partners/san-antonio-zoo.png';
-import zoolifeTheme from './grommetTheme';
 import store from "./redux/store";
 import { initializeGA, logPageViewGA } from './shared/ga';
 
@@ -26,7 +27,6 @@ import { updateReferralData } from "./redux/actions";
 
 import '@fortawesome/fontawesome-svg-core/styles.css';
 
-const customBreakpoints = deepMerge(grommet, zoolifeTheme);
 const homeTitle = "The world's first digital zoo.";
 
 // we are manually loading FA css and this should prevent duplication
@@ -57,7 +57,7 @@ const Content = ({ showContactUs, updateReferralDataAction }) => {
   }, []);
 
   return (
-    <Grommet full theme={customBreakpoints}>
+    <>
       <Router onRouteChange={routerChangeHandler}>
         <Home path="/" exact title={homeTitle} />
         <Home path="/twitch" exact title={homeTitle} />
@@ -71,6 +71,8 @@ const Content = ({ showContactUs, updateReferralDataAction }) => {
         <AppLoader path="/login" title="Log In" />
         <AppLoader path="/login/token/:token" title="Log In" />
         <AppLoader path="/signup" title="Sign Up" />
+
+        <Album path="/album/:photoId" />
 
         <TermsAndPrivacy
           path="/terms-and-conditions"
@@ -88,7 +90,7 @@ const Content = ({ showContactUs, updateReferralDataAction }) => {
       </Router>
 
       <ContactUsModalLoader isOpen={showContactUs} />
-    </Grommet>
+    </>
   );
 };
 

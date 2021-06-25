@@ -17,11 +17,9 @@ import useFetch from 'use-http';
 import { buildURL } from 'Shared/fetch';
 import { PrimaryButton } from 'Components/Buttons';
 import { closeTermsModal, setUserTermsAccepted } from './actions';
+import { PRIVACY_PDF_URL, TERMS_PDF_URL } from './constants';
 
 import style from './style.scss';
-
-export const TERMS_PDF_URL = 'https://assets.zoolife.tv/BRIZI_INC_-_Terms_of_Use_v17-03-2021.pdf';
-export const PRIVACY_PDF_URL = 'https://assets.zoolife.tv/Brizi_-_Privacy_Policy_v17-03-2021.pdf';
 
 const TermsAndConditions = ({
   user,

@@ -23,13 +23,13 @@ import { GlobalsContext } from 'Shared/context';
 import Tabs from 'Components/Tabs';
 import Tab from 'Components/Tabs/Tab';
 import LiveTalk from 'Components/Card/LiveTalk';
+import ShareModal from 'Components/ShareModal';
 import Chat from './components/Chat';
 import LiveChannelsBar from './components/LiveChannelsBar';
 import CardTabs from './components/CardTabs';
 import StreamProfile from './components/StreamProfile';
 import OnboardingModal from './OnboardingModal';
 import SmallScreenCardTabs from './components/CardTabs/Mobile';
-import ShareModal from './components/ShareModal';
 import Album from './components/Album';
 
 import { useIsHabitatTabbed, useWindowResize } from '../../hooks';
