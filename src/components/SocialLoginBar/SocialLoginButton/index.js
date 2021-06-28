@@ -29,6 +29,7 @@ const SocialLoginButton = ({ variant, referralData }) => {
 
   return (
     <a
+      native
       href={buildURL('connect', variant, `?${queryParams}`)}
       rel="noopener noreferrer nofollow"
       className={classnames(style.socialButton, {[style.roundButton]: isSmallScreen})}
