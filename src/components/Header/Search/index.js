@@ -55,7 +55,7 @@ const Search = ({ className, allHabitats, setHabitatsAction }) => {
   const lastFetchRef = useRef();
   const { width: windowWidth } = useWindowResize();
 
-  const { get, response } = useFetch(buildURL('/habitats/map'), {
+  const { get, response } = useFetch(buildURL('/habitats'), {
     credentials: 'include',
     cachePolicy: 'no-cache',
   });
