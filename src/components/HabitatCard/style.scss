@@ -24,7 +24,7 @@
     }
   }
 
-  > img {
+  .wideImage img {
     height: 102px;
     width: 100%;
   }
@@ -80,6 +80,6 @@
   }
 
   .iconButton {
-    border-radius: 0px;
+    border-radius: 0;
   }
 }

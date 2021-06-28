@@ -1,33 +1,40 @@
-.customCheckbox > label {
-  outline: none !important;
-  border-radius: 5px;
-  width: 100%;
+.customCheckbox {
+  overflow: auto;
+  margin-right: -19px;
+  max-width: calc(100% + 19px);
 
-  div > div {
-    background-color: white;
-    border-color: var(--grey);
+  > label {
+    outline: none !important;
     border-radius: 5px;
-  }
-
-  &:hover {
+    width: 100%;
+    min-height: max-content;
 
     div > div {
-      border-color: var(--charcoalLight) !important;
       background-color: white;
+      border-color: var(--grey);
+      border-radius: 5px;
     }
-  }
 
-  &[checked="true"] {
+    &:hover {
 
-    div > div {
-      background: var(--blueDark) !important;
-      border-color: var(--blueDark);
+      div > div {
+        border-color: var(--charcoalLight) !important;
+        background-color: white;
+      }
+    }
 
-      svg {
-        stroke: white !important;
-        color: white !important;
-        width: 16px;
-        height: 16px;
+    &[checked="true"] {
+
+      div > div {
+        background: var(--blueDark) !important;
+        border-color: var(--blueDark);
+
+        svg {
+          stroke: white !important;
+          color: white !important;
+          width: 16px;
+          height: 16px;
+        }
       }
     }
   }

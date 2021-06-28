@@ -17,7 +17,7 @@ const BaseHabitatCard = ({
 }) => (
   <div className={classnames(style.habitatCard, className)}>
     <div className={classnames(style.header, {[style.fallback]: !image})}>
-      {image && <img src={image} alt="" />}
+      <div className={style.wideImage}>{image && <img src={image} alt="" />}</div>
       <div className={style.logo}>
         <img src={logo ?? zooPlaceholder} alt="" />
       </div>
