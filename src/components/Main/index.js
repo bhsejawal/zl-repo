@@ -195,7 +195,8 @@ const Main = ({
           pdfLink={PRIVACY_PDF_URL}
         />
 
-        <Album path="/album/:photoId" />
+        <Album mediaType="photos" path="/album/photos/:photoId" />
+        <Album mediaType="videos" path="/album/videos/:videoId" />
 
         {/* NOTE: NotFound need to be at the end */}
         <NotFound path=":*" />

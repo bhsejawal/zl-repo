@@ -63,14 +63,8 @@ const ShareModal = ({
   onClose,
   setShareModalMediaId,
 }) => {
-  const {
-    _id,
-    htmlURL,
-    url,
-    videoURL,
-    type = 'photo',
-  } = data;
-  const shareUrl = videoURL ? htmlURL : `${window.location.origin}/album/${_id}`;
+  const { _id, url, videoURL } = data;
+  const shareUrl = `${window.location.origin}/album/${videoURL ? 'videos' : 'photos'}/${_id}`;
   const { socket } = useContext(GlobalsContext);
   const isMobileSize = useIsMobileSize();
   const [showEmailError, setShowEmailError] = useState();
@@ -182,63 +176,61 @@ const ShareModal = ({
           </Box>
           <Box className={style.footer}>
             {!isMobileSize && <div>{`${zoo} | ${animal}`}</div>}
-            {type !== 'viv' && (
-              <div className={style.shareButtons}>
-                {!videoURL && (
-                  <button
-                    onClick={sendEmail}
-                    type="button"
-                    className={style.shareIcon}
-                    disabled={loading || showEmailSuccess}
-                  >
-                    {!loading && <FontAwesomeIcon icon={showEmailSuccess ? faCheck : faEnvelope} />}
-                    {loading && <FontAwesomeIcon icon={faSpinner} spin />}
-                  </button>
-                )}
-                <a
-                  download
-                  target="_blank"
-                  rel="noreferrer"
+            <div className={style.shareButtons}>
+              {!videoURL && (
+                <button
+                  onClick={sendEmail}
+                  type="button"
                   className={style.shareIcon}
-                  href={url || videoURL}
-                  onClick={() => logShare('download')}
+                  disabled={loading || showEmailSuccess}
                 >
-                  <FontAwesomeIcon icon={faDownload} />
-                </a>
-                {(androidDevice() || iOSDevice()) && (
-                  <button
-                    onClick={webShareHandler}
-                    type="button"
+                  {!loading && <FontAwesomeIcon icon={showEmailSuccess ? faCheck : faEnvelope} />}
+                  {loading && <FontAwesomeIcon icon={faSpinner} spin />}
+                </button>
+              )}
+              <a
+                download
+                target="_blank"
+                rel="noreferrer"
+                className={style.shareIcon}
+                href={url || videoURL}
+                onClick={() => logShare('download')}
+              >
+                <FontAwesomeIcon icon={faDownload} />
+              </a>
+              {(androidDevice() || iOSDevice()) && (
+                <button
+                  onClick={webShareHandler}
+                  type="button"
+                  className={style.shareIcon}
+                >
+                  {androidDevice() && <FontAwesomeIcon icon={faShareAlt} />}
+                  {iOSDevice() && <FontAwesomeIcon icon={faShareSquare} />}
+                </button>
+              )}
+              {!androidDevice() && !iOSDevice() && (
+                <>
+                  <a
                     className={style.shareIcon}
+                    href={generateFacebookURL(shareUrl)}
+                    target="_blank"
+                    rel="noreferrer"
+                    onClick={() => logShare('facebook')}
                   >
-                    {androidDevice() && <FontAwesomeIcon icon={faShareAlt} />}
-                    {iOSDevice() && <FontAwesomeIcon icon={faShareSquare} />}
-                  </button>
-                )}
-                {!androidDevice() && !iOSDevice() && (
-                  <>
-                    <a
-                      className={style.shareIcon}
-                      href={generateFacebookURL(shareUrl)}
-                      target="_blank"
-                      rel="noreferrer"
-                      onClick={() => logShare('facebook')}
-                    >
-                      <FontAwesomeIcon icon={faFacebookF} />
-                    </a>
-                    <a
-                      className={style.shareIcon}
-                      href={generateTwitterURL(shareUrl)}
-                      target="_blank"
-                      rel="noreferrer"
-                      onClick={() => logShare('twitter')}
-                    >
-                      <FontAwesomeIcon icon={faTwitter} />
-                    </a>
-                  </>
-                )}
-              </div>
-            )}
+                    <FontAwesomeIcon icon={faFacebookF} />
+                  </a>
+                  <a
+                    className={style.shareIcon}
+                    href={generateTwitterURL(shareUrl)}
+                    target="_blank"
+                    rel="noreferrer"
+                    onClick={() => logShare('twitter')}
+                  >
+                    <FontAwesomeIcon icon={faTwitter} />
+                  </a>
+                </>
+              )}
+            </div>
           </Box>
         </Box>
       </Box>

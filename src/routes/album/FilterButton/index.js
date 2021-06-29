@@ -75,7 +75,7 @@ const FilterButton = ({
             onChange={(evt) => setSelectedItems(evt.value)}
           />
           <hr className={style.divider} />
-          <Box direction="row" justify="between">
+          <Box direction="row" justify="between" gap="small">
             <OutlineButton onClick={onClearHandler} size="small" label="Clear" className={style.actionBtn} />
             <PrimaryButton onClick={onSaveHandler} size="small" label="Save" className={style.actionBtn} />
           </Box>

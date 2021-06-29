@@ -72,7 +72,8 @@ const Content = ({ showContactUs, updateReferralDataAction }) => {
         <AppLoader path="/login/token/:token" title="Log In" />
         <AppLoader path="/signup" title="Sign Up" />
 
-        <Album path="/album/:photoId" />
+        <Album mediaType="photos" path="/album/photos/:photoId" />
+        <Album mediaType="videos" path="/album/videos/:videoId" />
 
         <TermsAndPrivacy
           path="/terms-and-conditions"

@@ -55,7 +55,7 @@ $horizontal-padding: 62px;
   }
 }
 
-.mainPhoto {
+.mainItem {
   flex: 1;
   display: flex;
   align-items: center;
@@ -71,7 +71,8 @@ $horizontal-padding: 62px;
   so there will be some layout shift which is not a big problem */
   aspect-ratio: 16 / 9;
 
-  img {
+  img,
+  video {
     width: 100%;
   }
 }
@@ -104,14 +105,29 @@ $horizontal-padding: 62px;
 }
 
 .filters {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
 
-  > *:first-child {
-    margin-right: 12px;
+  > * {
+    margin: 0 6px;
+
+    &:last-child {
+      margin-right: 0;
+    }
+
+    &:first-child {
+      margin-left: 0;
+    }
   }
 }
 
 .error {
   text-align: center;
+}
+
+.errorPad {
+  padding: 50px 0;
 }
 
 .thumb {
@@ -133,4 +149,18 @@ $horizontal-padding: 62px;
 .noData {
   text-align: center;
   padding-bottom: 40px;
+}
+
+.hiddenMedia {
+  visibility: hidden;
+}
+
+.typeSelectWrapper {
+  display: inline-block;
+
+  @media screen and (max-width: #{$phone-portrait-width}) {
+    width: 100% !important;
+    margin-bottom: 20px;
+    text-align: center;
+  }
 }

@@ -5,13 +5,14 @@ import {
   useState,
 } from 'preact/hooks';
 import { lazy, Suspense } from 'preact/compat';
-import { Grommet } from 'grommet';
+import { Grommet, Select } from 'grommet';
 import { deepMerge } from 'grommet/utils';
 import { grommet } from 'grommet/themes';
 import { format } from 'date-fns';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSpinner, faTimesCircle } from '@fortawesome/pro-solid-svg-icons';
 import useFetch from 'use-http';
+import classnames from 'classnames';
 
 import { buildURL } from 'Shared/fetch';
 import { LandingPrimary } from 'Components/Buttons';
@@ -30,28 +31,29 @@ import style from './style.scss';
 const ShareModal = lazy(() => import('Components/ShareModal/WithSocket'));
 const customBreakpoints = deepMerge(grommet, zoolifeTheme);
 
-const Album = ({ matches: { photoId } = {} }) => {
+const Album = ({ mediaType: mediaTypeProp, matches: { photoId, videoId } = {} }) => {
+  const [mediaType, setMediaType] = useState(mediaTypeProp);
   const [loading, setLoading] = useState(true);
   const [filteredZoos, setFilteredZoos] = useState([]);
   const [filteredAnimals, setFilteredAnimals] = useState([]);
   const [page, setPage] = useState(1);
-  const [photos, setPhotos] = useState([]);
-  const [modalPhoto, setModalPhoto] = useState();
-  const [totalPhotos, setTotalPhotos] = useState(0);
+  const [items, setItems] = useState([]);
+  const [modalItem, setModalItem] = useState();
+  const [totalItems, setTotalItems] = useState(0);
   const zoosParams = new URLSearchParams({ 'fields[]': 'name' });
   const { data: { zoos = [] } = {} } = useFetch(buildURL(`/zoos?${zoosParams}`), []);
   const {
-    data: { url = '' } = {},
+    data: { url: photoURL = '', videoURL } = {},
     error: mediaError,
-  } = useFetch(buildURL(`/photos/${photoId}`), [photoId]);
+  } = useFetch(buildURL(`/${mediaTypeProp}/${photoId || videoId}`), [photoId, videoId]);
   const { data: allAnimals } = useFetch(buildURL('/animals'), []);
-  const { get, loading: itemsLoading, error: itemsError } = useFetch(buildURL('/photos'));
+  const { get, loading: itemsLoading, error: itemsError } = useFetch(buildURL(mediaType));
   const allZoos = useMemo(
     () => zoos.map(({ name, _id }) => ({ label: name, value: _id })),
     [zoos],
   );
 
-  const onPhotoLoad = () => {
+  const onMainItemLoad = () => {
     setLoading(false);
   };
 
@@ -75,12 +77,12 @@ const Album = ({ matches: { photoId } = {} }) => {
   useEffect(() => {
     const load = async () => {
       const { list, total } = await get(paramsStr ? `?${paramsStr}` : '');
-      list.forEach((photo) => {
+      list.forEach((item) => {
         // eslint-disable-next-line no-param-reassign
-        photo.date = new Date(photo.createdAt);
+        item.date = new Date(item.createdAt || item.creationDate);
       });
-      setPhotos(page === 1 ? list : [...photos, ...list]);
-      setTotalPhotos(total);
+      setItems(page === 1 ? list : [...items, ...list]);
+      setTotalItems(total);
     };
 
     load();
@@ -110,16 +112,21 @@ const Album = ({ matches: { photoId } = {} }) => {
   };
 
   const onModalMediaChange = useCallback((photoId) => {
-    setModalPhoto(photos.find(({ _id }) => _id === photoId));
-  }, [photos]);
+    setModalItem(items.find(({ _id }) => _id === photoId));
+  }, [items]);
 
   const onShareModalClose = useCallback(() => {
-    setModalPhoto(undefined);
+    setModalItem(undefined);
   }, []);
 
-  const modalPhotoInd = useMemo(
-    () => photos.findIndex(({ _id }) => _id === modalPhoto?._id),
-    [modalPhoto, photos],
+  const onMediaTypeChange = useCallback(({ value }) => {
+    setMediaType(value);
+    setPage(1);
+  }, []);
+
+  const modalItemInd = useMemo(
+    () => items.findIndex(({ _id }) => _id === modalItem?._id),
+    [modalItem, items],
   );
 
   return (
@@ -143,9 +150,29 @@ const Album = ({ matches: { photoId } = {} }) => {
                   Start Your Free Trial
                 </LandingPrimary>
               </div>
-              <div className={style.mainPhoto}>
+              <div className={style.mainItem}>
                 {!mediaError && loading && <Loader className={style.mainLoader} />}
-                {url && <img src={url} onLoad={onPhotoLoad} alt="" />}
+                {photoURL && (
+                  <img
+                    alt=""
+                    src={photoURL}
+                    onLoad={onMainItemLoad}
+                    className={classnames({ [style.hiddenMedia]: loading })}
+                  />
+                )}
+                {videoURL && (
+                  // eslint-disable-next-line jsx-a11y/media-has-caption
+                  <video
+                    playsInline
+                    controls
+                    key={videoURL}
+                    className={classnames({ [style.hiddenMedia]: loading })}
+                    onLoadedData={onMainItemLoad}
+                  >
+                    <source src={videoURL} type="video/mp4" />
+                  </video>
+                )}
+
                 {mediaError && (
                   <div className={style.error}>
                     <FontAwesomeIcon
@@ -164,6 +191,19 @@ const Album = ({ matches: { photoId } = {} }) => {
               <div className={style.filtersHeader}>
                 <h4>Explore more animal moments!</h4>
                 <div className={style.filters}>
+                  <div className={style.typeSelectWrapper}>
+                    <Select
+                      labelKey="label"
+                      style={{ width: '70px' }}
+                      valueKey={{ key: 'value', reduce: true }}
+                      options={[
+                        { label: 'Photo', value: 'photos' },
+                        { label: 'Video', value: 'videos' },
+                      ]}
+                      value={mediaType}
+                      onChange={onMediaTypeChange}
+                    />
+                  </div>
                   <FilterButton
                     label="All Zoos"
                     items={allZoos}
@@ -184,7 +224,7 @@ const Album = ({ matches: { photoId } = {} }) => {
               <div>
                 {itemsLoading && page === 1 && <Loader />}
                 {itemsError && (
-                  <div className={style.error}>
+                  <div className={classnames(style.error, style.errorPad)}>
                     <FontAwesomeIcon
                       icon={faTimesCircle}
                       size="8x"
@@ -195,25 +235,24 @@ const Album = ({ matches: { photoId } = {} }) => {
                   </div>
                 )}
 
-                {!(itemsLoading && page === 1) && photos.map(({
+                {!(itemsLoading && page === 1) && !itemsError && items.map(({
                   _id,
                   username,
                   date,
                   url,
+                  previewURL,
                   disabled,
-                  rawURL,
                   habitat,
                 }) => (
                   <MediaContent
                     key={_id}
                     id={_id}
-                    image={url}
+                    image={url || previewURL}
                     title={format(date, 'MMM Lo, yyyy | h:mmaa')}
                     timestamp={date}
                     disabled={disabled}
                     username={username && `By: ${username}`}
-                    type="photos"
-                    rawURL={rawURL}
+                    type={mediaType}
                     className={style.thumb}
                     zooName={habitat?.zoo?.name}
                     animal={habitat?.animal}
@@ -221,13 +260,13 @@ const Album = ({ matches: { photoId } = {} }) => {
                   />
                 ))}
 
-                {!itemsLoading && !itemsError && photos.length === 0 && (
+                {!itemsLoading && !itemsError && items.length === 0 && (
                   <div className={style.noData}>
-                    <p>There are no photos.</p>
+                    <p>There are no media items.</p>
                   </div>
                 )}
 
-                {!(itemsLoading && page === 1) && totalPhotos > photos.length && (
+                {!(itemsLoading && page === 1) && !itemsError && totalItems > items.length && (
                   <button className={style.loadMore} type="button" onClick={incrementPage}>
                     {!itemsLoading && 'Load More'}
                     {itemsLoading && <FontAwesomeIcon icon={faSpinner} spin size="2x" />}
@@ -243,12 +282,12 @@ const Album = ({ matches: { photoId } = {} }) => {
         {typeof window !== 'undefined' && (
           <Suspense>
             <ShareModal
-              open={!!modalPhoto}
-              animal={modalPhoto?.habitat?.animal}
-              zoo={modalPhoto?.habitat?.zoo?.name}
-              data={modalPhoto ?? {}}
-              nextId={photos[modalPhotoInd + 1]?._id}
-              prevId={photos[modalPhotoInd - 1]?._id}
+              open={!!modalItem}
+              animal={modalItem?.habitat?.animal}
+              zoo={modalItem?.habitat?.zoo?.name}
+              data={modalItem ?? {}}
+              nextId={items[modalItemInd + 1]?._id}
+              prevId={items[modalItemInd - 1]?._id}
               onClose={onShareModalClose}
               setShareModalMediaId={onModalMediaChange}
             />
