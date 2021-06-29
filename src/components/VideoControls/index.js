@@ -1,5 +1,5 @@
 import { h } from 'preact';
-import { useEffect, useState, useRef } from 'preact/hooks';
+import { useState, useRef } from 'preact/hooks';
 import { forwardRef } from 'preact/compat';
 import { Box, Grommet, RangeInput as InputRange } from 'grommet';
 import classnames from 'classnames';
@@ -55,14 +55,6 @@ const VideoControls = forwardRef(({
   // and this is receiving a reference that's not a video element
   // so the "video.play()"" is throwing errors
   const video = ref.current;
-
-  useEffect(() => {
-    if (video) {
-      video.controls = false;
-      video.play();
-      setIsPlaying(!video.paused);
-    }
-  }, [video]);
 
   if (!showControls) {
     return null;
