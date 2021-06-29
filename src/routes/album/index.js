@@ -28,7 +28,7 @@ import zoolifeTheme from '../../grommetTheme';
 
 import style from './style.scss';
 
-const ShareModal = lazy(() => import('Components/ShareModal/WithSocket'));
+const ShareModal = lazy(() => import('Components/ShareModal/Standalone'));
 const customBreakpoints = deepMerge(grommet, zoolifeTheme);
 
 const Album = ({ mediaType: mediaTypeProp, matches: { photoId, videoId } = {} }) => {
@@ -285,6 +285,7 @@ const Album = ({ mediaType: mediaTypeProp, matches: { photoId, videoId } = {} })
               open={!!modalItem}
               animal={modalItem?.habitat?.animal}
               zoo={modalItem?.habitat?.zoo?.name}
+              habitat={modalItem?.habitat?.id}
               data={modalItem ?? {}}
               nextId={items[modalItemInd + 1]?._id}
               prevId={items[modalItemInd - 1]?._id}

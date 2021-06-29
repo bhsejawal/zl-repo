@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from 'preact/hooks';
+import { useEffect, useState } from 'preact/hooks';
 import { Box, Layer } from 'grommet';
 import { isEmpty, isNil } from 'lodash-es';
 import { faFacebookF, faTwitter } from '@fortawesome/free-brands-svg-icons';
@@ -19,8 +19,7 @@ import classnames from 'classnames';
 import ErrorModal from 'Components/modals/Error';
 import CloseButton from 'Components/modals/CloseButton';
 import { API_BASE_URL } from 'Shared/fetch';
-import { GlobalsContext } from 'Shared/context';
-import { androidDevice, iOSDevice } from '../../helpers';
+import { getDeviceType, androidDevice, iOSDevice } from '../../helpers';
 import { useIsMobileSize } from '../../hooks';
 
 import style from './style.scss';
@@ -59,13 +58,19 @@ const ShareModal = ({
   data,
   nextId,
   prevId,
-  cameraId,
   onClose,
   setShareModalMediaId,
+  habitat,
 }) => {
-  const { _id, url, videoURL } = data;
+  const {
+    _id,
+    url,
+    videoURL,
+    type = 'photo',
+    habitatId,
+  } = data;
+
   const shareUrl = `${window.location.origin}/album/${videoURL ? 'videos' : 'photos'}/${_id}`;
-  const { socket } = useContext(GlobalsContext);
   const isMobileSize = useIsMobileSize();
   const [showEmailError, setShowEmailError] = useState();
   const [showEmailSuccess, setShowEmailSuccess] = useState();
@@ -74,6 +79,12 @@ const ShareModal = ({
     post,
     response,
     loading,
+  } = useFetch(API_BASE_URL, {
+    credentials: 'include',
+    cachePolicy: 'no-cache',
+  });
+  const {
+    post: sharePost,
   } = useFetch(API_BASE_URL, {
     credentials: 'include',
     cachePolicy: 'no-cache',
@@ -93,18 +104,15 @@ const ShareModal = ({
     setShowEmailSuccess(false);
   }, [_id]);
 
-  const logShare = (platform) => {
-    const source = iOSDevice() || androidDevice() ? 'mobile' : 'desktop';
-
-    socket.emit('logShare', {
-      userId,
-      room: 'zoolife',
-      snapshotId: _id,
-      cameraId,
-      platform,
-      source,
-    });
-  };
+  const logShare = (platform) => sharePost('/logs/share', {
+    userId,
+    mediaId: _id,
+    mediaType: type,
+    platform,
+    deviceType: getDeviceType(),
+    applicationPath: document.location.pathname.startsWith('/h') ? 'habitat' : 'publicAlbum',
+    habitatId: habitatId || habitat,
+  });
 
   const sendEmail = async () => {
     await post('/email/snapshot', { imageUrl: url });
