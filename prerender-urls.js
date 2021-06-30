@@ -57,7 +57,12 @@ module.exports = [
     ...envData,
   },
   {
-    url: '/album/:photoId',
+    url: '/album/photos/:photoId',
+    title: 'Album',
+    ...envData,
+  },
+  {
+    url: '/album/videos/:videoId',
     title: 'Album',
     ...envData,
   },
