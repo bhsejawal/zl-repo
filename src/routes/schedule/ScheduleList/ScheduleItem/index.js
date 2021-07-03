@@ -27,6 +27,8 @@ const ScheduleItem = ({
   habitatSlug,
   zooSlug,
   wideImage,
+  online,
+  liveTalk,
   onClick,
 }) => {
   const size = useContext(ResponsiveContext);
@@ -36,7 +38,7 @@ const ScheduleItem = ({
   if (isSmallScreen) {
     return (
       <Box className={style.mobile}>
-        <BaseHabitatCard image={wideImage} logo={zooLogo} >
+        <BaseHabitatCard image={wideImage} logo={zooLogo} online={online} liveTalk={liveTalk}>
           <Box flex="grow">
             <Link href={encodeURI(`/h/${zooSlug}/${habitatSlug}`)}>
               <Heading level="4" margin="0px">{animal}</Heading>
