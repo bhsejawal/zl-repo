@@ -7,7 +7,7 @@ import {
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircle } from '@fortawesome/pro-solid-svg-icons';
 import { faChevronLeft, faChevronRight } from '@fortawesome/pro-regular-svg-icons';
-import { Text } from 'grommet';
+import { Text, Tip, Box } from 'grommet';
 import classnames from 'classnames';
 import { connect } from 'react-redux';
 import { Link } from 'preact-router';
@@ -84,28 +84,42 @@ const LiveChannelsBar = ({
               _id,
               profileImage,
               slug: habitatSlug,
+              animal,
               zoo: {
                 slug: zooSlug,
+                name: zooName,
               },
               liveTalk,
             }) => (
-              <li key={_id} className={style.item}>
-                <Link href={encodeURI(`/h/${zooSlug}/${habitatSlug}`)}>
-                  <img src={profileImage} alt="" />
-                  {liveTalk && (
-                    <Tag
-                      className={style.liveTag}
-                      label={(
-                        <>
-                          <FontAwesomeIcon icon={faCircle} color="black" />
-                          Talk
-                        </>
-                      )}
-                      varient="online"
-                    />
-                  )}
-                </Link>
-              </li>
+              <Tip
+                content={(
+                  <Box pad="xsmall">
+                    <Text>
+                      {`${animal} @ ${zooName}`}
+                    </Text>
+                  </Box>
+                )}
+                plain
+                dropProps={{ align: { left: "right" }, background: { color: 'white' }, margin: { left: '-7.5px' }}}
+              >
+                <li key={_id} className={style.item}>
+                  <Link href={encodeURI(`/h/${zooSlug}/${habitatSlug}`)}>
+                    <img src={profileImage} alt="" />
+                    {liveTalk && (
+                      <Tag
+                        className={style.liveTag}
+                        label={(
+                          <>
+                            <FontAwesomeIcon icon={faCircle} color="black" />
+                            Talk
+                          </>
+                        )}
+                        varient="online"
+                      />
+                    )}
+                  </Link>
+                </li>
+              </Tip>
             ))}
           </ul>
         </div>
