@@ -25,7 +25,7 @@ import CalendarFilter from './Filters/CalendarFilter';
 import ScheduleList from './ScheduleList';
 
 import { setFilterOptions } from './actions';
-import { useIsInitiallyLoaded, useIsMobileSize } from '../../hooks';
+import { useIsInitiallyLoaded, useIsMobileSize, useWindowResize } from '../../hooks';
 
 const Schedule = ({ setFilterOptionsAction }) => {
   const {
@@ -36,8 +36,9 @@ const Schedule = ({ setFilterOptionsAction }) => {
   const size = useContext(ResponsiveContext);
   const loaded = useIsInitiallyLoaded(loading);
   const isSmallScreen = useIsMobileSize();
+  const { width: windowWidth } = useWindowResize();
   const [filtersOpen, setFiltersOpen] = useState(!isSmallScreen);
-
+  const collapseHeader = windowWidth < 700;
   const getFilterOptions = useCallback(async () => {
     try {
       const filterOptions = await get(`/livetalks/filters`);
@@ -69,14 +70,14 @@ const Schedule = ({ setFilterOptionsAction }) => {
         <>
           <Box
             height={{ min: '95px' }}
-            direction={isSmallScreen ? 'column' : 'row'}
-            pad="medium"
-            align={isSmallScreen ? undefined : 'center'}
+            direction={collapseHeader ? 'column' : 'row'}
+            pad={collapseHeader ? '20px 18px' : '24px 18px' }
+            align={collapseHeader ? undefined : 'center'}
             flex="grow"
           >
             <Heading
               level="2"
-              margin={isSmallScreen ? { bottom: 'large', top: 'medium' } : 'none'}
+              margin={collapseHeader ? '0 0 20px' : 'none'}
               size={size === 'large' ? 'small' : '20px'}
               style={{ fontWeight: size === "large" ? 900 : 500 }}
               textAlign="left"
@@ -89,10 +90,10 @@ const Schedule = ({ setFilterOptionsAction }) => {
               justify="between"
               align="center"
               direction="row"
-              margin={{ left: isSmallScreen ? undefined : 'large' }}
+              margin={{ left: collapseHeader ? undefined : 'large' }}
             >
               <CalendarFilter />
-              {isSmallScreen && (
+              {collapseHeader && (
                 <Button plain onClick={toggleFilters}>
                   <Box align="center" direction="row" gap="medium">
                     <Text size="xlarge">Filters</Text>
@@ -101,7 +102,7 @@ const Schedule = ({ setFilterOptionsAction }) => {
                 </Button>
               )}
 
-              {!isSmallScreen && (
+              {!collapseHeader && (
                 <Box direction="row" flex="grow" justify="end" gap="small">
                   <AnimalFilter />
                   <ZooFilter />
@@ -109,8 +110,8 @@ const Schedule = ({ setFilterOptionsAction }) => {
               )}
             </Box>
 
-            {isSmallScreen && filtersOpen && (
-              <Box direction="row" flex="grow" justify="between" gap="small" pad={{ top: 'medium' }}>
+            {collapseHeader && filtersOpen && (
+              <Box direction="row" flex="grow" justify="between" gap="small" pad={{ top: '20px' }}>
                 <AnimalFilter />
                 <ZooFilter />
               </Box>
@@ -127,8 +128,8 @@ const Schedule = ({ setFilterOptionsAction }) => {
               overflow="auto"
               className="customScrollBar"
               pad={{
-                horizontal: isSmallScreen ? 'small' : 'xlarge',
-                vertical: 'medium',
+                horizontal: isSmallScreen ? '8px' : 'xlarge',
+                vertical: isSmallScreen ? '8px' : 'medium',
               }}
             >
               <ScheduleList />

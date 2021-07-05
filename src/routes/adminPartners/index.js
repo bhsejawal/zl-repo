@@ -134,7 +134,6 @@ const responseTransform = ({ zoos } = {}) => zoos;
 
 const Partners = () => (
   <AdminTable
-    deleteDisabled
     columns={columns}
     entity={{ singular: 'Partner', plural: 'Partners' }}
     serverPath="/admin/zoos"

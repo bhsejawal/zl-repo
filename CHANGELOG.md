@@ -2,6 +2,27 @@
 This file keeps track of all relevant change for every release.
 
 ## [Unreleased]
+## [5.8.0] - 2021-07-02
+### Added
+- Enchanced bundle size, pre-loading onboarding video on map page, and pre-caching/loading optimizations
+- Habitat info is now updated on camera changes
+- Public content share page
+- Added fullscreen control on the host Videos
+- Delete button on the Habitats/Partners admin pages
+- Clip Capture Experience
+
+### Changed
+- Increased the cursor area on the livestream container
+- Header now has better responsiveness
+- Discount text to August 1st
+- Share logs are now done through HTTP requests
+### Removed
+- Download button from the live talks
+
+### Fixed
+- Issue where images would show Month instead of Day on its title
+- Issue where custom control was triggering Play Started logic twice on videos
+
 
 ## [5.7.0] - 2021-06-24
 ### Added
@@ -41,7 +62,7 @@ This file keeps track of all relevant change for every release.
 - White line on the side of the habitat stream, red line on loading screen
 
 ## [5.6.0] - 2021-06-18
-### Added    
+### Added
 - Integrating mouseflow
 - Album Download raw image button, delete/undelete content button
 - Album mobile View

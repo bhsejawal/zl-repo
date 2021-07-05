@@ -6,7 +6,7 @@ import { buildURL } from 'Shared/fetch';
 import { setHabitats } from '../redux/actions';
 
 const HabitatsUpdater = ({ setHabitatsAction }) => {
-  const { get, response } = useFetch(buildURL('/habitats/map'), {
+  const { get, response } = useFetch(buildURL('/habitats'), {
     credentials: 'include',
     cachePolicy: 'no-cache',
   });

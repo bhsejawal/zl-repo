@@ -141,7 +141,6 @@ const Habitats = () => {
 
   return (
     <AdminTable
-      deleteDisabled
       columns={columns}
       entity={{ singular: 'Habitat', plural: 'Habitats' }}
       serverPath="/admin/habitats"

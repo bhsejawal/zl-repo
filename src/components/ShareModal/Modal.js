@@ -1,6 +1,4 @@
-import { h } from 'preact';
-import { connect } from 'react-redux';
-import { useContext, useEffect, useState } from 'preact/hooks';
+import { useEffect, useState } from 'preact/hooks';
 import { Box, Layer } from 'grommet';
 import { isEmpty, isNil } from 'lodash-es';
 import { faFacebookF, faTwitter } from '@fortawesome/free-brands-svg-icons';
@@ -21,10 +19,8 @@ import classnames from 'classnames';
 import ErrorModal from 'Components/modals/Error';
 import CloseButton from 'Components/modals/CloseButton';
 import { API_BASE_URL } from 'Shared/fetch';
-import { GlobalsContext } from 'Shared/context';
-import { closeShareModal, setShareModalMediaId } from './actions';
-import { androidDevice, iOSDevice } from '../../../../helpers';
-import { useIsMobileSize } from '../../../../hooks';
+import { getDeviceType, androidDevice, iOSDevice } from '../../helpers';
+import { useIsMobileSize } from '../../hooks';
 
 import style from './style.scss';
 
@@ -62,17 +58,19 @@ const ShareModal = ({
   data,
   nextId,
   prevId,
-  cameraId,
-  closeShareModalAction,
-  setShareModalMediaIdAction,
+  onClose,
+  setShareModalMediaId,
+  habitat,
 }) => {
   const {
     _id,
-    htmlURL,
     url,
     videoURL,
+    type = 'photo',
+    habitatId,
   } = data;
-  const { socket } = useContext(GlobalsContext);
+
+  const shareUrl = `${window.location.origin}/album/${videoURL ? 'videos' : 'photos'}/${_id}`;
   const isMobileSize = useIsMobileSize();
   const [showEmailError, setShowEmailError] = useState();
   const [showEmailSuccess, setShowEmailSuccess] = useState();
@@ -81,6 +79,12 @@ const ShareModal = ({
     post,
     response,
     loading,
+  } = useFetch(API_BASE_URL, {
+    credentials: 'include',
+    cachePolicy: 'no-cache',
+  });
+  const {
+    post: sharePost,
   } = useFetch(API_BASE_URL, {
     credentials: 'include',
     cachePolicy: 'no-cache',
@@ -100,18 +104,15 @@ const ShareModal = ({
     setShowEmailSuccess(false);
   }, [_id]);
 
-  const logShare = (platform) => {
-    const source = iOSDevice() || androidDevice() ? 'mobile' : 'desktop';
-
-    socket.emit('logShare', {
-      userId,
-      room: 'zoolife',
-      snapshotId: _id,
-      cameraId,
-      platform,
-      source,
-    });
-  };
+  const logShare = (platform) => sharePost('/logs/share', {
+    userId,
+    mediaId: _id,
+    mediaType: type,
+    platform,
+    deviceType: getDeviceType(),
+    applicationPath: document.location.pathname.startsWith('/h') ? 'habitat' : 'publicAlbum',
+    habitatId: habitatId || habitat,
+  });
 
   const sendEmail = async () => {
     await post('/email/snapshot', { imageUrl: url });
@@ -119,7 +120,7 @@ const ShareModal = ({
   };
 
   const webShareHandler = async () => {
-    const data = { url: htmlURL};
+    const data = { url: shareUrl };
     try {
       await navigator.share(data);
       logShare('webShare');
@@ -136,13 +137,13 @@ const ShareModal = ({
     <Layer
       animation="fadeIn"
       position="center"
-      onClickOutside={closeShareModalAction}
-      onEsc={closeShareModalAction}
+      onClickOutside={onClose}
+      onEsc={onClose}
     >
       {isMobileSize && (
         <>
           <div className={style.absoluteClose}>
-            <CloseButton onClick={closeShareModalAction} className={style.close} />
+            <CloseButton onClick={onClose} className={style.close} />
           </div>
           {!videoURL && userId === data?.userId && (
             <div className={style.title}>Here’s your photo!</div>
@@ -152,14 +153,14 @@ const ShareModal = ({
       <Box className={classnames(style.shareModalContainer, { [style.mobile]: isMobileSize })}>
         <Box>
           {!isMobileSize && (
-            <CloseButton onClick={closeShareModalAction} className={style.close} varient="green" />
+            <CloseButton onClick={onClose} className={style.close} varient="green" />
           )}
           <Box className={style.shareMedia} >
             {nextId && (
               <button
                 type="button"
                 className={style.next}
-                onClick={() => setShareModalMediaIdAction(nextId)}
+                onClick={() => setShareModalMediaId(nextId)}
               >
                 <FontAwesomeIcon icon={faChevronRight} />
               </button>
@@ -168,7 +169,7 @@ const ShareModal = ({
               <button
                 type="button"
                 className={style.prev}
-                onClick={() => setShareModalMediaIdAction(prevId)}
+                onClick={() => setShareModalMediaId(prevId)}
               >
                 <FontAwesomeIcon icon={faChevronLeft} />
               </button>
@@ -215,11 +216,11 @@ const ShareModal = ({
                   {iOSDevice() && <FontAwesomeIcon icon={faShareSquare} />}
                 </button>
               )}
-              {(htmlURL && !androidDevice() && !iOSDevice()) && (
+              {!androidDevice() && !iOSDevice() && (
                 <>
                   <a
                     className={style.shareIcon}
-                    href={generateFacebookURL(htmlURL)}
+                    href={generateFacebookURL(shareUrl)}
                     target="_blank"
                     rel="noreferrer"
                     onClick={() => logShare('facebook')}
@@ -228,7 +229,7 @@ const ShareModal = ({
                   </a>
                   <a
                     className={style.shareIcon}
-                    href={generateTwitterURL(htmlURL)}
+                    href={generateTwitterURL(shareUrl)}
                     target="_blank"
                     rel="noreferrer"
                     onClick={() => logShare('twitter')}
@@ -241,36 +242,10 @@ const ShareModal = ({
           </Box>
         </Box>
       </Box>
+
       {showEmailError && <ErrorModal onClose={() => setShowEmailError(false)} />}
     </Layer>
   );
 };
 
-export default connect(
-  ({
-    user: { userId },
-    habitat: {
-      habitatInfo: {
-        animal,
-        zoo: { name: zoo } = {},
-        camera: { _id: cameraId } = {},
-      },
-      shareModal: {
-        open,
-        nextId,
-        prevId,
-        data,
-      },
-    },
-  }) => ({
-    userId,
-    animal,
-    zoo,
-    nextId,
-    prevId,
-    open,
-    data,
-    cameraId,
-  }),
-  { closeShareModalAction: closeShareModal, setShareModalMediaIdAction: setShareModalMediaId },
-)(ShareModal);
+export default ShareModal;

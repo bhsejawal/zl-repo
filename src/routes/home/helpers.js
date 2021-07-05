@@ -1,7 +1,9 @@
+import { loadPage } from '../../helpers';
+
 export const goToSignup = () => {
-  window.location.href = `/signup${window.location.search}`;
+  loadPage('/signup', true);
 };
 
 export const goToLogin = () => {
-  window.location.href = `/login${window.location.search}`;
+  loadPage('/login', true);
 }

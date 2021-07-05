@@ -5,8 +5,10 @@ import { connect } from 'react-redux';
 
 import TimeBar from 'Components/TimeBar';
 import AuthGuard from 'Components/Authorize/AuthGuard';
+import Header from 'Components/Header';
 import Redirect from 'Components/Redirect';
-import TermsAndConditions, { PRIVACY_PDF_URL, TERMS_PDF_URL } from 'Components/TermsAndConditions';
+import TermsAndConditions from 'Components/TermsAndConditions';
+import { PRIVACY_PDF_URL, TERMS_PDF_URL } from 'Components/TermsAndConditions/constants';
 import ContactUsModalLoader from 'Components/async/ContactUsModalLoader';
 import { logPageViewGA } from 'Shared/ga';
 import { patch, buildURL } from 'Shared/fetch';
@@ -27,8 +29,17 @@ import DesignSystem from '../../routes/designSystem';
 import RedirectPage from '../../routes/redirectPage';
 import TermsAndPrivacy from '../../routes/TermsAndPrivacy';
 import AdminRouter from './AdminRouter';
-import AppRouter from './AppRouter';
 import MobileGuard from './MobileGuard';
+import Album from '../../routes/album';
+import Plans from '../../routes/plans';
+import Map from '../../routes/map';
+import Schedule from '../../routes/schedule';
+import Favorite from '../../routes/favorite';
+import Account from '../../routes/account';
+import Habitat from '../../routes/habitat';
+import Welcome from '../../routes/welcome';
+
+import PageWrapper from './PageWrapper';
 
 import { logPageView, logAndGetCampaignData } from '../../helpers';
 import { updateReferralData } from '../../redux/actions';
@@ -46,7 +57,6 @@ const Main = ({
   const [path, setPath] = useState();
   const isTabbed = useIsHabitatTabbed();
   const isTabbedHabitatPath = isTabbed && path?.startsWith('/h/');
-
   useEffect(() => {
     const campaignData = logAndGetCampaignData();
     updateReferralDataAction(campaignData);
@@ -121,21 +131,19 @@ const Main = ({
           <Login />
         </AuthGuard>
 
-        <AuthGuard path="/signup" guestOnly title="Sign Up" redirectTo="/">
+        <AuthGuard path="/signup" guestOnly title="Sign Up" redirectTo="/map">
           <Signup />
         </AuthGuard>
 
-        <AuthGuard path="/login/token/:token" title="Log In" redirectTo="/" guestOnly>
+        <AuthGuard path="/login/token/:token" title="Log In" redirectTo="/map" guestOnly>
           <Login />
         </AuthGuard>
 
         <PasswordReset path="/passwordReset" title="Reset Password" />
 
-        <MobileGuard path="/profile" title="Profile">
-          <AuthGuard permission="profile:edit">
-            <Profile step />
-          </AuthGuard>
-        </MobileGuard>
+        <AuthGuard permission="profile:edit" path="/profile" title="Profile">
+          <Profile step />
+        </AuthGuard>
 
         {/* display 404 instead of Unatuhorized message
             we don't want our viewers to know about this route
@@ -160,27 +168,48 @@ const Main = ({
           <RedirectPage />
         </AuthGuard>
 
-        <MobileGuard path="/welcome" title="Welcome to Zoolife">
-          <AppRouter />
-        </MobileGuard>
-        <MobileGuard path="/h/:zooName/:habitatSlug" skipTitle>
-          <AppRouter />
-        </MobileGuard>
-        <MobileGuard path="/map" title="Map">
-          <AppRouter />
-        </MobileGuard>
-        <MobileGuard path="/schedule" title="Talk Schedule">
-          <AppRouter />
-        </MobileGuard>
-        <MobileGuard path="/favorite" title="Favorites">
-          <AppRouter />
-        </MobileGuard>
-        <MobileGuard path="/account" title="Account">
-          <AppRouter />
-        </MobileGuard>
-        <MobileGuard path="/plans" title="Plans">
-          <AppRouter />
-        </MobileGuard>
+        <AuthGuard path="/welcome" redirectTo="/" permission="welcome:view">
+          <Header />
+          <PageWrapper>
+            <Welcome />
+          </PageWrapper>
+        </AuthGuard>
+        <AuthGuard path="/h/:zooName/:habitatSlug" permission="habitat:view" skipTitle redirectTo="/plans">
+          <Header />
+          <PageWrapper>
+            <Habitat />
+          </PageWrapper>
+        </AuthGuard>
+        <AuthGuard path="/map" permission="map:view" title="Map" redirectTo="/plans">
+          <Header />
+          <PageWrapper>
+            <Map />
+          </PageWrapper>
+        </AuthGuard>
+        <AuthGuard path="/schedule" permission="schedule:view" redirectTo="/plans">
+          <Header />
+          <PageWrapper>
+            <Schedule />
+          </PageWrapper>
+        </AuthGuard>
+        <AuthGuard path="/favorite" permission="favorite:edit" redirectTo="/plans">
+          <Header />
+          <PageWrapper>
+            <Favorite />
+          </PageWrapper>
+        </AuthGuard>
+        <AuthGuard path="/account" permission="profile:edit">
+          <Header />
+          <PageWrapper>
+            <Account />
+          </PageWrapper>
+        </AuthGuard>
+        <AuthGuard path="/plans" permission="checkout:plans">
+          <Header />
+          <PageWrapper>
+            <Plans />
+          </PageWrapper>
+        </AuthGuard>
 
         <TermsAndPrivacy
           path="/terms-and-conditions"
@@ -192,6 +221,9 @@ const Main = ({
           title="Privacy Policy"
           pdfLink={PRIVACY_PDF_URL}
         />
+
+        <Album mediaType="photos" path="/album/photos/:photoId" />
+        <Album mediaType="videos" path="/album/videos/:videoId" />
 
         {/* NOTE: NotFound need to be at the end */}
         <NotFound path=":*" />

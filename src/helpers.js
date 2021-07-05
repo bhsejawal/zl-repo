@@ -129,3 +129,7 @@ export const handleDownloadMediaURL = (url) => {
   const host = isDev() ? 'zoolife.brizi.tech' : document.location.host;
   return `https://${host}${pathname}`;
 }
+
+export const loadPage = (path, keepQueryString) => {
+  window.location.href = `${path}${keepQueryString ? window.location.search : ''}`;
+};

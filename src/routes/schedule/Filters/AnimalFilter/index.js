@@ -59,7 +59,7 @@ const AnimalFilter = ({
         <Text size="medium" margin={{ bottom: '20px' }}>Select your animal(s) of interest:</Text>
         <CheckBoxGroup
           options={availableAnimals}
-          className={style.customCheckbox}
+          className={classnames(style.customCheckbox, 'customScrollBar grey')}
           value={selectedAnimals}
           onChange={(evt) => setSelectedAnimals(evt.value)}
         />

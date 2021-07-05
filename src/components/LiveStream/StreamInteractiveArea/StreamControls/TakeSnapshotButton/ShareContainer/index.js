@@ -22,7 +22,7 @@ import useFetch from 'use-http';
 import { API_BASE_URL } from 'Shared/fetch';
 import { GlobalsContext } from 'Shared/context';
 import LiveStreamContext from 'Components/LiveStream/LiveStreamContext';
-import { androidDevice, iOSDevice } from '../../../../../../helpers';
+import { getDeviceType, androidDevice, iOSDevice } from '../../../../../../helpers';
 
 import style from './style.scss';
 import {showSnapshotShare} from "../../../../../../redux/actions";
@@ -52,12 +52,23 @@ export const generateFacebookURL = (html) => {
   return shareURL.href;
 };
 
-const ShareContainer = ({ userId, show, showSnapshotShareAction }) => {
+const ShareContainer = ({
+  userId,
+  habitatId,
+  cameraId,
+  show,
+  showSnapshotShareAction,
+}) => {
   const { videoRef } = useContext(LiveStreamContext);
   const [snapshotData, setSnapshotData] = useState({});
   const [showMainContent, setShowMainContent] = useState(true);
   const { socket } = useContext(GlobalsContext);
   const { error, post, response } = useFetch(API_BASE_URL, {
+    credentials: 'include',
+    cachePolicy: 'no-cache',
+  });
+
+  const { post: sharePost } = useFetch(API_BASE_URL, {
     credentials: 'include',
     cachePolicy: 'no-cache',
   });
@@ -74,17 +85,16 @@ const ShareContainer = ({ userId, show, showSnapshotShareAction }) => {
     showSnapshotShareAction(false);
   }
 
-  const logShare = (platform) => {
-    const source = iOSDevice() || androidDevice() ? 'mobile' : 'desktop';
-
-    socket.emit('logShare', {
-      userId,
-      room: 'zoolife',
-      snapshotId: snapshotData.snapshotId,
-      platform,
-      source,
-    });
-  };
+  const logShare = (platform) => sharePost('/logs/share', {
+    userId,
+    mediaId: snapshotData.snapshotId,
+    mediaType: 'photo',
+    platform,
+    deviceType: getDeviceType(),
+    habitatId,
+    cameraId,
+    applicationPath: 'habitat',
+  });
 
   useEffect(() => {
     const socketHandler = (data) => {
@@ -224,6 +234,13 @@ export default connect(
   ({
     user: { userId },
     mainStream: { interactionState: { showSnapshotShare } },
-  }) => ({ userId, show: showSnapshotShare }),
-  { showSnapshotShareAction: showSnapshotShare },
+    habitat: { habitatInfo: { _id: habitatId, camera: { _id: cameraId } }},
+  }) => ({
+    userId,
+    show: showSnapshotShare,
+    habitatId,
+    cameraId,
+  }), {
+    showSnapshotShareAction: showSnapshotShare,
+  },
 )(ShareContainer);

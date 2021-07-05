@@ -35,13 +35,13 @@ const ScheduleItem = ({
 
   if (isSmallScreen) {
     return (
-      <Box pad="small">
+      <Box className={style.mobile}>
         <BaseHabitatCard image={wideImage} logo={zooLogo} >
           <Box flex="grow">
             <Link href={encodeURI(`/h/${zooSlug}/${habitatSlug}`)}>
               <Heading level="4" margin="0px">{animal}</Heading>
             </Link>
-            <Text size="large" margin={{ top: 'small' }}>
+            <Text size="medium" margin={{ top: 'small' }}>
               {description}
             </Text>
           </Box>
