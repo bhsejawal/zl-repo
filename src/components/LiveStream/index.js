@@ -107,9 +107,7 @@ const Stream = ({
       <div
         className={style.streamContainer}
         style={{
-          width,
           height: height + (isSmallScreen ? MOBILE_CONTROLS_HEIGHT : 0),
-          maxWidth: width,
         }}
         ref={containerRef}
         onMouseEnter={() => setShowControls(true)}
@@ -119,11 +117,10 @@ const Stream = ({
           className={classnames(style.videoContainer, {
             [style.loading]: streamStatus !== PLAY_STARTED,
           })}
-          style={{ width, height }}
         >
           {!isTabbed && mode !== 'liveTalk' && isStreamOn && showContentExplorer && <ContentExplorer />}
           {isStreamOn && (
-            <div style={{ width, height }}>
+            <div>
               <video
                 ref={videoRef}
                 autoPlay
@@ -139,6 +136,7 @@ const Stream = ({
                 showPlayControl={mode !== 'liveTalk'}
                 showVolumeControl
                 showFullscreenControl
+                hasCameraControls={mode !== 'liveTalk'}
               />
             </div>
           )}

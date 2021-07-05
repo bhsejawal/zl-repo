@@ -6,7 +6,7 @@ const PageWrapper = ({ children, ...props }) => {
     .map((child) => child && cloneElement(child, props));
 
   return (
-    <Box fill pad={{ top: 'var(--headerHeight)' }}>
+    <Box fill className="pageWrapper">
       <Box fill overflow="auto">
         <Box fill width={{ max: "1650px", min: "350px" }} margin={{ horizontal: 'auto' }}>
           {childrenWithProps}

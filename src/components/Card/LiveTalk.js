@@ -30,8 +30,6 @@ const LiveTalk = ({
         height="140px"
         streamId={hostStreamKey}
         isStreamOn={isHostStreamOn}
-        // Custom controls is bugged, removing it for now
-        // customControls
         mode="liveTalk"
       />
       {(description || name) && (
