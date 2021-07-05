@@ -2,6 +2,7 @@ import Router from "preact-router";
 import { useEffect, useErrorBoundary } from "preact/hooks";
 import { connect, Provider } from "react-redux";
 import { config as faConfig } from "@fortawesome/fontawesome-svg-core";
+import { Grommet } from 'grommet';
 
 /* eslint-disable import/no-webpack-loader-syntax */
 /* eslint-disable import/no-unresolved */
@@ -11,6 +12,8 @@ import NotFound from "async!./routes/notFound";
 /* eslint-enable import/no-unresolved */
 import { PRIVACY_PDF_URL, TERMS_PDF_URL } from 'Components/TermsAndConditions/constants';
 import ContactUsModalLoader from "Components/async/ContactUsModalLoader";
+import InviteModalLoader from "Components/async/InviteModalLoader";
+
 import Home from "./routes/home";
 import Album from "./routes/album";
 
@@ -32,7 +35,11 @@ const homeTitle = "The world's first digital zoo.";
 // we are manually loading FA css and this should prevent duplication
 faConfig.autoAddCss = false;
 
-const Content = ({ showContactUs, updateReferralDataAction }) => {
+const Content = ({
+  showContactUs,
+  updateReferralDataAction,
+  showInvite,
+}) => {
   useEffect(() => {
     const campaignData = logAndGetCampaignData();
     updateReferralDataAction(campaignData);
@@ -57,7 +64,7 @@ const Content = ({ showContactUs, updateReferralDataAction }) => {
   }, []);
 
   return (
-    <>
+    <Grommet>
       <Router onRouteChange={routerChangeHandler}>
         <Home path="/" exact title={homeTitle} />
         <Home path="/twitch" exact title={homeTitle} />
@@ -91,14 +98,16 @@ const Content = ({ showContactUs, updateReferralDataAction }) => {
       </Router>
 
       <ContactUsModalLoader isOpen={showContactUs} />
-    </>
+      <InviteModalLoader isOpen={showInvite} />
+    </Grommet>
   );
 };
 
-const ConnectedContent = connect(
-  ({ modals: { contactus: { isOpen: showContactUs } } }) => ({ showContactUs }),
-  { updateReferralDataAction: updateReferralData },
-)(Content);
+const ConnectedContent = connect(({
+  modals: { contactus: { isOpen: showContactUs }, invite: { isOpen: showInvite } },
+}) => (
+  { showContactUs, showInvite }
+), { updateReferralDataAction: updateReferralData })(Content);
 
 const PublicPages = () => {
   useErrorBoundary((err) => {
