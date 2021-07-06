@@ -2,6 +2,21 @@
 This file keeps track of all relevant change for every release.
 
 ## [Unreleased]
+## [5.8.1] - 2021-07-06
+### Added
+- Add clips to the album section on the habitat page
+- Tooltip for the Live Now bar
+
+### Changed
+- Enhance welcome page responsive layout
+- Camera control works on when video is full screen
+- Increasing padding on the arrow in the live habitats expanded view
+
+### Fixed
+- Date picker for calendar schedule events
+- Invite modal dual instances
+- Schedule cards, maps, and live now bar are not showing Live Talks
+
 ## [5.8.0] - 2021-07-02
 ### Added
 - Enchanced bundle size, pre-loading onboarding video on map page, and pre-caching/loading optimizations
