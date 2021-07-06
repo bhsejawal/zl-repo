@@ -41,7 +41,7 @@
     font-weight: 400;
     padding: 4px 10px;
 
-    &:read-only {
+    &:read-only:not(.dateInput) {
       border: 0;
     }
   }
