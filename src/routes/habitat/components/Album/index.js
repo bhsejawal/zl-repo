@@ -133,7 +133,8 @@ const Album = ({
 
         {loading && page === 1 && <Loader fill />}
 
-        {(!loading || page > 1) && album.photos.list.length > 0 && (
+        {(!loading || page > 1) && [FEATURED, PHOTOS].includes(type)
+        && album.photos.list.length > 0 && (
           <div className={style.section}>
             {type === FEATURED && (
               <h4>
@@ -177,7 +178,8 @@ const Album = ({
           </div>
         )}
 
-        {(!loading || page > 1) && album.pastTalks.list.length > 0 && (
+        {(!loading || page > 1) && [FEATURED, PAST_TALKS].includes(type)
+        && album.pastTalks.list.length > 0 && (
           <div className={style.section}>
             {type === FEATURED && (
               <h4>
@@ -218,7 +220,8 @@ const Album = ({
           </div>
         )}
 
-        {(!loading || page > 1) && album.clips.list.length > 0 && (
+        {(!loading || page > 1) && [FEATURED, CLIPS].includes(type)
+        && album.clips.list.length > 0 && (
           <div className={style.section}>
             {type === FEATURED && (
               <h4>
