@@ -1,5 +1,4 @@
 import { h } from 'preact';
-
 import { FloatingButton } from 'Components/Buttons';
 
 import Header from './Header';

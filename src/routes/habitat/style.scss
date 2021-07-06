@@ -13,6 +13,18 @@
   overflow: hidden;
   position: relative;
   min-height: fit-content;
+
+  @media all and (display-mode: fullscreen) {
+    width: fit-content;
+    min-height: 100vh;
+    background: black;
+  }
+}
+
+.contentSection {
+  @media all and (display-mode: fullscreen) {
+    display: none !important;
+  }
 }
 
 .middleSection {

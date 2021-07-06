@@ -16,7 +16,12 @@ import { setAlbumData, appendAlbumData, changeContentVisibility } from './action
 import MediaContent from './MediaContent';
 import ConfirmModal from './ConfirmModal';
 
-import { FEATURED, PHOTOS, PAST_TALKS } from './types';
+import {
+  FEATURED,
+  PHOTOS,
+  PAST_TALKS,
+  CLIPS,
+} from './types';
 
 import style from './style.scss';
 
@@ -120,6 +125,7 @@ const Album = ({
               { label: 'Featured', value: FEATURED},
               { label: 'Photos', value: PHOTOS},
               { label: 'Past Talks', value: PAST_TALKS},
+              { label: 'Clips', value: CLIPS},
             ]}
             onChange={onChangeHandler}
           />
@@ -127,7 +133,8 @@ const Album = ({
 
         {loading && page === 1 && <Loader fill />}
 
-        {(!loading || page > 1) && album.photos.list.length > 0 && (
+        {(!loading || page > 1) && [FEATURED, PHOTOS].includes(type)
+        && album.photos.list.length > 0 && (
           <div className={style.section}>
             {type === FEATURED && (
               <h4>
@@ -171,7 +178,8 @@ const Album = ({
           </div>
         )}
 
-        {(!loading || page > 1) && album.pastTalks.list.length > 0 && (
+        {(!loading || page > 1) && [FEATURED, PAST_TALKS].includes(type)
+        && album.pastTalks.list.length > 0 && (
           <div className={style.section}>
             {type === FEATURED && (
               <h4>
@@ -186,6 +194,48 @@ const Album = ({
             <div className={classnames(style.mediaWrapper, {[style.featured]: type === FEATURED })}>
               {
                 album.pastTalks.list.map(({
+                  _id,
+                  username,
+                  previewURL,
+                  title,
+                  creationDate,
+                  disabled,
+                }) => (
+                  <MediaContent
+                    key={_id}
+                    id={_id}
+                    video
+                    image={previewURL}
+                    title={title}
+                    timestamp={new Date(creationDate)}
+                    username={username && `Host: ${username}`}
+                    accessControlButtonHandler={openConfirmActionModal}
+                    disabled={disabled}
+                    type="pastTalks"
+                    zooName={zooName}
+                  />
+                ))
+              }
+            </div>
+          </div>
+        )}
+
+        {(!loading || page > 1) && [FEATURED, CLIPS].includes(type)
+        && album.clips.list.length > 0 && (
+          <div className={style.section}>
+            {type === FEATURED && (
+              <h4>
+                Clips
+                <button type="button" onClick={() => setType(CLIPS)}>
+                  View All
+                  &nbsp;
+                  <FontAwesomeIcon icon={faChevronRight} color="var(--blueDark)" />
+                </button>
+              </h4>
+            )}
+            <div className={classnames(style.mediaWrapper, {[style.featured]: type === FEATURED })}>
+              {
+                album.clips.list.map(({
                   _id,
                   username,
                   previewURL,

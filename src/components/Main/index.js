@@ -10,6 +10,8 @@ import Redirect from 'Components/Redirect';
 import TermsAndConditions from 'Components/TermsAndConditions';
 import { PRIVACY_PDF_URL, TERMS_PDF_URL } from 'Components/TermsAndConditions/constants';
 import ContactUsModalLoader from 'Components/async/ContactUsModalLoader';
+import InviteModalLoader from 'Components/async/InviteModalLoader';
+
 import { logPageViewGA } from 'Shared/ga';
 import { patch, buildURL } from 'Shared/fetch';
 
@@ -50,6 +52,7 @@ const homeTitle = "The world's first digital zoo.";
 const Main = ({
   onRouteChange,
   showContactUs,
+  showInvite,
   logged,
   timezone,
   updateReferralDataAction,
@@ -232,15 +235,17 @@ const Main = ({
       {!isTabbedHabitatPath && <TimeBar path={path} />}
       <TermsAndConditions />
       <ContactUsModalLoader isOpen={showContactUs} />
+      <InviteModalLoader isOpen={showInvite} />
     </Box>
   )
 };
 
 export default connect(({
   user: { logged, timezone },
-  modals: { contactus: { isOpen: showContactUs }},
+  modals: { contactus: { isOpen: showContactUs }, invite: { isOpen: showInvite }},
 }) => ({
   showContactUs,
+  showInvite,
   logged,
   timezone,
 }), {

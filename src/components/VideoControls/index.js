@@ -8,6 +8,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlay, faPause, faExpand } from '@fortawesome/free-solid-svg-icons';
 import { faVolume, faVolumeMute, faCompress } from '@fortawesome/pro-solid-svg-icons';
 import RoundButton from 'Components/RoundButton';
+import { getDeviceType } from '../../helpers';
 
 import { useIsHabitatTabbed } from '../../hooks';
 
@@ -42,11 +43,13 @@ const VideoControls = forwardRef(({
   showVolumeControl,
   showFullscreenControl,
   showPIPControl,
+  hasCameraControls,
 }, ref) => {
   const [showVolumeBar, setShowVolumeBar] = useState(false)
   const [isPlaying, setIsPlaying] = useState(true);
   const [isMuted, setIsMuted] = useState(true);
   const [volume, setVolume] = useState(1);
+  const [isFullscreen, setIsFullscreen] = useState(false);
   const volumeButtonRef = useRef(null);
   const isTabbedView = useIsHabitatTabbed();
 
@@ -83,13 +86,31 @@ const VideoControls = forwardRef(({
   };
 
   const openFullscreen = () => {
-    if (video.requestFullscreen) {
-      video.requestFullscreen();
-    } else if (video.webkitRequestFullscreen) { /* Safari */
-      video.webkitRequestFullscreen();
-    } else if (video.msRequestFullscreen) { /* IE11 */
-      video.msRequestFullscreen();
+    let target;
+
+    if (isFullscreen) {
+      target = document;
+    } else {
+      target = hasCameraControls && getDeviceType() === 'desktop' ? document.body : video;
     }
+
+    if (!isFullscreen) {
+      if (target.requestFullscreen) {
+        target.requestFullscreen();
+      } else if (target.webkitRequestFullscreen) { /* Safari */
+        target.webkitRequestFullscreen();
+      } else if (target.msRequestFullscreen) { /* IE11 */
+        target.msRequestFullscreen();
+      }
+    } else if (target.exitFullscreen) {
+      target.exitFullscreen();
+    } else if (target.webkitExitFullscreen) { /* Safari */
+      target.webkitExitFullscreen();
+    } else if (target.msExitFullscreen) { /* IE11 */
+      target.msExitFullscreen();
+    }
+
+    setIsFullscreen(!isFullscreen);
   };
 
   const togglePictureInPicture = () => {

@@ -1,6 +1,11 @@
-.liveTalktBar {
+.liveTalkBar {
   position: relative;
   background: var(--hunterGreenMediumLight);
+
+  @media all and (display-mode: fullscreen) {
+    display: none !important;
+  }
+
 }
 
 .liveTalkExpandButton {

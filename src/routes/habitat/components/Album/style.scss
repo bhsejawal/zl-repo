@@ -244,11 +244,14 @@
 
       div.mediaContainer {
         width: calc((100% / 2) - 10px);
-        margin-right: 10px;
 
         &:nth-child(even) {
           margin-right: 0;
           margin-left: 10px;
+        }
+
+        &:nth-child(odd):not(:first-of-type:last-of-type) {
+          margin-right: 10px;
         }
       }
     }

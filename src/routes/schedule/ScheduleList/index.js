@@ -114,6 +114,8 @@ const ScheduleList = ({
         habitatSlug,
         zooSlug,
         wideImage,
+        isHostStreamOn,
+        isStreamOn,
       }) => (
         <Box flex="grow" align="center">
           <ScheduleItem
@@ -128,6 +130,8 @@ const ScheduleList = ({
             habitatSlug={habitatSlug}
             zooSlug={zooSlug}
             wideImage={wideImage}
+            online={isStreamOn}
+            liveTalk={isHostStreamOn}
           />
         </Box>
       ))}

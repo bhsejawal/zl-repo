@@ -10,6 +10,10 @@
   display: flex;
   flex-direction: column;
 
+  @media all and (display-mode: fullscreen) {
+    display: none;
+  }
+
   @media screen and (max-width: #{$tablet-landscape-width}) {
     padding-top: 10px;
   }

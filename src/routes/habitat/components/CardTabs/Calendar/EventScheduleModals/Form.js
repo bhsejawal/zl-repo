@@ -11,7 +11,7 @@ import {
   Text,
   TextInput,
 } from 'grommet';
-import { formatISO, parseISO } from 'date-fns';
+import { utcToZonedTime } from 'date-fns-tz';
 import classnames from 'classnames';
 import useFetch from 'use-http';
 
@@ -46,7 +46,7 @@ const defaultData = {
   minute: 0,
   durationMs: 0,
   days: [], // ['MO', 'TU', 'WE', 'TH', 'FR', 'SA', 'SU'],
-  date: formatISO(new Date(), { representation: 'date' }),
+  date: new Date().toISOString(),
   // NEW
   frequency: REPEATS,
   singleEvent: false,
@@ -131,8 +131,9 @@ const Form = ({
     }
 
     if (type === 'DateInput') {
-      // there is a difference between input edit and selecting from date picker
-      value = e.value || new Date(value).toString();
+      if (e.value) {
+        value = e.value;
+      }
     }
 
     setData({ ...data, [property]: value });
@@ -241,7 +242,7 @@ const Form = ({
                 classname={style.select}
                 labelKey="label"
                 valueKey={{ key: 'value', reduce: true }}
-                value={getDuration(data.durationMs)[0] || undefined}
+                value={getDuration(data.durationMs)[0] || 0}
                 options={new Array(24).fill(null).map((item, index) => (
                   { label: `${index} hour${index !== 1 ? 's' : ''}`, value: index}
                 ))}
@@ -255,7 +256,7 @@ const Form = ({
                 classname={style.select}
                 labelKey="label"
                 valueKey={{ key: 'value', reduce: true }}
-                value={getDuration(data.durationMs)[1] || undefined}
+                value={getDuration(data.durationMs)[1] || 0}
                 options={new Array(59).fill(null).map((item, index) => {
                   if (index % 5 === 0 ) {
                     return { label: `${index} minute${index !== 1 ? 's' : ''}`, value: index}
@@ -306,9 +307,13 @@ const Form = ({
                   {data.frequency === ONE_TIME_EVENT && (
                     <Grommet theme={{ global: { ...grommetTheme.global }}}>
                       <DateInput
+                        className={style.dateInput}
                         format="mm/dd/yyyy"
-                        value={data.date ? parseISO(data.date) : (new Date()).toISOString()}
+                        value={utcToZonedTime(
+                          data.date ? new Date(data.date) : new Date(), timezone,
+                        ).toString()}
                         onChange={changeHandler('date', 'DateInput')}
+                        readOnly
                       />
                     </Grommet>
                   )}

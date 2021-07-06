@@ -43,7 +43,7 @@ const LiveHabitatCard = ({
             {zoo}
           </Text>
         </Box>
-        <Box>
+        <Box pad={{ right: '10px' }}>
           <FontAwesomeIcon icon={faArrowRight} color="var(--mediumGrey)" />
         </Box>
       </Box>

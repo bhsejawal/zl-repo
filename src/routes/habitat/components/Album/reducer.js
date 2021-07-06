@@ -9,6 +9,10 @@ const initialState = {
     total: null,
     list: [],
   },
+  clips: {
+    total: null,
+    list: [],
+  },
 };
 
 export default (state = initialState, { type, payload }) => {

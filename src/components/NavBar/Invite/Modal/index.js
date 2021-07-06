@@ -13,6 +13,7 @@ import {
 } from 'grommet';
 import useFetch from 'use-http';
 import classnames from 'classnames';
+import { connect } from 'react-redux';
 
 import { PrimaryButton } from 'Components/Buttons';
 import { buildURL } from 'Shared/fetch';
@@ -21,6 +22,8 @@ import StatusModalContent from 'Components/modals/StatusContent';
 import CloseButton from 'Components/modals/CloseButton';
 import Body from 'Components/modals/Body';
 import { defaultErrorMsg } from 'Components/modals/Error';
+
+import { closeInviteModal } from '../actions';
 
 import headerImg from './header-img.jpg';
 
@@ -34,8 +37,9 @@ const successText = (
   </>
 );
 
-const InviteModal = ({ onClose }) => {
+const InviteModal = ({ closeInviteModalAction }) => {
   const tagInputRef = useRef();
+  const layerRef = useRef();
   const [emails, setEmails] = useState([]);
   const [sent, setSent] = useState();
   const [error, setError] = useState();
@@ -54,6 +58,10 @@ const InviteModal = ({ onClose }) => {
       setError(true);
     }
   }, [requestError]);
+
+  const onClose = useCallback(() => {
+    closeInviteModalAction();
+  }, [closeInviteModalAction]);
 
   const onErrorClose = useCallback(() => {
     setError(false);
@@ -96,7 +104,7 @@ const InviteModal = ({ onClose }) => {
   );
 
   return (
-    <Layer position="center" className={style.layer} onEsc={onClose} background="white">
+    <Layer position="center" className={style.layer} background="white" ref={layerRef} onEsc={onClose}>
       {sent && (
         <StatusModalContent
           type="success"
@@ -168,4 +176,4 @@ const InviteModal = ({ onClose }) => {
   );
 };
 
-export default InviteModal;
+export default connect(null, { closeInviteModalAction: closeInviteModal })(InviteModal);

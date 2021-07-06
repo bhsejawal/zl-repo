@@ -71,6 +71,8 @@ const Calendar = ({ schedules }) => {
         <BigCalendar
           className={style.bigCalendar}
           date={currentDate}
+          // navigation is handled from toolbar, it is required since we are using the date property
+          onNavigate={() => {}}
           events={schedules}
           defaultView={view}
           views={[view]}

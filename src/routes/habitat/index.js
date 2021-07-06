@@ -175,7 +175,7 @@ const Habitat = ({
         <>
           <div
             className={style.topSection}
-            style={{ height: topSectionHeight, maxHeight: topSectionHeight }}
+            style={{ height: topSectionHeight }}
           >
             {!isTabbed && <LiveChannelsBar width={sideBarWidth} height={height} />}
             <div className={style.livestreamWrapper}>
@@ -192,7 +192,7 @@ const Habitat = ({
             {!isTabbed && <Chat width={chatWidth} height={height} />}
           </div>
 
-          <div style={{ height: `calc((var(--vh) * 100) - var(--headerHeight) - ${height + (isTabletOrLarger ? 0 : MOBILE_CONTROLS_HEIGHT)}px)` }}>
+          <div className={style.contentSection} style={{ height: `calc((var(--vh) * 100) - var(--headerHeight) - ${height + (isTabletOrLarger ? 0 : MOBILE_CONTROLS_HEIGHT)}px)` }}>
             <Tabs show={isTabbed}>
               <Tab label="Explore" icon={<FontAwesomeIcon size="lg" icon={faInfoCircle} />}>
                 <div className={style.middleSection}>
