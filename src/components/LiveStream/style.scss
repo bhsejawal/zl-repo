@@ -1,20 +1,24 @@
 @import "../../style/media-query";
 
-.streamContainer {
-  flex-grow: 1;
-  position: relative;
+:global(.fullscreen) {
 
-  @media all and (display-mode: fullscreen) {
+  :local(.streamContainer) {
     min-height: 100vh;
     display: flex;
     align-items: center;
     justify-content: center;
 
     video {
-      width: auto !important;
-      height: 100vh !important;
+      width: 100vw !important;
+      height: auto !important;
     }
+
   }
+}
+
+.streamContainer {
+  flex-grow: 1;
+  position: relative;
 
   video::-webkit-media-controls-timeline {
     display: none;

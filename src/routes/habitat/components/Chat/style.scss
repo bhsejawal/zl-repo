@@ -1,16 +1,20 @@
-.chat {
-  background-color: var(--hunterGreenMediumLight);
-  width: 285px;
-  display: flex;
-  flex-direction: column;
 
-  @media all and (display-mode: fullscreen) {
+:global(.fullscreen) {
+
+  :local(.chat) {
     background: black;
     width: 0px;
     position: absolute;
     margin: auto;
     z-index: -1;
   }
+}
+
+.chat {
+  background-color: var(--hunterGreenMediumLight);
+  width: 285px;
+  display: flex;
+  flex-direction: column;
 
   video:fullscreen {
     display: block;

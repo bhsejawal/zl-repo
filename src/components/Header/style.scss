@@ -1,5 +1,12 @@
 @import "../../style/media-query";
 
+:global(.fullscreen) {
+
+  :local(.header) {
+    display: none !important;
+  }
+}
+
 .header {
   position: fixed;
   left: 0;
@@ -12,10 +19,6 @@
   z-index: 19;
   display: flex;
   justify-content: space-between;
-
-  @media all and (display-mode: fullscreen) {
-    display: none !important;
-  }
 
   > div {
     display: flex;
