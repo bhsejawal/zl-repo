@@ -2,6 +2,11 @@
 This file keeps track of all relevant change for every release.
 
 ## [Unreleased]
+## [5.8.2] - 2021-07-07
+### Fixed
+- Issue where signed-up event would be fired when signing up with email
+- Layout issue when habitat is offline
+
 ## [5.8.1] - 2021-07-06
 ### Added
 - Add clips to the album section on the habitat page

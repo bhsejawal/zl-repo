@@ -27,6 +27,10 @@
 
 .videoContainer {
   position: relative;
+
+  > div {
+    display: flex;
+  }
 }
 
 .timeBar {

@@ -156,7 +156,7 @@ const Habitat = ({
     );
   }
 
-  const sideBarWidth = 84;
+  const sideBarWidth = 85;
   const chatWidth = 285;
   const calcStreamWidth = isTabbed ? windowWidth : (pageWidth - sideBarWidth - chatWidth);
   const streamWidth = Math.min(maxStreamWidth, calcStreamWidth);
@@ -178,7 +178,7 @@ const Habitat = ({
             style={{ height: topSectionHeight }}
           >
             {!isTabbed && <LiveChannelsBar width={sideBarWidth} height={height} />}
-            <div className={style.livestreamWrapper}>
+            <div className={style.livestreamWrapper} style={{ minWidth: streamWidth }}>
               <LiveStream
                 width={streamWidth}
                 height={height}

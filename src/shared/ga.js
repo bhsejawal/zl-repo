@@ -10,7 +10,7 @@ export const initializeGA = () => {
   }
 }
 
-export const logPageViewGA = (page, resetReferrer) => {
+export const logPageViewGA = (page, resetReferrer, delay = true) => {
   if (!isGAInitialized) {
     initializeGA();
   }
@@ -18,9 +18,14 @@ export const logPageViewGA = (page, resetReferrer) => {
   if (resetReferrer) {
     ReactGA.set({ referrer: '' });
   }
-  setTimeout(() => {
+
+  if (delay) {
+    setTimeout(() => {
+      ReactGA.pageview(page);
+    }, 2000);
+  } else {
     ReactGA.pageview(page);
-  }, 2000);
+  }
 }
 
 export const setGAUserId = (userId) => {

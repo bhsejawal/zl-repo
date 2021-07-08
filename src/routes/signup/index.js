@@ -105,12 +105,11 @@ const Signup = ({ setUserDataAction, openTermsModalAction, matches }) => {
       } else if (error) {
         setServerError(error); // recheck
       } else if (user) {
+        logPageViewGA('/signed-up', false, false);
+        logPageView('/signed-up');
         setServerError();
         setUserDataAction(user);
-        logPageView('/signed-up');
-        logPageViewGA('/signed-up');
         loadPage('/profile');
-
         try {
           localStorage.setItem('returningUser', true);
         } catch (err) {
