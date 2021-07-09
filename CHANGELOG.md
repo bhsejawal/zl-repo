@@ -2,6 +2,17 @@
 This file keeps track of all relevant change for every release.
 
 ## [Unreleased]
+## [5.9.0] - 2021-07-09
+### Added
+- Users can now react to chat messages
+- Device type to the webrtc logs
+- A/B experiment for price, and few changes on the price page
+- Landing page for PMMC Summer Camps
+- Enhanced talk cards
+
+### Fixed
+- Issue with fullscreen mode on chrome
+
 ## [5.8.2] - 2021-07-07
 ### Fixed
 - Issue where signed-up event would be fired when signing up with email
