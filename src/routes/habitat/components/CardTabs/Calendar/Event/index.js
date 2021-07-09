@@ -67,6 +67,7 @@ const Event = ({
             image={profileImage}
             scheduleId={event._id}
             title={event.title}
+            startTime={event.start}
           />
         </Drop>
       )}

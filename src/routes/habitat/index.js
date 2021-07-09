@@ -24,6 +24,7 @@ import Tabs from 'Components/Tabs';
 import Tab from 'Components/Tabs/Tab';
 import LiveTalk from 'Components/Card/LiveTalk';
 import ShareModal from 'Components/ShareModal';
+import ScheduleModal from './components/ScheduleModal';
 import Chat from './components/Chat';
 import LiveChannelsBar from './components/LiveChannelsBar';
 import CardTabs from './components/CardTabs';
@@ -226,6 +227,7 @@ const Habitat = ({
 
           <OnboardingModal />
           <ShareModal />
+          <ScheduleModal />
         </>
       )}
     </div>

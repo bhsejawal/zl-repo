@@ -116,8 +116,8 @@ const ScheduleList = ({
         wideImage,
         isHostStreamOn,
         isStreamOn,
-      }) => (
-        <Box flex="grow" align="center">
+      }, index) => (
+        <Box align="center" pad={{ bottom: index !== (schedules.length - 1) ? '35px' : undefined }} height={{ min: 'max-content' }}>
           <ScheduleItem
             liveTalks={liveTalks}
             animal={animal}

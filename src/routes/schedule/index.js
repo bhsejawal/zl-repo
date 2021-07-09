@@ -80,7 +80,6 @@ const Schedule = ({ setFilterOptionsAction }) => {
               margin={collapseHeader ? '0 0 20px' : 'none'}
               size={size === 'large' ? 'small' : '20px'}
               style={{ fontWeight: size === "large" ? 900 : 500 }}
-              textAlign="left"
             >
               Zoolife Talk Schedule
             </Heading>
