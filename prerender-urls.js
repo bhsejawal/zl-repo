@@ -42,6 +42,11 @@ module.exports = [
     ...envData,
   },
   {
+    url: '/pmmccamp',
+    title: 'Zoolife - The world\'s first digital zoo. - Pacific Marine Mammal Center Camp',
+    ...envData,
+  },
+  {
     url: '/sazoo',
     title: 'Zoolife - The world\'s first digital zoo. - San Antonio Zoo',
     ...envData,
