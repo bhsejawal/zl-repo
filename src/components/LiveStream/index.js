@@ -20,12 +20,14 @@ import Fallback from './Fallback';
 import StreamInteractiveArea from './StreamInteractiveArea';
 import AdminButton from './AdminButton';
 import LiveStreamContext from './LiveStreamContext';
+import MobileControls from './MobileControls.js';
 
 import { useWebRTCStream } from './hooks/useWebRTCStream';
 import { wsMessages } from './helpers/constants';
 import { useIsHabitatTabbed, useIsMobileSize } from '../../hooks';
 import { MOBILE_CONTROLS_HEIGHT } from '../../routes/habitat/constants';
-import MobileControls from './MobileControls.js';
+
+import { getDeviceType } from '../../helpers';
 
 import style from './style.scss';
 
@@ -58,6 +60,7 @@ const Stream = ({
     if (data?.startTime && data?.streamId) {
       socket.emit('logWebrtcStats', {
         userId,
+        deviceType: getDeviceType(),
         ...data,
       })
     }
