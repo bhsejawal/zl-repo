@@ -13,6 +13,7 @@ import useFetch from 'use-http';
 import { route } from 'preact-router';
 import { format } from "date-fns";
 import { loadStripe } from '@stripe/stripe-js/pure';
+import { Experiment, Variant } from 'react-optimize';
 
 import { buildURL } from 'Shared/fetch';
 import PlanCard from 'Components/PlanCard';
@@ -35,6 +36,106 @@ const defaultDialogSettings = {
   action: null,
   interval: null,
 }
+
+const getBenefitText = (price) => (price === 999
+  ? 'Enjoy new animals added every month'
+  : 'Save 18% with an annual membership');
+
+const VariantA = ({ plans, isSmallScreen }) => (
+  <Box
+    direction={isSmallScreen ? 'column' : 'row'}
+    fill
+    align="center"
+    justify="center"
+    gap="large"
+    margin="auto"
+  >
+    {plans.filter(({ price }) => price !== 199).map(({
+      name,
+      price,
+      interval,
+      color,
+      benefitTitle,
+      benefitText,
+      planProductId,
+      priceId,
+      currency,
+      discount,
+      currentPlan,
+      label,
+      clickHandler,
+      disabled,
+      originalPrice,
+    }) => (
+      <PlanCard
+        key={planProductId}
+        planName={name}
+        planPrice={price}
+        planType={interval}
+        planId={planProductId}
+        priceId={priceId}
+        planCurrency={currency}
+        color={color}
+        benefitTitle={benefitTitle}
+        benefitText={benefitText}
+        discount={discount}
+        currentPlan={currentPlan}
+        buttonLabel={label}
+        onClickHandler={clickHandler}
+        disabled={disabled}
+        originalPrice={originalPrice}
+      />
+    ))}
+  </Box>
+);
+
+const VariantB = ({ plans, isSmallScreen }) => (
+  <Box
+    direction={isSmallScreen ? 'column' : 'row'}
+    fill
+    align="center"
+    justify="center"
+    gap="large"
+    margin="auto"
+  >
+    {plans.filter(({ price }) => price !== 699).map(({
+      name,
+      price,
+      interval,
+      color,
+      benefitTitle,
+      benefitText,
+      planProductId,
+      priceId,
+      currency,
+      discount,
+      currentPlan,
+      label,
+      clickHandler,
+      disabled,
+      originalPrice,
+    }) => (
+      <PlanCard
+        key={planProductId}
+        planName={name}
+        planPrice={price}
+        planType={interval}
+        planId={planProductId}
+        priceId={priceId}
+        planCurrency={currency}
+        color={color}
+        benefitTitle={benefitTitle}
+        benefitText={benefitText}
+        discount={discount}
+        currentPlan={currentPlan}
+        buttonLabel={label}
+        onClickHandler={clickHandler}
+        disabled={disabled}
+        originalPrice={originalPrice}
+      />
+    ))}
+  </Box>
+);
 
 const SubscriptionSection = ({
   plans,
@@ -142,8 +243,8 @@ const SubscriptionSection = ({
         currentPlan: false,
         label: 'Select',
         display: true,
-        benefitTitle: interval !== 'visit' ? `${interval === 'month' ? 'Monthly' : 'Annual'} Auto-Renew` : '',
-        benefitText: interval !== 'visit' ? 'Cancel Anytime' : '24h Access',
+        benefitTitle: interval === 'month' ? 'Unlimited access' : '',
+        benefitText: interval !== 'visit' ? getBenefitText(price) : 'Unlock all  features for a full day',
         clickHandler: () => checkoutHandler(planProductId, priceId),
         originalPrice,
       }));
@@ -237,7 +338,7 @@ const SubscriptionSection = ({
       } else if (interval !== 'visit') {
         benefitTitle = `${renewPrefix} Auto-Renew`
       } else {
-        benefitTitle = '24h Access'
+        benefitTitle = 'Unlock all features for a full day'
       }
 
       return {
@@ -289,51 +390,15 @@ const SubscriptionSection = ({
           flex="grow"
           pad="50px"
         >
-          <Box
-            direction={isSmallScreen ? 'column' : 'row'}
-            fill
-            align="center"
-            justify="center"
-            gap="large"
-            margin="auto"
-          >
-            {plansData.map(({
-              name,
-              price,
-              interval,
-              color,
-              benefitTitle,
-              benefitText,
-              planProductId,
-              priceId,
-              currency,
-              discount,
-              currentPlan,
-              label,
-              clickHandler,
-              disabled,
-              originalPrice,
-            }) => (
-              <PlanCard
-                key={planProductId}
-                planName={name}
-                planPrice={price}
-                planType={interval}
-                planId={planProductId}
-                priceId={priceId}
-                planCurrency={currency}
-                color={color}
-                benefitTitle={benefitTitle}
-                benefitText={benefitText}
-                discount={discount}
-                currentPlan={currentPlan}
-                buttonLabel={label}
-                onClickHandler={clickHandler}
-                disabled={disabled}
-                originalPrice={originalPrice}
-              />
-            ))}
-          </Box>
+          <Experiment id="dFVUdOmqTli7vSykEtQR8w">
+            <Variant id="0">
+              <VariantA plans={plansData} isSmallScreen={isSmallScreen} />
+            </Variant>
+            <Variant id="1">
+              <VariantB plans={plansData} isSmallScreen={isSmallScreen} />
+            </Variant>
+          </Experiment>
+
         </Box>
       </Box>
       <UpdateSubscriptionDialog

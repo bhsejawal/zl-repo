@@ -3,7 +3,6 @@ import { Box, Grid } from 'grommet';
 import messageBox from './assets/messageBox.svg';
 import globe from './assets/globe.svg';
 import binoculars from './assets/binoculars.svg';
-import donate from './assets/donate.svg';
 
 import BenefitItem from './BenefitItem';
 import { useWindowResize } from '../../hooks';
@@ -15,7 +14,7 @@ const gridCalculator = (width) => {
   if (width <= 768) {
     return ['auto', 'auto'];
   }
-  return ['auto', 'auto', 'auto', 'auto'];
+  return ['auto', 'auto', 'auto'];
 }
 
 const ZoolifeBenefits = () => {
@@ -44,10 +43,6 @@ const ZoolifeBenefits = () => {
         <BenefitItem
           text="Audience-controlled cameras to explore animals &amp; habitats and get up-close"
           icon={binoculars}
-        />
-        <BenefitItem
-          text="50% of your purchase funds animal care &amp; conservation efforts"
-          icon={donate}
         />
       </Grid>
     </Box>
