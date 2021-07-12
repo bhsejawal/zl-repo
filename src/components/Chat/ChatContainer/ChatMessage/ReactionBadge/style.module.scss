@@ -1,0 +1,25 @@
+.reactionContainer {
+  min-width: 40px;
+  width: fit-content;
+  height: 25px;
+  background: #24412B;
+  border-radius: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 5px;
+  margin: 5px 0px;
+
+  img {
+    margin-right: 5px;
+    width: 15px;
+    height: 15px;
+  }
+
+  &.reacted,
+  &:hover {
+    cursor: pointer;
+    background-color: white;
+    color: #2E2D2D;
+  }
+}

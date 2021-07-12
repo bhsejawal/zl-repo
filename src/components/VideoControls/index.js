@@ -1,5 +1,5 @@
 import { h } from 'preact';
-import { useState, useRef } from 'preact/hooks';
+import { useState, useRef, useEffect } from 'preact/hooks';
 import { forwardRef } from 'preact/compat';
 import { Box, Grommet, RangeInput as InputRange } from 'grommet';
 import classnames from 'classnames';
@@ -52,6 +52,15 @@ const VideoControls = forwardRef(({
   const [isFullscreen, setIsFullscreen] = useState(false);
   const volumeButtonRef = useRef(null);
   const isTabbedView = useIsHabitatTabbed();
+
+  useEffect(() => {
+    const handleFullscreenMode = () => {
+      setIsFullscreen(document.fullscreenElement !== null);
+    }
+
+    document.addEventListener('fullscreenchange', handleFullscreenMode);
+    return () => document.removeEventListener('fullscreenchange', handleFullscreenMode);
+  }, []);
 
   // TODO: we need to refactor this
   // there are a lot of references passed between different components
@@ -109,8 +118,6 @@ const VideoControls = forwardRef(({
     } else if (target.msExitFullscreen) { /* IE11 */
       target.msExitFullscreen();
     }
-
-    setIsFullscreen(!isFullscreen);
   };
 
   const togglePictureInPicture = () => {

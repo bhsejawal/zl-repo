@@ -46,8 +46,25 @@ const App = () => {
       }
     };
 
+    const handleFullscreenMode = () => {
+      // document.fullscreenElement will point to the element that
+      // is in fullscreen mode if there is one. If there isn't one,
+      // the value of the property is null.
+      if (document.fullscreenElement) {
+        document.body.classList.add('fullscreen');
+      } else {
+        document.body.classList.remove('fullscreen');
+      }
+    }
+
+    document.addEventListener('fullscreenchange', handleFullscreenMode);
+
     initializeStripe();
     initializeGA();
+
+    return () => {
+      document.removeEventListener('fullscreenchange', handleFullscreenMode);
+    }
   }, []);
 
   const onRouteChange = useCallback(({

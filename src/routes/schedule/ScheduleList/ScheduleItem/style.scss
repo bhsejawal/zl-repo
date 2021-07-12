@@ -5,10 +5,45 @@
   position: relative;
   max-width: unquote("min(100%, 980px)");
   overflow: hidden;
+  width: 100%;
 
   a {
     text-decoration: none;
     width: fit-content;
+  }
+
+  .header {
+    position: relative;
+    padding: 26px 40px;
+    background: var(--oliveMedium);
+    min-height: max-content;
+
+    .imageWrapper {
+      padding-right: 45px;
+      position: relative;
+
+      .zooImage {
+        position: absolute;
+        width: 75px;
+        top: 50%;
+        right: 0;
+        transform: translateY(-50%);
+      }
+    }
+
+    .textWrapper {
+      flex-grow: 1;
+    }
+  }
+
+  .body {
+    flex-grow: 1;
+    padding: 52px 40px;
+    min-height: max-content;
+
+    .date {
+      margin: 14px 0 10px 0
+    }
   }
 }
 
@@ -23,16 +58,12 @@
 .textBox {
   word-break: break-word;
   white-space: break-spaces;
-}
-
-.zooImage {
-  position: absolute;
-  right: 10px;
-  top: 10px;
+  margin-bottom: 20px;
 }
 
 .mobile {
   padding: 8px;
+  width: 100%;
 
   [class^="habitatCard"] {
     width: 100%;

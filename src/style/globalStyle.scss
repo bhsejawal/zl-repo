@@ -246,11 +246,12 @@ div.calculated-full-height {
   height: calc(var(--vh, 1vh) * 100);
 }
 
+.fullscreen .pageWrapper {
+  padding-top: 0;
+  background: black;
+}
+
+
 .pageWrapper {
   padding-top: var(--headerHeight);
-
-  @media all and (display-mode: fullscreen) {
-    padding-top: 0;
-    background: black;
-  }
 }

@@ -8,21 +8,25 @@
   flex-direction: column;
 }
 
-.topSection {
-  display: flex;
-  overflow: hidden;
-  position: relative;
-  min-height: fit-content;
+:global(.fullscreen) {
 
-  @media all and (display-mode: fullscreen) {
+  :local(.topSection) {
     width: fit-content;
     min-height: 100vh;
     background: black;
   }
 }
 
-.contentSection {
-  @media all and (display-mode: fullscreen) {
+.topSection {
+  display: flex;
+  overflow: hidden;
+  position: relative;
+  min-height: fit-content;
+}
+
+:global(.fullscreen) {
+
+  :local(.contentSection) {
     display: none !important;
   }
 }

@@ -8,7 +8,7 @@ const DesignSystem = () => (
     <div>
       <Heading level="1" margin="0">H1</Heading>
       <Heading level="2" margin="0">H2</Heading>
-      <Heading level="3" margin="0">H3</Heading>
+      <Heading level="3" margin="0">Other Talks Today</Heading>
       <Heading level="4" margin="0">H4</Heading>
       <Heading level="5" margin="0">H5</Heading>
       <Heading level="6" margin="0">H6</Heading>

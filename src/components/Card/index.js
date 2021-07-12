@@ -5,21 +5,24 @@ import classnames from 'classnames';
 import useFetch from 'use-http';
 import { buildURL } from 'Shared/fetch';
 import { setUserData } from '../../redux/actions';
-import { OutlineButton } from '../Buttons';
+import { PrimaryButton } from '../Buttons';
+import { showScheduleModal } from '../../routes/habitat/components/ScheduleModal/actions';
 
 import style from './style.scss';
 
 const Card = ({
   scheduleId,
   title,
+  description,
   zoo,
   startTime,
   header,
   image,
-  onClick,
+  isReminder,
   loading,
   scheduledEvents,
   setUserDataAction,
+  showScheduleModalAction,
 }) => {
   const {
     post,
@@ -65,31 +68,34 @@ const Card = ({
   }, [error, data, setUserDataAction]);
 
   const onClickHandler = (id) => async () => {
-    if (onClick) {
-      onClick(id);
+    if (isReminder) {
+      await post({ scheduleId: id });
     } else {
-      await post({scheduleId: id});
+      showScheduleModalAction(id, startTime);
     }
   }
 
   return (
     <div className={classnames(style.card, { [style.loading]: loading })}>
       <div className={style.wrapper}>
-        <div className={style.content}>
+        <div className={style.left}>
           <div className={classnames(style.header, { shimmer: loading })}>{header}</div>
-          <div className={classnames(style.description, { shimmer: loading })}>{title}</div>
-          <OutlineButton
+          <div className={classnames(style.title, { shimmer: loading })}>{title}</div>
+          <div className={classnames(style.description, { shimmer: loading })}>
+            {description && (description.length < 48 ? description : `${description.slice(0, 45).trim()}...`)}
+          </div>
+        </div>
+        <div className={style.right}>
+          <img src={image} className={classnames({ shimmer: loading })} alt="" />
+          <PrimaryButton
             onClick={onClickHandler(scheduleId)}
-            disabled={isReminded}
+            disabled={isReminder && isReminded}
             className={classnames({ shimmer: loading })}
-            size="medium"
-            label={!sendingReminder && (error ? 'Try Again!' : buttonText)}
+            size="small"
+            label={isReminder ? buttonText : 'Learn More'}
             margin={{top: '10px'}}
             loading={sendingReminder && !loading}
           />
-        </div>
-        <div className={style.image}>
-          <img src={image} alt="" />
         </div>
       </div>
     </div>
@@ -98,5 +104,8 @@ const Card = ({
 
 export default connect(
   ({ user: { scheduledEvents }}) => ({ scheduledEvents }),
-  { setUserDataAction: setUserData },
+  {
+    setUserDataAction: setUserData,
+    showScheduleModalAction: showScheduleModal,
+  },
 )(Card);

@@ -72,6 +72,7 @@ const Content = ({
         <Home path="/orana" partnerImage={oranaZooLogo} exact title={homeTitle} />
         <Home path="/torontozoo" partnerImage={torontoZooLogo} exact title={homeTitle} />
         <Home path="/pmmc" partnerImage={pmmcLogo} exact title={homeTitle} />
+        <Home path="/pmmccamp" partnerImage={pmmcLogo} exact title={homeTitle} />
         <Home path="/sazoo" partnerImage={sanAntonioLogo} exact title={homeTitle} />
         {/* these routes can be briefly rendered on slow devices
         while waiting for the full page load */}

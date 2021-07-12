@@ -7,12 +7,11 @@ import {
 } from "preact/hooks";
 import { connect } from 'react-redux';
 import Carousel from 'react-multi-carousel';
-import { formatDistanceToNow } from 'date-fns';
+import { format } from 'date-fns';
 import classnames from 'classnames';
 
 import BroadcastWrapper from 'Components/BroadcastWrapper';
 import { hasPermission } from 'Components/Authorize';
-import Tag from '../Tag';
 import Card from '../Card';
 import LiveTalk from '../Card/LiveTalk';
 import { useUpcomingTalks } from '../../routes/habitat/hooks';
@@ -27,20 +26,15 @@ const ScheduleCarousel = ({
   isBroadcasting,
 }) => {
   const ref = useRef();
-  const [now, setNow] = useState(new Date());
   const [initiallyLoaded, setInitiallyLoaded] = useState(false);
-
-  // eslint-disable-next-line no-unused-vars
-  const { loading, error, upcoming = [] } = useUpcomingTalks(habitatId);
+  const { loading, error, upcoming = [] } = useUpcomingTalks(habitatId, 1);
   const list = useMemo(
     () => upcoming.map(({ startTime, isStreamLive, ...rest }) => ({
-      // TODO: we should format it to a shorter value ('days' -> 'd', 'minutes' -> 'm)
-      text: startTime > now && `starts in ${formatDistanceToNow(startTime)}`,
-      isLive: startTime <= now && isStreamLive,
+      text: `TALK | ${format(startTime, 'EEE HH:mm aa').toUpperCase()}`,
       startTime,
       ...rest,
     })),
-    [upcoming, now],
+    [upcoming],
   );
 
   useEffect(() => {
@@ -55,12 +49,8 @@ const ScheduleCarousel = ({
     }
   }, [isHostStreamOn]);
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setNow(new Date());
-    }, 60 * 1000);
-    return () => clearInterval(interval);
-  }, []);
+  const showBroadcastCard = hasPermission('habitat:broadcast') && (!isHostStreamOn || isBroadcasting);
+  const showLiveTalk = hostStreamKey && isHostStreamOn && !isBroadcasting;
 
   return (
     <div className={style.container}>
@@ -82,7 +72,10 @@ const ScheduleCarousel = ({
           renderDotsOutside
           showDots
           keyBoardControl={false}
-          className={classnames(style.carousel, { [style.singleItem]: list.length === 0 }) }
+          className={classnames(style.carousel, {
+            [style.singleItem]: (list.length === 0 && (showBroadcastCard || showLiveTalk))
+            || (list.length === 1 && !(showBroadcastCard || showLiveTalk)),
+          }) }
           responsive={{
             generic: {
               breakpoint: { max: 3000, min: 0 },
@@ -91,16 +84,14 @@ const ScheduleCarousel = ({
             },
           }}
         >
-          {hasPermission('habitat:broadcast') && (!isHostStreamOn || isBroadcasting) && <BroadcastWrapper />}
-          {hostStreamKey && isHostStreamOn && !isBroadcasting
-            && <LiveTalk streamId={hostStreamKey} />}
+          {showBroadcastCard && <BroadcastWrapper />}
+          {showLiveTalk && <LiveTalk streamId={hostStreamKey} />}
 
           {list.map(({
             _id,
             title,
             startTime,
             zoo,
-            isLive,
             text,
             profileImage,
             description,
@@ -111,8 +102,7 @@ const ScheduleCarousel = ({
               title={title}
               zoo={zoo}
               startTime={startTime}
-              live={isLive}
-              header={isLive ? <Tag label="LIVE" varient="online" /> : text}
+              header={text}
               description={description}
               image={profileImage}
             />

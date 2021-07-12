@@ -1,8 +1,18 @@
 .chatMessageContainer {
   display: flex;
   color: white;
-  margin: 5px 10px;
+  padding: 5px 10px;
   min-height: max-content;
+
+  &.selected,
+  &:hover {
+    background: #24412B;
+
+    .actionBar {
+      display: flex !important;
+    }
+  }
+
 }
 
 .messageWrapper {
@@ -17,6 +27,7 @@
 .headerWrapper {
   display: flex;
   align-items: center;
+  position: relative;
 }
 
 .userName {
@@ -37,10 +48,34 @@
   flex-grow: 1;
 }
 
-.delete {
-  color: white;
-  padding-right: 10px;
-  font-size: 12px;
+.actionBar {
+  position: absolute;
+  top: 0;
+  right: 0;
+  display: flex;
+  flex-direction: row;
+  gap: 4px;
+
+  &.hide {
+    display: none;
+  }
+}
+
+.actionButton {
+  color: #2E2D2D;
+  background: white;
+  border-radius: 5px;
+  font-size: 14px;
+  padding: 4px;
   text-align: right;
+  cursor: pointer;
+  min-width: 25px;
+  min-height: 25px;
+  max-width: 25px;
+  max-height: 25px;
+  filter: drop-shadow(0px 6px 6px rgba(0, 0, 0, .07));
+  display: flex;
+  justify-content: center;
+  align-items: center;
   cursor: pointer;
 }

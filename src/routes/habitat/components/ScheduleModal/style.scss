@@ -1,0 +1,63 @@
+.modalContainer {
+  min-height: 300px;
+  width: 973px;
+  position: relative;
+  overflow: hidden;
+  border-radius: 7px;
+  background: white;
+
+  .modalWrapper {
+    overflow: auto;
+
+    > div:not(.upcomingContainer) {
+      border-radius: 7px;
+      flex-grow: 1;
+      min-height: max-content;
+      overflow: visible;
+    }
+  }
+
+  .close {
+    position: absolute;
+    z-index: 1;
+    right: 10px;
+    top: 10px;
+  }
+}
+
+.upcomingContainer {
+  display: flex;
+  flex-direction: column;
+
+  .cardsWrapper {
+    display: flex;
+    overflow-x: auto;
+    margin-bottom: 30px;
+
+    > div {
+      box-shadow: 0 4px 10px rgba(0, 0, 0, .25);
+      margin: 40px 25px 10px 40px;
+
+      &:not(:last-of-type):not(:first-of-type) {
+        margin-right: 25px;
+        margin-left: 0;
+      }
+
+      &:first-of-type {
+        margin-left: 40px;
+      }
+
+      &:last-of-type {
+        margin-left: 0;
+        margin-right: 40px;
+      }
+    }
+  }
+
+  hr {
+    border: 1px solid var(--lightGrey);
+    margin-top: 0;
+    margin-bottom: 48px;
+    width: calc(100% - 80px);
+  }
+}

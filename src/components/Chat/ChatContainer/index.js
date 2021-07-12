@@ -76,6 +76,7 @@ const ChatContainer = ({ messages, username, habitatId }) => {
           messageId,
           timestamp,
           timetoken,
+          reactions,
         }) => (
           <ChatMessage
             username={username}
@@ -85,6 +86,7 @@ const ChatContainer = ({ messages, username, habitatId }) => {
             key={messageId}
             timestamp={timestamp}
             timetoken={timetoken}
+            reactions={reactions}
             onDeleteHandler={promptDeletion}
           />
         ))}

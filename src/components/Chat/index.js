@@ -4,7 +4,12 @@ import { PubNubProvider } from 'pubnub-react';
 import { connect } from 'react-redux';
 
 import { ChatContext } from 'Shared/context';
-import { addMessages, clearMessages, markMessageAsDeleted } from '../../redux/actions';
+import {
+  addMessages,
+  clearMessages,
+  markMessageAsDeleted,
+  toggleMessageReaction,
+} from '../../redux/actions';
 
 import ChatContainer from './ChatContainer';
 
@@ -19,18 +24,38 @@ const Chat = ({
   addMessagesAction,
   clearMessagesAction,
   markMessageAsDeletedAction,
+  toggleMessageReactionAction,
 }) => {
   const [isConnectedToPubnub, setIsConnectedToPubnub] = useState(false);
 
   const addMessageListener = useCallback((msg) => {
     const { message, timetoken } = msg;
     const timestamp = new Date(parseInt(timetoken, 10) / 10000);
-    addMessagesAction([{ ...message, timestamp, timetoken }])
+    addMessagesAction([{
+      ...message,
+      timestamp,
+      timetoken,
+      reactions: {},
+    }]);
   }, [addMessagesAction]);
 
-  const deleteMessageListener = useCallback(({ channel, data: { type, messageTimetoken }}) => {
-    if (type === 'deleted' && channel === habitatId) {
+  const messageActionListener = useCallback(({
+    channel,
+    data: {
+      type,
+      messageTimetoken,
+      value,
+      actionTimetoken,
+      uuid,
+    },
+  }) => {
+    if (channel !== habitatId) {
+      return;
+    }
+    if (type === 'deleted') {
       markMessageAsDeletedAction(messageTimetoken);
+    } else if (type === 'reaction') {
+      toggleMessageReactionAction(messageTimetoken, value, actionTimetoken, uuid);
     }
   }, [markMessageAsDeletedAction, habitatId]);
 
@@ -46,12 +71,13 @@ const Chat = ({
       }) => {
         const timestamp = new Date(parseInt(timetoken, 10) / 10000);
         const isDeleted = 'deleted' in actions || 'deleted' in data;
-
+        const { reaction: reactions = {} } = actions;
         return {
           ...message,
           timetoken,
           timestamp,
           isDeleted,
+          reactions,
         };
       });
 
@@ -71,7 +97,7 @@ const Chat = ({
 
       const listeners = {
         message: addMessageListener,
-        messageAction: deleteMessageListener,
+        messageAction: messageActionListener,
       };
       pubnub.addListener(listeners);
 
@@ -102,7 +128,7 @@ const Chat = ({
     handleFetchedMessages,
     clearMessagesAction,
     addMessageListener,
-    deleteMessageListener,
+    messageActionListener,
   ]);
 
   if (!isConnectedToPubnub) {
@@ -138,4 +164,5 @@ export default connect(({
   addMessagesAction: addMessages,
   clearMessagesAction: clearMessages,
   markMessageAsDeletedAction: markMessageAsDeleted,
+  toggleMessageReactionAction: toggleMessageReaction,
 })(Chat);

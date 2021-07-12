@@ -11,6 +11,7 @@ import {
   ADD_MESSAGES,
   CLEAR_MESSAGES,
   MARK_MESSAGE_AS_DELETED,
+  TOGGLE_MESSAGE_REACTION,
   SHOW_SNAPSHOT_SHARE_POPUP,
   SET_SESSION_CHECHED,
   UNSET_USER_DATA,
@@ -84,6 +85,16 @@ export const clearMessages = () => ({
 export const markMessageAsDeleted = (messageId) => ({
   type: MARK_MESSAGE_AS_DELETED,
   payload: { messageId },
+})
+
+export const toggleMessageReaction = (messageId, reaction, reactionId, userId) => ({
+  type: TOGGLE_MESSAGE_REACTION,
+  payload: {
+    messageId,
+    reaction,
+    reactionId,
+    userId,
+  },
 })
 
 export const showSnapshotShare = (show) => ({

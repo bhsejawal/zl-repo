@@ -28,13 +28,14 @@ const Plans = () => {
           width={{ max: '650px' }}
           height={{ min: 'max-content' }}
           alignSelf="center"
-          pad={{ horizontal: ['xsmall', 'small'].includes(size) ? '35px' : 0}}
+          pad={{ horizontal: ['xsmall', 'small'].includes(size) ? '35px' : '0px'}}
         >
           <Heading level={['xsmall', 'small'].includes(size) ? 3 : 2} textAlign="center" fill>
-            Keep exploring with a Zoolife pass.
+            Make a contribution to continue exploring Zoolife.
           </Heading>
           <Text textAlign="center" size="xlarge">
-            50% of your purchase directly funds animal care &amp; conservation efforts worldwide.
+            {/* eslint-disable-next-line max-len */}
+            50% of your purchase directly funds essential animal care &amp; conservation efforts let by our AZA-accredited partners around the world.
           </Text>
         </Box>
         <SubscriptionManager />

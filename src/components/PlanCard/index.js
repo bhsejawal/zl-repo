@@ -11,6 +11,18 @@ import { PrimaryButton } from '../Buttons';
 
 import style from './style.scss';
 
+const getMarginBottom = (price) => {
+  if (price === 190) {
+    return '0px';
+  }
+
+  if (price === 699) {
+    return '30px';
+  }
+
+  return '10px';
+}
+
 const PlanCard = ({
   planId,
   priceId,
@@ -23,7 +35,6 @@ const PlanCard = ({
   disabled,
   currentPlan,
   buttonLabel = 'Select',
-  benefitTitle,
   benefitText,
   originalPrice,
 }) => (
@@ -45,7 +56,14 @@ const PlanCard = ({
           background={{ color }}
           height={{min: '150px' }}
         >
-          <Box fill textAlign="center" alignSelf="end" margin={{ bottom: '10px'}}>
+          <Box
+            fill
+            textAlign="center"
+            alignSelf={planPrice === 199 ? 'start' : 'end'}
+            margin={{
+              bottom: getMarginBottom(planPrice),
+              top: planPrice === 199 ? '20px' : '0px',
+            }}>
             <Text
               alignSelf="center"
               size="xlarge"
@@ -61,41 +79,39 @@ const PlanCard = ({
               >
                 {`$${planPrice / 100}`}
               </Heading>
-              <Text
-                margin={{ bottom: '5px' }}
-                alignSelf="end"
-                size="large"
-              >
-                { planType === 'visit' ? '' : `/${planType}`}
-              </Text>
             </Box>
-            <Box align="center">
-              <Text
-                size="20px"
-                style={{ lineHeight: '20px', textDecorationLine: 'line-through'}}
-              >
-                {`$${originalPrice / 100}`}
-              </Text>
-            </Box>
-            <Box align="center" margin={{ top: '10px'}}>
-              <Text size="10px" style={{ lineHeight: '11.5px'}}>
-                Discount Pricing Ends Aug 1st
-              </Text>
-            </Box>
+            {planPrice !== 199 && (
+              <Box align="center">
+                <Text
+                  size="20px"
+                  style={{ lineHeight: '20px', textDecorationLine: 'line-through'}}
+                >
+                  {`$${originalPrice / 100}`}
+                </Text>
+              </Box>
+            )}
+            {planType !== 'visit' && (
+              <Box align="center" margin={{ top: '10px'}}>
+                <Text size="10px" style={{ lineHeight: '11.5px'}}>
+                  Unlimited Access
+                </Text>
+              </Box>
+            )}
           </Box>
 
         </CardHeader>
         <CardBody height={{ min: '150px', max: '150px'}}>
-          <Box margin={{ top: 'xsmall' }} align="center" justify="center" flex="grow">
+          <Box
+            margin={{ top: 'xsmall' }}
+            align="center"
+            justify="center"
+            flex="grow"
+            pad={{ horizontal: planPrice === 199 ? 'medium' : '10px'}}
+          >
             <Text
-              margin={{ top: '10px' }}
-              size="medium"
-              style={{ textTransform: 'capitalize' }}
-            >
-              {benefitTitle}
-            </Text>
-            <Text
+              margin={{ top: '15px' }}
               size="xlarge"
+              textAlign="center"
             >
               {benefitText}
             </Text>
