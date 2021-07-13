@@ -1,9 +1,9 @@
 import { h } from 'preact';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCamera, faSpinner } from '@fortawesome/pro-solid-svg-icons';
-import { GlobalsContext } from 'Shared/context';
 import { connect } from 'react-redux';
 import { Button, Drop } from 'grommet';
+import { isEmpty } from 'lodash-es';
 import {
   useContext,
   useEffect,
@@ -12,23 +12,19 @@ import {
 } from 'preact/hooks';
 
 import RoundButton from 'Components/RoundButton';
-import { setShareModalData } from 'Components/ShareModal/actions';
+import { GlobalsContext } from 'Shared/context';
 import { useIsMobileSize } from '../../../../../hooks';
-import ShareContainer from './ShareContainer';
+import TakeSnapshotModal from './TakeSnapshotModal';
 
 import style from './style.scss';
 
 let timeout;
 
-const TakeSnapshotButton = ({
-  plain,
-  habitatId,
-  userId,
-  setShareModalDataAction,
-}) => {
+const TakeSnapshotButton = ({ plain, habitatId, userId }) => {
   const { socket } = useContext(GlobalsContext);
   const [loading, setLoading] = useState();
   const [tryAgain, setTryAgain] = useState();
+  const [snapshotData, setSnapshotData] = useState({});
   const isMobileSize = useIsMobileSize();
 
   const ref = useRef();
@@ -44,39 +40,26 @@ const TakeSnapshotButton = ({
   };
 
   useEffect(() => {
-    const stopLoading = (data = {}) => {
+    const socketHandler = (data = {}) => {
       if (data?.userId === userId) {
         setLoading(false);
         setTryAgain(false);
         clearTimeout(timeout);
         timeout = undefined;
-
-        if (isMobileSize) {
-          setShareModalDataAction({
-            open: true,
-            data: {
-              _id: data.snapshotId,
-              htmlURL: data.html,
-              url: data.snapshot,
-              userId,
-            },
-            nextId: null,
-            prevId: null,
-          });
-        }
+        setSnapshotData(data);
       }
     };
 
     if (socket) {
-      socket.on('snapshotTaken', stopLoading);
+      socket.on('snapshotTaken', socketHandler);
     }
 
     return () => {
       if (socket) {
-        socket.off('snapshotTaken', stopLoading);
+        socket.off('snapshotTaken', socketHandler);
       }
     }
-  }, [socket, userId]);
+  }, [isMobileSize, socket, userId]);
 
   if (plain) {
     return (
@@ -104,9 +87,18 @@ const TakeSnapshotButton = ({
             </div>
           </Drop>
         )}
+        {!isEmpty(snapshotData) && (
+          <TakeSnapshotModal
+            onClose={() => setSnapshotData({})}
+            snapshotId={snapshotData.snapshotId}
+            htmlURL={snapshotData.html}
+            image={snapshotData.snapshot}
+          />
+        )}
       </Button>
     );
   }
+
   return (
     <div ref={ref} className={style.takeSnapshotContainer}>
       {ref.current && tryAgain && (
@@ -133,7 +125,14 @@ const TakeSnapshotButton = ({
       >
         <FontAwesomeIcon icon={faCamera} />
       </RoundButton>
-      {!isMobileSize && <ShareContainer />}
+      {!isEmpty(snapshotData) && (
+        <TakeSnapshotModal
+          onClose={() => setSnapshotData({})}
+          snapshotId={snapshotData.snapshotId}
+          htmlURL={snapshotData.html}
+          image={snapshotData.snapshot}
+        />
+      )}
     </div>
   );
 };
@@ -144,5 +143,4 @@ export default connect(({
 }) => ({
   userId,
   habitatId,
-}),
-{ setShareModalDataAction: setShareModalData })(TakeSnapshotButton);
+}))(TakeSnapshotButton);

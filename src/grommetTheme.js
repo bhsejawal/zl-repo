@@ -244,7 +244,7 @@ export default {
     container: {
       extend: {
         maxWidth: 'calc(100vw - 30px)',
-        maxHeight: 'calc(100vh - 30px)',
+        maxHeight: 'calc((100 * var(--vh)) - 30px)',
       },
     },
     overlay: {
