@@ -2,8 +2,7 @@ import { h } from 'preact';
 import { connect } from 'react-redux';
 import { useEffect, useState } from 'preact/hooks';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faChevronRight, faSpinner } from '@fortawesome/pro-solid-svg-icons';
-import { format } from 'date-fns';
+import { faSpinner } from '@fortawesome/pro-solid-svg-icons';
 import { Select } from 'grommet';
 import classnames from 'classnames';
 import useFetch from 'use-http';
@@ -17,7 +16,6 @@ import MediaContent from './MediaContent';
 import ConfirmModal from './ConfirmModal';
 
 import {
-  FEATURED,
   PHOTOS,
   PAST_TALKS,
   CLIPS,
@@ -41,12 +39,11 @@ const Album = ({
   album,
   tab,
   habitatId,
-  zooName,
   setAlbumDataAction,
   appendAlbumDataAction,
   changeContentVisibilityAction,
 }) => {
-  const [type, setType] = useState(FEATURED);
+  const [type, setType] = useState(PHOTOS);
   const [page, setPage] = useState(1);
   const [actionModalState, setActionModalState] = useState(defaultActionModalState);
   const [errorModalState, setErrorModalState] = useState(defaultErrorModalState);
@@ -64,9 +61,10 @@ const Album = ({
   } = useFetch(API_BASE_URL, { credentials: 'include', cachePolicy: 'no-cache' });
 
   useEffect(() => {
+    console.log(data);
     if (!error && data) {
       if (page > 1) {
-        appendAlbumDataAction(data, type);
+        appendAlbumDataAction(data);
       } else {
         setAlbumDataAction(data);
       }
@@ -76,7 +74,7 @@ const Album = ({
 
   useEffect(() => {
     if (habitatId) {
-      get(`habitats/${habitatId}/album/${type}?page=${page}`);
+      get(`habitats/${habitatId}/album/${type}?page=${page}&pageSize=12`);
     }
   }, [type, get, habitatId, page]);
 
@@ -122,7 +120,6 @@ const Album = ({
             valueKey={{ key: 'value', reduce: true }}
             value={type}
             options={[
-              { label: 'Featured', value: FEATURED},
               { label: 'Photos', value: PHOTOS},
               { label: 'Past Talks', value: PAST_TALKS},
               { label: 'Clips', value: CLIPS},
@@ -133,86 +130,28 @@ const Album = ({
 
         {loading && page === 1 && <Loader fill />}
 
-        {(!loading || page > 1) && [FEATURED, PHOTOS].includes(type)
-        && album.photos.list.length > 0 && (
+        {(!loading || page > 1) && album.list.length > 0 && (
           <div className={style.section}>
-            {type === FEATURED && (
-              <h4>
-                Photos
-                <button type="button" onClick={() => setType(PHOTOS)}>
-                  View All
-                  &nbsp;
-                  <FontAwesomeIcon icon={faChevronRight} color="var(--blueDark)" />
-                </button>
-              </h4>
-            )}
-            <div className={classnames(style.mediaWrapper, {[style.featured]: type === FEATURED })}>
+            <div className={classnames(style.mediaWrapper)}>
               {
-                album.photos.list.map(({
+                album.list.map(({
                   _id,
-                  username,
-                  createdAt,
                   url,
                   disabled,
                   rawURL,
-                }) => {
-                  const date = new Date(createdAt);
-                  return (
-                    <MediaContent
-                      key={_id}
-                      id={_id}
-                      image={url}
-                      title={format(date, 'MMM do, yyyy | h:mmaa')}
-                      timestamp={date}
-                      disabled={disabled}
-                      username={username && `By: ${username}`}
-                      accessControlButtonHandler={openConfirmActionModal}
-                      type="photos"
-                      rawURL={rawURL}
-                      zooName={zooName}
-                    />
-                  )
-                })
-              }
-            </div>
-          </div>
-        )}
-
-        {(!loading || page > 1) && [FEATURED, PAST_TALKS].includes(type)
-        && album.pastTalks.list.length > 0 && (
-          <div className={style.section}>
-            {type === FEATURED && (
-              <h4>
-                Past Talks
-                <button type="button" onClick={() => setType(PAST_TALKS)}>
-                  View All
-                  &nbsp;
-                  <FontAwesomeIcon icon={faChevronRight} color="var(--blueDark)" />
-                </button>
-              </h4>
-            )}
-            <div className={classnames(style.mediaWrapper, {[style.featured]: type === FEATURED })}>
-              {
-                album.pastTalks.list.map(({
-                  _id,
-                  username,
-                  previewURL,
-                  title,
-                  creationDate,
-                  disabled,
+                  comments,
+                  usersLike,
                 }) => (
                   <MediaContent
                     key={_id}
                     id={_id}
-                    video
-                    image={previewURL}
-                    title={title}
-                    timestamp={new Date(creationDate)}
-                    username={username && `Host: ${username}`}
-                    accessControlButtonHandler={openConfirmActionModal}
+                    image={url}
                     disabled={disabled}
-                    type="pastTalks"
-                    zooName={zooName}
+                    accessControlButtonHandler={openConfirmActionModal}
+                    type={type}
+                    rawURL={rawURL}
+                    comments={comments}
+                    usersLike={usersLike}
                   />
                 ))
               }
@@ -220,49 +159,7 @@ const Album = ({
           </div>
         )}
 
-        {(!loading || page > 1) && [FEATURED, CLIPS].includes(type)
-        && album.clips.list.length > 0 && (
-          <div className={style.section}>
-            {type === FEATURED && (
-              <h4>
-                Clips
-                <button type="button" onClick={() => setType(CLIPS)}>
-                  View All
-                  &nbsp;
-                  <FontAwesomeIcon icon={faChevronRight} color="var(--blueDark)" />
-                </button>
-              </h4>
-            )}
-            <div className={classnames(style.mediaWrapper, {[style.featured]: type === FEATURED })}>
-              {
-                album.clips.list.map(({
-                  _id,
-                  username,
-                  previewURL,
-                  title,
-                  creationDate,
-                  disabled,
-                }) => (
-                  <MediaContent
-                    key={_id}
-                    id={_id}
-                    video
-                    image={previewURL}
-                    title={title}
-                    timestamp={new Date(creationDate)}
-                    username={username && `Host: ${username}`}
-                    accessControlButtonHandler={openConfirmActionModal}
-                    disabled={disabled}
-                    type="pastTalks"
-                    zooName={zooName}
-                  />
-                ))
-              }
-            </div>
-          </div>
-        )}
-
-        {type !== FEATURED && album[type].total > album[type].list.length && (
+        {album.total > album.list.length && (
           <button className={style.loadMore} type="button" onClick={fetchMore}>
             {!loading && 'Load More'}
             {loading && (<FontAwesomeIcon icon={faSpinner} spin size="2x" />)}
