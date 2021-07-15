@@ -6,6 +6,7 @@
   height: calc((var(--vh) * 100) - var(--headerHeight));
   display: flex;
   flex-direction: column;
+  position: relative;
 }
 
 :global(.fullscreen) {

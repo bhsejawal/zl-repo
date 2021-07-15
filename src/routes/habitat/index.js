@@ -29,6 +29,7 @@ import Chat from './components/Chat';
 import LiveChannelsBar from './components/LiveChannelsBar';
 import CardTabs from './components/CardTabs';
 import StreamProfile from './components/StreamProfile';
+import LiveTalkNotification from './components/LiveTalkNotification';
 import OnboardingModal from './OnboardingModal';
 import SmallScreenCardTabs from './components/CardTabs/Mobile';
 import Album from './components/Album';
@@ -228,6 +229,7 @@ const Habitat = ({
           <OnboardingModal />
           <ShareModal />
           <ScheduleModal />
+          <LiveTalkNotification />
         </>
       )}
     </div>
