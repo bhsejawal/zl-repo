@@ -8,7 +8,7 @@ import style from './style.scss';
 
 const ChatComponent = lazy(() => import('Components/Chat'));
 
-const Chat = ({ height, width }) => (
+const Chat = ({ height, width, habitatId }) => (
   <div
     className={style.chat}
     style={{
@@ -19,7 +19,7 @@ const Chat = ({ height, width }) => (
   >
     <ScheduleCarousel />
     <Suspense>
-      <ChatComponent />
+      <ChatComponent channelId={habitatId} />
     </Suspense>
   </div>
 );

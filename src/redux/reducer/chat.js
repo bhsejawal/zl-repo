@@ -1,4 +1,4 @@
-import { takeRight, omit } from 'lodash-es';
+import { takeRight, omit, concat } from 'lodash-es';
 import {
   ADD_MESSAGES,
   CLEAR_MESSAGES,
@@ -7,7 +7,7 @@ import {
 } from '../types';
 
 const initialState = {
-  messages: [],
+  channels: {},
 };
 
 const MAX_MESSAGES = 50;
@@ -39,29 +39,48 @@ const handleReactionChange = (reactions, type, newReaction) => {
 export default (state = initialState, { type, payload }) => {
   switch (type) {
     case ADD_MESSAGES: {
-      const { messages } = payload;
+      const { channelId, messages } = payload;
+
       return {
         ...state,
-        messages: takeRight([...state.messages, ...messages], MAX_MESSAGES),
+        channels: {
+          ...state.channels,
+          [channelId]: {
+            messages: takeRight(concat(
+              ...state.channels[channelId]?.messages ?? [],
+              ...messages,
+            ), MAX_MESSAGES),
+          },
+        },
       };
     }
     case CLEAR_MESSAGES: {
+      const { channelId } = payload;
       return {
         ...state,
-        messages: [],
+        channels: {
+          ...state.channels,
+          [channelId]: undefined,
+        },
       };
     }
     case MARK_MESSAGE_AS_DELETED: {
-      const { messageId } = payload;
+      const { channelId, messageId } = payload;
       return {
         ...state,
-        messages: state.messages.map((message) => (
-          message.timetoken === messageId ? { ...message, isDeleted: true } : message
-        )),
+        channels: {
+          ...state.channels,
+          [channelId]: {
+            messages: state.channels[channelId]?.messages?.map((message) => (
+              message.timetoken === messageId ? { ...message, isDeleted: true } : message
+            )),
+          },
+        },
       }
     }
     case TOGGLE_MESSAGE_REACTION: {
       const {
+        channelId,
         messageId,
         reaction: type,
         reactionId,
@@ -70,16 +89,21 @@ export default (state = initialState, { type, payload }) => {
 
       return {
         ...state,
-        messages: state.messages.map((message) => (
-          message.timetoken === messageId ? {
-            ...message,
-            reactions: handleReactionChange(
-              message.reactions,
-              type,
-              { uuid: userId, actionTimetoken: reactionId },
-            ),
-          } : message
-        )),
+        channels: {
+          ...state.channels,
+          [channelId]: {
+            messages: state.channels[channelId]?.messages?.map((message) => (
+              message.timetoken === messageId ? {
+                ...message,
+                reactions: handleReactionChange(
+                  message.reactions,
+                  type,
+                  { uuid: userId, actionTimetoken: reactionId },
+                ),
+              } : message
+            )),
+          },
+        },
       }
     }
     default: {

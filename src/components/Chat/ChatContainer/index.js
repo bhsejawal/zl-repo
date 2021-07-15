@@ -18,7 +18,12 @@ import DeleteMessageModal from './DeleteMessageModal';
 
 let autoScroll = true;
 
-const ChatContainer = ({ messages, username, habitatId }) => {
+const ChatContainer = ({
+  messages,
+  username,
+  channelId,
+  alternate,
+}) => {
   const [internalMessages, setInternalMessages] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [messageId, setMessageId] = useState(null);
@@ -37,7 +42,7 @@ const ChatContainer = ({ messages, username, habitatId }) => {
 
   const deleteMessage = useCallback(() => {
     pubnub.addMessageAction({
-      channel: habitatId,
+      channel: channelId,
       messageTimetoken: messageId,
       action: {
         type: 'deleted',
@@ -45,7 +50,7 @@ const ChatContainer = ({ messages, username, habitatId }) => {
       },
     });
     onCloseHandler();
-  }, [pubnub, habitatId, messageId, onCloseHandler]);
+  }, [pubnub, channelId, messageId, onCloseHandler]);
 
   useEffect(() => {
     const { scrollHeight, scrollTop, offsetHeight } = chatContainerRef.current;
@@ -53,8 +58,8 @@ const ChatContainer = ({ messages, username, habitatId }) => {
     // 15 is additional auto scroll zone so users don't need to scroll to the very bottom
     autoScroll = (Math.ceil(offsetHeight + scrollTop)) >= (scrollHeight - 15);
 
-    setInternalMessages(messages);
-  }, [messages]);
+    setInternalMessages(messages[channelId]?.messages ?? []);
+  }, [messages, channelId]);
 
   useEffect(() => {
     const bySameUsername = get(last(internalMessages), 'username') === username;
@@ -67,7 +72,10 @@ const ChatContainer = ({ messages, username, habitatId }) => {
 
   return (
     <>
-      <div ref={chatContainerRef} className={classnames(style.chatContainer, 'customScrollBar')}>
+      <div
+        ref={chatContainerRef}
+        className={classnames(style.chatContainer, 'customScrollBar', {[style.alternate]: alternate})}
+      >
         {internalMessages.filter(({ isDeleted }) => !isDeleted).map(({
           username,
           animal,
@@ -88,17 +96,19 @@ const ChatContainer = ({ messages, username, habitatId }) => {
             timetoken={timetoken}
             reactions={reactions}
             onDeleteHandler={promptDeletion}
+            channelId={channelId}
+            alternate={alternate}
           />
         ))}
       </div>
-      <InputBox />
+      <InputBox channelId={channelId} alternate={alternate} />
       {showModal && <DeleteMessageModal onClose={onCloseHandler} onDelete={deleteMessage} />}
     </>
   );
 }
 
 export default connect((
-  { chat: { messages }, user: { username }, habitat: { habitatInfo: { _id: habitatId }}},
+  { chat: { channels }, user: { username }},
 ) => (
-  { messages, username, habitatId }
+  { messages: channels, username }
 ))(ChatContainer);

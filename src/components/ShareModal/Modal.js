@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'preact/hooks';
-import { Box, Layer } from 'grommet';
+import { lazy, Suspense } from 'preact/compat';
+import { Box, Layer, Text } from 'grommet';
 import { isEmpty, isNil } from 'lodash-es';
 import { faFacebookF, faTwitter } from '@fortawesome/free-brands-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -11,18 +12,26 @@ import {
   faChevronRight,
   faChevronLeft,
   faCheck,
+  faHeart,
 } from '@fortawesome/pro-solid-svg-icons';
-import { faSpinner } from '@fortawesome/pro-duotone-svg-icons';
+import { connect } from 'react-redux';
+import { faHeart as faHeartOutline } from '@fortawesome/pro-light-svg-icons';
 import useFetch from 'use-http';
 import classnames from 'classnames';
+import { formatDistanceToNow } from 'date-fns';
 
 import ErrorModal from 'Components/modals/Error';
 import CloseButton from 'Components/modals/CloseButton';
+import AnimalIcon from 'Components/AnimalIcon';
+import RoundButton from 'Components/RoundButton';
+
 import { API_BASE_URL } from 'Shared/fetch';
 import { getDeviceType, androidDevice, iOSDevice } from '../../helpers';
 import { useIsMobileSize } from '../../hooks';
 
 import style from './style.scss';
+
+const Chat = lazy(() => import('Components/Chat'));
 
 export const generateTwitterURL = (html, text, hashtag, handle) => {
   const shareURL = new URL('https://twitter.com/intent/tweet');
@@ -51,9 +60,8 @@ export const generateFacebookURL = (html) => {
 };
 
 const ShareModal = ({
+  mediaId,
   userId,
-  animal,
-  zoo,
   open,
   data,
   nextId,
@@ -68,12 +76,24 @@ const ShareModal = ({
     videoURL,
     type = 'photo',
     habitatId,
+    isLiked,
+    usersLike,
+    createdAt,
+    creationDate,
+    username,
+    profile,
+    title,
   } = data;
 
   const shareUrl = `${window.location.origin}/album/${videoURL ? 'videos' : 'photos'}/${_id}`;
   const isMobileSize = useIsMobileSize();
   const [showEmailError, setShowEmailError] = useState();
   const [showEmailSuccess, setShowEmailSuccess] = useState();
+  const [contentLikes, setContentLikes] = useState({ isLiked: false, likes: 0 });
+
+  useEffect(() => {
+    setContentLikes({ isLiked, likes: usersLike });
+  }, [isLiked, usersLike]);
   const {
     error,
     post,
@@ -83,12 +103,15 @@ const ShareModal = ({
     credentials: 'include',
     cachePolicy: 'no-cache',
   });
+
   const {
     post: sharePost,
   } = useFetch(API_BASE_URL, {
     credentials: 'include',
     cachePolicy: 'no-cache',
   });
+
+  const { put: likePut } = useFetch(API_BASE_URL, { credentials: 'include', cachePolicy: 'no-cache '});
 
   useEffect(() => {
     if (error) {
@@ -129,6 +152,18 @@ const ShareModal = ({
     }
   };
 
+  const likeContent = async () => {
+    try {
+      await likePut(`${type === 'photo' ? 'photos' : 'videos'}/${mediaId}/like`);
+      setContentLikes( (prevState) => ({
+        isLiked: !prevState.isLiked,
+        likes: prevState.isLiked ? prevState.likes - 1 : prevState.likes + 1,
+      }));
+    } catch (err) {
+      console.error('Error trying to like content');
+    }
+  }
+
   if (!open) {
     return null;
   }
@@ -139,41 +174,42 @@ const ShareModal = ({
       position="center"
       onClickOutside={onClose}
       onEsc={onClose}
+      margin={{ horizontal: isMobileSize ? '0px' : '70px' }}
+      full={isMobileSize}
+
     >
-      {isMobileSize && (
-        <>
-          <div className={style.absoluteClose}>
-            <CloseButton onClick={onClose} className={style.close} />
-          </div>
-          {!videoURL && userId === data?.userId && (
-            <div className={style.title}>Here’s your photo!</div>
-          )}
-        </>
-      )}
+      <>
+        <div className={classnames(style.absoluteClose, {[style.mobile]: isMobileSize })}>
+          <CloseButton
+            onClick={onClose}
+            className={style.close}
+          />
+        </div>
+        {!videoURL && userId === data?.userId && (
+          <div className={style.title}>Here’s your photo!</div>
+        )}
+        {nextId && (
+          <button
+            type="button"
+            className={classnames(style.next, {[style.mobile]: isMobileSize } )}
+            onClick={() => setShareModalMediaId(nextId)}
+          >
+            <FontAwesomeIcon icon={faChevronRight} />
+          </button>
+        )}
+        {prevId && (
+          <button
+            type="button"
+            className={classnames(style.prev, {[style.mobile]: isMobileSize } )}
+            onClick={() => setShareModalMediaId(prevId)}
+          >
+            <FontAwesomeIcon icon={faChevronLeft} />
+          </button>
+        )}
+      </>
       <Box className={classnames(style.shareModalContainer, { [style.mobile]: isMobileSize })}>
-        <Box>
-          {!isMobileSize && (
-            <CloseButton onClick={onClose} className={style.close} varient="green" />
-          )}
+        <Box direction="row">
           <Box className={style.shareMedia} >
-            {nextId && (
-              <button
-                type="button"
-                className={style.next}
-                onClick={() => setShareModalMediaId(nextId)}
-              >
-                <FontAwesomeIcon icon={faChevronRight} />
-              </button>
-            )}
-            {prevId && (
-              <button
-                type="button"
-                className={style.prev}
-                onClick={() => setShareModalMediaId(prevId)}
-              >
-                <FontAwesomeIcon icon={faChevronLeft} />
-              </button>
-            )}
             {url && <img src={url} alt="" />}
             {videoURL && (
               // eslint-disable-next-line jsx-a11y/media-has-caption
@@ -182,63 +218,147 @@ const ShareModal = ({
               </video>
             )}
           </Box>
-          <Box className={style.footer}>
-            {!isMobileSize && <div>{`${zoo} | ${animal}`}</div>}
-            <div className={style.shareButtons}>
-              {!videoURL && (
-                <button
-                  onClick={sendEmail}
-                  type="button"
-                  className={style.shareIcon}
-                  disabled={loading || showEmailSuccess}
+          <Box width={{ min: '285px' }} background="white" className={style.rightSection}>
+            <Box
+              direction="row"
+              pad={{ horizontal: '22px', top: '22px'}}
+              height={{ min: '62px' }}
+            >
+              <Box margin={{ right: '20px' }} align="center" justify="center">
+                <AnimalIcon width={35} animalIcon={profile?.animal} color={profile?.color} />
+              </Box>
+
+              <Box>
+                <Text size="xlarge" weight={700}>{username}</Text>
+                <Text>{`${formatDistanceToNow(new Date(createdAt || creationDate))} ago`}</Text>
+              </Box>
+            </Box>
+            <Box
+              pad={{ horizontal: '22px', vertical: '15px' }}
+              height={{ min: '32px' }}
+              className={style.mediaTitle}
+            >
+              <Text>
+                {title}
+              </Text>
+            </Box>
+            <Box
+              direction="row"
+              pad={{ left: '20px', right: '14px', vertical: '6px' }}
+              fill="horizontal"
+              border={{
+                color: '#EBEBEB',
+                size: '1px',
+                style: 'solid',
+                side: 'horizontal',
+              }}
+              height={{ min: '34px' }}
+            >
+              <Box direction="row" align="center">
+                <Box
+                  className={classnames(
+                    style.heartContainer,
+                    {[style.liked]: contentLikes.isLiked},
+                  )}
+                  onClick={likeContent}
                 >
-                  {!loading && <FontAwesomeIcon icon={showEmailSuccess ? faCheck : faEnvelope} />}
-                  {loading && <FontAwesomeIcon icon={faSpinner} spin />}
-                </button>
-              )}
-              <a
-                download
-                target="_blank"
-                rel="noreferrer"
-                className={style.shareIcon}
-                href={url || videoURL}
-                onClick={() => logShare('download')}
-              >
-                <FontAwesomeIcon icon={faDownload} />
-              </a>
-              {(androidDevice() || iOSDevice()) && (
-                <button
-                  onClick={webShareHandler}
-                  type="button"
-                  className={style.shareIcon}
-                >
-                  {androidDevice() && <FontAwesomeIcon icon={faShareAlt} />}
-                  {iOSDevice() && <FontAwesomeIcon icon={faShareSquare} />}
-                </button>
-              )}
-              {!androidDevice() && !iOSDevice() && (
-                <>
-                  <a
+                  <FontAwesomeIcon icon={contentLikes.isLiked ? faHeart : faHeartOutline} />
+                </Box>
+                <Text margin={{ left: '8px' }}>
+                  {contentLikes.likes}
+                </Text>
+              </Box>
+              <div className={style.shareButtons}>
+                {!videoURL && (
+                  <RoundButton
+                    onClick={sendEmail}
                     className={style.shareIcon}
-                    href={generateFacebookURL(shareUrl)}
+                    disabled={loading || showEmailSuccess}
+                    backgroundColor="#F18C43"
+                    color="white"
+                    width={20}
+                    loading={loading}
+                  >
+                    {!loading && <FontAwesomeIcon icon={showEmailSuccess ? faCheck : faEnvelope} />}
+                  </RoundButton>
+                )}
+                <RoundButton
+                  type="button"
+                  backgroundColor="#71475D"
+                  color="white"
+                  width={20}
+                  className={style.shareIcon}
+                >
+                  <a
+                    download
                     target="_blank"
                     rel="noreferrer"
-                    onClick={() => logShare('facebook')}
+                    href={url || videoURL}
+                    onClick={() => logShare('download')}
                   >
-                    <FontAwesomeIcon icon={faFacebookF} />
+                    <FontAwesomeIcon icon={faDownload} />
                   </a>
-                  <a
+                </RoundButton>
+                {(androidDevice() || iOSDevice()) && (
+                  <RoundButton
+                    onClick={webShareHandler}
+                    type="button"
                     className={style.shareIcon}
-                    href={generateTwitterURL(shareUrl)}
-                    target="_blank"
-                    rel="noreferrer"
-                    onClick={() => logShare('twitter')}
+                    backgroundColor="#1DA1F2"
+                    color="white"
+                    width={20}
                   >
-                    <FontAwesomeIcon icon={faTwitter} />
-                  </a>
-                </>
-              )}
-            </div>
+                    {androidDevice() && <FontAwesomeIcon icon={faShareAlt} />}
+                    {iOSDevice() && <FontAwesomeIcon icon={faShareSquare} />}
+                  </RoundButton>
+                )}
+                {!androidDevice() && !iOSDevice() && (
+                  <>
+                    <RoundButton
+                      type="button"
+                      backgroundColor="#2174EE"
+                      color="white"
+                      width={20}
+                      className={style.shareIcon}
+                    >
+                      <a
+                        href={generateFacebookURL(shareUrl)}
+                        target="_blank"
+                        rel="noreferrer"
+                        onClick={() => logShare('facebook')}
+                      >
+                        <FontAwesomeIcon icon={faFacebookF} />
+                      </a>
+                    </RoundButton>
+                    <RoundButton
+                      type="button"
+                      backgroundColor="#1DA1F2"
+                      color="white"
+                      width={20}
+                      className={style.shareIcon}
+                    >
+                      <a
+                        href={generateTwitterURL(shareUrl)}
+                        target="_blank"
+                        rel="noreferrer"
+                        onClick={() => logShare('twitter')}
+                      >
+                        <FontAwesomeIcon icon={faTwitter} />
+                      </a>
+                    </RoundButton>
+                  </>
+                )}
+              </div>
+            </Box>
+            <Box className={style.commentSection}>
+              <Box fill>
+                {typeof window !== 'undefined' && mediaId && (
+                  <Suspense>
+                    <Chat channelId={mediaId} alternate />
+                  </Suspense>
+                )}
+              </Box>
+            </Box>
           </Box>
         </Box>
       </Box>
@@ -248,4 +368,4 @@ const ShareModal = ({
   );
 };
 
-export default ShareModal;
+export default connect(({ habitat: { shareModal: { mediaId }}}) => ({ mediaId }))(ShareModal);

@@ -33,8 +33,9 @@ const ChatMessage = ({
   timetoken,
   reactions,
   userId,
-  habitatId,
+  channelId,
   onDeleteHandler,
+  alternate,
 }) => {
   const pubnub = usePubNub();
   const [showActionBar, setShowActionbar] = useState(false);
@@ -64,7 +65,7 @@ const ChatMessage = ({
   const toggleReaction = useCallback((reaction) => {
     if (!userReactions[reaction]) {
       pubnub.addMessageAction({
-        channel: habitatId,
+        channel: channelId,
         messageTimetoken: timetoken,
         action: {
           type: 'reaction',
@@ -74,14 +75,14 @@ const ChatMessage = ({
     } else {
       pubnub.removeMessageAction(
         {
-          channel: habitatId,
+          channel: channelId,
           messageTimetoken: timetoken,
           actionTimetoken: userReactions[reaction],
         },
       );
     }
     setShowReactionBar(false);
-  }, [pubnub, timetoken, userReactions, habitatId]);
+  }, [pubnub, timetoken, userReactions, channelId]);
 
   const initialMessage = useMemo(() => {
     const message = formatDistanceToNowStrict(timestamp, { roundingMethod: 'ceil'});
@@ -105,7 +106,10 @@ const ChatMessage = ({
       <div
         className={classnames(
           style.chatMessageContainer,
-          {[style.selected]: showReactionBar || showActionBar },
+          {
+            [style.selected]: showReactionBar || showActionBar,
+            [style.alternate]: alternate,
+          },
         )}
         ref={messageContainer}
         onMouseEnter={() => setShowActionbar(true)}
@@ -180,8 +184,6 @@ export default connect(({
   user: {
     userId,
   },
-  habitat: { habitatInfo: { _id: habitatId } },
 }) => ({
   userId,
-  habitatId,
 }))(ChatMessage);

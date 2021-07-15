@@ -17,6 +17,7 @@ import { buildURL } from 'Shared/fetch';
 import GlobalsContextProvider from "Components/GlobalsContextProvider";
 import LiveStream from 'Components/LiveStream';
 import Loader from 'Components/Loader';
+
 import { openTermsModal } from 'Components/TermsAndConditions/actions';
 import { GlobalsContext } from 'Shared/context';
 
@@ -42,6 +43,7 @@ import { MOBILE_CONTROLS_HEIGHT } from './constants';
 import style from './style.scss';
 
 const ChatComponent = lazy(() => import('Components/Chat'));
+const PubNubWrapper = lazy(() => import('Components/PubNubWrapper'));
 
 const maxStreamWidth = 1280;
 const maxStreamHeight = 720;
@@ -211,7 +213,7 @@ const Habitat = ({
               <Tab label="Chat" icon={<FontAwesomeIcon size="lg" icon={faComment} />}>
                 <Box fill direction="column" justify="center">
                   <Suspense fallback={<Loader />}>
-                    <ChatComponent />
+                    <ChatComponent channelId={habitatId} />
                   </Suspense>
                 </Box>
               </Tab>
@@ -269,7 +271,14 @@ const ConnectedHabitat = connect(
 
 const HabitatWrapper = ({ matches: { zooName, habitatSlug } }) => (
   <GlobalsContextProvider>
-    <ConnectedHabitat zooName={zooName} habitatSlug={habitatSlug} />
+    {typeof window !== 'undefined' && (
+      <Suspense fallback={<Loader />}>
+        <PubNubWrapper>
+          <ConnectedHabitat zooName={zooName} habitatSlug={habitatSlug} />
+        </PubNubWrapper>
+      </Suspense>
+    )}
+
   </GlobalsContextProvider>
 );
 

@@ -20,4 +20,17 @@
   @media screen and (max-width: #{$tablet-landscape-width}) {
     padding-top: 10px;
   }
+
+  &.alternate:global.customScrollBar::-webkit-scrollbar-thumb {
+    background-color: #E7E7E7;
+    border: 2px solid white;
+  }
+
+  &.alternate {
+    background: white;
+
+    * {
+      color: #2E2D2D !important;
+    }
+  }
 }
