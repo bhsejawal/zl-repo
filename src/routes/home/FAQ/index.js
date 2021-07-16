@@ -1,4 +1,6 @@
 import { h } from 'preact';
+import { Experiment, Variant } from 'react-optimize';
+
 import Accordion from '../../account/Accordion';
 
 import style from './style.scss';
@@ -21,13 +23,13 @@ const FAQ = () => (
       <p>
         Streaming live 24/7, Zoolife features a growing collection of remarkable animal species.
         Our audience-guided cameras allow you to observe the animals and explore habitats stunningly
-        close from your device. Join daily keeper talks and interactive Q&As with animal experts and
-        naturalists for in-depth learning and so much more.
+        close from your device. Join daily keeper talks and interactive Q&amp;As with animal experts
+        and naturalists for in-depth learning and so much more.
       </p>
       <p>
         At Zoolife, our mission is to help humankind reconnect with nature, while working together
-        to protect it. 50% of your purchase directly funds animal care & conservation efforts led by
-        our partners.
+        to protect it. 50% of your purchase directly funds animal care &amp; conservation efforts
+        led by our partners.
       </p>
     </Accordion>
 
@@ -36,14 +38,21 @@ const FAQ = () => (
       header={<h3>How much does Zoolife cost?</h3>}
     >
       <p>
-        50% of every purchase directly funds animal care & conservation efforts worldwide.
+        50% of every purchase directly funds animal care &amp; conservation efforts worldwide.
       </p>
       <p>
-        Single Day Pass: $9.99
+        <Experiment id="dFVUdOmqTli7vSykEtQR8w">
+          <Variant id="0">
+            Single Day Pass: $6.99
+          </Variant>
+          <Variant id="1">
+            Single Day Pass: $1.99
+          </Variant>
+        </Experiment>
         <br />
-        Monthly Membership: $14.99/month
+        Monthly Membership: $9.99/month
         <br />
-        Annual Membership: $139.99/year (Save 33%)
+        Annual Membership: $97.99/year (Save 30%)
         <br />
         You can cancel or upgrade your Zoolife pass any time.
       </p>
@@ -63,14 +72,14 @@ const FAQ = () => (
 
     <Accordion
       className={style.accordion}
-      header={<h3>How does Zoolife fund animal care & conservation?</h3>}
+      header={<h3>How does Zoolife fund animal care &amp; conservation?</h3>}
     >
       <p>
-        50% of every Zoolife pass directly funds animal care & conservation efforts led by our
+        50% of every Zoolife pass directly funds animal care &amp; conservation efforts led by our
         partners – accredited zoos, animal sanctuaries and rehabilitation centers from around the
         globe. These fully accredited non-for-profit institutions are fundamental to conservation
         as they provide expert care, high quality nutrition and enrichment to the at-risk species
-        in their care, while supporting field work to save species & ecosystems in the wild.
+        in their care, while supporting field work to save species &amp; ecosystems in the wild.
       </p>
     </Accordion>
 
@@ -83,7 +92,8 @@ const FAQ = () => (
         animal experiences and expert talks, streaming live 24/7 from multiple timezones.
       </p>
       <p>
-        50% of every purchase directly funds animal care & conservation efforts led by our partners.
+        {/* eslint-disable-next-line max-len */}
+        50% of every purchase directly funds animal care &amp; conservation efforts led by our partners.
       </p>
       <p>
         <div style={{ marginBottom: '10px' }}>The Zoolife experience includes:</div>
@@ -92,7 +102,7 @@ const FAQ = () => (
         <br />
         Audience-guided cameras to observe animals and explore habitats stunningly close.
         <br />
-        Live keeper talks and Q&As with expert hosts, daily.
+        Live keeper talks and Q&amp;As with expert hosts, daily.
       </p>
     </Accordion>
   </div>

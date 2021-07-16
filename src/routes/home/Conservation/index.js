@@ -12,10 +12,10 @@ const Conversation = () => (
           Support the conservation movement with your purchase.
         </h2>
         <p className="body">
-          50% of your purchase directly funds animal care & conservation
-          efforts led by our partners.
+          {/* eslint-disable-next-line max-len */}
+          50% of your purchase directly funds animal care &amp; conservation efforts led by our partners.
         </p>
-        <LandingPrimary onClick={goToSignup}>I want to help</LandingPrimary>
+        <LandingPrimary onClick={goToSignup}>Try Zoolife Free</LandingPrimary>
       </div>
     </div>
     <div className={style.right}>

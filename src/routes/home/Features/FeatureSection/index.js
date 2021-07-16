@@ -26,7 +26,7 @@ const FeatureSection = () => (
         <p>
           Use audience-guided cameras to observe animals and explore habitats stunningly close.
         </p>
-        <LandingSecondary onClick={goToSignup}>Explore a Habitat</LandingSecondary>
+        <LandingSecondary onClick={goToSignup}>Choose a Habitat</LandingSecondary>
       </div>
     </div>
   </div>
