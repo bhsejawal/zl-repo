@@ -14,6 +14,7 @@ const Chat = ({ height, width, habitatId }) => (
     style={{
       height,
       maxHeight: height,
+      maxWidth: width,
       width,
     }}
   >

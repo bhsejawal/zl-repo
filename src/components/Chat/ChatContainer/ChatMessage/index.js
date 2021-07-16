@@ -36,11 +36,13 @@ const ChatMessage = ({
   channelId,
   onDeleteHandler,
   alternate,
+  media = {},
 }) => {
   const pubnub = usePubNub();
   const [showActionBar, setShowActionbar] = useState(false);
   const [showReactionBar, setShowReactionBar] = useState(false);
   const isTabbedView = useIsHabitatTabbed();
+  const { type, mediaId, src } = media;
 
   const userReactions = useMemo(() => {
     const userReactions = {};
@@ -151,6 +153,11 @@ const ChatMessage = ({
           <span className={style.message}>
             {text}
           </span>
+          {mediaId && type === 'image' && (
+            <div className={style.imageContainer}>
+              <img src={src} alt={text} />
+            </div>
+          )}
           <Box direction="row" gap="5px" wrap>
             {reactions && Object.keys(reactions).map((reaction) => (
               <ReactionBadge

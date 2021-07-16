@@ -93,6 +93,7 @@ const ChatContainer = ({
           timestamp,
           timetoken,
           reactions,
+          media,
         }) => (
           <ChatMessage
             username={username}
@@ -106,6 +107,7 @@ const ChatContainer = ({
             onDeleteHandler={promptDeletion}
             channelId={channelId}
             alternate={alternate}
+            media={media}
           />
         ))}
         {showWelcome && (

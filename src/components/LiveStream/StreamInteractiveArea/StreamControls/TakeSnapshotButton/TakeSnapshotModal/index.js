@@ -52,7 +52,7 @@ const TakeSnapshotModal = ({
   }, [error, response.ok]);
 
   const clickHandler = () => {
-    put(`/photos/${snapshotId}`, { title });
+    put(`/photos/${snapshotId}`, { title, share: true });
   };
 
   return (
