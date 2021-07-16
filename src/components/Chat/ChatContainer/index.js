@@ -28,10 +28,15 @@ const ChatContainer = ({
   const [internalMessages, setInternalMessages] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [messageId, setMessageId] = useState(null);
-  const [showWelcome, setShowWelcome] = useState(true);
+  const [showWelcome, setShowWelcome] = useState(false);
   const chatContainerRef = useRef(null);
   const pubnub = usePubNub();
 
+  useEffect(() => {
+    if (!alternate) {
+      setShowWelcome(true);
+    }
+  }, [alternate]);
   const onCloseHandler = useCallback(() => {
     setShowModal(false);
     setMessageId(null);
