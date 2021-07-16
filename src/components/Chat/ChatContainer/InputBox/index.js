@@ -14,6 +14,7 @@ const InputBox = ({
   username,
   color,
   alternate,
+  onSendHandler,
 }) => {
   const { pubnub } = useContext(ChatContext);
   const isMobileSize = useIsMobileSize();
@@ -24,6 +25,8 @@ const InputBox = ({
     if (!text.length) {
       return;
     }
+
+    onSendHandler();
 
     const message = {
       text,

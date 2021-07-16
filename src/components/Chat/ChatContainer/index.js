@@ -14,6 +14,7 @@ import InputBox from './InputBox';
 import style from './style.module.scss';
 
 import ChatMessage from './ChatMessage';
+import WelcomeMessage from './ChatMessage/WelcomeMessage';
 import DeleteMessageModal from './DeleteMessageModal';
 
 let autoScroll = true;
@@ -27,6 +28,7 @@ const ChatContainer = ({
   const [internalMessages, setInternalMessages] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [messageId, setMessageId] = useState(null);
+  const [showWelcome, setShowWelcome] = useState(true);
   const chatContainerRef = useRef(null);
   const pubnub = usePubNub();
 
@@ -39,6 +41,12 @@ const ChatContainer = ({
     setMessageId(msgId);
     setShowModal(true);
   }, []);
+
+  const onSendHandler = () => {
+    if (showWelcome) {
+      setShowWelcome(false);
+    }
+  };
 
   const deleteMessage = useCallback(() => {
     pubnub.addMessageAction({
@@ -100,8 +108,11 @@ const ChatContainer = ({
             alternate={alternate}
           />
         ))}
+        {showWelcome && (
+          <WelcomeMessage onClose={onSendHandler} />
+        )}
       </div>
-      <InputBox channelId={channelId} alternate={alternate} />
+      <InputBox channelId={channelId} alternate={alternate} onSendHandler={onSendHandler} />
       {showModal && <DeleteMessageModal onClose={onCloseHandler} onDelete={deleteMessage} />}
     </>
   );
