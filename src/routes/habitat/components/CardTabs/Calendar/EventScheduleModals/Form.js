@@ -12,10 +12,12 @@ import {
   TextInput,
 } from 'grommet';
 import { utcToZonedTime } from 'date-fns-tz';
+import { faChevronDown } from '@fortawesome/pro-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import classnames from 'classnames';
 import useFetch from 'use-http';
 
-import { buildURL } from 'Shared/fetch';
+import { buildURL, API_BASE_URL } from 'Shared/fetch';
 import { PrimaryButton, OutlineButton } from 'Components/Buttons';
 import { showDeleteEventModal } from './actions';
 import grommetTheme from '../../../../../../grommetTheme';
@@ -56,6 +58,7 @@ const Form = ({
   onSubmit,
   scheduleData,
   timezone,
+  habitatId,
   showDeleteEventModalAction,
 }) => {
   // eslint-disable-next-line no-underscore-dangle
@@ -67,11 +70,35 @@ const Form = ({
   } : defaultData);
   const [error, setError] = useState();
   const [loading, setLoading] = useState();
+  const [habitatCameras, setHabitatCameras] = useState([]);
 
   const { data: { hosts } = {}, get: getHosts } = useFetch(
     buildURL('/admin/users/hosts'),
     { credentials: 'include' },
   );
+
+  const { data: cameras, get: getCameras } = useFetch(
+    API_BASE_URL,
+    { credentials: 'include' },
+  );
+
+  useEffect(() => {
+    if (!cameras) {
+      const params = new URLSearchParams();
+      params.append('fields[]', 'cameraName');
+      params.append('fields[]', 'habitat');
+      getCameras(`/admin/cameras?${params}`);
+    }
+
+    if (cameras) {
+      setHabitatCameras(cameras.filter(({ habitat }) => habitat === habitatId));
+    }
+
+    if (data.type === TALK && data.camera) {
+      setData({ ...data, camera: undefined });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [getCameras, data.type, cameras]);
 
   useEffect(() => {
     if (data?.type === TALK) {
@@ -99,7 +126,6 @@ const Form = ({
 
   const changeHandler = (property, type = 'input') => (e) => {
     let { target: { value } = {} } = e;
-
     if (type === 'time') {
       const [hours, minutes] = value.split(':');
       setData({ ...data, hour: Number(hours), minute: Number(minutes) });
@@ -180,7 +206,7 @@ const Form = ({
                     { label: 'Talk', value: TALK},
                     { label: 'Stream', value: STREAM},
                   ]}
-                  onChange={changeHandler('type', 'select')}
+                  onChange={changeHandler('type')}
                 />
               </div>
             </Box>
@@ -192,6 +218,23 @@ const Form = ({
               <input value={data.title} className={style.letterCount} maxLength="30" onChange={changeHandler('title')} required />
               <div>{`${data?.title?.length}/30`}</div>
             </Box>
+
+            {data.type === STREAM && (
+              <Box direction="column" width="calc(50% - 10px)" margin={{ left: '10px' }} className={style.inputWrapper}>
+                <Text size="xlarge" className={style.label}>Camera</Text>
+                <div className={style.simpleSelect}>
+                  <select onChange={changeHandler('camera')} required disabled={isEdit && data.singleEvent}>
+                    {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
+                    <option value={undefined} />
+                    {habitatCameras.map(({ _id, cameraName }) => (
+                      <option selected={data.camera === _id} value={_id}>{cameraName}</option>
+                    ))}
+                  </select>
+                  <FontAwesomeIcon icon={faChevronDown} color="var(--blueMediumLight)" />
+                </div>
+              </Box>
+            )}
+
             {data.type === TALK && (
               <Box direction="column" width="calc(50% - 10px)" margin={{ left: '10px' }} className={style.inputWrapper}>
                 <Text size="xlarge" className={style.label}>Host Email</Text>
@@ -215,6 +258,7 @@ const Form = ({
             <textarea rows="3" value={data.description} onChange={changeHandler('description')} />
           </Box>
         )}
+
         <Box direction="column" className={style.inputWrapper}>
           <Text size="xlarge" className={style.label}>Time</Text>
           {timezone !== currentTimezone && (
@@ -342,6 +386,7 @@ export default connect(
   ({
     habitat: {
       habitatInfo: {
+        _id: habitatId,
         zoo: {
           timezone,
         } = {},
@@ -349,6 +394,7 @@ export default connect(
     },
   }) => ({
     timezone,
+    habitatId,
   }),
   { showDeleteEventModalAction: showDeleteEventModal },
 )(Form);

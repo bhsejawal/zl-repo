@@ -4,7 +4,7 @@
 }
 
 .form {
-  // this will add more distance to the custom scruoll bar
+  // this will add more distance to the custom scroll bar
   margin-right: -20px;
 
   .wrapper {
@@ -30,7 +30,7 @@
     }
   }
 
-  select,
+  select:not(.simpleSelect),
   textarea,
   input:not([type="checkbox"]):not([type="radio"]) {
     background: white;
@@ -43,6 +43,22 @@
 
     &:read-only:not(.dateInput) {
       border: 0;
+    }
+  }
+
+  .simpleSelect {
+    position: relative;
+    border: 2px solid #CDCDCD;
+    border-radius: 4px;
+    height: 36px;
+
+    select {
+      appearance: none;
+      width: calc(100% - 30px);
+      height: 100%;
+      color: black;
+      font-weight: 400;
+      padding: 4px 10px;
     }
   }
 

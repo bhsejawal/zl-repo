@@ -5,15 +5,14 @@ import { API_BASE_URL } from 'Shared/fetch';
 import { useFetch } from 'use-http';
 import {
   Box,
-  Button,
   Heading,
   Layer,
   RadioButton,
   Text,
 } from 'grommet';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTimes } from '@fortawesome/pro-solid-svg-icons';
 
+import Header from 'Components/modals/Header';
+import Body from 'Components/modals/Body';
 import { PrimaryButton } from 'Components/Buttons';
 import { setDeleteMultiple, showDeleteEventModal, updateCalendar } from './actions';
 
@@ -76,65 +75,58 @@ const DeleteEvent = ({
       onClickOutside={closeHandler}
       onEsc={closeHandler}
     >
-
       <div className={style.scheduleEventModal}>
-        <Box direction="row" justify="between">
-          <Heading level="2" margin={{ left: '40px'}}>
-            Delete Event
-          </Heading>
-          <Button
-            plain
-            margin="medium"
-            onClick={closeHandler}
-            icon={<FontAwesomeIcon size="2x" icon={faTimes} />}
-          />
-        </Box>
+        <Header onClose={closeHandler}>
+          Delete Event
+        </Header>
 
-        <form onSubmit={deleteHandler} className={style.form}>
-          <div className={classnames(style.wrapper, 'customScrollBar')}>
-            <Heading level="4" margin="10px 0 20px 0">Are you sure you want to delete this event?</Heading>
-            {description && (
-              <Text size="xlarge">
-                &quot;
-                {description}
-                &quot;
-              </Text>
-            )}
-            {!freqHidden && (
-              <Box direction="row" margin="20px 0">
-                <RadioButton
-                  checked={!multiple}
-                  label="Single Event"
-                  value={false}
-                  name="singleEvent"
-                  onChange={({ target: { checked } }) => setMultipleAction(checked === false)}
-                />
-                &nbsp;
-                &nbsp;
-                <RadioButton
-                  checked={multiple}
-                  label="All Events"
-                  value={true}
-                  name="singleEvent"
-                  onChange={({ target: { checked } }) => setMultipleAction(checked === true)}
-                />
+        <Body>
+          <form onSubmit={deleteHandler} className={style.form}>
+            <div className={classnames(style.wrapper, 'customScrollBar')}>
+              <Heading level="4" margin="10px 0 20px 0">Are you sure you want to delete this event?</Heading>
+              {description && (
+                <Text size="xlarge">
+                  &quot;
+                  {description}
+                  &quot;
+                </Text>
+              )}
+              {!freqHidden && (
+                <Box direction="row" margin="20px 0">
+                  <RadioButton
+                    checked={!multiple}
+                    label="Single Event"
+                    value={false}
+                    name="singleEvent"
+                    onChange={({ target: { checked } }) => setMultipleAction(checked === false)}
+                  />
+                  &nbsp;
+                  &nbsp;
+                  <RadioButton
+                    checked={multiple}
+                    label="All Events"
+                    value={true}
+                    name="singleEvent"
+                    onChange={({ target: { checked } }) => setMultipleAction(checked === true)}
+                  />
+                </Box>
+              )}
+              <Box margin={{ bottom: '20px' }}>
+                <Text size="xlarge">Type in the word “delete” here to confirm:</Text>
               </Box>
-            )}
-            <Box margin={{ bottom: '20px' }}>
-              <Text size="xlarge">Type in the word “delete” here to confirm:</Text>
+              <input type="text" value={confirmation} onChange={({ target: { value }}) => setConfirmation(value)} />
+            </div>
+            <Box direction="row" justify="end" pad={{ horizontal: '20px' }}>
+              <PrimaryButton
+                label="Delete"
+                type="submit"
+                loading={loading}
+                disabled={confirmation !== 'delete'}
+              />
+              {error && <div className={style.formSubmissionError}>{error}</div>}
             </Box>
-            <input type="text" value={confirmation} onChange={({ target: { value }}) => setConfirmation(value)} />
-          </div>
-          <Box direction="row" justify="end" pad={{ horizontal: '20px' }}>
-            <PrimaryButton
-              label="Delete"
-              type="submit"
-              loading={loading}
-              disabled={confirmation !== 'delete'}
-            />
-            {error && <div className={style.formSubmissionError}>{error}</div>}
-          </Box>
-        </form>
+          </form>
+        </Body>
       </div>
     </Layer>
   )
