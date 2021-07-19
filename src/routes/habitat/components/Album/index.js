@@ -61,7 +61,6 @@ const Album = ({
   } = useFetch(API_BASE_URL, { credentials: 'include', cachePolicy: 'no-cache' });
 
   useEffect(() => {
-    console.log(data);
     if (!error && data) {
       if (page > 1) {
         appendAlbumDataAction(data);
@@ -141,11 +140,12 @@ const Album = ({
                   rawURL,
                   comments,
                   usersLike,
+                  previewURL,
                 }) => (
                   <MediaContent
                     key={_id}
                     id={_id}
-                    image={url}
+                    image={url ?? previewURL}
                     disabled={disabled}
                     accessControlButtonHandler={openConfirmActionModal}
                     type={type}
