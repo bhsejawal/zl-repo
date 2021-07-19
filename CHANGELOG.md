@@ -2,6 +2,27 @@
 This file keeps track of all relevant change for every release.
 
 ## [Unreleased]
+## [5.10.0] - 2021-07-19
+
+### Added
+- User can now comment and like photos and clips
+- Habitat show a welcome message on the chat when a user joins
+- When taking a photo, the photo is shared on the chat
+- Logging user interaction data on Google Analytics
+- Habitat preview video on the sheduler carousel
+- Live talk notification when a host goes online
+- Users can now add a title on photos
+- Camera selection when creating a livestream schedule
+
+### Fixed
+- Landing page formatting issue with the email addresses on the Footer
+- Multine issue on safari on chat
+- Issue with Keyboard being on top of content on chat page
+
+### Changed
+- Copy adjustments on the Landing page
+- Remove the feature section from the album page
+- Increased the max length on the video card to 150 chars
 ## [5.9.0] - 2021-07-09
 ### Added
 - Users can now react to chat messages
