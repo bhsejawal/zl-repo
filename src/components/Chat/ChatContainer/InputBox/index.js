@@ -1,5 +1,6 @@
 import { useState, useContext, useCallback } from 'preact/hooks'
 import { connect } from 'react-redux';
+import classnames from 'classnames';
 
 import { ChatContext } from 'Shared/context';
 import EmoteInput from '../EmoteInput';
@@ -8,10 +9,12 @@ import { useIsMobileSize } from '../../../../hooks';
 import style from './style.module.scss'
 
 const InputBox = ({
-  habitatId,
+  channelId,
   animal,
   username,
   color,
+  alternate,
+  onSendHandler,
 }) => {
   const { pubnub } = useContext(ChatContext);
   const isMobileSize = useIsMobileSize();
@@ -23,14 +26,16 @@ const InputBox = ({
       return;
     }
 
+    onSendHandler();
+
     const message = {
       text,
       animal,
       color,
       username,
     }
-    pubnub.publish({ channel: habitatId, message }, () => { setInput('') });
-  }, [habitatId, pubnub, animal, color, username]);
+    pubnub.publish({ channel: channelId, message }, () => { setInput('') });
+  }, [channelId, pubnub, animal, color, username]);
 
   const onKeyDownHandler = (evt) => {
     if (evt.key === 'Enter') {
@@ -41,7 +46,7 @@ const InputBox = ({
   };
 
   return (
-    <div className={style.inputBox}>
+    <div className={classnames(style.inputBox, {[style.alternate]: alternate })}>
       <div className={style.inputContainer}>
         <input
           type="text"
@@ -61,7 +66,6 @@ const InputBox = ({
 }
 
 export default connect(({
-  habitat: { habitatInfo: { _id: habitatId } },
   user: {
     username,
     profile: {
@@ -70,7 +74,6 @@ export default connect(({
     },
   },
 }) => ({
-  habitatId,
   username,
   color,
   animal,

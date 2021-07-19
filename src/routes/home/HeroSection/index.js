@@ -5,6 +5,7 @@ import { useState, useEffect, useRef } from 'preact/hooks';
 import { goToSignup } from '../helpers';
 import zoolifeLogoWhite from './zoolife-white.png';
 import videoPlaceholder from './video-placeholder.jpg';
+import conservationIcon from './conservationIcon.png';
 
 import style from './style.scss';
 
@@ -94,6 +95,7 @@ const HeroSection = ({ partnerImage }) => {
         </div>
       </div>
       <div className={style.bottom}>
+        <img src={conservationIcon} alt="Conservation Icon" />
         <h4>50% of your purchase funds animal care &amp; conservation.</h4>
       </div>
     </div>

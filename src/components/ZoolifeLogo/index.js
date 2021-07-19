@@ -10,7 +10,7 @@ const ZoolifeLogo = ({ landing }) => (
     <Link href="/">
       <img className={style.img} src={zoolifeLogo} alt="" />
     </Link>
-    {landing && <Tag label="invite only" varient="light" />}
+    {landing && <Tag label="beta" varient="light" />}
   </div>
 );
 

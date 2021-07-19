@@ -4,6 +4,22 @@
   padding: 10px;
   min-height: max-content;
 
+  &.alternate {
+    background-color: white;
+
+    * {
+      color: #2E2D2D !important
+    }
+
+    .inputContainer input {
+      background: #EBEBEB;
+    }
+
+    .SendButton {
+      background: #9BB7F1;
+    }
+  }
+
   .inputContainer {
     display: flex;
     flex-grow: 1;

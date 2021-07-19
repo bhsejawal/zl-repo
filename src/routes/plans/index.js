@@ -35,7 +35,7 @@ const Plans = () => {
           </Heading>
           <Text textAlign="center" size="xlarge">
             {/* eslint-disable-next-line max-len */}
-            50% of your purchase directly funds essential animal care &amp; conservation efforts let by our AZA-accredited partners around the world.
+            50% of your purchase directly funds essential animal care &amp; conservation efforts led by our AZA-accredited partners around the world.
           </Text>
         </Box>
         <SubscriptionManager />

@@ -12,14 +12,12 @@ export const setShareModalMediaId = (mediaId) => (dispatch, getState) => {
   let nextId;
   let prevId;
 
-  Object.entries(album).forEach(([key, value]) => {
-    const index = value.list.findIndex(({ _id }) => _id === mediaId);
-    if (index >= 0) {
-      data = album[key].list[index];
-      nextId = index + 1 < value.list.length ? value.list[index + 1]._id : null;
-      prevId = index - 1 >= 0 ? value.list[index - 1]._id : null;
-    }
-  });
+  const index = album.list.findIndex(({ _id }) => _id === mediaId);
+  if (index >= 0) {
+    data = album.list[index];
+    nextId = index + 1 < album.list.length ? album.list[index + 1]._id : null;
+    prevId = index - 1 >= 0 ? album.list[index - 1]._id : null;
+  }
 
   dispatch(setShareModalData({
     mediaId,

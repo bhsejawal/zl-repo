@@ -19,6 +19,7 @@ const Card = ({
   header,
   image,
   isReminder,
+  onClick,
   loading,
   scheduledEvents,
   setUserDataAction,
@@ -57,7 +58,17 @@ const Card = ({
     return false;
   }, [title, scheduleId, scheduledEvents, startTime, zoo]);
 
-  const buttonText = useMemo(() => (isReminded ? 'Email Sent' : 'Remind Me'), [isReminded])
+  const buttonText = useMemo(() => {
+    let text = 'Learn More';
+
+    if (onClick) {
+      text = 'Join Now';
+    } else if (isReminder) {
+      text = isReminded ? 'Email Sent' : 'Remind Me';
+    }
+
+    return text;
+  }, [onClick, isReminder, isReminded]);
 
   useEffect(() => {
     if (error) {
@@ -68,7 +79,9 @@ const Card = ({
   }, [error, data, setUserDataAction]);
 
   const onClickHandler = (id) => async () => {
-    if (isReminder) {
+    if (onClick) {
+      onClick();
+    } else if (isReminder) {
       await post({ scheduleId: id });
     } else {
       showScheduleModalAction(id, startTime);
@@ -92,7 +105,7 @@ const Card = ({
             disabled={isReminder && isReminded}
             className={classnames({ shimmer: loading })}
             size="small"
-            label={isReminder ? buttonText : 'Learn More'}
+            label={buttonText}
             margin={{top: '10px'}}
             loading={sendingReminder && !loading}
           />

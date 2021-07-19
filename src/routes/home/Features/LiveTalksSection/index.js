@@ -19,7 +19,7 @@ const LiveTalksSection = () => (
         <p>
           Join daily keeper talks and interactive Q&amp;As with animal experts and naturalists.
         </p>
-        <LandingSecondary onClick={goToSignup}>Join a Live Q&amp;A</LandingSecondary>
+        <LandingSecondary onClick={goToSignup}>Join an Expert Talk</LandingSecondary>
       </div>
     </div>
   </div>

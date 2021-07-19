@@ -1,9 +1,15 @@
 import { h } from 'preact';
 import { useState } from 'preact/hooks';
-import { formatDistanceToNow } from 'date-fns';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faDownload, faEyeSlash, faEye } from '@fortawesome/pro-solid-svg-icons';
+import {
+  faDownload,
+  faEyeSlash,
+  faEye,
+  faHeart,
+  faComment,
+} from '@fortawesome/pro-solid-svg-icons';
 import classnames from 'classnames';
+import { Heading } from 'grommet';
 
 import RoundButton from 'Components/RoundButton';
 import Can from 'Components/Authorize';
@@ -14,20 +20,17 @@ import style from '../style.scss';
 
 const MediaContent = ({
   id,
-  title,
-  username,
   image,
-  timestamp,
-  zooName,
   onClick,
   disabled,
   accessControlButtonHandler,
   type,
   rawURL,
   className,
+  comments,
+  usersLike,
 }) => {
-  const time = formatDistanceToNow(timestamp);
-  const [showControls, setShowControls] = useState(false);
+  const [showOverlay, setShowOverlay] = useState(false);
 
   const onclickHandler = () => {
     onClick(id);
@@ -36,58 +39,66 @@ const MediaContent = ({
   return (
     <div
       className={classnames(style.mediaContainer, className)}
-      onMouseEnter={() => setShowControls(true)}
-      onMouseLeave={() => setShowControls(false)}
+      onMouseEnter={() => setShowOverlay(true)}
+      onMouseLeave={() => setShowOverlay(false)}
+      onClick={onclickHandler}
     >
-      <Can
-        perform="habitat:edit-album-media"
-        yes={() => (
-          <div
-          className={classnames(style.actionBar, {[style.show]: showControls})}
-          >
-            {type === 'pastTalks' && rawURL && (
-              <a href={rawURL} target="_blank" rel="noreferrer nooppener">
-                <RoundButton
-                  width="24"
-                  color="var(--blueDark)"
-                >
-                  <FontAwesomeIcon icon={faDownload} />
-                </RoundButton>
-              </a>
+      <div className={classnames(style.mediaOverlay, {[style.show]: showOverlay})}>
+        <div className={style.overlayWrapper}>
+          <Can
+            perform="habitat:edit-album-media"
+            yes={() => (
+              <div className={style.actionBar}>
+                {type === 'pastTalks' && rawURL && (
+                  <a href={rawURL} target="_blank" rel="noreferrer nooppener">
+                    <RoundButton
+                      width="24"
+                      color="var(--blueDark)"
+                    >
+                      <FontAwesomeIcon icon={faDownload} />
+                    </RoundButton>
+                  </a>
+                )}
+                {type === 'photos' && rawURL && (
+                  <a href={handleDownloadMediaURL(rawURL)} download>
+                    <RoundButton
+                      width="24"
+                      color="var(--blueDark)"
+                    >
+                      <FontAwesomeIcon icon={faDownload} />
+                    </RoundButton>
+                  </a>
+                )}
+                {accessControlButtonHandler && (
+                  <RoundButton
+                    width="24"
+                    color="var(--blueDark)"
+                    onClick={() => accessControlButtonHandler(id, disabled ? 'unhide' : 'hide', type)}
+                  >
+                    <FontAwesomeIcon icon={disabled ? faEye : faEyeSlash} />
+                  </RoundButton>
+                )}
+              </div>
             )}
-            {type === 'photos' && rawURL && (
-              <a href={handleDownloadMediaURL(rawURL)} download>
-                <RoundButton
-                  width="24"
-                  color="var(--blueDark)"
-                >
-                  <FontAwesomeIcon icon={faDownload} />
-                </RoundButton>
-              </a>
-            )}
-            {accessControlButtonHandler && (
-              <RoundButton
-                width="24"
-                color="var(--blueDark)"
-                onClick={() => accessControlButtonHandler(id, disabled ? 'unhide' : 'hide', type)}
-              >
-                <FontAwesomeIcon icon={disabled ? faEye : faEyeSlash} />
-              </RoundButton>
-            )}
+          />
+          <div className={style.imageStats}>
+            <div>
+              <FontAwesomeIcon icon={faHeart} />
+              <Heading level="4" color="white">{usersLike}</Heading>
+            </div>
+            <div>
+              <FontAwesomeIcon icon={faComment} />
+              <Heading level="4" color="white">{comments}</Heading>
+            </div>
           </div>
-        )}
-      />
+        </div>
+      </div>
       <button
         type="button"
         className={classnames(style.button, {[style.disabled]: disabled})}
-        onClick={onclickHandler}
       >
         {image && <img src={image} alt="" loading="lazy" />}
-        <span>{time}</span>
       </button>
-      <p>{title}</p>
-      {zooName && <p>{zooName}</p>}
-      {username && <p>{username}</p>}
     </div>
   );
 };

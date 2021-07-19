@@ -33,13 +33,17 @@ const ChatMessage = ({
   timetoken,
   reactions,
   userId,
-  habitatId,
+  channelId,
   onDeleteHandler,
+  onReactionHandler,
+  alternate,
+  media = {},
 }) => {
   const pubnub = usePubNub();
   const [showActionBar, setShowActionbar] = useState(false);
   const [showReactionBar, setShowReactionBar] = useState(false);
   const isTabbedView = useIsHabitatTabbed();
+  const { type, mediaId, src } = media;
 
   const userReactions = useMemo(() => {
     const userReactions = {};
@@ -64,7 +68,7 @@ const ChatMessage = ({
   const toggleReaction = useCallback((reaction) => {
     if (!userReactions[reaction]) {
       pubnub.addMessageAction({
-        channel: habitatId,
+        channel: channelId,
         messageTimetoken: timetoken,
         action: {
           type: 'reaction',
@@ -74,19 +78,22 @@ const ChatMessage = ({
     } else {
       pubnub.removeMessageAction(
         {
-          channel: habitatId,
+          channel: channelId,
           messageTimetoken: timetoken,
           actionTimetoken: userReactions[reaction],
         },
       );
     }
+
+    onReactionHandler();
     setShowReactionBar(false);
-  }, [pubnub, timetoken, userReactions, habitatId]);
+  }, [pubnub, timetoken, userReactions, channelId, onReactionHandler]);
 
   const initialMessage = useMemo(() => {
     const message = formatDistanceToNowStrict(timestamp, { roundingMethod: 'ceil'});
     return message.startsWith('0') ? '1 minute' : message;
   }, [timestamp]);
+
   const [messageTime, setMessageTime] = useState(initialMessage);
   const intervalRef = useRef(null);
   const messageContainer = useRef();
@@ -105,7 +112,10 @@ const ChatMessage = ({
       <div
         className={classnames(
           style.chatMessageContainer,
-          {[style.selected]: showReactionBar || showActionBar },
+          {
+            [style.selected]: showReactionBar || showActionBar,
+            [style.alternate]: alternate,
+          },
         )}
         ref={messageContainer}
         onMouseEnter={() => setShowActionbar(true)}
@@ -147,6 +157,11 @@ const ChatMessage = ({
           <span className={style.message}>
             {text}
           </span>
+          {mediaId && type === 'image' && (
+            <div className={style.imageContainer}>
+              <img src={src} alt={text} />
+            </div>
+          )}
           <Box direction="row" gap="5px" wrap>
             {reactions && Object.keys(reactions).map((reaction) => (
               <ReactionBadge
@@ -180,8 +195,6 @@ export default connect(({
   user: {
     userId,
   },
-  habitat: { habitatInfo: { _id: habitatId } },
 }) => ({
   userId,
-  habitatId,
 }))(ChatMessage);

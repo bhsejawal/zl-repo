@@ -1,18 +1,9 @@
 import { SET_ALBUM_DATA, APPEND_ALBUM_DATA, CHANGE_CONTENT_VISIBILITY } from './types';
 
 const initialState = {
-  photos: {
-    total: null,
-    list: [],
-  },
-  pastTalks: {
-    total: null,
-    list: [],
-  },
-  clips: {
-    total: null,
-    list: [],
-  },
+  total: null,
+  list: [],
+  type: 'PHOTOS',
 };
 
 export default (state = initialState, { type, payload }) => {
@@ -24,15 +15,12 @@ export default (state = initialState, { type, payload }) => {
     }
 
     case APPEND_ALBUM_DATA: {
-      const { data, type } = payload;
+      const { data } = payload;
 
       return {
         ...state,
-        [type]: {
-          ...state[type],
-          total: data[type].total,
-          list: [...state[type].list, ...data[type].list],
-        },
+        total: data.total,
+        list: [...state.list, ...data.list],
       };
     }
     case CHANGE_CONTENT_VISIBILITY: {
@@ -42,8 +30,8 @@ export default (state = initialState, { type, payload }) => {
       return {
         ...state,
         [mediaType]: {
-          ...state[mediaType],
-          list: state[mediaType].list.map((media) => (
+          ...state,
+          list: state.list.map((media) => (
             media._id === mediaId ? { ...media, disabled } : media
           )),
         },

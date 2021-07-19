@@ -63,33 +63,35 @@ export const toggleShowEmojiBasket = () => ({ type: TOGGLE_SHOW_EMOJI_BASKET });
 
 let messageId = 0;
 
-const addChatMessage = (message) => ({
+const addChatMessage = (channelId, messages) => ({
   type: ADD_MESSAGES,
-  payload: message,
+  payload: { channelId, messages },
 });
 
-export const addMessages = (messages) => (dispatch) => {
+export const addMessages = (channelId, messages) => (dispatch) => {
   const messageList = messages.map((message) => {
     messageId += 1;
     return { ...message, messageId };
   });
 
   messageId += 1;
-  dispatch(addChatMessage({ messages: messageList }));
+  dispatch(addChatMessage(channelId, messageList));
 }
 
-export const clearMessages = () => ({
+export const clearMessages = (channelId) => ({
   type: CLEAR_MESSAGES,
+  payload: { channelId },
 });
 
-export const markMessageAsDeleted = (messageId) => ({
+export const markMessageAsDeleted = (channelId, messageId) => ({
   type: MARK_MESSAGE_AS_DELETED,
-  payload: { messageId },
+  payload: { channelId, messageId },
 })
 
-export const toggleMessageReaction = (messageId, reaction, reactionId, userId) => ({
+export const toggleMessageReaction = (channelId, messageId, reaction, reactionId, userId) => ({
   type: TOGGLE_MESSAGE_REACTION,
   payload: {
+    channelId,
     messageId,
     reaction,
     reactionId,

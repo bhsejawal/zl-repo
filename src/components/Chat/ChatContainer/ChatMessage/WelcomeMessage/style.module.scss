@@ -1,0 +1,31 @@
+.welcomeMessageWrapper {
+  padding: 8px 15px;
+  position: relative;
+}
+
+.welcomeMessage {
+  min-height: 104px;
+  width: 100%;
+  background: #C5D8FF;
+  border-radius: 5px;
+  padding: 16px 16px;
+
+  .waveEmote {
+    font-size: 15px;
+    line-height: 16px;
+  }
+
+  .messageContainer {
+    margin-top: 14px;
+  }
+}
+
+.closeButton {
+  position: absolute;
+  color: black;
+  top: 12px;
+  right: 23px;
+  cursor: pointer;
+}
+
+

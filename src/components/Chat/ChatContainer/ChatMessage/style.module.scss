@@ -4,6 +4,12 @@
   padding: 5px 10px;
   min-height: max-content;
 
+
+  &.alternate.selected,
+  &.alternate:hover {
+    background: #EBEBEB;
+  }
+
   &.selected,
   &:hover {
     background: #24412B;
@@ -13,6 +19,15 @@
     }
   }
 
+}
+
+.imageContainer {
+  padding: 5px 0px;
+
+  img {
+    width: 100%;
+    border-radius: 5px;
+  }
 }
 
 .messageWrapper {

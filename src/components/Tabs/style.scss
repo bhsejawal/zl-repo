@@ -1,6 +1,8 @@
 .content {
   overflow: auto;
-  min-height: 100%;
+  min-height: unquote("max(100%, 54px)");
+  display: flex;
+  flex-direction: column;
 }
 
 .tabControls {

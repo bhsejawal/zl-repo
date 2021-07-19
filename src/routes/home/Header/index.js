@@ -22,7 +22,7 @@ const HeaderComponent = () => (
       <Invite text="Invite Friends" />
       <NavItem text="Log In" onClick={goToLogin} icon={faSignInAlt} />
       <LandingSecondary onClick={goToSignup} className={style.signUpButton}>
-        Sign Up
+        Start Free Trial
       </LandingSecondary>
     </div>
 
@@ -31,7 +31,7 @@ const HeaderComponent = () => (
       <NavItem onClick={goToLogin} text="Log In" url="/login" icon={faSignOut} />
       <Box margin={{ left: '15px' }}>
         <LandingSecondary onClick={goToSignup} className={style.signUpButton}>
-          Sign Up
+          Start Free Trial
         </LandingSecondary>
       </Box>
     </BurgerMenu>

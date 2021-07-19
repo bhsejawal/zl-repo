@@ -1,9 +1,7 @@
-import { useEffect, useState, useCallback } from 'preact/hooks';
-import PubNub from 'pubnub';
-import { PubNubProvider } from 'pubnub-react';
+import { useEffect, useCallback } from 'preact/hooks';
 import { connect } from 'react-redux';
+import { usePubNub } from 'pubnub-react';
 
-import { ChatContext } from 'Shared/context';
 import {
   addMessages,
   clearMessages,
@@ -13,10 +11,8 @@ import {
 
 import ChatContainer from './ChatContainer';
 
-let pubnub;
-
 const Chat = ({
-  habitatId,
+  channelId,
   userId,
   animal,
   color,
@@ -25,19 +21,20 @@ const Chat = ({
   clearMessagesAction,
   markMessageAsDeletedAction,
   toggleMessageReactionAction,
+  mediaType,
+  alternate = false,
 }) => {
-  const [isConnectedToPubnub, setIsConnectedToPubnub] = useState(false);
-
+  const pubnub = usePubNub();
   const addMessageListener = useCallback((msg) => {
     const { message, timetoken } = msg;
     const timestamp = new Date(parseInt(timetoken, 10) / 10000);
-    addMessagesAction([{
+    addMessagesAction(channelId, [{
       ...message,
       timestamp,
       timetoken,
       reactions: {},
     }]);
-  }, [addMessagesAction]);
+  }, [addMessagesAction, channelId]);
 
   const messageActionListener = useCallback(({
     channel,
@@ -49,19 +46,19 @@ const Chat = ({
       uuid,
     },
   }) => {
-    if (channel !== habitatId) {
+    if (channel !== channelId) {
       return;
     }
     if (type === 'deleted') {
-      markMessageAsDeletedAction(messageTimetoken);
+      markMessageAsDeletedAction(channelId, messageTimetoken);
     } else if (type === 'reaction') {
-      toggleMessageReactionAction(messageTimetoken, value, actionTimetoken, uuid);
+      toggleMessageReactionAction(channelId, messageTimetoken, value, actionTimetoken, uuid);
     }
-  }, [markMessageAsDeletedAction, habitatId]);
+  }, [markMessageAsDeletedAction, channelId]);
 
   const handleFetchedMessages = useCallback((status, response) => {
-    if (status.statusCode === 200 && response.channels[habitatId]) {
-      const messages = response.channels[habitatId];
+    if (status.statusCode === 200 && response.channels[channelId]) {
+      const messages = response.channels[channelId];
 
       const messagesList = messages.map(({
         message,
@@ -81,46 +78,36 @@ const Chat = ({
         };
       });
 
-      addMessagesAction(messagesList)
+      addMessagesAction(channelId, messagesList)
     }
-  }, [habitatId, addMessagesAction]);
+  }, [channelId, addMessagesAction]);
 
   // eslint-disable-next-line consistent-return
   useEffect(() => {
-    if (habitatId && animal && color && userId && username) {
-      pubnub = new PubNub({
-        publishKey: process.env.PREACT_APP_PUBNUB_PUBLISH_KEY,
-        subscribeKey: process.env.PREACT_APP_PUBNUB_SUBSCRIPTION_KEY,
-        uuid: userId,
-        autoNetworkDetection: true,
-      });
-
+    if (channelId && animal && color && userId && username) {
       const listeners = {
         message: addMessageListener,
         messageAction: messageActionListener,
       };
       pubnub.addListener(listeners);
 
-      pubnub.subscribe({ channels: [habitatId], withPresence: true });
+      pubnub.subscribe({ channels: [channelId], withPresence: true });
 
       pubnub.fetchMessages({
-        channels: [habitatId],
+        channels: [channelId],
         count: 50,
         includeMessageActions: true,
       }, handleFetchedMessages);
 
-      setIsConnectedToPubnub(true);
-
       return () => {
         pubnub.removeListener(listeners);
-        pubnub.unsubscribeAll();
-        clearMessagesAction();
-        setIsConnectedToPubnub(false);
-        pubnub = undefined;
+        pubnub.unsubscribe({ channels: [channelId]});
+        clearMessagesAction(channelId);
       };
     }
   }, [
-    habitatId,
+    pubnub,
+    channelId,
     animal,
     color,
     userId,
@@ -131,16 +118,12 @@ const Chat = ({
     messageActionListener,
   ]);
 
-  if (!isConnectedToPubnub) {
-    return null;
-  }
-
   return (
-    <PubNubProvider client={pubnub}>
-      <ChatContext.Provider value={{ pubnub }}>
-        <ChatContainer />
-      </ChatContext.Provider>
-    </PubNubProvider>
+    <ChatContainer
+      channelId={channelId}
+      alternate={alternate}
+      mediaType={mediaType}
+    />
   );
 }
 
@@ -153,12 +136,10 @@ export default connect(({
       color,
     },
   },
-  habitat: { habitatInfo: { _id: habitatId } },
 }) => ({
   userId,
   animal,
   color,
-  habitatId,
   username,
 }), {
   addMessagesAction: addMessages,

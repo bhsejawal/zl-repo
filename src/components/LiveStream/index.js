@@ -165,7 +165,10 @@ const Stream = ({
         )}
 
         {streamStatus === ERROR && (
-          <Fallback type="error" />
+          <>
+            <Fallback type="error" />
+            {(interactive && hasPermission('habitat:edit-stream')) && <AdminButton />}
+          </>
         )}
 
         {(streamStatus === CLOSED || !isStreamOn) && (

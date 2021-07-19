@@ -117,17 +117,17 @@ const Footer = () => {
           <h3>
             Contact:
             {' '}
-            <a className={style.mLink} href={mailLinks?.info}>{mailLinks?.info}</a>
+            <a className={style.mLink} href={mailLinks?.info}>{mailLinks?.info.replace('mailto:', '')}</a>
           </h3>
           <h3>
             Press:
             {' '}
-            <a className={style.mLink} href={mailLinks?.press}>{mailLinks?.press}</a>
+            <a className={style.mLink} href={mailLinks?.press}>{mailLinks?.press.replace('mailto:', '')}</a>
           </h3>
           <h3>
             <a
               className={`${style.mLink} ${style.bold}`}
-              href="https://brizi.applytojob.com/apply/lQ3Gm5NILz/Director-Of-Partnerships"
+              href="https://brizi.applytojob.com/apply/eG8TqcfWga/Senior-Full-Stack-Software-Developer"
               target="_blank"
               rel="noopener noreferrer"
             >
