@@ -10,6 +10,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faCamera,
   faCog,
+  faCogs,
   faLaughWink,
   faPowerOff,
 } from '@fortawesome/pro-solid-svg-icons';
@@ -17,7 +18,12 @@ import {
 import StreamEditModalLoader from './EditModal/Loader';
 
 import style from './style.scss';
-import { EMOJI_SECTION, OVERLAY_SECTION, POWER_SECTION } from './constants';
+import {
+  EMOJI_SECTION,
+  OVERLAY_SECTION,
+  POWER_SECTION,
+  CONFIGURATIONS,
+} from './constants';
 
 const AdminButton = () => {
   const [openSection, setOpenSection] = useState();
@@ -64,6 +70,17 @@ const AdminButton = () => {
           />
         ),
         onClick: () => setOpenSection(OVERLAY_SECTION),
+      }, {
+        className: style.item,
+        label: 'Configuration',
+        icon: (
+          <FontAwesomeIcon
+            className={style.icon}
+            icon={faCogs}
+            size="lg"
+          />
+        ),
+        onClick: () => setOpenSection(CONFIGURATIONS),
       });
     }
 

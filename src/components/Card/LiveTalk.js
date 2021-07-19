@@ -21,6 +21,7 @@ const LiveTalk = ({
   if (disabled) {
     return null;
   }
+
   return (
     <div className={classnames(style.card, style.liveTalk, {
       [style.tablet]: isMobileView, [style.phone]: isSmallScreen,

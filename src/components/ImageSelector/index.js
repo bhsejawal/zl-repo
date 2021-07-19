@@ -72,7 +72,8 @@ const ImageSelector = forwardRef(({
     const newErrors = {};
     const headers = await getHeaders(url);
 
-    if (acceptedFormats && acceptedFormats.length > 0) {
+    if (acceptedFormats && acceptedFormats.length > 0
+      && ((!required && !isEmpty(url)) || required)) {
       const [imgFormat] = headers
         .get('content-type')
         .split('/')
@@ -171,6 +172,10 @@ const ImageSelector = forwardRef(({
     validate: async () => {
       let isValid = true;
 
+      if (!required && isEmpty(url)) {
+        return isValid
+      }
+
       try {
         const parsedUrl = new URL(url);
         const normalizeAssetHost = parsedUrl.hostname.replace('www.', '');
@@ -186,7 +191,7 @@ const ImageSelector = forwardRef(({
       }
 
       if (required && (!url || url.length === 0)) {
-        setErrorMsg('Image is required');
+        setErrorMsg('Media is required');
         isValid = false;
       }
 
@@ -314,6 +319,11 @@ const ImageSelector = forwardRef(({
   };
 
   const onBlur = async ({ target }) => {
+    if (!required && isEmpty(target.value)) {
+      onChange(target.value);
+      return;
+    }
+
     const urlObj = new URL(target.value);
 
     if (urlObj.origin === window.location.origin) {

@@ -168,3 +168,19 @@ $cardWidth: 240px;
     display: none;
   }
 }
+
+.videoCard {
+  width: 240px;
+  height: 140px;
+  border-radius: 5px;
+  overflow: hidden;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-content: center;
+
+  video {
+    width: 100%;
+    border-radius: 5px;
+  }
+}

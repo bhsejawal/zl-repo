@@ -8,12 +8,14 @@ import {
 import { connect } from 'react-redux';
 import Carousel from 'react-multi-carousel';
 import { format } from 'date-fns';
+import { isEmpty } from 'lodash-es';
 import classnames from 'classnames';
 
 import BroadcastWrapper from 'Components/BroadcastWrapper';
 import { hasPermission } from 'Components/Authorize';
 import Card from '../Card';
 import LiveTalk from '../Card/LiveTalk';
+import PreviewVideo from '../Card/PreviewVideo';
 import { useUpcomingTalks } from '../../routes/habitat/hooks';
 
 import 'react-multi-carousel/lib/styles.css';
@@ -24,11 +26,26 @@ const ScheduleCarousel = ({
   hostStreamKey,
   isHostStreamOn,
   isBroadcasting,
+  previewVideo,
 }) => {
   const ref = useRef();
   const [initiallyLoaded, setInitiallyLoaded] = useState(false);
   const { loading, error, upcoming = [] } = useUpcomingTalks(habitatId, 1);
-  const list = useMemo(
+  const list = useMemo(() => {
+    const items = [];
+
+    if (hasPermission('habitat:broadcast') && (!isHostStreamOn || isBroadcasting)) {
+      items.push(<BroadcastWrapper />)
+    }
+    if (hostStreamKey && isHostStreamOn && !isBroadcasting) {
+      items.push(<LiveTalk streamId={hostStreamKey} />)
+    }
+    if (!isEmpty(previewVideo)) {
+      items.push(<PreviewVideo videoUrl={previewVideo} />)
+    }
+    return items;
+  }, [hostStreamKey, isBroadcasting, isHostStreamOn, previewVideo]);
+  const liveTalks = useMemo(
     () => upcoming.map(({ startTime, isStreamLive, ...rest }) => ({
       text: `TALK | ${format(startTime, 'EEE HH:mm aa').toUpperCase()}`,
       startTime,
@@ -48,9 +65,6 @@ const ScheduleCarousel = ({
       ref.current.goToSlide(0);
     }
   }, [isHostStreamOn]);
-
-  const showBroadcastCard = hasPermission('habitat:broadcast') && (!isHostStreamOn || isBroadcasting);
-  const showLiveTalk = hostStreamKey && isHostStreamOn && !isBroadcasting;
 
   return (
     <div className={style.container}>
@@ -73,8 +87,7 @@ const ScheduleCarousel = ({
           showDots
           keyBoardControl={false}
           className={classnames(style.carousel, {
-            [style.singleItem]: (list.length === 0 && (showBroadcastCard || showLiveTalk))
-            || (list.length === 1 && !(showBroadcastCard || showLiveTalk)),
+            [style.singleItem]: (liveTalks.length + list.length) === 1,
           }) }
           responsive={{
             generic: {
@@ -84,10 +97,9 @@ const ScheduleCarousel = ({
             },
           }}
         >
-          {showBroadcastCard && <BroadcastWrapper />}
-          {showLiveTalk && <LiveTalk streamId={hostStreamKey} />}
+          {list}
 
-          {list.map(({
+          {liveTalks.map(({
             _id,
             title,
             startTime,
@@ -115,7 +127,14 @@ const ScheduleCarousel = ({
 
 export default connect((
   {
-    habitat: { habitatInfo: { _id: habitatId, hostStreamKey, isHostStreamOn } },
+    habitat: {
+      habitatInfo: {
+        _id: habitatId,
+        hostStreamKey,
+        isHostStreamOn,
+        previewVideo,
+      },
+    },
     mainStream: { interactionState: { isBroadcasting } },
   },
 ) => (
@@ -124,5 +143,6 @@ export default connect((
     hostStreamKey,
     isHostStreamOn,
     isBroadcasting,
+    previewVideo,
   }
 ))(ScheduleCarousel);
