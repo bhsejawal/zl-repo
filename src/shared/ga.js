@@ -28,6 +28,18 @@ export const logPageViewGA = (page, resetReferrer, delay = true) => {
   }
 }
 
+export const logGAEvent = async (category, action, label, value = 1) => {
+  // category ->  content type: chat/ugc
+  // actions -> action the user took: sent-message-chat, liked-photo, reacted-comment-clip
+  // label -> the habitat slug
+  ReactGA.event({
+    category,
+    action,
+    label,
+    value,
+  });
+};
+
 export const setGAUserId = (userId) => {
   if (!isGAInitialized) {
     initializeGA();

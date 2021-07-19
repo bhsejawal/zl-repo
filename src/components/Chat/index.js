@@ -21,6 +21,7 @@ const Chat = ({
   clearMessagesAction,
   markMessageAsDeletedAction,
   toggleMessageReactionAction,
+  mediaType,
   alternate = false,
 }) => {
   const pubnub = usePubNub();
@@ -118,7 +119,11 @@ const Chat = ({
   ]);
 
   return (
-    <ChatContainer channelId={channelId} alternate={alternate} />
+    <ChatContainer
+      channelId={channelId}
+      alternate={alternate}
+      mediaType={mediaType}
+    />
   );
 }
 

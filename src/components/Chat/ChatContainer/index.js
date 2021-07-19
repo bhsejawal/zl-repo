@@ -9,6 +9,8 @@ import { get, last } from 'lodash-es';
 import classnames from 'classnames';
 import { usePubNub } from 'pubnub-react';
 
+import { logGAEvent } from 'Shared/ga';
+
 import InputBox from './InputBox';
 
 import style from './style.module.scss';
@@ -24,6 +26,8 @@ const ChatContainer = ({
   username,
   channelId,
   alternate,
+  mediaType,
+  slug,
 }) => {
   const [internalMessages, setInternalMessages] = useState([]);
   const [showModal, setShowModal] = useState(false);
@@ -52,7 +56,21 @@ const ChatContainer = ({
     if (showWelcome) {
       setShowWelcome(false);
     }
+
+    logGAEvent(
+      mediaType ? 'ugc' : 'chat',
+      mediaType ? `sent-comment-${mediaType}` : 'sent-message-chat',
+      slug,
+    );
   };
+
+  const onReactionHandler = () => {
+    logGAEvent(
+      mediaType ? 'ugc' : 'chat',
+      mediaType ? `reacted-comment-${mediaType}` : 'reacted-message-chat',
+      slug,
+    );
+  }
 
   const deleteMessage = useCallback(() => {
     pubnub.addMessageAction({
@@ -111,6 +129,7 @@ const ChatContainer = ({
             timetoken={timetoken}
             reactions={reactions}
             onDeleteHandler={promptDeletion}
+            onReactionHandler={onReactionHandler}
             channelId={channelId}
             alternate={alternate}
             media={media}
@@ -120,14 +139,33 @@ const ChatContainer = ({
           <WelcomeMessage onClose={onSendHandler} />
         )}
       </div>
-      <InputBox channelId={channelId} alternate={alternate} onSendHandler={onSendHandler} />
+      <InputBox
+        channelId={channelId}
+        alternate={alternate}
+        onSendHandler={onSendHandler}
+      />
       {showModal && <DeleteMessageModal onClose={onCloseHandler} onDelete={deleteMessage} />}
     </>
   );
 }
 
 export default connect((
-  { chat: { channels }, user: { username }},
+  {
+    chat: { channels },
+    user: { username },
+    habitat: {
+      habitatInfo: {
+        slug: habitatSlug,
+        zoo: {
+          slug: zooSlug,
+        },
+      },
+    },
+  },
 ) => (
-  { messages: channels, username }
+  {
+    messages: channels,
+    username,
+    slug: `${zooSlug}/${habitatSlug}`,
+  }
 ))(ChatContainer);

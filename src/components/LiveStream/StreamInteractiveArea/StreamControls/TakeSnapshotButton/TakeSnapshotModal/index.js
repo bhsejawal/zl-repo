@@ -8,9 +8,11 @@ import {
 } from 'grommet';
 import useFetch from 'use-http';
 import classnames from 'classnames';
+import { connect } from 'react-redux';
 
 import { PrimaryButton } from 'Components/Buttons';
 import { API_BASE_URL } from 'Shared/fetch';
+import { logGAEvent } from 'Shared/ga';
 import Header from 'Components/modals/Header';
 import ErrorModal from 'Components/modals/Error';
 import ShareSection from './ShareSection';
@@ -23,6 +25,7 @@ const TakeSnapshotModal = ({
   image,
   htmlURL,
   onClose,
+  slug,
 }) => {
   const [title, setTitle] = useState('');
   const [showError, setShowError] = useState(false);
@@ -53,6 +56,11 @@ const TakeSnapshotModal = ({
 
   const clickHandler = () => {
     put(`/photos/${snapshotId}`, { title, share: true });
+    logGAEvent(
+      'ugc',
+      'created-photo',
+      slug,
+    );
   };
 
   return (
@@ -106,4 +114,15 @@ const TakeSnapshotModal = ({
   );
 };
 
-export default TakeSnapshotModal;
+export default connect(({
+  habitat: {
+    habitatInfo: {
+      slug: habitatSlug,
+      zoo: {
+        slug: zooSlug,
+      },
+    },
+  },
+}) => ({
+  slug: `${zooSlug}/${habitatSlug}`,
+}))(TakeSnapshotModal);

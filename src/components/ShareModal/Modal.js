@@ -20,6 +20,8 @@ import useFetch from 'use-http';
 import classnames from 'classnames';
 import { formatDistanceToNow } from 'date-fns';
 
+import { logGAEvent } from 'Shared/ga';
+
 import ErrorModal from 'Components/modals/Error';
 import CloseButton from 'Components/modals/CloseButton';
 import AnimalIcon from 'Components/AnimalIcon';
@@ -69,6 +71,7 @@ const ShareModal = ({
   onClose,
   setShareModalMediaId,
   habitat,
+  slug,
 }) => {
   const {
     _id,
@@ -155,6 +158,11 @@ const ShareModal = ({
   const likeContent = async () => {
     try {
       await likePut(`${type === 'photo' ? 'photos' : 'videos'}/${mediaId}/like`);
+      logGAEvent(
+        'ugc',
+        `react-liked-${type}`,
+        slug,
+      );
       setContentLikes( (prevState) => ({
         isLiked: !prevState.isLiked,
         likes: prevState.isLiked ? prevState.likes - 1 : prevState.likes + 1,
@@ -354,7 +362,7 @@ const ShareModal = ({
               <Box fill>
                 {typeof window !== 'undefined' && mediaId && (
                   <Suspense>
-                    <Chat channelId={mediaId} alternate />
+                    <Chat channelId={mediaId} alternate mediaType={type} />
                   </Suspense>
                 )}
               </Box>
@@ -368,4 +376,16 @@ const ShareModal = ({
   );
 };
 
-export default connect(({ habitat: { shareModal: { mediaId }}}) => ({ mediaId }))(ShareModal);
+export default connect((
+  {
+    habitat: {
+      shareModal: { mediaId },
+      habitatInfo: {
+        slug: habitatSlug,
+        zoo: {
+          slug: zooSlug,
+        },
+      },
+    },
+  },
+) => ({ mediaId, slug: `${zooSlug}/${habitatSlug}` }))(ShareModal);

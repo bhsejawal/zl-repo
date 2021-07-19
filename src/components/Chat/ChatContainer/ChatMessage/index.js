@@ -35,6 +35,7 @@ const ChatMessage = ({
   userId,
   channelId,
   onDeleteHandler,
+  onReactionHandler,
   alternate,
   media = {},
 }) => {
@@ -83,13 +84,16 @@ const ChatMessage = ({
         },
       );
     }
+
+    onReactionHandler();
     setShowReactionBar(false);
-  }, [pubnub, timetoken, userReactions, channelId]);
+  }, [pubnub, timetoken, userReactions, channelId, onReactionHandler]);
 
   const initialMessage = useMemo(() => {
     const message = formatDistanceToNowStrict(timestamp, { roundingMethod: 'ceil'});
     return message.startsWith('0') ? '1 minute' : message;
   }, [timestamp]);
+
   const [messageTime, setMessageTime] = useState(initialMessage);
   const intervalRef = useRef(null);
   const messageContainer = useRef();

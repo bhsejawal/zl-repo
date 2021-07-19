@@ -9,6 +9,7 @@ import {
 } from 'grommet';
 import useFetch from 'use-http';
 
+import { logGAEvent } from 'Shared/ga';
 import Header from 'Components/modals/Header';
 import RangeInput from 'Components/RangeInput';
 import ErrorModal from 'Components/modals/Error';
@@ -20,7 +21,12 @@ import LoadingContent from './LoadingContent';
 
 import style from './style.scss';
 
-const TrimVideoModal = ({ onClose, streamId, habitatId }) => {
+const TrimVideoModal = ({
+  onClose,
+  streamId,
+  habitatId,
+  slug,
+}) => {
   const [videoData, setVideoData] = useState({});
   const [showError, setShowError] = useState(false);
   const [trimmedVideoData, setTrimmedVideoData] = useState({});
@@ -88,6 +94,12 @@ const TrimVideoModal = ({ onClose, streamId, habitatId }) => {
         habitatId,
         title,
       });
+
+      logGAEvent(
+        'ugc',
+        'created-clip',
+        slug,
+      );
     }
   };
 
@@ -148,5 +160,18 @@ const TrimVideoModal = ({ onClose, streamId, habitatId }) => {
 };
 
 export default connect(
-  ({ habitat: { habitatInfo: { streamKey, _id }}}) => ({ streamId: streamKey, habitatId: _id }),
+  (
+    {
+      habitat: {
+        habitatInfo: {
+          streamKey,
+          _id,
+          slug: habitatSlug,
+          zoo: {
+            slug: zooSlug,
+          },
+        },
+      },
+    },
+  ) => ({ streamId: streamKey, habitatId: _id, slug: `${zooSlug}/${habitatSlug}` }),
 )(TrimVideoModal);
