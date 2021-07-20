@@ -30,6 +30,51 @@
   }
 }
 
+.carouselContainer {
+  position: relative;
+  background-color: transparent;
+  user-select: none;
+
+  .dots {
+    bottom: 20px;
+
+    li {
+      display: flex;
+      align-items: center;
+      height: 10px;
+      width: 20px;
+
+      &:not(.react-multi-carousel-dot--active) {
+        opacity: .5;
+      }
+
+      button {
+        border: 0;
+        background-color: white;
+        width: 10px;
+        height: 10px;
+      }
+    }
+  }
+
+  .carousel {
+
+    li {
+      display: flex;
+
+      div {
+        width: 100%;
+      }
+    }
+
+    img {
+      width: 100%;
+      display: flex;
+    }
+  }
+}
+
+
 @media screen and (max-width: #{$tablet-portrait-width}) {
 
   .loginSignup {
@@ -38,10 +83,14 @@
     .imageSection {
       width: 100%;
       min-height: 100vw;
+
+      &.hideForMobile {
+        display: none;
+      }
     }
 
     .formSection {
-      width: 100vw;
+      width: 100%;
       max-width: unset;
       min-height: fit-content;
 
