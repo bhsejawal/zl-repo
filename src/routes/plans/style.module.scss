@@ -1,0 +1,12 @@
+.plansPageWrapper * {
+  z-index: 2;
+}
+
+
+.bottomImage {
+  position: absolute;
+  z-index: 1;
+  max-height: 50%;
+  width: 100%;
+  bottom: 0;
+}
