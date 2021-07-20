@@ -26,7 +26,12 @@ const Chat = ({
 }) => {
   const pubnub = usePubNub();
   const addMessageListener = useCallback((msg) => {
-    const { message, timetoken } = msg;
+    const { message, timetoken, channel } = msg;
+
+    if (channel !== channelId) {
+      return;
+    }
+
     const timestamp = new Date(parseInt(timetoken, 10) / 10000);
     addMessagesAction(channelId, [{
       ...message,

@@ -41,46 +41,50 @@ const MediaContent = ({
       className={classnames(style.mediaContainer, className)}
       onMouseEnter={() => setShowOverlay(true)}
       onMouseLeave={() => setShowOverlay(false)}
-      onClick={onclickHandler}
     >
-      <div className={classnames(style.mediaOverlay, {[style.show]: showOverlay})}>
-        <div className={style.overlayWrapper}>
-          <Can
-            perform="habitat:edit-album-media"
-            yes={() => (
-              <div className={style.actionBar}>
-                {type === 'pastTalks' && rawURL && (
-                  <a href={rawURL} target="_blank" rel="noreferrer nooppener">
-                    <RoundButton
-                      width="24"
-                      color="var(--blueDark)"
-                    >
-                      <FontAwesomeIcon icon={faDownload} />
-                    </RoundButton>
-                  </a>
-                )}
-                {type === 'photos' && rawURL && (
-                  <a href={handleDownloadMediaURL(rawURL)} download>
-                    <RoundButton
-                      width="24"
-                      color="var(--blueDark)"
-                    >
-                      <FontAwesomeIcon icon={faDownload} />
-                    </RoundButton>
-                  </a>
-                )}
-                {accessControlButtonHandler && (
+      {showOverlay && (
+        <Can
+          perform="habitat:edit-album-media"
+          yes={() => (
+            <div className={style.actionBar}>
+              {type === 'pastTalks' && rawURL && (
+                <a href={rawURL} target="_blank" rel="noreferrer nooppener">
                   <RoundButton
                     width="24"
                     color="var(--blueDark)"
-                    onClick={() => accessControlButtonHandler(id, disabled ? 'unhide' : 'hide', type)}
                   >
-                    <FontAwesomeIcon icon={disabled ? faEye : faEyeSlash} />
+                    <FontAwesomeIcon icon={faDownload} />
                   </RoundButton>
-                )}
-              </div>
-            )}
-          />
+                </a>
+              )}
+              {type === 'photos' && rawURL && (
+                <a href={handleDownloadMediaURL(rawURL)} download>
+                  <RoundButton
+                    width="24"
+                    color="var(--blueDark)"
+                  >
+                    <FontAwesomeIcon icon={faDownload} />
+                  </RoundButton>
+                </a>
+              )}
+              {accessControlButtonHandler && (
+                <RoundButton
+                  width="24"
+                  color="var(--blueDark)"
+                  onClick={() => accessControlButtonHandler(id, disabled ? 'unhide' : 'hide', type)}
+                >
+                  <FontAwesomeIcon icon={disabled ? faEye : faEyeSlash} />
+                </RoundButton>
+              )}
+            </div>
+          )}
+        />
+      )}
+      <div
+        className={classnames(style.mediaOverlay, {[style.show]: showOverlay})}
+        onClick={onclickHandler}
+      >
+        <div className={style.overlayWrapper}>
           <div className={style.imageStats}>
             <div>
               <FontAwesomeIcon icon={faHeart} />
