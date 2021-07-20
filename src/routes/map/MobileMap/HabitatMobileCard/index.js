@@ -25,7 +25,7 @@ const HabitatMobileCard = ({ habitat, isOffline }) => {
       header={
         <Box direction="row" align="center" onClick={() => setIsOpen(!isOpen)} className={classnames({[style.offline]: isOffline })}>
           <img src={habitat.profileImage} className={style.habitatImage} alt="profile" />
-          <Heading level={4} margin={{ left: "15px" }}>{habitat.animal}</Heading>
+          <Heading level={4} margin={{ left: "15px" }}>{habitat.title}</Heading>
         </Box>
       }
     >
