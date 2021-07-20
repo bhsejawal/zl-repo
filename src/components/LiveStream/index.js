@@ -61,6 +61,7 @@ const Stream = ({
       socket.emit('logWebrtcStats', {
         userId,
         deviceType: getDeviceType(),
+        userAgent: navigator.userAgent,
         ...data,
       })
     }
