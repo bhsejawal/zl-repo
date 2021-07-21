@@ -38,7 +38,13 @@ import style from '../login/style.scss';
 
 const TERMS_VERSION = process.env.PREACT_APP_TERMS_VERSION ?? 1;
 
-const Signup = ({ setUserDataAction, openTermsModalAction, matches }) => {
+const Signup = ({
+  setUserDataAction,
+  openTermsModalAction,
+  matches,
+  logged,
+  sessionChecked,
+}) => {
   const size = useContext(ResponsiveContext);
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
@@ -56,6 +62,12 @@ const Signup = ({ setUserDataAction, openTermsModalAction, matches }) => {
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [matches]);
+
+  useEffect(() => {
+    if (logged) {
+      loadPage('/map', true);
+    }
+  }, [logged]);
 
   const isLargeScreen = size === 'large';
 
@@ -142,9 +154,13 @@ const Signup = ({ setUserDataAction, openTermsModalAction, matches }) => {
     openTermsModalAction(false, type);
   };
 
+  if (!sessionChecked || logged) {
+    return null;
+  }
+
   return (
     <Box fill width={{ max: "1650px", min: "350px" }} height={{ min: 'max-content' }} margin={{ horizontal: 'auto' }}>
-      <Layout image={signupImage}>
+      <Layout image={signupImage} showCarousel>
         {isLargeScreen && (
           <Heading margin={{top: '30px', bottom: '5px'}} level="4" color="var(--grey)">Step 1 of 2</Heading>
         )}
@@ -262,7 +278,7 @@ const Signup = ({ setUserDataAction, openTermsModalAction, matches }) => {
 };
 
 export default connect(
-  null,
+  ({ user: { logged, sessionChecked } }) => ({ logged, sessionChecked }),
   {
     setUserDataAction: setUserData,
     openTermsModalAction: openTermsModal,

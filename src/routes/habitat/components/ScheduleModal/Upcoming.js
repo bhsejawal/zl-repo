@@ -12,7 +12,7 @@ const Upcoming = () => {
 
   const list = useMemo(
     () => upcoming.map(({ startTime, isStreamLive, ...rest }) => ({
-      text: `TALK | ${format(startTime, 'EEE HH:mm aa').toUpperCase()}`,
+      text: `TALK | ${format(startTime, 'EEE hh:mm aa').toUpperCase()}`,
       startTime,
       ...rest,
     })),

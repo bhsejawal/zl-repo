@@ -2,6 +2,25 @@
 This file keeps track of all relevant change for every release.
 
 ## [Unreleased]
+
+## [5.11.0] - 2021-07-20
+
+### Added
+- Carousel on the Signup page
+- Support to share clips on the chat
+- WebRTC logs now includes User Agent
+### Fixed
+- Formatting issue on the Schedule Card
+- Hide/Download button issue on album pages
+- Issue where main chat would display message posted on UGC
+- Session issue on Login/Signup pages
+- Zoom issue when a user focus on an input on iOS
+
+### Changed
+- Layout on the plans page
+- USA is now named US on the country list
+- Map page title on mobile devices
+- Map page on mobile now uses the Habitat Title instead of the Species name
 ## [5.10.0] - 2021-07-19
 
 ### Added

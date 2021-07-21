@@ -11,7 +11,6 @@ import { Box } from 'grommet';
 
 import useFetch from 'use-http';
 import { route } from 'preact-router';
-import { format } from "date-fns";
 import { loadStripe } from '@stripe/stripe-js/pure';
 import { Experiment, Variant } from 'react-optimize';
 
@@ -26,8 +25,7 @@ import UpdateSubscriptionDialog from './UpdateSubscriptionDialog';
 
 import { setPlans, setSubscriptionData } from '../../redux/actions';
 
-import background from './plansBackground.png';
-import { useWindowResize } from '../../hooks';
+import { useIsMobileSize } from '../../hooks';
 
 const defaultDialogSettings = {
   show: false,
@@ -37,18 +35,21 @@ const defaultDialogSettings = {
   interval: null,
 }
 
-const getBenefitText = (price) => (price === 999
+const getBenefitText = (interval) => (interval === 'month'
   ? 'Enjoy new animals added every month'
-  : 'Save 18% with an annual membership');
+  : 'With an annual membership');
+
+const getBenefitTitle = (interval) => (interval === 'month'
+  ? 'Unlimited Access'
+  : 'Save 18%');
 
 const VariantA = ({ plans, isSmallScreen }) => (
   <Box
     direction={isSmallScreen ? 'column' : 'row'}
     fill
-    align="center"
     justify="center"
-    gap="large"
-    margin="auto"
+    gap="small"
+    margin={{ bottom: '20px' }}
   >
     {plans.filter(({ price }) => price !== 199).map(({
       name,
@@ -140,15 +141,13 @@ const VariantB = ({ plans, isSmallScreen }) => (
 const SubscriptionSection = ({
   plans,
   productId,
-  validUntil,
   isSubscriptionActive,
   subscriptionStatus,
   setPlansAction,
   setSubscriptionDataAction,
 }) => {
   const { stripe } = useContext(StripeContext);
-  const { width } = useWindowResize();
-  const isSmallScreen = width <= 750;
+  const isSmallScreen = useIsMobileSize();
   const [showCancelDialog, setShowCancelDialog] = useState(false);
 
   const [dialogSettings, setDialogSettings] = useState(defaultDialogSettings);
@@ -182,8 +181,6 @@ const SubscriptionSection = ({
       // TODO: display error modal
     }
   }, [post, stripe])
-
-  const validUntilReadable = validUntil ? format(validUntil, 'MMMM dd, yyyy') : '';
 
   const cancelSubscription = useCallback(async () => {
     try {
@@ -243,8 +240,8 @@ const SubscriptionSection = ({
         currentPlan: false,
         label: 'Select',
         display: true,
-        benefitTitle: interval === 'month' ? 'Unlimited access' : '',
-        benefitText: interval !== 'visit' ? getBenefitText(price) : 'Unlock all  features for a full day',
+        benefitTitle: interval === 'visit' ? '' : getBenefitTitle(interval),
+        benefitText: interval !== 'visit' ? getBenefitText(interval) : 'Unlock all  features for a full day',
         clickHandler: () => checkoutHandler(planProductId, priceId),
         originalPrice,
       }));
@@ -275,8 +272,8 @@ const SubscriptionSection = ({
           currentPlan: true,
           label: 'Renew',
           display: true,
-          benefitTitle: 'Valid until',
-          benefitText: validUntilReadable,
+          benefitTitle: interval === 'visit' ? '' : getBenefitTitle(interval),
+          benefitText: interval !== 'visit' ? getBenefitText(interval) : 'Unlock all  features for a full day',
           clickHandler: () => openDialogHandler('Renew', planProductId, priceId, interval),
           originalPrice,
         }));
@@ -324,22 +321,8 @@ const SubscriptionSection = ({
         disabled = true;
       }
 
-      let benefitText;
-      if (isCurrentPlan && interval !== 'visit') {
-        benefitText = validUntilReadable;
-      } else if (interval !== 'visit') {
-        benefitText = 'Cancel Anytime'
-      }
-
-      let benefitTitle;
-      const renewPrefix = interval === 'month' ? 'Monthly' : 'Annual';
-      if (isCurrentPlan && interval !== 'visit') {
-        benefitTitle = 'Auto-Renews:';
-      } else if (interval !== 'visit') {
-        benefitTitle = `${renewPrefix} Auto-Renew`
-      } else {
-        benefitTitle = 'Unlock all features for a full day'
-      }
+      const benefitTitle = interval === 'visit' ? '' : getBenefitTitle(interval);
+      const benefitText = interval !== 'visit' ? getBenefitText(interval) : 'Unlock all  features for a full day';
 
       return {
         planProductId,
@@ -366,7 +349,6 @@ const SubscriptionSection = ({
     subscriptionStatus,
     isSubscriptionActive,
     checkoutHandler,
-    validUntilReadable,
     cancelSubscription,
   ]);
 
@@ -374,21 +356,12 @@ const SubscriptionSection = ({
     <>
       <Box
         direction="column"
-        flex="grow"
         height="auto"
+        alignSelf="center"
       >
         <Box
           fill
           basis="full"
-          background={{
-            image: `url(${background})`,
-            size: 'contain',
-            position: 'bottom',
-            repeat: 'no-repeat',
-            attachment: 'fixed',
-          }}
-          flex="grow"
-          pad="50px"
         >
           <Experiment id="dFVUdOmqTli7vSykEtQR8w">
             <Variant id="0">

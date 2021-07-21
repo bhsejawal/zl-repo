@@ -158,8 +158,14 @@ const ChatMessage = ({
             {text}
           </span>
           {mediaId && type === 'image' && (
-            <div className={style.imageContainer}>
+            <div className={style.mediaContainer}>
               <img src={src} alt={text} />
+            </div>
+          )}
+          {mediaId && type === 'video' && (
+            <div className={style.mediaContainer}>
+              {/* eslint-disable-next-line jsx-a11y/media-has-caption */}
+              <video src={src} playsInline controls />
             </div>
           )}
           <Box direction="row" gap="5px" wrap>

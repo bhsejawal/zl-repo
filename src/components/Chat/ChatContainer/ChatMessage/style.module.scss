@@ -21,10 +21,11 @@
 
 }
 
-.imageContainer {
+.mediaContainer {
   padding: 5px 0px;
 
-  img {
+  img,
+  video {
     width: 100%;
     border-radius: 5px;
   }

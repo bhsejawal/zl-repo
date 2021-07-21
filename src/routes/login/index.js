@@ -36,6 +36,9 @@ const Login = ({
   token, // from URL
   validateTokenAction,
   matches,
+  logged,
+  profile,
+  sessionChecked,
 }) => {
   const [email, setEmail] = useState();
   const [emailError, setEmailError] = useState();
@@ -51,6 +54,16 @@ const Login = ({
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [matches]);
+
+  useEffect(() => {
+    if (logged && profile) {
+      loadPage('/map', true);
+    } else if (logged) {
+      // users who have not followed the regular signup process
+      // do not have profile set, redirecting them to generate one
+      loadPage('/profile', true);
+    }
+  }, [logged, profile]);
 
   useEffect(() => {
     if (token) {
@@ -123,6 +136,10 @@ const Login = ({
   const onPasswordChange = ({ target }) => {
     setPassword(target.value);
   };
+
+  if (!sessionChecked || logged) {
+    return null;
+  }
 
   return (
     <Box fill width={{ max: "1650px", min: "350px" }} height={{ min: 'max-content' }}>
@@ -202,7 +219,7 @@ const Login = ({
 };
 
 export default connect(
-  null,
+  ({ user: { logged, profile, sessionChecked } }) => ({ logged, profile, sessionChecked }),
   {
     setUserDataAction: setUserData,
     setShowModalAction: showModal,

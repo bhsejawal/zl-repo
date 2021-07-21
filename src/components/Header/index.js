@@ -1,6 +1,6 @@
 import { h } from 'preact';
 import { connect } from 'react-redux';
-import { Box, Header} from 'grommet';
+import { Box, Header } from 'grommet';
 import {
   faHeart,
   faMapMarkerAlt,
@@ -17,7 +17,7 @@ import ZoolifeLogo from '../ZoolifeLogo';
 import UserMenu from './Menu';
 import Search from './Search';
 
-import { useWindowResize } from '../../hooks';
+import { useWindowResize, useIsMobileSize } from '../../hooks';
 import { useLogout } from './hooks';
 import { unsetUserData } from '../../redux/actions';
 
@@ -27,6 +27,8 @@ const cutOffWidth = 950;
 
 const HeaderComponent = ({ unsetUserDataAction, openContactUsModalAction }) => {
   const { width } = useWindowResize();
+  const isSmallScreen = useIsMobileSize();
+
   const logout = useLogout(unsetUserDataAction);
 
   return (
@@ -48,7 +50,7 @@ const HeaderComponent = ({ unsetUserDataAction, openContactUsModalAction }) => {
         </div>
       ) : (
         <BurgerMenu>
-          <NavItem clickable text="Map" url="/map" icon={faMapMarkerAlt} />
+          <NavItem clickable text={isSmallScreen ? 'Habitats' : 'Map'} url="/map" icon={faMapMarkerAlt} />
           <NavItem clickable text="Talk Schedule" url="/schedule" icon={faCalendarDay} />
           <NavItem clickable text="Favorites" url="/favorite" icon={faHeart} />
           <Invite />

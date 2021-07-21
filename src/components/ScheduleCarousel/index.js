@@ -47,7 +47,7 @@ const ScheduleCarousel = ({
   }, [hostStreamKey, isBroadcasting, isHostStreamOn, previewVideo]);
   const liveTalks = useMemo(
     () => upcoming.map(({ startTime, isStreamLive, ...rest }) => ({
-      text: `TALK | ${format(startTime, 'EEE HH:mm aa').toUpperCase()}`,
+      text: `TALK | ${format(startTime, 'EEE hh:mm aa').toUpperCase()}`,
       startTime,
       ...rest,
     })),

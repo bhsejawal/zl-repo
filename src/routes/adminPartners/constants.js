@@ -830,7 +830,7 @@ export const countryList = [
   'United Arab Emirates (the)',
   'United Kingdom of Great Britain and Northern Ireland (the)',
   'United States Minor Outlying Islands (the)',
-  'USA',
+  'US',
   'Uruguay',
   'Uzbekistan',
   'Vanuatu',
