@@ -31,6 +31,7 @@ const Carousel = () => (
       <div><img src="https://assets.zoolife.tv/signupCarousel-1.png" alt="image1" /></div>
       <div><img src="https://assets.zoolife.tv/signupCarousel-2.png" alt="image2" /></div>
       <div><img src="https://assets.zoolife.tv/signupCarousel-3.png" alt="image3" /></div>
+      <div><img src="https://assets.zoolife.tv/signupCarousel-4.png" alt="image4" /></div>
     </ReactCarousel>
   </div>
 );

@@ -55,7 +55,7 @@ const PlanCard = ({
             justify="center"
             className={classnames(style.discountTag, {[style.mobile]: isMobileSize })}
           >
-            <Text weight={900} size="15px">{`${discount}`}</Text>
+            <Text weight={900} size="15px">30%</Text>
             <Text size="9px" weight={400}>discount</Text>
           </Box>
         )}
