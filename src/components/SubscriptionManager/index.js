@@ -41,7 +41,7 @@ const getBenefitText = (interval) => (interval === 'month'
 
 const getBenefitTitle = (interval) => (interval === 'month'
   ? 'Unlimited Access'
-  : 'Save 18%');
+  : 'Save 30%');
 
 const VariantA = ({ plans, isSmallScreen }) => (
   <Box
