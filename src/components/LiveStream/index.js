@@ -36,6 +36,8 @@ const {
   ERROR,
   CLOSED,
   INITIALIZED,
+  PLAY_PAUSED,
+  LOADING,
 } = wsMessages;
 
 const Stream = ({
@@ -71,6 +73,7 @@ const Stream = ({
     streamStatus,
     startPlaying,
     stopPlaying,
+    pausePlaying,
     initializeAdapter,
   } = useWebRTCStream(streamId, isStreamOn, videoRef, 'viewer', logStreamStatus);
 
@@ -91,10 +94,15 @@ const Stream = ({
     isStreamOn,
     startPlaying,
     stopPlaying,
+    pausePlaying,
     videoRef,
     isInitialized,
     initializeAdapter,
   ]);
+
+  const pauseStreamHandler = useCallback(() => {
+    pausePlaying()
+  }, [pausePlaying]);
 
   useEffect(() => () => {
     stopPlaying();
@@ -141,6 +149,9 @@ const Stream = ({
                 showVolumeControl
                 showFullscreenControl
                 hasCameraControls={mode !== 'liveTalk'}
+                onPauseHandler={pauseStreamHandler}
+                isPlaying={streamStatus === PLAY_STARTED}
+                isLoading={streamStatus === LOADING}
               />
             </div>
           )}
@@ -161,8 +172,12 @@ const Stream = ({
           <MobileControls />
         )}
 
-        {![ERROR, PLAY_STARTED, CLOSED].includes(streamStatus) && (
+        {![ERROR, PLAY_STARTED, CLOSED, PLAY_PAUSED].includes(streamStatus) && (
           <Fallback type="loading" mode={mode} />
+        )}
+
+        {streamStatus === PLAY_PAUSED && (
+          <Fallback type="paused" onClick={pauseStreamHandler} />
         )}
 
         {streamStatus === ERROR && (
