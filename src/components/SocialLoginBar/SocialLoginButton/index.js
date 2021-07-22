@@ -27,6 +27,9 @@ const SocialLoginButton = ({ variant, referralData }) => {
   const origin = window.location.pathname;
   queryParams.append('origin', origin);
 
+  const { userAgent } = navigator;
+  queryParams.append('userAgent', userAgent);
+
   return (
     <a
       native

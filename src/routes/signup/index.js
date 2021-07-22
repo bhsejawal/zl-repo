@@ -97,6 +97,7 @@ const Signup = ({
       const origin = getDeviceType();
       const termsVersion = TERMS_VERSION;
       const referralData = getCampaignData();
+      const { userAgent } = navigator;
       const {
         user,
         passwordError,
@@ -107,7 +108,7 @@ const Signup = ({
         password,
         origin,
         termsVersion,
-        referralData,
+        referralData: { ...referralData, userAgent },
       });
 
       if (passwordError) {

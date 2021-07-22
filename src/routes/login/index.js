@@ -107,7 +107,8 @@ const Login = ({
 
     try {
       const url = buildURL('/admin/users/login');
-      const { user } = await post(url, { email, password });
+      const { userAgent } = navigator;
+      const { user } = await post(url, { email, password, userAgent });
       setUserDataAction({ ...user, sessionChecked: true });
       identifyUser(user);
       loadPage('/map');
