@@ -17,6 +17,7 @@ import { buildURL } from 'Shared/fetch';
 import GlobalsContextProvider from "Components/GlobalsContextProvider";
 import LiveStream from 'Components/LiveStream';
 import Loader from 'Components/Loader';
+import Notifications from 'Components/Notifications';
 
 import { openTermsModal } from 'Components/TermsAndConditions/actions';
 import { GlobalsContext } from 'Shared/context';
@@ -30,7 +31,6 @@ import Chat from './components/Chat';
 import LiveChannelsBar from './components/LiveChannelsBar';
 import CardTabs from './components/CardTabs';
 import StreamProfile from './components/StreamProfile';
-import LiveTalkNotification from './components/LiveTalkNotification';
 import OnboardingModal from './OnboardingModal';
 import SmallScreenCardTabs from './components/CardTabs/Mobile';
 import Album from './components/Album';
@@ -243,7 +243,6 @@ const Habitat = ({
           <OnboardingModal />
           <ShareModal />
           <ScheduleModal />
-          <LiveTalkNotification />
         </>
       )}
     </div>
@@ -290,7 +289,7 @@ const HabitatWrapper = ({ matches: { zooName, habitatSlug } }) => (
         </PubNubWrapper>
       </Suspense>
     )}
-
+    <Notifications />
   </GlobalsContextProvider>
 );
 
