@@ -9,7 +9,8 @@
 .onboardingWrapper {
   margin: auto;
   position: relative;
-  max-width: calc(1650px * .8);
+  max-width: calc(var(--maxWidth) * .8);
+  width: 100%;
 
   video {
     max-height: 80vh;

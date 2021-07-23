@@ -45,9 +45,6 @@ import style from './style.scss';
 const ChatComponent = lazy(() => import('Components/Chat'));
 const PubNubWrapper = lazy(() => import('Components/PubNubWrapper'));
 
-const maxStreamWidth = 1280;
-const maxStreamHeight = 720;
-
 const Habitat = ({
   streamKey,
   isStreamOn,
@@ -73,9 +70,9 @@ const Habitat = ({
   const size = useContext(ResponsiveContext);
   const { socket } = useContext(GlobalsContext);
   const pageRef = useRef();
+  const [pageWidth, setPageWidth] = useState(pageRef?.current?.offsetWidth || windowWidth);
   const isTabletOrLarger = ['medium', 'large'].includes(size);
   const isTabbed = useIsHabitatTabbed();
-  const pageWidth = pageRef?.current?.offsetWidth || windowWidth;
 
   useEffect(() => {
     if (socket && userId && habitatId) {
@@ -151,6 +148,19 @@ const Habitat = ({
     }
   }, [title]);
 
+  useEffect(() => {
+    // this will update page width after habitat is set or when window width changes
+    // because scroll shows before habitat is loaded but page width is not updated
+    // therefore calculations are not accurate
+    if (habitatId) {
+      const width = pageRef?.current?.offsetWidth;
+      if (width !== pageWidth) {
+        setPageWidth(width)
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [habitatId, windowWidth]);
+
   if (error) {
     // TODO: we need UI for this
     return (
@@ -162,6 +172,8 @@ const Habitat = ({
 
   const sideBarWidth = 85;
   const chatWidth = 285;
+  const maxStreamWidth = 1920 - sideBarWidth - chatWidth;
+  const maxStreamHeight = maxStreamWidth * 0.5625;
   const calcStreamWidth = isTabbed ? windowWidth : (pageWidth - sideBarWidth - chatWidth);
   const streamWidth = Math.min(maxStreamWidth, calcStreamWidth);
   const height = Math.min(maxStreamHeight, streamWidth * 0.5625);

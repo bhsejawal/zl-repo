@@ -1,5 +1,9 @@
-.plansPageWrapper * {
-  z-index: 2;
+.plansPageWrapper {
+  position: relative;
+
+  * {
+    z-index: 2;
+  }
 }
 
 

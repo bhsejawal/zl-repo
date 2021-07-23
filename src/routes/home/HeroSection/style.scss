@@ -64,7 +64,7 @@ $animationDuration: 2.5s;
 
   .right {
     height: calc((50vw - 15px) * #{$videoRatio}); // vw includes the scrollbar and its ~15px
-    max-height: calc((1650px / 2) * #{$videoRatio});
+    max-height: calc((var(--maxWidth) / 2) * #{$videoRatio});
     overflow: hidden;
     position: relative;
   }

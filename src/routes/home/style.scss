@@ -100,7 +100,7 @@ h6 {
   }
 
   .wrapper {
-    max-width: 1650px;
+    max-width: var(--maxWidth);
     min-width: 350px;
     width: 100%;
     margin: 0 auto;
