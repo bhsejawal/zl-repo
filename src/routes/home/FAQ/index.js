@@ -41,7 +41,7 @@ const FAQ = () => (
         50% of every purchase directly funds animal care &amp; conservation efforts worldwide.
       </p>
       <p>
-        <Experiment id="dFVUdOmqTli7vSykEtQR8w">
+        <Experiment id="SXv6PG4RSdS8yVIgumNibg">
           <Variant id="0">
             Single Day Pass: $6.99
           </Variant>
