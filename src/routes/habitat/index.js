@@ -138,9 +138,7 @@ const Habitat = ({
     unsetHabitatAction,
   ]);
 
-  useEffect(() => () => {
-    unsetHabitatAction();
-  }, [unsetHabitatAction]);
+  useEffect(() => () => unsetHabitatAction(), [unsetHabitatAction]);
 
   useEffect(() => {
     if (title) {
