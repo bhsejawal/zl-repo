@@ -1,48 +1,41 @@
 import { h } from 'preact';
-import { LandingSecondary } from 'Components/Buttons';
+import { LandingPrimary } from 'Components/Buttons';
+import { Experiment, Variant } from 'react-optimize';
+
 import { useState, useEffect, useRef } from 'preact/hooks';
 
 import { goToSignup } from '../helpers';
+import { useWindowResize } from '../../../hooks';
 import zoolifeLogoWhite from './zoolife-white.png';
-import videoPlaceholder from './video-placeholder.jpg';
 import conservationIcon from './conservationIcon.png';
+
+import desktopPlaceholder from './deskopPlacholder.jpeg';
+import mobilePlaceholder from './mobilePlaceholder.jpeg';
 
 import style from './style.scss';
 
-const rotatingText = ['Explore', 'Protect', 'Observe', 'Discover', 'Support'];
-
 const HeroSection = ({ partnerImage }) => {
-  const [index, setIndex] = useState(0);
-  const [videoUrls, setVideoUrls] = useState();
+  const [featuresMediaUrls, setfeaturesMediaUrls] = useState();
+  const [mediaUrls, setMediaUrls] = useState();
   const [videoVisible, setVideoVisible] = useState();
+  const { width } = useWindowResize();
   const videoRef = useRef();
 
   useEffect(() => {
-    setVideoUrls(document.body.clientWidth > 1200 ? [
-      'https://assets.zoolife.tv/landing/bigg4.webm',
-      'https://assets.zoolife.tv/landing/bigg4.mp4',
-    ] : [
-      'https://assets.zoolife.tv/landing/s1.webm',
-      'https://assets.zoolife.tv/landing/s1.mp4',
-    ]);
-  }, []);
-
-  useEffect(() => {
-    const timeout = setTimeout(
-      () => {
-        setIndex(index === rotatingText.length - 1 ? 0 : index + 1 );
-      },
-      2500,
-    );
-
-    return () => clearTimeout(timeout);
-  }, [index]);
+    if (width <= 768) {
+      setMediaUrls([mobilePlaceholder, 'https://assets.zoolife.tv/landing/s1_mobile.mp4']);
+      setfeaturesMediaUrls([mobilePlaceholder, 'https://assets.zoolife.tv/landing/s1_features_mobile.mp4']);
+    } else {
+      setMediaUrls([desktopPlaceholder, 'https://assets.zoolife.tv/landing/s1_desktop.mp4']);
+      setfeaturesMediaUrls([desktopPlaceholder, 'https://assets.zoolife.tv/landing/s1_features_desktop.mp4']);
+    }
+  }, [width]);
 
   const onVideoDataLoaded = () => {
     setVideoVisible(true);
   }
 
-  if (!videoUrls) {
+  if (!mediaUrls) {
     return null;
   }
 
@@ -59,39 +52,69 @@ const HeroSection = ({ partnerImage }) => {
                   <img alt="partner-logo" src={partnerImage} className={style.partnerLogo} />
                 </div>
               )}
-
-              <h1>
-                <div className={style.animationContainer}>
-                  <span className={style.animatedText}>
-                    {rotatingText[index]}
-                  </span>
-                  &nbsp;
-                </div>
-                nature from home.
-              </h1>
-              <h4>
-                Live animal experiences from the world&apos;s top zoos, hosted by nature experts.
-              </h4>
-              <LandingSecondary onClick={goToSignup}>Meet the Animals</LandingSecondary>
+              <Experiment id="OLguIG20RSuAWwX9_96_VA">
+                <Variant id="0">
+                  <h1>Immersive animal habitats ready to explore.</h1>
+                  <p className="body">
+                    Observe natural animal behaviors up-close in HD,
+                    with talks led by nature experts.
+                  </p>
+                </Variant>
+                <Variant id="1">
+                  <h1>Live, unfiltered, uncut.</h1>
+                  <p className="body">
+                    Explore the daily lives of animals with nature experts & zoo staff.
+                    Streaming from AZA zoos worldwide.
+                  </p>
+                </Variant>
+              </Experiment>
+              <LandingPrimary onClick={goToSignup}>Meet the Animals</LandingPrimary>
             </div>
           </div>
         </div>
         <div className={style.right}>
-          <img className={style.videoPlaceholder} src={videoPlaceholder} alt="" />
-          <video
-            muted
-            autoPlay
-            loop
-            playsInline
-            ref={videoRef}
-            controls={false}
-            onLoadedData={onVideoDataLoaded}
-            style={{ visibility: videoVisible ? "visible" : "hidden" }}
-          >
-            <source src={videoUrls[0]} type="video/webm" />
-            <source src={videoUrls[1]} type="video/mp4" />
-            Your browser does not support the video tag.
-          </video>
+          <div className={style.videoContainer}>
+            <div className={style.videoWrapper}>
+              <div className={style.videoContent}>
+                <Experiment id="OLguIG20RSuAWwX9_96_VA">
+                  <Variant id="0">
+                    <img className={style.videoPlaceholder} src={featuresMediaUrls[0]} alt="" />
+                    <video
+                      key={featuresMediaUrls[1]}
+                      muted
+                      autoPlay
+                      loop
+                      playsInline
+                      ref={videoRef}
+                      controls={false}
+                      onLoadedData={onVideoDataLoaded}
+                      style={{ visibility: videoVisible ? "visible" : "hidden" }}
+                    >
+                      <source src={featuresMediaUrls[1]} type="video/mp4" />
+                      Your browser does not support the video tag.
+                    </video>
+                  </Variant>
+                  <Variant id="1">
+                    <img className={style.videoPlaceholder} src={mediaUrls[0]} alt="" />
+                    <video
+                      key={mediaUrls[1]}
+                      muted
+                      autoPlay
+                      loop
+                      playsInline
+                      ref={videoRef}
+                      controls={false}
+                      onLoadedData={onVideoDataLoaded}
+                      style={{ visibility: videoVisible ? "visible" : "hidden" }}
+                    >
+                      <source src={mediaUrls[1]} type="video/mp4" />
+                      Your browser does not support the video tag.
+                    </video>
+                  </Variant>
+                </Experiment>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
       <div className={style.bottom}>
