@@ -97,6 +97,7 @@ const Signup = ({
       const origin = getDeviceType();
       const termsVersion = TERMS_VERSION;
       const referralData = getCampaignData();
+      const { userAgent } = navigator;
       const {
         user,
         passwordError,
@@ -107,7 +108,7 @@ const Signup = ({
         password,
         origin,
         termsVersion,
-        referralData,
+        referralData: { ...referralData, userAgent },
       });
 
       if (passwordError) {
@@ -159,7 +160,7 @@ const Signup = ({
   }
 
   return (
-    <Box fill width={{ max: "1650px", min: "350px" }} height={{ min: 'max-content' }} margin={{ horizontal: 'auto' }}>
+    <Box fill width={{ max: "var(--maxWidth)", min: "350px" }} height={{ min: 'max-content' }} margin={{ horizontal: 'auto' }}>
       <Layout image={signupImage} showCarousel>
         {isLargeScreen && (
           <Heading margin={{top: '30px', bottom: '5px'}} level="4" color="var(--grey)">Step 1 of 2</Heading>

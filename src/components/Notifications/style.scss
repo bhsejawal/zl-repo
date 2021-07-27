@@ -1,0 +1,81 @@
+.notificationsContainer {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  width: 0;
+  display: flex;
+  flex-direction: column-reverse;
+  align-items: flex-end;
+  z-index: 20;
+
+  @media screen and (min-width: 1920px) {
+    right: calc(50% - (1920px / 2));
+  }
+
+  .wrapper {
+    max-height: 100%;
+    overflow: hidden;
+    padding-left: 20px;
+  }
+}
+
+.liveTalkCardToast {
+  transform: translateX(200%);
+  transition: transform 1.2s, max-height 1.2s, margin 1s;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, .25);
+  width: min-content;
+  max-height: 0;
+  margin: 0 0 0 auto;
+
+  &.animateIn {
+    max-height: 400px;
+    margin: 0 20px 20px auto;
+  }
+
+  .close {
+    position: absolute;
+    top: 0;
+    right: 0;
+    font-size: 14px;
+    color: black;
+  }
+}
+
+.toast {
+  background: linear-gradient(0deg, #FF6A25, #FF6A25);
+  border-radius: 10px;
+  font-weight: 500;
+  font-size: 16px;
+  color: #fff;
+  opacity: .2;
+  transform: translateX(200%);
+  transition: transform 1.2s, max-height 1s, margin 1s;
+  width: max-content;
+  max-width: unquote("min(calc(100vw - 40px), 400px)");
+  max-height: 0;
+  margin: 0;
+
+  &.animateIn {
+    margin: 0 20px 20px auto;
+    max-height: 400px;
+  }
+
+  .content {
+    padding: 10px 30px;
+  }
+
+  .close {
+    position: absolute;
+    top: 50%;
+    right: 0;
+    font-size: 14px;
+    color: white;
+    transform: translateY(-50%);
+  }
+}
+
+.animateIn {
+  opacity: 1;
+  transform: translateX(0);
+}

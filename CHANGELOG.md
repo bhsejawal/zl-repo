@@ -3,6 +3,24 @@ This file keeps track of all relevant change for every release.
 
 ## [Unreleased]
 
+## [5.12.0] - 2021-07-26
+
+### Added
+- Implemented Toast System
+- Fallback for Paused Livestream on Habitat Page
+- A/B test on the Hero section
+
+### Changed
+- User Agent is now sent on Login/Signup
+- Max width to 1920px
+- Experiment ID for the Plans Page
+- Layout of the Tab Selector on the Album Component
+- Hero section layout on the landing page
+
+### Fixed
+- An issue where on habitat navigation, the state would not be fully cleaned up
+- An issue where users on iPhone would be stuck without the video when the device was in low power mode
+
 ## [5.11.0] - 2021-07-20
 
 ### Added

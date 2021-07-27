@@ -2,8 +2,13 @@ import { h } from 'preact';
 import { connect } from 'react-redux';
 import { useEffect, useState } from 'preact/hooks';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSpinner } from '@fortawesome/pro-solid-svg-icons';
-import { Select } from 'grommet';
+import {
+  faFilmAlt,
+  faSpinner,
+  faVideo,
+  faImage,
+  faUserMdChat,
+} from '@fortawesome/pro-solid-svg-icons';
 import classnames from 'classnames';
 import useFetch from 'use-http';
 
@@ -19,6 +24,7 @@ import {
   PHOTOS,
   PAST_TALKS,
   CLIPS,
+  STREAMS,
 } from './types';
 
 import style from './style.scss';
@@ -77,7 +83,7 @@ const Album = ({
     }
   }, [type, get, habitatId, page]);
 
-  const onChangeHandler = ({ target: { value }}) => {
+  const onChangeHandler = (value) => () => {
     setType(value);
     setPage(1);
   }
@@ -113,18 +119,41 @@ const Album = ({
   return (
     <>
       <div className={classnames(style.album, { [style.tab]: tab })}>
-        <div className={style.selectContainer}>
-          <Select
-            labelKey="label"
-            valueKey={{ key: 'value', reduce: true }}
-            value={type}
-            options={[
-              { label: 'Photos', value: PHOTOS},
-              { label: 'Past Talks', value: PAST_TALKS},
-              { label: 'Clips', value: CLIPS},
-            ]}
-            onChange={onChangeHandler}
-          />
+        <div className={style.buttonTabs}>
+          <button
+            type="button"
+            className={type === CLIPS && style.active}
+            onClick={onChangeHandler(CLIPS)}
+          >
+            <FontAwesomeIcon icon={faFilmAlt} />
+            <span>Animal Clips</span>
+          </button>
+          <button
+            type="button"
+            className={type === PHOTOS && style.active}
+            onClick={onChangeHandler(PHOTOS)}
+          >
+            <FontAwesomeIcon icon={faImage} />
+            <span>Animal Photos</span>
+          </button>
+          <button
+            type="button"
+            className={type === PAST_TALKS && style.active}
+            onClick={onChangeHandler(PAST_TALKS)}
+          >
+            <FontAwesomeIcon icon={faUserMdChat} />
+            <span>Expert Talks</span>
+          </button>
+          <button
+            type="button"
+            className={type === STREAMS && style.active}
+            onClick={onChangeHandler(STREAMS)}
+            // this button will not be displayed until API has streams support
+            style={{ display: 'none' }}
+          >
+            <FontAwesomeIcon icon={faVideo} />
+            <span>Streams</span>
+          </button>
         </div>
 
         {loading && page === 1 && <Loader fill />}

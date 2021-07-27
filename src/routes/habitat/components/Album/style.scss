@@ -21,6 +21,44 @@
   }
 }
 
+.buttonTabs {
+  margin: 20px 0 15px 0;
+  display: flex;
+  overflow-x: auto;
+  padding-bottom: 15px;
+
+  button {
+    border: 1px solid #9BB7F1;
+    border-radius: 30px;
+    color: var(--blueDark);
+    padding: 7px 11px;
+    font-weight: bold;
+    font-size: 12px;
+    background: white;
+    margin-right: 12px;
+    min-width: fit-content;
+    cursor: pointer;
+    white-space: nowrap;
+    display: flex;
+    align-items: center;
+
+    svg {
+      color: var(--blueDark);
+      margin-right: 10px;
+    }
+
+    &.active {
+      color: white;
+      border: 1px solid var(--blueDark);
+      background: var(--blueDark);
+
+      svg {
+        color: white;
+      }
+    }
+  }
+}
+
 .section {
   display: flex;
   flex-direction: column;
@@ -194,29 +232,13 @@
   opacity: .5;
 }
 
-.selectContainer {
-  max-width: 160px;
-  font-weight: 800;
-  font-size: 16px;
-  color: var(--grey);
-  margin: 25px 0;
-
-  button {
-    border-radius: 30px;
-    border: 1.5px solid var(--grey);
-  }
-
-  input {
-    padding: 13px 0 12px 15px;
-  }
-}
 
 .album.tab {
   min-height: fit-content;
   z-index: 0;
 
-  .selectContainer {
-    margin: 0 0 0 20px;
+  .buttonTabs {
+    padding-left: 20px;
   }
 
   .section {

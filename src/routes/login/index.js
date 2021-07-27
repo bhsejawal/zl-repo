@@ -107,7 +107,8 @@ const Login = ({
 
     try {
       const url = buildURL('/admin/users/login');
-      const { user } = await post(url, { email, password });
+      const { userAgent } = navigator;
+      const { user } = await post(url, { email, password, userAgent });
       setUserDataAction({ ...user, sessionChecked: true });
       identifyUser(user);
       loadPage('/map');
@@ -142,7 +143,7 @@ const Login = ({
   }
 
   return (
-    <Box fill width={{ max: "1650px", min: "350px" }} height={{ min: 'max-content' }}>
+    <Box fill width={{ max: "var(--maxWidth)", min: "350px" }} height={{ min: 'max-content' }} margin={{ horizontal: 'auto'}}>
       <Layout image={loginImage}>
         <Box direction="row" align="center" height="auto">
           <Heading level="2">

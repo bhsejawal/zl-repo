@@ -15,6 +15,9 @@ import {
   switchAudioInputSource,
   switchVideoCameraCapture,
 } from '../helpers';
+
+import { iOSDevice } from '../../../helpers';
+
 import { wsMessages } from '../helpers/constants';
 
 const {
@@ -22,6 +25,7 @@ const {
   INITIALIZING,
   INITIALIZED,
   PLAY_STARTED,
+  PLAY_PAUSED,
   PLAY_FINISHED,
   PUBLISH_STARTED,
   PUBLISH_FINISHED,
@@ -29,6 +33,7 @@ const {
   OFFLINE,
   STREAM_IN_USE,
   PUBLISH_TIMEOUT,
+  LOADING,
 } = wsMessages;
 
 let isInitializing = false;
@@ -73,6 +78,22 @@ export const useWebRTCStream = (streamId, isStreamOn, videoContainer, mode, logS
     stop(streamId);
   }, [streamId]);
 
+  const pausePlaying = useCallback(() => {
+    if (streamStatus !== PLAY_PAUSED) {
+      setStreamStatus(PLAY_PAUSED);
+      stop(streamId);
+    } else {
+      setStreamStatus(LOADING);
+      play(streamId);
+
+      // This is required if the video was stopped by suspense api
+      // The browser would not allow any play if its not from a user interaction
+      if (iOSDevice()) {
+        videoContainer.current.play();
+      }
+    }
+  }, [streamId, streamStatus, videoContainer])
+
   const switchAudioInput = useCallback(
     (deviceId) => switchAudioInputSource(streamId, deviceId), [streamId],
   );
@@ -90,18 +111,30 @@ export const useWebRTCStream = (streamId, isStreamOn, videoContainer, mode, logS
       }
     }
 
+    const onSuspendeHandler = () => {
+      // the suspense handler also activates when a video plays
+      // the check bellow will avoid stopping the stream after
+      // the user manually starts the video
+      if (![LOADING, PLAY_STARTED].includes(streamStatus)) {
+        setStreamStatus(PLAY_PAUSED);
+        stop(streamId);
+      }
+    }
+
     const { current: htmlVideoContainer } = videoContainer;
 
     if (htmlVideoContainer) {
       htmlVideoContainer.addEventListener('play', onPlayHandler);
+      htmlVideoContainer.addEventListener('suspend', onSuspendeHandler);
     }
 
     return () => {
       if (htmlVideoContainer) {
         htmlVideoContainer.removeEventListener('play', onPlayHandler);
+        htmlVideoContainer.removeEventListener('suspend', onSuspendeHandler);
       }
     }
-  }, [videoContainer, streamStatus]);
+  }, [videoContainer, streamStatus, streamId]);
 
   const initializeAdapter = useCallback(() => {
     setStreamStatus(INITIALIZING);
@@ -130,10 +163,15 @@ export const useWebRTCStream = (streamId, isStreamOn, videoContainer, mode, logS
 
         if ([
           CLOSED,
-          PLAY_FINISHED,
           PUBLISH_FINISHED,
         ].includes(info)) {
           setStreamStatus(CLOSED);
+        }
+
+        if (info === PLAY_FINISHED && !streamStatus === PLAY_PAUSED) {
+          if (streamStatus === PLAY_PAUSED) {
+            setStreamStatus(CLOSED);
+          }
         }
       },
       (error) => {
@@ -181,6 +219,7 @@ export const useWebRTCStream = (streamId, isStreamOn, videoContainer, mode, logS
     stopPublishing,
     startPlaying,
     stopPlaying,
+    pausePlaying,
     switchAudioInput,
     switchVideoInput,
     removeWebRTCAdaptor,

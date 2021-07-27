@@ -5,7 +5,11 @@ import { Box, Grommet, RangeInput as InputRange } from 'grommet';
 import classnames from 'classnames';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPlay, faPause, faExpand } from '@fortawesome/free-solid-svg-icons';
+import {
+  faPlay,
+  faPause,
+  faExpand,
+} from '@fortawesome/free-solid-svg-icons';
 import { faVolume, faVolumeMute, faCompress } from '@fortawesome/pro-solid-svg-icons';
 import RoundButton from 'Components/RoundButton';
 import { getDeviceType } from '../../helpers';
@@ -44,9 +48,11 @@ const VideoControls = forwardRef(({
   showFullscreenControl,
   showPIPControl,
   hasCameraControls,
+  onPauseHandler,
+  isPlaying,
+  isLoading,
 }, ref) => {
   const [showVolumeBar, setShowVolumeBar] = useState(false)
-  const [isPlaying, setIsPlaying] = useState(true);
   const [isMuted, setIsMuted] = useState(true);
   const [volume, setVolume] = useState(1);
   const [isFullscreen, setIsFullscreen] = useState(false);
@@ -73,12 +79,8 @@ const VideoControls = forwardRef(({
   }
 
   const togglePlay = () => {
-    if (video.paused) {
-      video.play();
-      setIsPlaying(true);
-    } else {
-      video.pause();
-      setIsPlaying(false);
+    if (typeof onPauseHandler === 'function') {
+      onPauseHandler();
     }
   }
 
@@ -140,6 +142,7 @@ const VideoControls = forwardRef(({
         width="28"
         backgroundColor="var(--hunterGreenMediumDark)"
         color="white"
+        loading={isLoading}
         >
           <FontAwesomeIcon icon={isPlaying ? faPause : faPlay} />
         </RoundButton>

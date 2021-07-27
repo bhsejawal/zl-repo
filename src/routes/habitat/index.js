@@ -17,6 +17,7 @@ import { buildURL } from 'Shared/fetch';
 import GlobalsContextProvider from "Components/GlobalsContextProvider";
 import LiveStream from 'Components/LiveStream';
 import Loader from 'Components/Loader';
+import Notifications from 'Components/Notifications';
 
 import { openTermsModal } from 'Components/TermsAndConditions/actions';
 import { GlobalsContext } from 'Shared/context';
@@ -30,7 +31,6 @@ import Chat from './components/Chat';
 import LiveChannelsBar from './components/LiveChannelsBar';
 import CardTabs from './components/CardTabs';
 import StreamProfile from './components/StreamProfile';
-import LiveTalkNotification from './components/LiveTalkNotification';
 import OnboardingModal from './OnboardingModal';
 import SmallScreenCardTabs from './components/CardTabs/Mobile';
 import Album from './components/Album';
@@ -44,9 +44,6 @@ import style from './style.scss';
 
 const ChatComponent = lazy(() => import('Components/Chat'));
 const PubNubWrapper = lazy(() => import('Components/PubNubWrapper'));
-
-const maxStreamWidth = 1280;
-const maxStreamHeight = 720;
 
 const Habitat = ({
   streamKey,
@@ -73,9 +70,9 @@ const Habitat = ({
   const size = useContext(ResponsiveContext);
   const { socket } = useContext(GlobalsContext);
   const pageRef = useRef();
+  const [pageWidth, setPageWidth] = useState(pageRef?.current?.offsetWidth || windowWidth);
   const isTabletOrLarger = ['medium', 'large'].includes(size);
   const isTabbed = useIsHabitatTabbed();
-  const pageWidth = pageRef?.current?.offsetWidth || windowWidth;
 
   useEffect(() => {
     if (socket && userId && habitatId) {
@@ -141,15 +138,26 @@ const Habitat = ({
     unsetHabitatAction,
   ]);
 
-  useEffect(() => () => {
-    unsetHabitatAction();
-  }, [unsetHabitatAction]);
+  useEffect(() => () => unsetHabitatAction(), [unsetHabitatAction]);
 
   useEffect(() => {
     if (title) {
       document.title = generateTitle(`${title} | Habitat`);
     }
   }, [title]);
+
+  useEffect(() => {
+    // this will update page width after habitat is set or when window width changes
+    // because scroll shows before habitat is loaded but page width is not updated
+    // therefore calculations are not accurate
+    if (habitatId) {
+      const width = pageRef?.current?.offsetWidth;
+      if (width !== pageWidth) {
+        setPageWidth(width)
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [habitatId, windowWidth]);
 
   if (error) {
     // TODO: we need UI for this
@@ -162,6 +170,8 @@ const Habitat = ({
 
   const sideBarWidth = 85;
   const chatWidth = 285;
+  const maxStreamWidth = 1920 - sideBarWidth - chatWidth;
+  const maxStreamHeight = maxStreamWidth * 0.5625;
   const calcStreamWidth = isTabbed ? windowWidth : (pageWidth - sideBarWidth - chatWidth);
   const streamWidth = Math.min(maxStreamWidth, calcStreamWidth);
   const height = Math.min(maxStreamHeight, streamWidth * 0.5625);
@@ -231,7 +241,6 @@ const Habitat = ({
           <OnboardingModal />
           <ShareModal />
           <ScheduleModal />
-          <LiveTalkNotification />
         </>
       )}
     </div>
@@ -278,7 +287,7 @@ const HabitatWrapper = ({ matches: { zooName, habitatSlug } }) => (
         </PubNubWrapper>
       </Suspense>
     )}
-
+    <Notifications />
   </GlobalsContextProvider>
 );
 

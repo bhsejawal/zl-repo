@@ -1,12 +1,11 @@
 @import "../../../style/media-query";
 
-$videoRatio: 352 / 335;
 $animationDuration: 2.5s;
 
 .heroContainer {
   display: flex;
   flex-direction: column;
-  background-color: var(--blueMediumLight);
+  background-color: var(--hunterGreen);
 
   .top {
     display: flex;
@@ -14,26 +13,33 @@ $animationDuration: 2.5s;
 
     .left {
       display: flex;
-      width: 50%;
+      width: unquote("min(50%, 600px)");
       justify-content: center;
       align-items: center;
       text-align: center;
+      min-height: 500px;
+      color: white;
+
+      > div {
+        max-width: 350px;
+      }
     }
 
     .right {
       display: flex;
-      width: 50%;
       flex-grow: 1;
-      text-align: center;
-      align-items: center;
-      justify-content: center;
+      height: auto;
+      position: relative;
     }
 
     h1 {
       margin-bottom: 30px;
+      font-size: 30px;
+      line-height: 40px;
     }
 
-    h4 {
+    :global(.body) {
+      font-size: 15px;
       margin: 0 0 60px 0;
     }
   }
@@ -44,7 +50,6 @@ $animationDuration: 2.5s;
     display: flex;
     justify-items: center;
     align-items: center;
-    flex-direction: column;
     padding: 0 40px;
     text-align: center;
     flex-direction: row;
@@ -58,28 +63,32 @@ $animationDuration: 2.5s;
   }
 
 
-  .left div {
-    max-width: 330px;
-  }
+  .videoContainer {
+    width: 100%;
 
-  .right {
-    height: calc((50vw - 15px) * #{$videoRatio}); // vw includes the scrollbar and its ~15px
-    max-height: calc((1650px / 2) * #{$videoRatio});
-    overflow: hidden;
-    position: relative;
+    .videoWrapper {
+      padding-top: calc(100% * (2/3));
+      position: relative;
+
+      .videoContent {
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+      }
+    }
   }
 
   video,
   .videoPlaceholder {
-    // video is not rendering the same way on chrome and safari because of the scrollbar
-    // so we will set width 101% hide overflow to eliminate the jump and the empty space
-    // that is showing vertically while scaling, and will also hide the black line on the right
-    width: 101%;
+    width: auto;
     position: absolute;
     top: 0;
     bottom: 0;
     right: 0;
     left: 0;
+    height: 100%;
   }
 }
 
@@ -98,18 +107,35 @@ $animationDuration: 2.5s;
   }
 }
 
-// we need to reduce the left side spacing so the video remains in full height
-@media screen and (max-width: 920px) and (min-width: 768px) {
+// reduce left side width
+@media screen and (max-width: 1370px) {
 
-  .top .left {
+  .heroContainer .top .left {
+    width: 450px;
+  }
+}
 
-    h1 {
-      margin: 10px;
+// right side fit video height and hide overflow
+@media screen and (max-width: 1215px) {
+
+  .heroContainer .top .right .videoWrapper {
+    height: 100%;
+
+    .videoContent {
+      overflow: hidden;
+
+      > * {
+        left: 50%;
+        transform: translateX(-50%)
+      }
     }
+  }
+}
 
-    h4 {
-      margin-bottom: 20px;
-    }
+@media screen and (max-width: 940px) {
+
+  .heroContainer .top .left {
+    width: unquote("min(50%, 500px)");
   }
 }
 
@@ -118,56 +144,34 @@ $animationDuration: 2.5s;
   .heroContainer {
 
     .top {
-      flex-direction: column;
+      flex-direction: column-reverse;
 
       .left {
         width: 100%;
-        padding: 90px 30px;
+        min-height: 400px;
+        padding: 30px;
+
+        h1 {
+          font-size: 28px;
+        }
+
+        :global(.body) {
+          font-size: 15px;
+          margin: 0 0 60px 0;
+        }
       }
 
       .right {
         width: 100%;
-        height: calc((100vw - 15px) * #{$videoRatio});
+
+        .videoWrapper {
+          padding-top: calc(100% * (9/16));
+        }
+
+        .videoContent > * {
+          width: 100%;
+        }
       }
     }
   }
 }
-
-.animationContainer {
-  display: inline-flex;
-  width: 150px;
-  justify-content: flex-end;
-
-  span {
-    // TODO find a solution to make css and js are in sync without having the text to flicker on change
-    //animation-name: animation;
-    animation-duration: $animationDuration;
-    animation-iteration-count: infinite;
-  }
-}
-
-//@keyframes animation {
-//
-//  0% {
-//    opacity: 1;
-//    transform: scale3d(.9, .9, .9);
-//  }
-//
-//  20% {
-//    transform: scale3d(1, 1, 1);
-//  }
-//
-//  60% {
-//    opacity: 1;
-//    transform: scale3d(1, 1, 1);
-//  }
-//
-//  98% {
-//    opacity: 0;
-//  }
-//
-//  100% {
-//    opacity: 0;
-//    transform: scale3d(.9, .9, .9);
-//  }
-//}

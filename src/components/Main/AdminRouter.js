@@ -8,7 +8,7 @@ import Habitats from '../../routes/adminHabitats';
 import Partners from '../../routes/adminPartners';
 
 const AdminRouter = () => (
-  <Box fill width={{ max: "1650px", min: "350px" }} margin={{ horizontal: 'auto' }}>
+  <Box fill width={{ max: "var(--maxWidth)", min: "350px" }} margin={{ horizontal: 'auto' }}>
     <Header />
     <Router>
       <Route path="/admin/users" component={Users} />

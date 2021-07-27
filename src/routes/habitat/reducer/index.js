@@ -12,7 +12,7 @@ export default (state = initialState, { type, payload = {}}) => {
     case SET_HABITAT: {
       const { habitat } = payload;
       return {
-        ...state,
+        ...initialState,
         ...habitat,
       };
     }
