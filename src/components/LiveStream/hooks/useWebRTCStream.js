@@ -76,6 +76,7 @@ export const useWebRTCStream = (streamId, isStreamOn, videoContainer, mode, logS
 
   const stopPlaying = useCallback(() => {
     stop(streamId);
+    setStreamStatus(CLOSED);
   }, [streamId]);
 
   const pausePlaying = useCallback(() => {
