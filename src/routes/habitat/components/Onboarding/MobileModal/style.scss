@@ -1,0 +1,105 @@
+.onboarding {
+  background: white;
+  width: 100vw;
+  height: calc(100 * var(--vh));
+  max-height: calc(100 * var(--vh));
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  position: relative;
+
+  .top {
+    align-items: flex-end;
+    min-height: fit-content;
+
+    .skip {
+      background: transparent;
+      margin: 10px 10px 0 0;
+      padding: 10px 10px 5px 0;
+      border: 0;
+      width: fit-content;
+      cursor: pointer;
+    }
+  }
+
+  .middle {
+    text-align: center;
+    overflow: hidden;
+    flex-grow: 1;
+
+    :global(.react-multi-carousel-list) {
+      overflow-y: auto;
+      overflow-x: hidden;
+      align-items: baseline;
+    }
+
+    .contentWrapper {
+      display: flex;
+      width: 100%;
+      height: 100%;
+      max-height: 100%;
+      overflow: auto;
+    }
+
+    .content {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+
+      img {
+        width: 100%;
+      }
+
+      .step {
+        color: var(--grey);
+        padding: 0 20px;
+        font-size: 12px;
+      }
+
+      .blue {
+        color: var(--logoBlue);
+      }
+
+      h2,
+      h2 + span {
+        padding: 0 20px;
+      }
+    }
+  }
+
+  .bottom {
+    flex-shrink: 0;
+    align-items: flex-end;
+    padding: 30px;
+
+    button {
+      width: fit-content;
+    }
+  }
+}
+
+.dots {
+  bottom: 30px;
+  top: calc((100 * var(--vh)) - 75px);
+  right: unset;
+  left: 30px;
+  align-items: center;
+
+  li {
+    display: flex;
+    align-items: center;
+    height: 10px;
+    width: 20px;
+
+    &:global(.react-multi-carousel-dot--active) button {
+      background: var(--logoBlue);
+    }
+
+    button {
+      background: var(--lightGrey);
+      border: 0;
+      width: 10px;
+      height: 10px;
+    }
+  }
+}

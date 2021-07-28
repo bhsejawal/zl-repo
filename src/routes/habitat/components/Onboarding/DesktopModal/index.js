@@ -1,39 +1,15 @@
 import { h } from 'preact';
-import { connect } from 'react-redux';
-import {
-  useEffect,
-  useState,
-  useRef,
-  useContext,
-} from 'preact/hooks';
-import {
-  Layer,
-  ResponsiveContext,
-  Box,
-} from 'grommet';
-import { OutlineButton, PrimaryButton } from 'Components/Buttons';
-import { buildURL } from 'Shared/fetch';
-import useFetch from 'use-http';
+import { useState, useRef, useContext } from 'preact/hooks';
+import { Layer, ResponsiveContext, Box } from 'grommet';
 import classnames from 'classnames';
-import { setUserData } from '../../../redux/actions';
+import { OutlineButton, PrimaryButton } from 'Components/Buttons';
 
 import style from './style.scss';
 
-const Onboarding = ({ isOnboarded, setUserDataAction }) => {
+const DesktopOnboarding = ({ updateOnboarding, error }) => {
   const size = useContext(ResponsiveContext);
   const [showButtons, setShowButtons] = useState();
   const videoRef = useRef();
-  const { post, error, data } = useFetch(buildURL('/users/onboarding'), {
-    credentials: 'include',
-    cachePolicy: 'no-cache',
-    headers: { 'Content-Type': 'application/json' },
-  });
-
-  useEffect(() => {
-    if (!error && data && data.user) {
-      setUserDataAction(data.user);
-    }
-  }, [data, error, setUserDataAction]);
 
   const isSmallScreen = ['xsmall', 'small'].includes(size);
 
@@ -44,14 +20,6 @@ const Onboarding = ({ isOnboarded, setUserDataAction }) => {
       setShowButtons(false);
     }
   };
-
-  const enterHabitatHandler = () => {
-    post();
-  };
-
-  if (isOnboarded) {
-    return null;
-  }
 
   return (
     <Layer background="transparent">
@@ -67,7 +35,7 @@ const Onboarding = ({ isOnboarded, setUserDataAction }) => {
                 size={isSmallScreen ? 'medium' : 'large'}
               />
               <PrimaryButton
-                onClick={enterHabitatHandler}
+                onClick={updateOnboarding}
                 label={error ? 'Try Again!' : 'Enter Habitat'}
                 size={isSmallScreen ? 'medium' : 'large'}
               />
@@ -89,7 +57,4 @@ const Onboarding = ({ isOnboarded, setUserDataAction }) => {
   );
 };
 
-export default connect(
-  ({ user: { isOnboarded }}) => ({ isOnboarded }),
-  { setUserDataAction: setUserData },
-)(Onboarding);
+export default DesktopOnboarding;

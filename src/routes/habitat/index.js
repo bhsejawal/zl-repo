@@ -31,7 +31,7 @@ import Chat from './components/Chat';
 import LiveChannelsBar from './components/LiveChannelsBar';
 import CardTabs from './components/CardTabs';
 import StreamProfile from './components/StreamProfile';
-import OnboardingModal from './OnboardingModal';
+import OnboardingModal from './components/Onboarding';
 import SmallScreenCardTabs from './components/CardTabs/Mobile';
 import Album from './components/Album';
 
