@@ -19,10 +19,6 @@
 .streamContainer {
   flex-grow: 1;
   position: relative;
-
-  video::-webkit-media-controls-timeline {
-    display: none;
-  }
 }
 
 .loading video::-webkit-media-controls {

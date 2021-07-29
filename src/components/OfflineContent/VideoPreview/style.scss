@@ -1,0 +1,49 @@
+@import "../../../style/media-query";
+
+.videoPreviewContainer {
+  display: flex;
+  flex-direction: column;
+  cursor: pointer;
+  align-items: center;
+  justify-content: center;
+  margin-top: 22px;
+
+  .textWrapper {
+    display: flex;
+    justify-content: center;
+  }
+
+  &:hover img {
+    border: 1px solid white;
+  }
+
+  img {
+    aspect-ratio: 16 / 9;
+    width: 75%;
+    height: auto;
+  }
+}
+
+@media screen and (max-width: #{$tablet-landscape-width}) {
+
+  .videoPreviewContainer {
+    width: 379px;
+    height: 209px;
+
+    img {
+      width: 379px;
+    }
+  }
+}
+
+@media screen and (max-width: #{$phone-landscape-width}) {
+
+  .videoPreviewContainer {
+    width: 176.52px;
+    height: 97.74px;
+
+    img {
+      width: 176.52px;
+    }
+  }
+}

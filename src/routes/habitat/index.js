@@ -22,10 +22,13 @@ import Notifications from 'Components/Notifications';
 import { openTermsModal } from 'Components/TermsAndConditions/actions';
 import { GlobalsContext } from 'Shared/context';
 
+import { hasPermission } from 'Components/Authorize';
+import AdminButton from 'Components/LiveStream/AdminButton';
 import Tabs from 'Components/Tabs';
 import Tab from 'Components/Tabs/Tab';
 import LiveTalk from 'Components/Card/LiveTalk';
 import ShareModal from 'Components/ShareModal';
+import OfflineContent from 'Components/OfflineContent';
 import ScheduleModal from './components/ScheduleModal';
 import Chat from './components/Chat';
 import LiveChannelsBar from './components/LiveChannelsBar';
@@ -193,14 +196,21 @@ const Habitat = ({
           >
             {!isTabbed && <LiveChannelsBar width={sideBarWidth} height={height} />}
             <div className={style.livestreamWrapper} style={{ minWidth: streamWidth }}>
-              <LiveStream
+              {!isStreamOn && (
+                <>
+                  <OfflineContent width={streamWidth} height={height} />
+                  {(hasPermission('habitat:edit-stream')) && <AdminButton />}
+                </>
+
+              )}
+              {isStreamOn && <LiveStream
                 width={streamWidth}
                 height={height}
                 streamId={streamKey}
                 interactive
                 mode="stream"
                 isStreamOn={isStreamOn}
-              />
+              />}
               {isTabbed && hostStreamKey && isHostStreamOn && <LiveTalk streamId={hostStreamKey} />}
             </div>
             {!isTabbed && <Chat width={chatWidth} height={height} />}

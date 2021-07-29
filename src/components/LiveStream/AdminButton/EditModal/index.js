@@ -7,12 +7,14 @@ import {
   OVERLAY_SECTION,
   POWER_SECTION,
   CONFIGURATIONS,
+  OFFLINE_IMAGE,
 } from '../constants';
 
 import Power from './Power';
 import EmojiDrop from './EmojiDrop';
 import Overlay from './Overlay';
 import Configuration from './Configuration';
+import OfflineImage from './OfflineImage';
 
 const StreamEditModal = ({ section, onClose }) => (
   <Layer position="center" onClickOutside={onClose} onEsc={onClose}>
@@ -22,6 +24,7 @@ const StreamEditModal = ({ section, onClose }) => (
         {section === EMOJI_SECTION && 'Emoji Drop'}
         {section === OVERLAY_SECTION && 'Photo Overlay'}
         {section === CONFIGURATIONS && 'Configuration'}
+        {section === OFFLINE_IMAGE && 'Offline Image'}
       </Header>
 
       <Box height="100%">
@@ -29,6 +32,7 @@ const StreamEditModal = ({ section, onClose }) => (
         {section === EMOJI_SECTION && <EmojiDrop />}
         {section === OVERLAY_SECTION && <Overlay />}
         {section === CONFIGURATIONS && <Configuration />}
+        {section === OFFLINE_IMAGE && <OfflineImage />}
       </Box>
     </Box>
   </Layer>
