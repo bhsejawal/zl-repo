@@ -68,12 +68,12 @@ const Content = ({
       <Router onRouteChange={routerChangeHandler}>
         <Home path="/" exact title={homeTitle} />
         <Home path="/twitch" exact title={homeTitle} />
-        <Home path="/oranapark" partnerImage={oranaZooLogo} exact title={homeTitle} />
-        <Home path="/orana" partnerImage={oranaZooLogo} exact title={homeTitle} />
-        <Home path="/torontozoo" partnerImage={torontoZooLogo} exact title={homeTitle} />
-        <Home path="/pmmc" partnerImage={pmmcLogo} exact title={homeTitle} />
-        <Home path="/pmmccamp" partnerImage={pmmcLogo} exact title={homeTitle} />
-        <Home path="/sazoo" partnerImage={sanAntonioLogo} exact title={homeTitle} />
+        <Home path="/oranapark" partnerImage={oranaZooLogo} exact title={homeTitle} partner="orana" />
+        <Home path="/orana" partnerImage={oranaZooLogo} exact title={homeTitle} partner="orana" />
+        <Home path="/torontozoo" partnerImage={torontoZooLogo} exact title={homeTitle} partner="torontozoo" />
+        <Home path="/pmmc" partnerImage={pmmcLogo} exact title={homeTitle} partner="pmmc" />
+        <Home path="/pmmccamp" partnerImage={pmmcLogo} exact title={homeTitle} partner="pmmc" />
+        <Home path="/sazoo" partnerImage={sanAntonioLogo} exact title={homeTitle} partner="sazoo" />
         {/* these routes can be briefly rendered on slow devices
         while waiting for the full page load */}
         <AppLoader path="/login" title="Log In" />

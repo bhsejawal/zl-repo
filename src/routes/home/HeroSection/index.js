@@ -12,24 +12,51 @@ import conservationIcon from './conservationIcon.png';
 import desktopPlaceholder from './deskopPlacholder.jpeg';
 import mobilePlaceholder from './mobilePlaceholder.jpeg';
 
+import pmmcPreviewDesktop from './pmmc_preview_desktop.jpeg';
+import pmmcPreviewMobile from './pmmc_preview_mobile.jpeg';
+
 import style from './style.scss';
 
-const HeroSection = ({ partnerImage }) => {
+const HeroSection = ({ partnerImage, partner }) => {
   const [featuresMediaUrls, setfeaturesMediaUrls] = useState();
   const [mediaUrls, setMediaUrls] = useState();
+  const [defaultHeroText, setDefaultHeroText] = useState();
   const [videoVisible, setVideoVisible] = useState();
   const { width } = useWindowResize();
   const videoRef = useRef();
 
   useEffect(() => {
+    if (partner) {
+      setDefaultHeroText({
+        heading: 'We’re now officially on Zoolife!',
+        paragraph: 'Join our animals up-close and personal in their habitats.',
+      })
+    } else {
+      setDefaultHeroText({
+        heading: 'Immersive animal habitats ready to explore.',
+        paragraph: 'Observe natural animal behaviors up-close in HD, with talks led by nature experts.',
+      })
+    }
+  }, []);
+
+  useEffect(() => {
     if (width <= 768) {
       setMediaUrls([mobilePlaceholder, 'https://assets.zoolife.tv/landing/s1_mobile.mp4']);
-      setfeaturesMediaUrls([mobilePlaceholder, 'https://assets.zoolife.tv/landing/s1_features_mobile.mp4']);
+
+      if (partner === 'pmmc') {
+        setfeaturesMediaUrls([pmmcPreviewMobile, 'https://assets.zoolife.tv/landing/pmmc_mobile.mp4']);
+      } else {
+        setfeaturesMediaUrls([mobilePlaceholder, 'https://assets.zoolife.tv/landing/s1_features_mobile.mp4']);
+      }
     } else {
       setMediaUrls([desktopPlaceholder, 'https://assets.zoolife.tv/landing/s1_desktop.mp4']);
-      setfeaturesMediaUrls([desktopPlaceholder, 'https://assets.zoolife.tv/landing/s1_features_desktop.mp4']);
+      if (partner === 'pmmc') {
+        setfeaturesMediaUrls([pmmcPreviewDesktop, 'https://assets.zoolife.tv/landing/pmmc_desktop.mp4']);
+      } else {
+        setfeaturesMediaUrls([desktopPlaceholder, 'https://assets.zoolife.tv/landing/s1_features_desktop.mp4']);
+      }
     }
-  }, [width]);
+  }, [width, partner]);
 
   const onVideoDataLoaded = () => {
     setVideoVisible(true);
@@ -54,10 +81,9 @@ const HeroSection = ({ partnerImage }) => {
               )}
               <Experiment id="OLguIG20RSuAWwX9_96_VA">
                 <Variant id="0">
-                  <h1>Immersive animal habitats ready to explore.</h1>
+                  <h1>{defaultHeroText?.heading}</h1>
                   <p className="body">
-                    Observe natural animal behaviors up-close in HD,
-                    with talks led by nature experts.
+                    {defaultHeroText?.paragraph}
                   </p>
                 </Variant>
                 <Variant id="1">
@@ -119,7 +145,7 @@ const HeroSection = ({ partnerImage }) => {
       </div>
       <div className={style.bottom}>
         <img src={conservationIcon} alt="Conservation Icon" />
-        <h4>50% of your purchase funds animal care &amp; conservation.</h4>
+        <h4>{`${partner ? '80%' : '50%'} of your purchase funds animal care & conservation.`}</h4>
       </div>
     </div>
   );
