@@ -1,5 +1,6 @@
 import { useContext, useEffect } from 'preact/hooks';
 import { connect } from 'react-redux';
+import { format, utcToZonedTime } from 'date-fns-tz';
 
 import { GlobalsContext } from 'Shared/context';
 import Notification from './Notification';
@@ -7,7 +8,12 @@ import { addNotification } from './actions';
 
 import style from './style.scss';
 
-const Notifications = ({ notifications, addNotificationAction }) => {
+const Notifications = ({
+  notifications,
+  sessionDurationInSec,
+  rate,
+  addNotificationAction,
+}) => {
   const { socket } = useContext(GlobalsContext);
 
   useEffect(() => {
@@ -20,6 +26,23 @@ const Notifications = ({ notifications, addNotificationAction }) => {
       socket?.off('notification', onToast);
     };
   }, [addNotificationAction, socket]);
+
+  useEffect(() => {
+    let timeout;
+
+    if (sessionDurationInSec > 1800) { // 30 minutes * 60 seconds
+      // date (yyyy-mm) is stored in UTC so it needs to be checked in UTC as well
+      const date = format(utcToZonedTime(new Date(), 'UTC'), 'yyyy-MM', { timeZone: 'UTC' });
+      const existingNotification = notifications.some(({ id }) => id === date);
+
+      if (!rate[date] && !existingNotification) {
+        timeout = setTimeout(() => addNotificationAction({ id: date, type: 'rate' }), 1000);
+      }
+    }
+
+    return () => clearTimeout(timeout);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <div className={style.notificationsContainer}>
@@ -36,11 +59,15 @@ export default connect(
     pluginSettings: {
       actionPayloads = {},
     } = {},
+    user: {
+      sessionDurationInSec,
+      rate = {},
+    },
   }) => ({
     notifications,
     actionPayloads,
+    sessionDurationInSec,
+    rate,
   }),
-  {
-    addNotificationAction: addNotification,
-  },
+  { addNotificationAction: addNotification },
 )(Notifications);

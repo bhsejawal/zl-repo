@@ -3,6 +3,11 @@ import { ADD_NOTIFICATION, REMOVE_NOTIFICATION } from './types';
 // Testing data
 // const testingData = [
 //   {
+//     id: '2021-07',
+//     type: 'rate',
+//     timeout: 4000,
+//   },
+//   {
 //     id: Math.random(),
 //     type: 'toast',
 //     text: 'INIT TOAST TEST',
@@ -11,7 +16,7 @@ import { ADD_NOTIFICATION, REMOVE_NOTIFICATION } from './types';
 //   {
 //     id: Math.random(),
 //     type: 'liveTalkToast',
-//     timeout: 3000,
+//     timeout: 2000,
 //     schedule: {
 //       _id: '60fa150e66eff76ffe81ad85',
 //       habitat: {
