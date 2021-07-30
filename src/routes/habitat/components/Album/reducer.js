@@ -26,7 +26,7 @@ export default (state = initialState, { type, payload }) => {
     case CHANGE_CONTENT_VISIBILITY: {
       const { mediaId, mediaType, action } = payload;
       const disabled = action === 'hide';
-      console.log(mediaId, mediaType, action);
+
       return {
         ...state,
         [mediaType]: {

@@ -17,7 +17,7 @@ import { buildURL } from 'Shared/fetch';
 import { logGAEvent } from 'Shared/ga';
 
 import VideoPreview from './VideoPreview';
-import VideoPlayer from './VideoPlayer';
+import VideoPlayer from '../VideoPlayer';
 
 import style from './style.scss';
 

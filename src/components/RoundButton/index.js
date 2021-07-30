@@ -23,6 +23,7 @@ const RoundButton = ({
     style={{
       width: `${width}px`,
       height: `${width}px`,
+      minWidth: `${width}px`,
       backgroundColor,
       color,
     }}

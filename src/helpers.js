@@ -1,4 +1,4 @@
-import { formatDistanceToNowStrict, parseISO } from "date-fns";
+import { formatDistanceToNowStrict, parseISO, intervalToDuration } from "date-fns";
 
 export const isValidUrl = (url) => {
   try {
@@ -132,4 +132,13 @@ export const handleDownloadMediaURL = (url) => {
 
 export const loadPage = (path, keepQueryString) => {
   window.location.href = `${path}${keepQueryString ? window.location.search : ''}`;
+};
+
+export const formatSecondsToVideoDuration = (timeInSeconds) => {
+  const {
+    hours,
+    minutes,
+    seconds,
+  } = intervalToDuration({ start: 0, end: timeInSeconds * 1000});
+  return `${hours > 0 ? `${(`0${hours}`).slice(-2)}:` : ''}${(`0${minutes}`).slice(-2)}:${(`0${seconds}`).slice(-2)}`;
 };
