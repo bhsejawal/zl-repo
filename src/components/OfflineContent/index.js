@@ -14,6 +14,7 @@ import Fallback from 'Components/LiveStream/Fallback';
 import Loader from 'Components/Loader';
 
 import { buildURL } from 'Shared/fetch';
+import { logGAEvent } from 'Shared/ga';
 
 import VideoPreview from './VideoPreview';
 import VideoPlayer from './VideoPlayer';
@@ -33,6 +34,7 @@ const OfflineContent = ({
   height,
   offlineImage,
   habitatId,
+  slug,
 }) => {
   const [state, setState] = useState(COMPONENT_STATES.LOADING);
   const [currentVideo, setCurrentVideo] = useState(null);
@@ -104,6 +106,16 @@ const OfflineContent = ({
     setState(COMPONENT_STATES.PLAYING_DONE);
   }
 
+  const startOfflineMode = () => {
+    logGAEvent(
+      'media',
+      'user-started-offline-mode',
+      slug,
+    );
+
+    playNextVideo();
+  }
+
   return (
     <div
       className={style.offlineContentWrapper}
@@ -140,7 +152,7 @@ const OfflineContent = ({
       )}
 
       {state === COMPONENT_STATES.INITIALIZED && (
-        <div onClick={() => playNextVideo()} className={style.playStateContainer}>
+        <div onClick={startOfflineMode} className={style.playStateContainer}>
           <img
             src={offlineImage}
             style={{ width, height }}
@@ -171,6 +183,17 @@ const OfflineContent = ({
   )
 }
 
-export default connect(
-  ({ habitat: { habitatInfo: { _id: habitatId, offlineImage }}}) => ({ habitatId, offlineImage }),
-)(OfflineContent);
+export default connect((
+  {
+    habitat: {
+      habitatInfo: {
+        _id: habitatId,
+        offlineImage,
+        slug: habitatSlug,
+        zoo: { slug: zooSlug },
+      },
+    },
+  },
+) => (
+  { habitatId, offlineImage, slug: `${zooSlug}/${habitatSlug}` }
+))(OfflineContent);

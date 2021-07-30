@@ -13,7 +13,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faComment, faInfoCircle, faPhotoVideo } from '@fortawesome/pro-solid-svg-icons';
 import useFetch from 'use-http';
 
-import { buildURL } from 'Shared/fetch';
+import { buildURL, post } from 'Shared/fetch';
 import GlobalsContextProvider from "Components/GlobalsContextProvider";
 import LiveStream from 'Components/LiveStream';
 import Loader from 'Components/Loader';
@@ -21,6 +21,7 @@ import Notifications from 'Components/Notifications';
 
 import { openTermsModal } from 'Components/TermsAndConditions/actions';
 import { GlobalsContext } from 'Shared/context';
+import { logGAEvent } from 'Shared/ga';
 
 import { hasPermission } from 'Components/Authorize';
 import AdminButton from 'Components/LiveStream/AdminButton';
@@ -40,7 +41,9 @@ import Album from './components/Album';
 
 import { useIsHabitatTabbed, useWindowResize } from '../../hooks';
 import { setHabitat, unsetHabitat, setHabitatProps } from './actions';
-import { generateTitle } from '../../helpers';
+import { setUserData } from '../../redux/actions';
+
+import { generateTitle, getDeviceType } from '../../helpers';
 import { MOBILE_CONTROLS_HEIGHT } from './constants';
 
 import style from './style.scss';
@@ -56,6 +59,7 @@ const Habitat = ({
   habitatSlug,
   zooName,
   userId,
+  enteredHabitat,
   hostStreamKey,
   isHostStreamOn,
   setHabitatAction,
@@ -63,6 +67,7 @@ const Habitat = ({
   openTermsModalAction,
   termsAccepted,
   setHabitatPropsAction,
+  setUserDataAction,
 }) => {
   // this will be undefined most of the time
   // but in case camera is changed, this value will be set by from socket message
@@ -76,6 +81,21 @@ const Habitat = ({
   const [pageWidth, setPageWidth] = useState(pageRef?.current?.offsetWidth || windowWidth);
   const isTabletOrLarger = ['medium', 'large'].includes(size);
   const isTabbed = useIsHabitatTabbed();
+
+  useEffect(() => {
+    if (!enteredHabitat) {
+      post(buildURL('/users/enteredHabitat'))
+        .then(({ user }) => {
+          logGAEvent(
+            'onboarding',
+            'user-entered-habitat',
+            getDeviceType(),
+          );
+          setUserDataAction(user);
+        })
+        .catch((error) => console.error('Failed to update user entered habitat flag', error));
+    }
+  }, []);
 
   useEffect(() => {
     if (socket && userId && habitatId) {
@@ -269,7 +289,7 @@ const ConnectedHabitat = connect(
         isHostStreamOn,
       },
     },
-    user: { userId, termsAccepted = false },
+    user: { userId, termsAccepted = false, enteredHabitat },
   }) => ({
     streamKey,
     habitatId,
@@ -279,12 +299,14 @@ const ConnectedHabitat = connect(
     termsAccepted,
     hostStreamKey,
     isHostStreamOn,
+    enteredHabitat,
   }),
   {
     setHabitatAction: setHabitat,
     unsetHabitatAction: unsetHabitat,
     openTermsModalAction: openTermsModal,
     setHabitatPropsAction: setHabitatProps,
+    setUserDataAction: setUserData,
   },
 )(Habitat);
 

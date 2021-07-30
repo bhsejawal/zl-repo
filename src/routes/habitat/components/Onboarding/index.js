@@ -4,6 +4,8 @@ import useFetch from 'use-http';
 import { buildURL } from 'Shared/fetch';
 import { useEffect, useMemo } from 'preact/hooks';
 
+import { logGAEvent } from 'Shared/ga';
+
 import { setUserData } from '../../../../redux/actions';
 import { getDeviceType } from '../../../../helpers';
 
@@ -25,7 +27,21 @@ const Onboarding = ({ isOnboarded, setUserDataAction }) => {
     }
   }, [data, error, setUserDataAction]);
 
-  const updateOnboarding = () => {
+  const updateOnboarding = (userSkipped = false) => {
+    if (userSkipped) {
+      logGAEvent(
+        'onboarding',
+        'user-skipped-onboarding',
+        getDeviceType(),
+      );
+    } else {
+      logGAEvent(
+        'onboarding',
+        'user-completed-onboarding',
+        getDeviceType(),
+      );
+    }
+
     post();
   };
 

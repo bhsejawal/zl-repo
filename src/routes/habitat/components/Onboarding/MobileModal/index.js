@@ -43,7 +43,7 @@ const MobileOnboarding = ({ updateOnboarding, error }) => {
       <Layer>
         <Box className={style.onboarding}>
           <Box className={style.top}>
-            <button type="button" className={style.skip} onClick={updateOnboarding}>Skip</button>
+            <button type="button" className={style.skip} onClick={() => updateOnboarding(true)}>Skip</button>
           </Box>
           <Box className={style.middle}>
             <Box className={style.contentWrapper}>

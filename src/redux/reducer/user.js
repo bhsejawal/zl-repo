@@ -38,6 +38,8 @@ const initialState = {
   termsAccepted: null,
   referralData: null,
   showContentExplorer: false,
+  enteredHabitat: false,
+  enteredMap: false,
 };
 
 export default (state = initialState, { type, payload }) => {
