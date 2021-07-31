@@ -41,17 +41,18 @@ button {
 .floatingButton {
   color: var(--hunterGreenDark);
   padding: 20px 40px;
-  font-size: 18px;
-  line-height: 18px;
+  font-size: 20px;
+  line-height: 30px;
+  font-weight: 700;
   border-radius: 50px;
   border: 0;
   width: fit-content;
   cursor: pointer;
   white-space: nowrap;
 
-  @media screen and (min-width: #{$tablet-portrait-width}) {
-    font-size: 20px;
-    line-height: 30px;
+  @media screen and (max-width: #{$tablet-portrait-width}) {
+    font-size: 18px;
+    line-height: 18px;
   }
 
   &:hover {
