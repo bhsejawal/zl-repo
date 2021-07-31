@@ -1,7 +1,6 @@
 import { useContext } from 'preact/hooks';
 import {
   Box,
-  Image,
   Text,
   Grid,
   ResponsiveContext,
@@ -90,7 +89,9 @@ const ScheduleItem = ({
         <Link href={encodeURI(`/h/${zooSlug}/${habitatSlug}`)} className={style.imageWrapper}>
           <HabitatImage image={habitatImage} />
           {/* We need to load this from the habitats, size contraints should be defined on api */}
-          <Image src={zooLogo} width="140" className={style.zooImage} />
+          <div className={style.logo}>
+            <img src={zooLogo} alt="" />
+          </div>
         </Link>
         <Box justify="center" margin={{ left: 'medium' }} className={style.textWrapper}>
           <Link href={encodeURI(`/h/${zooSlug}/${habitatSlug}`)}>
