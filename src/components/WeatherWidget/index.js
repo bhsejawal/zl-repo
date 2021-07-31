@@ -32,7 +32,7 @@ const WeatherWidget = ({ weather, location }) => {
         <Box className={style.liveTag}>
           LIVE
         </Box>
-        <Text size="small">
+        <Text size="medium">
           {`${location.city}, ${location.country}`}
         </Text>
       </Box>
@@ -40,7 +40,7 @@ const WeatherWidget = ({ weather, location }) => {
         <Clock />
         <Box flex="grow" justify="center" className={style.weather} direction="row">
           <Image src={`http://openweathermap.org/img/wn/${weather.icon}@2x.png`} alt="condition" />
-          <Text size="xsmall">
+          <Text size="small" weight={700}>
             {`${parseInt(weather.temperature, 10)}C`}
           </Text>
         </Box>
