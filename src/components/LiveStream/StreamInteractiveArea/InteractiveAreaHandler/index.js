@@ -8,10 +8,11 @@ import {
 } from 'preact/hooks';
 import { connect } from 'react-redux';
 import { createPortal } from 'preact/compat';
+import classnames from 'classnames';
 
 import { GlobalsContext } from 'Shared/context';
 
-import { addUserInteraction } from '../../../../redux/actions';
+import { addUserInteraction, setStreamClicked } from '../../../../redux/actions';
 
 import CustomCursor from '../CustomCursor';
 import { useCursorHook } from '../CustomCursor/hooks';
@@ -20,6 +21,7 @@ import style from './style.scss';
 
 import { FULL_CURSOR, LOADING } from '../CustomCursor/constants';
 import {getConfig} from "../../../../helpers";
+import { useIsMobileSize } from "../../../../hooks";
 
 const validDropTypes = ['emoji', 'cursorPin'];
 
@@ -33,11 +35,15 @@ const InteractiveAreaHandler = ({
   emojis,
   addUserInteractionAction,
   configs,
+  streamClicked,
+  streamStarted,
+  setStreamClickedAction,
 }) => {
   const { socket } = useContext(GlobalsContext);
   const ownCursorRef = useRef(null);
   const containerRef = useRef(null);
   const [cursorState, setCursorState] = useState(FULL_CURSOR);
+  const isMobileSize = useIsMobileSize();
 
   useCursorHook({ containerRef, ownCursorRef });
 
@@ -89,7 +95,19 @@ const InteractiveAreaHandler = ({
     });
 
     setCursorState(LOADING);
-  }, [socket, animal, habitatId, color, userId, cursorState]);
+    if (!streamClicked) {
+      setStreamClickedAction(true);
+    }
+  }, [
+    socket,
+    animal,
+    habitatId,
+    color,
+    userId,
+    cursorState,
+    setStreamClickedAction,
+    streamClicked,
+  ]);
 
   const availableEmojis = useMemo(
     () => emojis.reduce((acc, { items = [] } = {}) => [...acc, ...items], []),
@@ -163,7 +181,13 @@ const InteractiveAreaHandler = ({
       onDragOver={onDragOver}
       onMouseDown={onClickHandler}
     >
-      <div id="CursorsContainer" className={style.CursorsContainer} ref={containerRef}>
+      <div
+        id="CursorsContainer"
+        className={classnames(style.CursorsContainer, {
+          [style.clickIndicator]: !streamClicked && streamStarted && isMobileSize,
+        })}
+        ref={containerRef}
+      >
         <CursorPortal>
           <div ref={ownCursorRef} className={style.ownCursor} >
             <CustomCursor cursorState={cursorState} color={color} animal={animal} />
@@ -183,8 +207,16 @@ export default connect(({
       animalIcon: animal,
       color,
     },
+    streamClicked,
   },
-  habitat: { habitatInfo: { _id: habitatId, emojiDrops: emojis = [], camera: { configs }} },
+  habitat: {
+    habitatInfo: {
+      _id: habitatId,
+      emojiDrops: emojis = [],
+      camera: { configs },
+      streamStarted,
+    },
+  },
 }) => ({
   userId,
   animal,
@@ -192,6 +224,9 @@ export default connect(({
   habitatId,
   emojis,
   configs,
+  streamClicked,
+  streamStarted,
 }), {
   addUserInteractionAction: addUserInteraction,
+  setStreamClickedAction: setStreamClicked,
 })(InteractiveAreaHandler);

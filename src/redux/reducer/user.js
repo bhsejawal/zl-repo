@@ -8,6 +8,8 @@ import {
   SET_SUBSCRIPTION_DATA,
   UPDATE_FAVORITE_HABITATS,
   UPDATE_REFERRAL_DATA,
+  UPDATE_CLIP_BUTTON_CLICKED,
+  UPDATE_STREAM_TAPPED,
 } from '../types';
 
 const initialState = {
@@ -40,6 +42,10 @@ const initialState = {
   showContentExplorer: false,
   enteredHabitat: false,
   enteredMap: false,
+  // flag to show clip button pulse animation
+  clipButtonClicked: false,
+  // flag to show stream tap animation
+  streamClicked: false,
 };
 
 export default (state = initialState, { type, payload }) => {
@@ -148,6 +154,22 @@ export default (state = initialState, { type, payload }) => {
     return {
       ...state,
       referralData,
+    }
+  }
+
+  if (type === UPDATE_CLIP_BUTTON_CLICKED) {
+    const { clicked } = payload;
+    return {
+      ...state,
+      clipButtonClicked: clicked,
+    }
+  }
+
+  if (type === UPDATE_STREAM_TAPPED) {
+    const { clicked } = payload;
+    return {
+      ...state,
+      streamClicked: clicked,
     }
   }
 

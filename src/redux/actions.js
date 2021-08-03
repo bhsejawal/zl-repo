@@ -24,6 +24,8 @@ import {
   SET_HABITATS,
   UPDATE_HABITAT,
   UNSET_HABITATS,
+  UPDATE_CLIP_BUTTON_CLICKED,
+  UPDATE_STREAM_TAPPED,
 } from './types';
 
 export const setSubscriptionData = (payload) => ({ type: SET_SUBSCRIPTION_DATA, payload });
@@ -134,4 +136,14 @@ export const unsetHabitats = () => ({ type: UNSET_HABITATS });
 export const updateHabitat = (habitatId, data) => ({
   type: UPDATE_HABITAT,
   payload: { habitatId, data },
+});
+
+export const setClipButtonClicked = (clicked) => ({
+  type: UPDATE_CLIP_BUTTON_CLICKED,
+  payload: { clicked },
+});
+
+export const setStreamClicked = (clicked) => ({
+  type: UPDATE_STREAM_TAPPED,
+  payload: { clicked },
 });

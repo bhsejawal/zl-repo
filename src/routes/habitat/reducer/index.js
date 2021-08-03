@@ -3,6 +3,7 @@ import {
   SET_HABITAT,
   SET_HABITAT_LIKED,
   UNSET_HABITAT,
+  SET_HABITAT_STREAM_STARTED,
 } from '../types';
 
 const initialState = {};
@@ -31,6 +32,11 @@ export default (state = initialState, { type, payload = {}}) => {
         ...state,
         ...payload,
       };
+    }
+
+    case SET_HABITAT_STREAM_STARTED: {
+      const { streamStarted } = payload;
+      return { ...state, streamStarted };
     }
 
     default: {
