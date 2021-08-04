@@ -36,6 +36,7 @@ const TakeSnapshotModal = ({
     response,
     error,
     put,
+    del,
     loading,
   } = useFetch(API_BASE_URL, {
     credentials: 'include',
@@ -54,6 +55,13 @@ const TakeSnapshotModal = ({
     }
   }, [error, response.ok]);
 
+  const onCloseHandler = async () => {
+    if (!showShareSection) {
+      await del(`/photos/${snapshotId}`, { force: true });
+    }
+    onClose();
+  };
+
   const clickHandler = () => {
     put(`/photos/${snapshotId}`, { title, share: true });
     logGAEvent(
@@ -64,9 +72,9 @@ const TakeSnapshotModal = ({
   };
 
   return (
-    <Layer position="center" onClickOutside={onClose}>
+    <Layer position="center" onClickOutside={onCloseHandler}>
       <Box width="960px" height={{ min: '480px' }} className={classnames({ [style.mobile]: isMobileSize })}>
-        <Header onClose={onClose} className={style.header}>
+        <Header onClose={onCloseHandler} className={style.header}>
           Zoolife Moments
         </Header>
 
