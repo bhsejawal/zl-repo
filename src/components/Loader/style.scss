@@ -6,6 +6,12 @@ $middleLeftDelay: $leftDelay + $delay;
 $middleRightDelay: $middleLeftDelay + $delay;
 $rightDelay: $middleRightDelay + $delay;
 
+.absolute {
+  position: absolute;
+  background-color: white;
+  z-index: 3;
+}
+
 .palmAnimation {
   fill: transparent;
   stroke: black;

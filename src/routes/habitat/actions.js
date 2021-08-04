@@ -3,6 +3,7 @@ import {
   SET_HABITAT,
   SET_HABITAT_LIKED,
   UNSET_HABITAT,
+  SET_HABITAT_STREAM_STARTED,
 } from './types';
 
 export const setHabitat = ({ habitat }) => ({
@@ -28,4 +29,9 @@ export const unsetHabitat = () => ({ type: UNSET_HABITAT });
 export const setHabitatProps = (payload) => ({
   type: SET_HABITAT_PROPS,
   payload,
+});
+
+export const setHabitatStreamStarted = (streamStarted) => ({
+  type: SET_HABITAT_STREAM_STARTED,
+  payload: { streamStarted },
 });

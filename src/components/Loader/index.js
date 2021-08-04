@@ -9,9 +9,10 @@ const Loader = ({
   width = '200px',
   fill,
   className,
+  absolute,
 }) => (
   <Box
-    className={classnames(style.palmAnimation, className)}
+    className={classnames(style.palmAnimation, className, {[style.absolute]: absolute })}
     fill={fill}
     justify="center"
     align="center"

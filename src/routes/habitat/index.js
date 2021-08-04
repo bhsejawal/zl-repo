@@ -13,7 +13,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faComment, faInfoCircle, faPhotoVideo } from '@fortawesome/pro-solid-svg-icons';
 import useFetch from 'use-http';
 
-import { buildURL } from 'Shared/fetch';
+import { buildURL, post } from 'Shared/fetch';
 import GlobalsContextProvider from "Components/GlobalsContextProvider";
 import LiveStream from 'Components/LiveStream';
 import Loader from 'Components/Loader';
@@ -21,23 +21,29 @@ import Notifications from 'Components/Notifications';
 
 import { openTermsModal } from 'Components/TermsAndConditions/actions';
 import { GlobalsContext } from 'Shared/context';
+import { logGAEvent } from 'Shared/ga';
 
+import { hasPermission } from 'Components/Authorize';
+import AdminButton from 'Components/LiveStream/AdminButton';
 import Tabs from 'Components/Tabs';
 import Tab from 'Components/Tabs/Tab';
 import LiveTalk from 'Components/Card/LiveTalk';
 import ShareModal from 'Components/ShareModal';
+import OfflineContent from 'Components/OfflineContent';
 import ScheduleModal from './components/ScheduleModal';
 import Chat from './components/Chat';
 import LiveChannelsBar from './components/LiveChannelsBar';
 import CardTabs from './components/CardTabs';
 import StreamProfile from './components/StreamProfile';
-import OnboardingModal from './OnboardingModal';
+import OnboardingModal from './components/Onboarding';
 import SmallScreenCardTabs from './components/CardTabs/Mobile';
 import Album from './components/Album';
 
 import { useIsHabitatTabbed, useWindowResize } from '../../hooks';
 import { setHabitat, unsetHabitat, setHabitatProps } from './actions';
-import { generateTitle } from '../../helpers';
+import { setUserData } from '../../redux/actions';
+
+import { generateTitle, getDeviceType } from '../../helpers';
 import { MOBILE_CONTROLS_HEIGHT } from './constants';
 
 import style from './style.scss';
@@ -53,6 +59,7 @@ const Habitat = ({
   habitatSlug,
   zooName,
   userId,
+  enteredHabitat,
   hostStreamKey,
   isHostStreamOn,
   setHabitatAction,
@@ -60,6 +67,7 @@ const Habitat = ({
   openTermsModalAction,
   termsAccepted,
   setHabitatPropsAction,
+  setUserDataAction,
 }) => {
   // this will be undefined most of the time
   // but in case camera is changed, this value will be set by from socket message
@@ -73,6 +81,21 @@ const Habitat = ({
   const [pageWidth, setPageWidth] = useState(pageRef?.current?.offsetWidth || windowWidth);
   const isTabletOrLarger = ['medium', 'large'].includes(size);
   const isTabbed = useIsHabitatTabbed();
+
+  useEffect(() => {
+    if (!enteredHabitat) {
+      post(buildURL('/users/enteredHabitat'))
+        .then(({ user }) => {
+          logGAEvent(
+            'onboarding',
+            'user-entered-habitat',
+            getDeviceType(),
+          );
+          setUserDataAction(user);
+        })
+        .catch((error) => console.error('Failed to update user entered habitat flag', error));
+    }
+  }, []);
 
   useEffect(() => {
     if (socket && userId && habitatId) {
@@ -193,14 +216,21 @@ const Habitat = ({
           >
             {!isTabbed && <LiveChannelsBar width={sideBarWidth} height={height} />}
             <div className={style.livestreamWrapper} style={{ minWidth: streamWidth }}>
-              <LiveStream
+              {!isStreamOn && (
+                <>
+                  <OfflineContent width={streamWidth} height={height} />
+                  {(hasPermission('habitat:edit-stream')) && <AdminButton />}
+                </>
+
+              )}
+              {isStreamOn && <LiveStream
                 width={streamWidth}
                 height={height}
                 streamId={streamKey}
                 interactive
                 mode="stream"
                 isStreamOn={isStreamOn}
-              />
+              />}
               {isTabbed && hostStreamKey && isHostStreamOn && <LiveTalk streamId={hostStreamKey} />}
             </div>
             {!isTabbed && <Chat width={chatWidth} height={height} />}
@@ -259,7 +289,7 @@ const ConnectedHabitat = connect(
         isHostStreamOn,
       },
     },
-    user: { userId, termsAccepted = false },
+    user: { userId, termsAccepted = false, enteredHabitat },
   }) => ({
     streamKey,
     habitatId,
@@ -269,12 +299,14 @@ const ConnectedHabitat = connect(
     termsAccepted,
     hostStreamKey,
     isHostStreamOn,
+    enteredHabitat,
   }),
   {
     setHabitatAction: setHabitat,
     unsetHabitatAction: unsetHabitat,
     openTermsModalAction: openTermsModal,
     setHabitatPropsAction: setHabitatProps,
+    setUserDataAction: setUserData,
   },
 )(Habitat);
 

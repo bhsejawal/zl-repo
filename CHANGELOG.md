@@ -2,7 +2,24 @@
 This file keeps track of all relevant change for every release.
 
 ## [Unreleased]
+## [5.13.0] - 2021-08-03
+### Added
+- Offline mode on habitats
+- New onboarding for mobile
+- Partners page have specific hero section
+- Multiple logs to track user behaviour
+- Custom video controls to all videos
+- NPS modal on the habitat page
+- Pulsing animation to the clip button
+- A "tap to move" element on mobile to stimulate users to interact with the video
+### Changed
+- Increased timeout on clip trim/creation to match API
+- Scheduler page logos are now round
+- Updated the styling for the weather widget
 
+
+### Fixed
+- Wrong style for button on the landing page
 ## [5.12.0] - 2021-07-26
 
 ### Added

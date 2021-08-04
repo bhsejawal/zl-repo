@@ -1,11 +1,75 @@
+@import "../../style/media-query";
+
 .videoControls {
   position: absolute;
   bottom: 0;
   width: fit-content;
   display: flex;
-  padding-bottom: 10px;
-  padding-left: 16px;
+  padding: 0 16px 10px 16px;
   z-index: 2;
+  width: 100%;
+}
+
+
+
+.timelineWrapper {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  flex-grow: 1;
+
+  .timeStats {
+    display: flex;
+    min-width: fit-content;
+  }
+
+  .seekBar {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-grow: 1;
+
+    > div {
+      flex-grow: 1;
+    }
+
+    .rangeInput {
+      padding: 0px 5px;
+
+
+      input {
+        box-shadow: none;
+      }
+    }
+  }
+}
+
+@media screen and (max-width: #{$tablet-portrait-width}) {
+
+  .videoControls {
+    align-items: flex-end;
+  }
+
+  .timelineWrapper {
+    flex-direction: column-reverse;
+
+    .seekBar {
+      width: 100%;
+
+      input {
+        margin: 0px 2px;
+      }
+    }
+
+    .timeStats {
+      align-self: flex-end;
+
+      span {
+        font-size: 14px;
+        line-height: 10px;
+      }
+    }
+  }
 }
 
 .volumeWrapper {

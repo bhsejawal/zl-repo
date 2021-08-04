@@ -12,6 +12,7 @@ $btn-size: 40px;
   display: flex;
   align-items: center;
   justify-content: center;
+  z-index: 2;
 }
 
 .icon {
@@ -20,6 +21,7 @@ $btn-size: 40px;
 }
 
 .item {
+  border-radius: 0px;
 
   > div {
     align-items: center;

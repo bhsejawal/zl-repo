@@ -13,6 +13,7 @@ import {
   faCogs,
   faLaughWink,
   faPowerOff,
+  faImage,
 } from '@fortawesome/pro-solid-svg-icons';
 
 import StreamEditModalLoader from './EditModal/Loader';
@@ -23,6 +24,7 @@ import {
   OVERLAY_SECTION,
   POWER_SECTION,
   CONFIGURATIONS,
+  OFFLINE_IMAGE,
 } from './constants';
 
 const AdminButton = () => {
@@ -81,6 +83,17 @@ const AdminButton = () => {
           />
         ),
         onClick: () => setOpenSection(CONFIGURATIONS),
+      }, {
+        className: style.item,
+        label: 'Offline Image',
+        icon: (
+          <FontAwesomeIcon
+            className={style.icon}
+            icon={faImage}
+            size="lg"
+          />
+        ),
+        onClick: () => setOpenSection(OFFLINE_IMAGE),
       });
     }
 

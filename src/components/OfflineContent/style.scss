@@ -1,0 +1,95 @@
+@import "../../style/media-query";
+
+.offlineContentWrapper {
+  position: relative;
+  background: var(--hunterGreenDark);
+}
+
+.overlay {
+  background: rgba(0, 0, 0, .5);
+  width: 100%;
+  position: absolute;
+  z-index: 1;
+  height: 100%;
+}
+
+.offlineTag {
+  max-height: 18px;
+}
+
+.topBarContainer {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  height: 22px;
+}
+
+.playStateContainer {
+  display: flex;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+
+  img {
+    position: absolute;
+  }
+
+  .playState {
+    height: 100%;
+    z-index: 2;
+    flex-grow: 1;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    font-size: 36px;
+
+    svg {
+      margin-top: 40px;
+    }
+
+    .icon {
+      cursor: pointer;
+    }
+  }
+}
+
+@media screen and (max-width: #{$phone-landscape-width}) {
+
+  .playStateContainer {
+
+    .playState {
+      font-size: 18px;
+
+      svg {
+        margin-top: 20px;
+      }
+    }
+
+    h4 {
+      font-size: 16px;
+      line-height: 22px;
+      margin-top: 27px;
+      font-weight: normal;
+    }
+
+    h3 {
+      font-size: 20px;
+      line-height: 28px;
+      margin-top: 10px;
+    }
+  }
+}
+
+.videoList {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding: 0px 22px;
+}

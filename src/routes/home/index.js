@@ -15,14 +15,14 @@ import { goToSignup } from './helpers';
 
 import style from './style.scss';
 
-const Home = ({ partnerImage }) => (
+const Home = ({ partnerImage, partner }) => (
   <div className={style.landing}>
     <Header />
     {/* This will need to float around the screen */}
     <FloatingButton onClick={goToSignup} />
     <div className={style.container}>
       <div className={style.wrapper}>
-        <HeroSection partnerImage={partnerImage} />
+        <HeroSection partnerImage={partnerImage} partner={partner} />
         <Partners />
         <Overview />
         <Features />

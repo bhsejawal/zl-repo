@@ -2,10 +2,11 @@ import classnames from 'classnames';
 import { useEffect, useState, useCallback } from 'preact/compat';
 import { connect } from 'react-redux';
 import { route } from 'preact-router';
-import { removeNotification } from 'Components/Notifications/actions';
 import CloseButton from 'Components/modals/CloseButton';
 import Tag from 'Components/Tag';
 import Card from 'Components/Card';
+import Rate from './Rate';
+import { removeNotification } from './actions';
 
 import style from './style.scss';
 
@@ -58,6 +59,15 @@ const Notification = ({ data, removeNotificationAction }) => {
         <CloseButton onClick={close} className={style.close} />
         <div className={style.content}>{data.text}</div>
       </div>
+    );
+  }
+
+  if (type === 'rate' && data?.id) {
+    return (
+      <Rate
+        className={classnames(style.score, { [style.animateIn]: animateIn })}
+        onCLose={close}
+      />
     );
   }
 

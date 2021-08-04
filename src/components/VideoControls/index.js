@@ -1,7 +1,16 @@
 import { h } from 'preact';
-import { useState, useRef, useEffect } from 'preact/hooks';
+import {
+  useState,
+  useRef,
+  useEffect,
+} from 'preact/hooks';
 import { forwardRef } from 'preact/compat';
-import { Box, Grommet, RangeInput as InputRange } from 'grommet';
+import {
+  Box,
+  Grommet,
+  RangeInput as InputRange,
+  Text,
+} from 'grommet';
 import classnames from 'classnames';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -12,13 +21,13 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { faVolume, faVolumeMute, faCompress } from '@fortawesome/pro-solid-svg-icons';
 import RoundButton from 'Components/RoundButton';
-import { getDeviceType } from '../../helpers';
+import { getDeviceType, formatSecondsToVideoDuration } from '../../helpers';
 
 import { useIsHabitatTabbed } from '../../hooks';
 
 import style from './style.scss';
 
-const customThemeRangeInput = {
+const customThemeRangeInputVolume = {
   global: {
     spacing: '12px',
   },
@@ -41,23 +50,57 @@ const customThemeRangeInput = {
   },
 };
 
+const customThemeRangeInputSeekbar = {
+  global: {
+    spacing: '12px',
+  },
+  rangeInput: {
+    track: {
+      height: '6px',
+      extend: () => `border-radius: 10px`,
+      lower: {
+        color: '#122717',
+        opacity: 0.7,
+      },
+      upper: {
+        color: 'white',
+        opacity: 0.3,
+      },
+    },
+    thumb: {
+      color: '#122717',
+    },
+  },
+};
+
 const VideoControls = forwardRef(({
   showControls,
   showPlayControl,
   showVolumeControl,
   showFullscreenControl,
+  showSeekBar,
+  showTimeStats,
   showPIPControl,
   hasCameraControls,
   onPauseHandler,
   isPlaying,
   isLoading,
+  videoLength,
+  timeElapsed,
+  updateVideoTimeHandler,
+  mode = 'webrtc',
+  muted = true,
 }, ref) => {
   const [showVolumeBar, setShowVolumeBar] = useState(false)
-  const [isMuted, setIsMuted] = useState(true);
+  const [isMuted, setIsMuted] = useState();
   const [volume, setVolume] = useState(1);
   const [isFullscreen, setIsFullscreen] = useState(false);
   const volumeButtonRef = useRef(null);
   const isTabbedView = useIsHabitatTabbed();
+
+  useEffect(() => {
+    setIsMuted(muted);
+  }, []);
 
   useEffect(() => {
     const handleFullscreenMode = () => {
@@ -73,10 +116,6 @@ const VideoControls = forwardRef(({
   // and this is receiving a reference that's not a video element
   // so the "video.play()"" is throwing errors
   const video = ref.current;
-
-  if (!showControls) {
-    return null;
-  }
 
   const togglePlay = () => {
     if (typeof onPauseHandler === 'function') {
@@ -126,7 +165,7 @@ const VideoControls = forwardRef(({
     video.requestPictureInPicture();
   }
 
-  if (!video) {
+  if (!showControls || !video) {
     return null;
   }
 
@@ -169,7 +208,7 @@ const VideoControls = forwardRef(({
             <div
               className={classnames(style.volumeContainer, {[style.expanded]: showVolumeBar})}
             >
-              <Grommet theme={customThemeRangeInput} className={style.rangeInput}>
+              <Grommet theme={customThemeRangeInputVolume} className={style.rangeInput}>
                 <InputRange
                   min={0}
                   max={1}
@@ -206,6 +245,31 @@ const VideoControls = forwardRef(({
           <FontAwesomeIcon icon={faExpand} />
         </RoundButton>
 
+      )}
+
+      {mode === 'vod' && (
+        <div className={style.timelineWrapper}>
+          {showSeekBar && (
+            <div className={style.seekBar}>
+              <Grommet theme={customThemeRangeInputSeekbar} className={style.rangeInput}>
+                <InputRange
+                  min={0}
+                  max={videoLength}
+                  step={1}
+                  value={timeElapsed}
+                  onChange={({ target: { value }}) => updateVideoTimeHandler(value)}
+                />
+              </Grommet>
+            </div>
+          )}
+          {showTimeStats && (
+            <div className={style.timeStats}>
+              <Text color="white" weight={700} size="large" margin={{ left: '5px' }}>
+                {`${formatSecondsToVideoDuration(timeElapsed)} / ${formatSecondsToVideoDuration(videoLength)}`}
+              </Text>
+            </div>
+          )}
+        </div>
       )}
     </Box>
   );

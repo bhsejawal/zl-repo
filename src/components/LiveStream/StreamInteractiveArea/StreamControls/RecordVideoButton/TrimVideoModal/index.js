@@ -38,6 +38,7 @@ const TrimVideoModal = ({
     credentials: 'include',
     cachePolicy: 'no-cache',
     headers: { 'Content-Type': 'application/json' },
+    timeout: 300000,
   });
 
   const {
@@ -49,6 +50,7 @@ const TrimVideoModal = ({
     credentials: 'include',
     cachePolicy: 'no-cache',
     headers: { 'Content-Type': 'application/json' },
+    timeout: 300000,
   });
 
   useEffect(() => {
@@ -62,6 +64,12 @@ const TrimVideoModal = ({
 
     if (error) {
       console.error('Error While requesting stream clip', error);
+      logGAEvent(
+        'error',
+        'creating-clip',
+        slug,
+      )
+
       setShowError(true);
     }
   }, [data, error]);
@@ -73,6 +81,11 @@ const TrimVideoModal = ({
 
     if (trimError) {
       console.error('Error while trimming video', trimError);
+      logGAEvent(
+        'error',
+        'trimming-clip',
+        slug,
+      )
       setShowError(true);
     }
   }, [trimData, trimError]);

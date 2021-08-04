@@ -26,6 +26,7 @@ import { useWebRTCStream } from './hooks/useWebRTCStream';
 import { wsMessages } from './helpers/constants';
 import { useIsHabitatTabbed, useIsMobileSize } from '../../hooks';
 import { MOBILE_CONTROLS_HEIGHT } from '../../routes/habitat/constants';
+import { setHabitatStreamStarted } from "../../routes/habitat/actions";
 
 import { getDeviceType } from '../../helpers';
 
@@ -49,6 +50,7 @@ const Stream = ({
   showContentExplorer,
   isStreamOn,
   mode,
+  setHabitatStreamStartedAction,
 }) => {
   const videoRef = useRef();
   const containerRef = useRef(null);
@@ -89,6 +91,10 @@ const Stream = ({
     if (!isStreamOn && streamStatus === PLAY_STARTED) {
       stopPlaying();
     }
+
+    if (isStreamOn && streamStatus === PLAY_STARTED && mode !== 'liveTalk') {
+      setHabitatStreamStartedAction(true);
+    }
   }, [
     streamStatus,
     isStreamOn,
@@ -98,6 +104,8 @@ const Stream = ({
     videoRef,
     isInitialized,
     initializeAdapter,
+    mode,
+    setHabitatStreamStartedAction,
   ]);
 
   const pauseStreamHandler = useCallback(() => {
@@ -164,7 +172,7 @@ const Stream = ({
             />
           )}
 
-          {(interactive && hasPermission('habitat:edit-stream')) && <AdminButton />}
+          {(interactive && isStreamOn && hasPermission('habitat:edit-stream')) && <AdminButton />}
         </div>
 
         {/* mobile controls */}
@@ -186,13 +194,6 @@ const Stream = ({
             {(interactive && hasPermission('habitat:edit-stream')) && <AdminButton />}
           </>
         )}
-
-        {(streamStatus === CLOSED || !isStreamOn) && (
-          <>
-            <Fallback type="offline" />
-            {(interactive && hasPermission('habitat:edit-stream')) && <AdminButton />}
-          </>
-        )}
       </div>
     </LiveStreamContext.Provider>
   );
@@ -202,4 +203,4 @@ export default connect((
   { user: { userId, showContentExplorer } },
 ) => (
   { userId, showContentExplorer }
-))(Stream);
+), { setHabitatStreamStartedAction: setHabitatStreamStarted })(Stream);

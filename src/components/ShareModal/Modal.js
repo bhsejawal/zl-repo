@@ -26,6 +26,7 @@ import ErrorModal from 'Components/modals/Error';
 import CloseButton from 'Components/modals/CloseButton';
 import AnimalIcon from 'Components/AnimalIcon';
 import RoundButton from 'Components/RoundButton';
+import VideoPlayer from 'Components/VideoPlayer';
 
 import { API_BASE_URL } from 'Shared/fetch';
 import { getDeviceType, androidDevice, iOSDevice } from '../../helpers';
@@ -220,10 +221,7 @@ const ShareModal = ({
           <Box className={style.shareMedia} >
             {url && <img src={url} alt="" />}
             {videoURL && (
-              // eslint-disable-next-line jsx-a11y/media-has-caption
-              <video key={videoURL} playsInline controls>
-                <source src={videoURL} type="video/mp4" />
-              </video>
+              <VideoPlayer videoURL={videoURL} autoPlay muted />
             )}
           </Box>
           <Box width={{ min: '285px' }} background="white" className={style.rightSection}>
