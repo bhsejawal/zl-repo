@@ -30,6 +30,7 @@ const HeroSection = ({ partnerImage, partner }) => {
       setDefaultHeroText({
         heading: 'We’re now officially on Zoolife!',
         paragraph: 'Join our animals up-close and personal in their habitats.',
+        paragraphPadding: '0 60px',
       })
     } else {
       setDefaultHeroText({
@@ -37,7 +38,7 @@ const HeroSection = ({ partnerImage, partner }) => {
         paragraph: 'Observe natural animal behaviors up-close in HD, with talks led by nature experts.',
       })
     }
-  }, []);
+  }, [partner]);
 
   useEffect(() => {
     if (width <= 768) {
@@ -82,7 +83,7 @@ const HeroSection = ({ partnerImage, partner }) => {
               <Experiment id="OLguIG20RSuAWwX9_96_VA">
                 <Variant id="0">
                   <h1>{defaultHeroText?.heading}</h1>
-                  <p className="body">
+                  <p className="body" style={{ padding: defaultHeroText.paragraphPadding }}>
                     {defaultHeroText?.paragraph}
                   </p>
                 </Variant>

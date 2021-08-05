@@ -21,7 +21,7 @@ $animationDuration: 2.5s;
       color: white;
 
       > div {
-        max-width: 350px;
+        max-width: 390px;
       }
     }
 
@@ -33,14 +33,16 @@ $animationDuration: 2.5s;
     }
 
     h1 {
+      margin-top: 0;
       margin-bottom: 30px;
-      font-size: 30px;
-      line-height: 40px;
+      font-size: 40px;
+      line-height: 55px;
     }
 
     :global(.body) {
-      font-size: 15px;
-      margin: 0 0 60px 0;
+      font-size: 16px;
+      line-height: 22px;
+      margin: 0 0 50px 0;
     }
   }
 
@@ -93,6 +95,7 @@ $animationDuration: 2.5s;
 }
 
 .partner {
+  margin-bottom: 30px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -104,6 +107,7 @@ $animationDuration: 2.5s;
   .partnerLogo {
     height: 60px;
     border-radius: 9px;
+    background: white;
   }
 }
 
@@ -152,12 +156,13 @@ $animationDuration: 2.5s;
         padding: 30px;
 
         h1 {
-          font-size: 28px;
+          font-size: 32px;
+          line-height: 42px;
         }
 
         :global(.body) {
-          font-size: 15px;
-          margin: 0 0 60px 0;
+          font-size: 13px;
+          line-height: 18px;
         }
       }
 
@@ -172,6 +177,18 @@ $animationDuration: 2.5s;
           width: 100%;
         }
       }
+    }
+  }
+}
+
+@media screen and (max-width: 840px) and (min-width: #{$tablet-portrait-width}) {
+
+  .heroContainer .top .left {
+    padding: 0 20px;
+
+    h1 {
+      font-size: 30px;
+      line-height: normal;
     }
   }
 }
