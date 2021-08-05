@@ -81,7 +81,7 @@ const MediaContent = ({
         />
       )}
       <div
-        className={classnames(style.mediaOverlay, {[style.show]: showOverlay})}
+        className={classnames(style.mediaOverlay, {[style.show]: showOverlay })}
         onClick={onclickHandler}
       >
         <div className={style.overlayWrapper}>

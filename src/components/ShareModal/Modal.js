@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'preact/hooks';
-import { lazy, Suspense } from 'preact/compat';
 import { Box, Layer, Text } from 'grommet';
 import { isEmpty, isNil } from 'lodash-es';
 import { faFacebookF, faTwitter } from '@fortawesome/free-brands-svg-icons';
@@ -14,11 +13,11 @@ import {
   faCheck,
   faHeart,
 } from '@fortawesome/pro-solid-svg-icons';
-import { connect } from 'react-redux';
 import { faHeart as faHeartOutline } from '@fortawesome/pro-light-svg-icons';
 import useFetch from 'use-http';
 import classnames from 'classnames';
 import { formatDistanceToNow } from 'date-fns';
+import { lazy, Suspense } from 'preact/compat';
 
 import { logGAEvent } from 'Shared/ga';
 
@@ -35,6 +34,7 @@ import { useIsMobileSize } from '../../hooks';
 import style from './style.scss';
 
 const Chat = lazy(() => import('Components/Chat'));
+const PubNubWrapper = lazy(() => import('Components/PubNubWrapper'));
 
 export const generateTwitterURL = (html, text, hashtag, handle) => {
   const shareURL = new URL('https://twitter.com/intent/tweet');
@@ -73,6 +73,7 @@ const ShareModal = ({
   setShareModalMediaId,
   habitat,
   slug,
+  isGuest,
 }) => {
   const {
     _id,
@@ -88,7 +89,6 @@ const ShareModal = ({
     profile,
     title,
   } = data;
-
   const shareUrl = `${window.location.origin}/album/${videoURL ? 'videos' : 'photos'}/${_id}`;
   const isMobileSize = useIsMobileSize();
   const [showEmailError, setShowEmailError] = useState();
@@ -157,6 +157,10 @@ const ShareModal = ({
   };
 
   const likeContent = async () => {
+    if (isGuest) {
+      return;
+    }
+
     try {
       await likePut(`${type === 'photo' ? 'photos' : 'videos'}/${mediaId}/like`);
       logGAEvent(
@@ -194,9 +198,6 @@ const ShareModal = ({
             className={style.close}
           />
         </div>
-        {!videoURL && userId === data?.userId && (
-          <div className={style.title}>Here’s your photo!</div>
-        )}
         {nextId && (
           <button
             type="button"
@@ -221,7 +222,7 @@ const ShareModal = ({
           <Box className={style.shareMedia} >
             {url && <img src={url} alt="" />}
             {videoURL && (
-              <VideoPlayer videoURL={videoURL} autoPlay muted />
+              <VideoPlayer videoURL={videoURL} autoPlay muted isGuest={isGuest} />
             )}
           </Box>
           <Box width={{ min: '285px' }} background="white" className={style.rightSection}>
@@ -231,7 +232,10 @@ const ShareModal = ({
               height={{ min: '62px' }}
             >
               <Box margin={{ right: '20px' }} align="center" justify="center">
-                <AnimalIcon width={35} animalIcon={profile?.animal} color={profile?.color} />
+                <AnimalIcon
+                  width={35}
+                  animalIcon={profile?.animal || profile?.animalIcon}
+                  color={profile?.color} />
               </Box>
 
               <Box>
@@ -264,11 +268,13 @@ const ShareModal = ({
                 <Box
                   className={classnames(
                     style.heartContainer,
-                    {[style.liked]: contentLikes.isLiked},
+                    {[style.liked]: contentLikes.isLiked || isGuest },
                   )}
                   onClick={likeContent}
                 >
-                  <FontAwesomeIcon icon={contentLikes.isLiked ? faHeart : faHeartOutline} />
+                  <FontAwesomeIcon
+                    icon={contentLikes.isLiked || isGuest ? faHeart : faHeartOutline}
+                  />
                 </Box>
                 <Text margin={{ left: '8px' }}>
                   {contentLikes.likes}
@@ -358,6 +364,16 @@ const ShareModal = ({
             </Box>
             <Box className={style.commentSection}>
               <Box fill>
+                {typeof window !== 'undefined' && isGuest && (
+                  <Suspense>
+                    <PubNubWrapper isGuest>
+                      <Suspense>
+                        <Chat channelId={_id} alternate mediaType={type} isGuest />
+                      </Suspense>
+                    </PubNubWrapper>
+                  </Suspense>
+                )}
+
                 {typeof window !== 'undefined' && mediaId && (
                   <Suspense>
                     <Chat channelId={mediaId} alternate mediaType={type} />
@@ -374,16 +390,4 @@ const ShareModal = ({
   );
 };
 
-export default connect((
-  {
-    habitat: {
-      shareModal: { mediaId },
-      habitatInfo: {
-        slug: habitatSlug,
-        zoo: {
-          slug: zooSlug,
-        },
-      },
-    },
-  },
-) => ({ mediaId, slug: `${zooSlug}/${habitatSlug}` }))(ShareModal);
+export default ShareModal;

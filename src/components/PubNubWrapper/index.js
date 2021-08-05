@@ -6,15 +6,15 @@ import { useState, useEffect } from 'preact/hooks';
 
 let pubnub;
 
-const PubNubWrapper = ({ userId, children }) => {
+const PubNubWrapper = ({ userId, children, isGuest }) => {
   const [isConnectedToPubnub, setIsConnectedToPubnub] = useState(false);
   // eslint-disable-next-line consistent-return
   useEffect(() => {
-    if (userId) {
+    if (userId || isGuest) {
       pubnub = new PubNub({
         publishKey: process.env.PREACT_APP_PUBNUB_PUBLISH_KEY,
         subscribeKey: process.env.PREACT_APP_PUBNUB_SUBSCRIPTION_KEY,
-        uuid: userId,
+        uuid: isGuest ? 'guest' : userId,
         autoNetworkDetection: true,
       });
 
@@ -25,7 +25,7 @@ const PubNubWrapper = ({ userId, children }) => {
         pubnub = undefined;
       };
     }
-  }, [userId]);
+  }, [userId, isGuest]);
 
   if (!isConnectedToPubnub) {
     return null;

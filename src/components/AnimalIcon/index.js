@@ -25,7 +25,20 @@ const AnimalIcon = ({
     return getIconUrl(userIcon) || getIconUrl(getIconKeys()[0]);
   }, [userIcon]);
 
-  if (!userIcon) {
+  const animalIconUrl = useMemo(() => {
+    if (!animalIcon) {
+      return null;
+    }
+    // in case of old solution where we were saving URLs,
+    // initial value will be undefined after a user signup
+    if (animalIcon?.endsWith('.svg')) {
+      return animalIcon;
+    }
+    // getIconUrl(getIconKeys()[0]) is defensive part in case 'userIcon' is not found
+    return getIconUrl(animalIcon) || getIconUrl(getIconKeys()[0]);
+  }, [animalIcon]);
+
+  if (!userIcon && !animalIcon) {
     if (!logged) {
       return null
     }
@@ -46,7 +59,7 @@ const AnimalIcon = ({
       }}
       className={style.animalIcon}
     >
-      <img src={animalIcon || userIconUrl} alt="animal" />
+      <img src={animalIconUrl || userIconUrl} alt="animal" />
     </div>
   )
 }

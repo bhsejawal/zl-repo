@@ -16,9 +16,12 @@ const VideoPlayer = ({
   width,
   height,
   onEnd,
+  onLoad,
+  className,
   autoPlay,
   muted = false,
   logView = true,
+  isGuest,
 }) => {
   const videoRef = useRef();
   const [hasUserPlayed, setHasUserPlayed] = useState(false);
@@ -35,7 +38,9 @@ const VideoPlayer = ({
   const onPlay = () => {
     if (!hasUserPlayed && logView) {
       setHasUserPlayed(true);
-      setVideoAsViewed();
+      if (!isGuest) {
+        setVideoAsViewed();
+      }
     }
     setIsPlaying(true);
   }
@@ -68,7 +73,12 @@ const VideoPlayer = ({
     }
   };
 
-  const onLoadedData = () => setIsLoading(false);
+  const onLoadedData = () => {
+    if (typeof onLoad === 'function') {
+      onLoad();
+    }
+    setIsLoading(false)
+  };
 
   const updateVideoTimeHandler = useCallback((value) => {
     videoRef.current.currentTime = value;
@@ -112,6 +122,7 @@ const VideoPlayer = ({
         style={{ width, height }}
         ref={videoRef}
         muted={muted}
+        className={className}
       />
       <VideoControls
         ref={videoRef}
