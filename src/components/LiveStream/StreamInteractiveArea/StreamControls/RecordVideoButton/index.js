@@ -3,6 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faVideo } from '@fortawesome/pro-solid-svg-icons';
 import { useState } from 'preact/hooks';
 import classnames from 'classnames';
+import { Button } from 'grommet';
 
 import RoundButton from 'Components/RoundButton';
 import TrimVideoModal from './TrimVideoModal';
@@ -10,13 +11,28 @@ import { setClipButtonClicked } from '../../../../../redux/actions'
 
 import style from './style.scss';
 
-const RecordVideoButton = ({ isClicked, setClipButtonClickedAction }) => {
+const RecordVideoButton = ({ isClicked, setClipButtonClickedAction, plain }) => {
   const [showModal, setShowModal] = useState(false);
 
   const onClickHandler = () => {
     setShowModal(true);
     setClipButtonClickedAction(true);
   };
+
+  if (plain) {
+    return (
+      <>
+        <Button
+          plain
+          onClick={onClickHandler}
+          className={style.mobileButton}
+        >
+          <FontAwesomeIcon color="#fff" size="lg" icon={faVideo} />
+        </Button>
+        {showModal && <TrimVideoModal onClose={() => setShowModal(false)} />}
+      </>
+    );
+  }
 
   return (
     <>

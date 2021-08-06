@@ -15,6 +15,8 @@ import { API_BASE_URL } from 'Shared/fetch';
 import { logGAEvent } from 'Shared/ga';
 import Header from 'Components/modals/Header';
 import ErrorModal from 'Components/modals/Error';
+import { setShareModalData } from 'Components/ShareModal/actions';
+
 import ShareSection from './ShareSection';
 import { useIsMobileSize } from '../../../../../../hooks';
 
@@ -26,6 +28,7 @@ const TakeSnapshotModal = ({
   htmlURL,
   onClose,
   slug,
+  setShareModalDataAction,
 }) => {
   const [title, setTitle] = useState('');
   const [showError, setShowError] = useState(false);
@@ -38,6 +41,7 @@ const TakeSnapshotModal = ({
     put,
     del,
     loading,
+    data,
   } = useFetch(API_BASE_URL, {
     credentials: 'include',
     cachePolicy: 'no-cache',
@@ -55,6 +59,13 @@ const TakeSnapshotModal = ({
     }
   }, [error, response.ok]);
 
+  useEffect(() => {
+    if (data?.photo) {
+      setShareModalDataAction({ data: data.photo, mediaId: data.photo._id });
+      onClose();
+    }
+  }, [data, setShareModalDataAction, onClose]);
+
   const onCloseHandler = async () => {
     if (!showShareSection) {
       await del(`/photos/${snapshotId}`, { force: true });
@@ -64,6 +75,7 @@ const TakeSnapshotModal = ({
 
   const clickHandler = () => {
     put(`/photos/${snapshotId}`, { title, share: true });
+
     logGAEvent(
       'ugc',
       'created-photo',
@@ -90,14 +102,23 @@ const TakeSnapshotModal = ({
                   Capture moments of your favorite animals to share with friends
                   and the Zoolife community.
                 </Text>
-                <TextInput
-                  placeholder="Title this moment (required)"
-                  value={title}
-                  onChange={({ target: { value }}) => setTitle(value)}
-                  className={style.input}
-                />
+                <div className={style.inputWrapper}>
+                  <TextInput
+                    placeholder="Write a short description"
+                    value={title}
+                    onChange={({ target: { value }}) => setTitle(value)}
+                    className={classnames(style.input, { [style.required]: !title.length })}
+                    disabled={loading}
+                  />
+                  <div className={style.required}>
+                    <span>
+                      {!title.length ? 'Please add a description to publish' : ''}
+                    </span>
+                  </div>
+                </div>
+
                 <PrimaryButton
-                  label="Save & Share"
+                  label="Publish"
                   loading={loading}
                   onClick={clickHandler}
                   disabled={!title}
@@ -133,4 +154,6 @@ export default connect(({
   },
 }) => ({
   slug: `${zooSlug}/${habitatSlug}`,
-}))(TakeSnapshotModal);
+}), {
+  setShareModalDataAction: setShareModalData,
+})(TakeSnapshotModal);
