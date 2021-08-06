@@ -89,7 +89,7 @@ const ShareModal = ({
     profile,
     title,
   } = data;
-  const shareUrl = `${window.location.origin}/album/${videoURL ? 'videos' : 'photos'}/${_id}`;
+  const shareUrl = `${window.location.origin}/album/${videoURL ? 'videos' : 'photos'}/${_id}?utm_source=zoolife&utm_medium=public&utm_campaign=albumpage`;
   const isMobileSize = useIsMobileSize();
   const [showEmailError, setShowEmailError] = useState();
   const [showEmailSuccess, setShowEmailSuccess] = useState();
