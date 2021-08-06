@@ -21,7 +21,7 @@ const HabitatsUpdater = ({ setHabitatsAction }) => {
 
     fetchData();
 
-    const interval = setInterval(fetchData, 5 * 60 * 1000);
+    const interval = setInterval(fetchData, 1 * 60 * 1000);
     return () => {
       clearInterval(interval);
     };
