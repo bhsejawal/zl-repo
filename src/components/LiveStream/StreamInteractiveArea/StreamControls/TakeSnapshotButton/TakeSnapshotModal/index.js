@@ -10,14 +10,13 @@ import useFetch from 'use-http';
 import classnames from 'classnames';
 import { connect } from 'react-redux';
 
-import { PrimaryButton } from 'Components/Buttons';
+import { PrimaryButton, OutlineButton } from 'Components/Buttons';
 import { API_BASE_URL } from 'Shared/fetch';
 import { logGAEvent } from 'Shared/ga';
 import Header from 'Components/modals/Header';
 import ErrorModal from 'Components/modals/Error';
 import { setShareModalData } from 'Components/ShareModal/actions';
 
-import ShareSection from './ShareSection';
 import { useIsMobileSize } from '../../../../../../hooks';
 
 import style from './style.scss';
@@ -25,14 +24,12 @@ import style from './style.scss';
 const TakeSnapshotModal = ({
   snapshotId,
   image,
-  htmlURL,
   onClose,
   slug,
   setShareModalDataAction,
 }) => {
   const [title, setTitle] = useState('');
   const [showError, setShowError] = useState(false);
-  const [showShareSection, setShowShareSection] = useState(false);
   const isMobileSize = useIsMobileSize();
 
   const {
@@ -55,7 +52,6 @@ const TakeSnapshotModal = ({
 
     if (response.ok) {
       setShowError(false);
-      setShowShareSection(true);
     }
   }, [error, response.ok]);
 
@@ -67,9 +63,7 @@ const TakeSnapshotModal = ({
   }, [data, setShareModalDataAction, onClose]);
 
   const onCloseHandler = async () => {
-    if (!showShareSection) {
-      await del(`/photos/${snapshotId}`, { force: true });
-    }
+    await del(`/photos/${snapshotId}`, { force: true });
     onClose();
   };
 
@@ -95,46 +89,44 @@ const TakeSnapshotModal = ({
             <Box className={style.leftSection}>
               <img src={image} alt="" />
             </Box>
-
-            {!showShareSection && (
-              <Box className={style.rightSection}>
-                <Text size="xlarge">
-                  Capture moments of your favorite animals to share with friends
-                  and the Zoolife community.
-                </Text>
-                <div className={style.inputWrapper}>
-                  <TextInput
-                    placeholder="Write a short description"
-                    value={title}
-                    onChange={({ target: { value }}) => setTitle(value)}
-                    className={classnames(style.input, { [style.required]: !title.length })}
-                    disabled={loading}
-                  />
-                  <div className={style.required}>
-                    <span>
-                      {!title.length ? 'Please add a description to publish' : ''}
-                    </span>
-                  </div>
+            <Box className={style.rightSection}>
+              <Text size="xlarge">
+                Capture moments of your favorite animals to share with friends
+                and the Zoolife community.
+              </Text>
+              <div className={style.inputWrapper}>
+                <TextInput
+                  placeholder="Write a short description"
+                  value={title}
+                  onChange={({ target: { value }}) => setTitle(value)}
+                  className={classnames(style.input, { [style.required]: !title.length })}
+                  disabled={loading}
+                />
+                <div className={style.required}>
+                  <span>
+                    {!title.length ? 'Please add a description to publish' : ''}
+                  </span>
                 </div>
+              </div>
+              <div className={style.buttonsWrapper}>
+                <OutlineButton
+                  label="Cancel"
+                  size="medium"
+                  onClick={onCloseHandler}
+                  disabled={loading}
+                  className={style.submit}
+                />
 
                 <PrimaryButton
                   label="Publish"
+                  size="medium"
                   loading={loading}
                   onClick={clickHandler}
                   disabled={!title}
                   className={style.submit}
                 />
-              </Box>
-            )}
-
-            {showShareSection && (
-              <ShareSection
-                imageURL={image}
-                htmlURL={htmlURL}
-                title={title}
-                mediaId={snapshotId}
-              />
-            )}
+              </div>
+            </Box>
           </Box>
         </Box>
       </Box>

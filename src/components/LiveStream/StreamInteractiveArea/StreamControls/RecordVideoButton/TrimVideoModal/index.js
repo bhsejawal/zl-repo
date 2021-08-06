@@ -15,7 +15,7 @@ import Header from 'Components/modals/Header';
 import RangeInput from 'Components/RangeInput';
 import ErrorModal from 'Components/modals/Error';
 import { getTimeString } from 'Components/RangeInput/helper';
-import { PrimaryButton } from 'Components/Buttons';
+import { PrimaryButton, OutlineButton } from 'Components/Buttons';
 import { setShareModalData } from 'Components/ShareModal/actions';
 
 import { API_BASE_URL } from 'Shared/fetch';
@@ -161,13 +161,23 @@ const TrimVideoModal = ({
                   </span>
                 </div>
               </div>
-              <PrimaryButton
-                label="Publish"
-                loading={trimLoading}
-                onClick={trimVideoHandler}
-                disabled={!title}
-                className={style.submit}
-              />
+              <div className={style.buttonsWrapper}>
+                <OutlineButton
+                  label="Cancel"
+                  size="medium"
+                  onClick={onClose}
+                  disabled={trimLoading}
+                  className={style.submit}
+                />
+                <PrimaryButton
+                  label="Publish"
+                  size="medium"
+                  loading={trimLoading}
+                  onClick={trimVideoHandler}
+                  disabled={!title}
+                  className={style.submit}
+                />
+              </div>
             </Box>
           </Box>
         )}

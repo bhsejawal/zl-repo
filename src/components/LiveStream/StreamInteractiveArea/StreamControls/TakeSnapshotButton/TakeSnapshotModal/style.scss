@@ -1,5 +1,11 @@
 @import "../../../../../../style/media-query";
 
+.buttonsWrapper {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+}
+
 input.required {
   border-color: #BF3D3F;
 }
@@ -165,6 +171,10 @@ div.required {
       width: 100%;
       text-align: center;
       align-items: center;
+
+      .inputWrapper {
+        margin-bottom: 40px;
+      }
 
       span,
       input {
