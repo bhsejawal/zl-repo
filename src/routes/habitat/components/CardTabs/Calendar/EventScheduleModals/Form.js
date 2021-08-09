@@ -215,8 +215,8 @@ const Form = ({
           <Box direction="row">
             <Box direction="column" width="calc(50% - 10px)" margin={{ right: '10px' }} className={style.inputWrapper}>
               <Text size="xlarge" className={style.label}>Event Title</Text>
-              <input value={data.title} className={style.letterCount} maxLength="30" onChange={changeHandler('title')} required />
-              <div>{`${data?.title?.length}/30`}</div>
+              <input value={data.title} className={style.letterCount} maxLength="50" onChange={changeHandler('title')} required />
+              <div>{`${data?.title?.length}/50`}</div>
             </Box>
 
             {data.type === STREAM && (

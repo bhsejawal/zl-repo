@@ -4,6 +4,7 @@ import { MOBILE_CONTROLS_HEIGHT } from '../../../routes/habitat/constants';
 import EmojiButton from '../StreamInteractiveArea/StreamControls/EmojiButton';
 
 import TakeSnapshotButton from '../StreamInteractiveArea/StreamControls/TakeSnapshotButton';
+import RecordVideoButton from '../StreamInteractiveArea/StreamControls/RecordVideoButton';
 import ZoomBar from '../StreamInteractiveArea/StreamControls/ZoomBar';
 import EmojiList from './EmojiList';
 
@@ -26,8 +27,9 @@ const MobileControls = () => {
       pad={{ horizontal: "medium" }}
     >
       <Box gap="large" justify="center" direction="row" margin={{ right: '20px' }}>
-        <EmojiButton plain onClick={toggleEmoji} />
+        {!emojiListVisible && <RecordVideoButton plain />}
         {!emojiListVisible && <TakeSnapshotButton plain />}
+        <EmojiButton plain onClick={toggleEmoji} />
       </Box>
       <Box flex>
         {emojiListVisible

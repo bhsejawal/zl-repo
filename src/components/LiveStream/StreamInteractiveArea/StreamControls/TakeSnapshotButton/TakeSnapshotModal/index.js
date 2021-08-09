@@ -10,12 +10,13 @@ import useFetch from 'use-http';
 import classnames from 'classnames';
 import { connect } from 'react-redux';
 
-import { PrimaryButton } from 'Components/Buttons';
+import { PrimaryButton, OutlineButton } from 'Components/Buttons';
 import { API_BASE_URL } from 'Shared/fetch';
 import { logGAEvent } from 'Shared/ga';
 import Header from 'Components/modals/Header';
 import ErrorModal from 'Components/modals/Error';
-import ShareSection from './ShareSection';
+import { setShareModalData } from 'Components/ShareModal/actions';
+
 import { useIsMobileSize } from '../../../../../../hooks';
 
 import style from './style.scss';
@@ -23,20 +24,21 @@ import style from './style.scss';
 const TakeSnapshotModal = ({
   snapshotId,
   image,
-  htmlURL,
   onClose,
   slug,
+  setShareModalDataAction,
 }) => {
   const [title, setTitle] = useState('');
   const [showError, setShowError] = useState(false);
-  const [showShareSection, setShowShareSection] = useState(false);
   const isMobileSize = useIsMobileSize();
 
   const {
     response,
     error,
     put,
+    del,
     loading,
+    data,
   } = useFetch(API_BASE_URL, {
     credentials: 'include',
     cachePolicy: 'no-cache',
@@ -50,12 +52,24 @@ const TakeSnapshotModal = ({
 
     if (response.ok) {
       setShowError(false);
-      setShowShareSection(true);
     }
   }, [error, response.ok]);
 
+  useEffect(() => {
+    if (data?.photo) {
+      setShareModalDataAction({ data: data.photo, mediaId: data.photo._id });
+      onClose();
+    }
+  }, [data, setShareModalDataAction, onClose]);
+
+  const onCloseHandler = async () => {
+    await del(`/photos/${snapshotId}`, { force: true });
+    onClose();
+  };
+
   const clickHandler = () => {
     put(`/photos/${snapshotId}`, { title, share: true });
+
     logGAEvent(
       'ugc',
       'created-photo',
@@ -64,9 +78,9 @@ const TakeSnapshotModal = ({
   };
 
   return (
-    <Layer position="center" onClickOutside={onClose}>
+    <Layer position="center" onClickOutside={onCloseHandler}>
       <Box width="960px" height={{ min: '480px' }} className={classnames({ [style.mobile]: isMobileSize })}>
-        <Header onClose={onClose} className={style.header}>
+        <Header onClose={onCloseHandler} className={style.header}>
           Zoolife Moments
         </Header>
 
@@ -75,37 +89,44 @@ const TakeSnapshotModal = ({
             <Box className={style.leftSection}>
               <img src={image} alt="" />
             </Box>
-
-            {!showShareSection && (
-              <Box className={style.rightSection}>
-                <Text size="xlarge">
-                  Capture moments of your favorite animals to share with friends
-                  and the Zoolife community.
-                </Text>
+            <Box className={style.rightSection}>
+              <Text size="xlarge">
+                Capture moments of your favorite animals to share with friends
+                and the Zoolife community.
+              </Text>
+              <div className={style.inputWrapper}>
                 <TextInput
-                  placeholder="Title this moment (required)"
+                  placeholder="Write a short description"
                   value={title}
                   onChange={({ target: { value }}) => setTitle(value)}
-                  className={style.input}
+                  className={classnames(style.input, { [style.required]: !title.length })}
+                  disabled={loading}
                 />
+                <div className={style.required}>
+                  <span>
+                    {!title.length ? 'Please add a description to publish' : ''}
+                  </span>
+                </div>
+              </div>
+              <div className={style.buttonsWrapper}>
+                <OutlineButton
+                  label="Cancel"
+                  size="medium"
+                  onClick={onCloseHandler}
+                  disabled={loading}
+                  className={style.submit}
+                />
+
                 <PrimaryButton
-                  label="Save & Share"
+                  label="Publish"
+                  size="medium"
                   loading={loading}
                   onClick={clickHandler}
                   disabled={!title}
                   className={style.submit}
                 />
-              </Box>
-            )}
-
-            {showShareSection && (
-              <ShareSection
-                imageURL={image}
-                htmlURL={htmlURL}
-                title={title}
-                mediaId={snapshotId}
-              />
-            )}
+              </div>
+            </Box>
           </Box>
         </Box>
       </Box>
@@ -125,4 +146,6 @@ export default connect(({
   },
 }) => ({
   slug: `${zooSlug}/${habitatSlug}`,
-}))(TakeSnapshotModal);
+}), {
+  setShareModalDataAction: setShareModalData,
+})(TakeSnapshotModal);

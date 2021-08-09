@@ -28,6 +28,7 @@ const ChatContainer = ({
   alternate,
   mediaType,
   slug,
+  isGuest,
 }) => {
   const [internalMessages, setInternalMessages] = useState([]);
   const [showModal, setShowModal] = useState(false);
@@ -139,11 +140,13 @@ const ChatContainer = ({
           <WelcomeMessage onClose={onSendHandler} />
         )}
       </div>
-      <InputBox
-        channelId={channelId}
-        alternate={alternate}
-        onSendHandler={onSendHandler}
-      />
+      {!isGuest && (
+        <InputBox
+          channelId={channelId}
+          alternate={alternate}
+          onSendHandler={onSendHandler}
+        />
+      )}
       {showModal && <DeleteMessageModal onClose={onCloseHandler} onDelete={deleteMessage} />}
     </>
   );
@@ -158,8 +161,8 @@ export default connect((
         slug: habitatSlug,
         zoo: {
           slug: zooSlug,
-        },
-      },
+        } = {},
+      } = {},
     },
   },
 ) => (

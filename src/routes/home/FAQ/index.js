@@ -14,7 +14,7 @@ const FAQ = () => (
       header={<h3>What is Zoolife?</h3>}
     >
       <p>
-        Zoolife is the world’s first digital zoo. We showcase immersive animal experiences hosted by
+        Zoolife is the world’s first virtual zoo. We showcase immersive animal experiences hosted by
         experts, streaming live from the world&apos;s top accredited zoos, sanctuaries and
         rehabilitation centers. Each animal experience is designed to bring you closer to nature and
         offer innovative new ways of learning, protecting and engaging with the natural world,

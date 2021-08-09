@@ -16,9 +16,12 @@ import classnames from 'classnames';
 
 import { buildURL } from 'Shared/fetch';
 import { LandingPrimary } from 'Components/Buttons';
+
 import Loader from 'Components/Loader';
 import Benefits from 'Components/Benefits';
 import zoolifeLogo from 'Components/ZoolifeLogo/zoolife.svg';
+import VideoPlayer from 'Components/VideoPlayer';
+
 import MediaContent from '../habitat/components/Album/MediaContent/Standalone';
 import Header from '../home/Header';
 import FilterButton from './FilterButton';
@@ -162,15 +165,15 @@ const Album = ({ mediaType: mediaTypeProp, matches: { photoId, videoId } = {} })
                 )}
                 {videoURL && (
                   // eslint-disable-next-line jsx-a11y/media-has-caption
-                  <video
-                    playsInline
-                    controls
+                  <VideoPlayer
+                    videoURL={videoURL}
+                    autoPlay
+                    muted
+                    isGuest
                     key={videoURL}
+                    onLoad={onMainItemLoad}
                     className={classnames({ [style.hiddenMedia]: loading })}
-                    onLoadedData={onMainItemLoad}
-                  >
-                    <source src={videoURL} type="video/mp4" />
-                  </video>
+                  />
                 )}
 
                 {mediaError && (
@@ -243,6 +246,8 @@ const Album = ({ mediaType: mediaTypeProp, matches: { photoId, videoId } = {} })
                   previewURL,
                   disabled,
                   habitat,
+                  comments,
+                  usersLike,
                 }) => (
                   <MediaContent
                     key={_id}
@@ -257,6 +262,9 @@ const Album = ({ mediaType: mediaTypeProp, matches: { photoId, videoId } = {} })
                     zooName={habitat?.zoo?.name}
                     animal={habitat?.animal}
                     onClick={onModalMediaChange}
+                    usersLike={usersLike}
+                    comments={comments}
+                    hideOverlay
                   />
                 ))}
 
@@ -291,6 +299,7 @@ const Album = ({ mediaType: mediaTypeProp, matches: { photoId, videoId } = {} })
               prevId={items[modalItemInd - 1]?._id}
               onClose={onShareModalClose}
               setShareModalMediaId={onModalMediaChange}
+              isGuest
             />
           </Suspense>
         )}

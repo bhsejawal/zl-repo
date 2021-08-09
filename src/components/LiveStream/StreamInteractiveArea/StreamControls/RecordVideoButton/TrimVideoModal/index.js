@@ -8,15 +8,17 @@ import {
   TextInput,
 } from 'grommet';
 import useFetch from 'use-http';
+import classnames from 'classnames';
 
 import { logGAEvent } from 'Shared/ga';
 import Header from 'Components/modals/Header';
 import RangeInput from 'Components/RangeInput';
 import ErrorModal from 'Components/modals/Error';
 import { getTimeString } from 'Components/RangeInput/helper';
-import { PrimaryButton } from 'Components/Buttons';
+import { PrimaryButton, OutlineButton } from 'Components/Buttons';
+import { setShareModalData } from 'Components/ShareModal/actions';
+
 import { API_BASE_URL } from 'Shared/fetch';
-import ShareContent from './ShareContent';
 import LoadingContent from './LoadingContent';
 
 import style from './style.scss';
@@ -26,10 +28,10 @@ const TrimVideoModal = ({
   streamId,
   habitatId,
   slug,
+  setShareModalDataAction,
 }) => {
   const [videoData, setVideoData] = useState({});
   const [showError, setShowError] = useState(false);
-  const [trimmedVideoData, setTrimmedVideoData] = useState({});
   const [range, setRange] = useState([0, 30]);
   const [title, setTitle] = useState('');
   const videoRef = useRef();
@@ -76,7 +78,8 @@ const TrimVideoModal = ({
 
   useEffect(() => {
     if (trimData?.video) {
-      setTrimmedVideoData(trimData.video);
+      setShareModalDataAction({ data: trimData.video, mediaId: trimData.video._id });
+      onClose();
     }
 
     if (trimError) {
@@ -88,7 +91,7 @@ const TrimVideoModal = ({
       )
       setShowError(true);
     }
-  }, [trimData, trimError]);
+  }, [trimData, trimError, setShareModalDataAction, slug, onClose]);
 
   const rangeChangeHandler = ([min, max]) => {
     videoRef.current.currentTime = min;
@@ -119,7 +122,7 @@ const TrimVideoModal = ({
   return (
     <Layer position="center" onClickOutside={onClose}>
       <Box width="960px" height={{ min: '530px' }}>
-        <Header onClose={onClose}>
+        <Header onClose={onClose} className={style.header}>
           Zoolife Moments
         </Header>
 
@@ -127,44 +130,56 @@ const TrimVideoModal = ({
           <LoadingContent />
         )}
 
-        {!isEmpty(videoData) && !trimmedVideoData?.videoURL && (
+        {!isEmpty(videoData) && isEmpty(trimData) && (
           <Box className={style.contentContainer}>
             <Box className={style.leftSection}>
               <div className={style.videoWrapper}>
+
                 {/* eslint-disable-next-line jsx-a11y/media-has-caption */}
                 <video ref={videoRef} src={videoData.videoURL} controls />
               </div>
-              <RangeInput onChange={rangeChangeHandler} initRange={range} />
+              <div className={style.rangeInput}>
+                <RangeInput onChange={rangeChangeHandler} initRange={range} />
+              </div>
             </Box>
             <Box className={style.rightSection}>
               <Text size="xlarge">
                 Capture clips of your favorite animals to share with friends
                 and the Zoolife community.
               </Text>
-              <TextInput
-                placeholder="Title this moment (required)"
-                value={title}
-                onChange={({ target: { value }}) => setTitle(value)}
-                className={style.input}
-              />
-              <PrimaryButton
-                label="Save & Share"
-                loading={trimLoading}
-                onClick={trimVideoHandler}
-                disabled={!title}
-                className={style.submit}
-              />
+              <div className={style.inputWrapper}>
+                <TextInput
+                  placeholder="Write a short description"
+                  value={title}
+                  onChange={({ target: { value }}) => setTitle(value)}
+                  className={classnames(style.input, { [style.required]: !title.length })}
+                  disabled={trimLoading}
+                />
+                <div className={style.required}>
+                  <span>
+                    {!title.length ? 'Please add a description to publish' : ''}
+                  </span>
+                </div>
+              </div>
+              <div className={style.buttonsWrapper}>
+                <OutlineButton
+                  label="Cancel"
+                  size="medium"
+                  onClick={onClose}
+                  disabled={trimLoading}
+                  className={style.submit}
+                />
+                <PrimaryButton
+                  label="Publish"
+                  size="medium"
+                  loading={trimLoading}
+                  onClick={trimVideoHandler}
+                  disabled={!title}
+                  className={style.submit}
+                />
+              </div>
             </Box>
           </Box>
-        )}
-
-        {trimmedVideoData?.videoURL && (
-          <ShareContent
-            videoURL={trimmedVideoData.videoURL}
-            htmlURL={trimmedVideoData.htmlURL}
-            title={trimmedVideoData.title}
-            mediaId={trimmedVideoData._id}
-          />
         )}
       </Box>
       {showError && <ErrorModal onClose={() => setShowError(false)} />}
@@ -187,4 +202,7 @@ export default connect(
       },
     },
   ) => ({ streamId: streamKey, habitatId: _id, slug: `${zooSlug}/${habitatSlug}` }),
+  {
+    setShareModalDataAction: setShareModalData,
+  },
 )(TrimVideoModal);

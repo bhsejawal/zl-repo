@@ -45,7 +45,7 @@ const CalendarLoader = ({ habitatId }) => {
   const { loading, error, data: { events = [] } = {} } = useFetch(
     url,
     { credentials: 'include', cachePolicy: 'no-cache' },
-    [],
+    [habitatId],
   );
 
   const schedules = useMemo(() => {

@@ -9,7 +9,8 @@ export default connect(
     habitat: {
       habitatInfo: {
         animal,
-        zoo: { name: zoo } = {},
+        slug: habitatSlug,
+        zoo: { name: zoo, slug: zooSlug } = {},
         camera: { _id: cameraId } = {},
       },
       shareModal: {
@@ -17,6 +18,7 @@ export default connect(
         nextId,
         prevId,
         data,
+        mediaId,
       },
     },
   }) => ({
@@ -28,6 +30,8 @@ export default connect(
     open,
     data,
     cameraId,
+    mediaId,
+    slug: `${zooSlug}/${habitatSlug}`,
   }),
   { onClose: closeShareModal, setShareModalMediaId },
 )(ShareModal);

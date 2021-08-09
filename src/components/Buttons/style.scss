@@ -89,9 +89,17 @@ button {
   font-weight: bold;
   z-index: 3;
   width: auto;
+  opacity: 0;
+  transform: translateX(200%);
+  transition: transform 1.2s, max-height 1s, margin 1s, opacity 1s;
 
   @media screen and (min-width: #{$max-width}) {
     right: calc(50vw - (var(--maxWidth) / 2) + 60px);
+  }
+
+  &.show {
+    opacity: 1;
+    transform: translateX(0);
   }
 
   &:hover {

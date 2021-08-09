@@ -23,8 +23,10 @@ const Chat = ({
   toggleMessageReactionAction,
   mediaType,
   alternate = false,
+  isGuest,
 }) => {
   const pubnub = usePubNub();
+
   const addMessageListener = useCallback((msg) => {
     const { message, timetoken, channel } = msg;
 
@@ -89,14 +91,11 @@ const Chat = ({
 
   // eslint-disable-next-line consistent-return
   useEffect(() => {
-    if (channelId && animal && color && userId && username) {
+    if ((channelId && animal && color && userId && username) || isGuest) {
       const listeners = {
         message: addMessageListener,
         messageAction: messageActionListener,
       };
-      pubnub.addListener(listeners);
-
-      pubnub.subscribe({ channels: [channelId], withPresence: true });
 
       pubnub.fetchMessages({
         channels: [channelId],
@@ -104,9 +103,17 @@ const Chat = ({
         includeMessageActions: true,
       }, handleFetchedMessages);
 
+      if (!isGuest) {
+        pubnub.addListener(listeners);
+
+        pubnub.subscribe({ channels: [channelId], withPresence: true });
+      }
+
       return () => {
-        pubnub.removeListener(listeners);
-        pubnub.unsubscribe({ channels: [channelId]});
+        if (!isGuest) {
+          pubnub.removeListener(listeners);
+          pubnub.unsubscribe({ channels: [channelId]});
+        }
         clearMessagesAction(channelId);
       };
     }
@@ -121,6 +128,7 @@ const Chat = ({
     clearMessagesAction,
     addMessageListener,
     messageActionListener,
+    isGuest,
   ]);
 
   return (
@@ -128,6 +136,7 @@ const Chat = ({
       channelId={channelId}
       alternate={alternate}
       mediaType={mediaType}
+      isGuest={isGuest}
     />
   );
 }
@@ -139,8 +148,8 @@ export default connect(({
     profile: {
       animalIcon: animal,
       color,
-    },
-  },
+    } = {},
+  } = {},
 }) => ({
   userId,
   animal,

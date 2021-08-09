@@ -63,9 +63,9 @@ const OfflineImage = ({
                 constraints={{
                   width: 1280,
                   height: 720,
-                  maxFileSize: 400_000,
+                  maxFileSize: 1_000_000,
                   aspectRatio: '16:9',
-                  acceptedFormats: ['png'],
+                  acceptedFormats: ['jpeg', 'jpg'],
                 }}
                 onChange={(value) => setData({ ...data, offlineImage: value })}
               />

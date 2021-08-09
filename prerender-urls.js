@@ -13,42 +13,42 @@ const envData = {
 module.exports = [
   {
     url: '/',
-    title: 'Zoolife - The world\'s first digital zoo.',
+    title: 'Zoolife - The world\'s first virtual zoo.',
     ...envData,
   },
   {
     url: '/twitch',
-    title: 'Zoolife - The world\'s first digital zoo.',
+    title: 'Zoolife - The world\'s first virtual zoo.',
     ...envData,
   },
   {
     url: '/oranapark',
-    title: 'Zoolife - The world\'s first digital zoo. - Orana Wildlife Park',
+    title: 'Zoolife - The world\'s first virtual zoo. - Orana Wildlife Park',
     ...envData,
   },
   {
     url: '/orana',
-    title: 'Zoolife - The world\'s first digital zoo. - Orana Wildlife Park',
+    title: 'Zoolife - The world\'s first virtual zoo. - Orana Wildlife Park',
     ...envData,
   },
   {
     url: '/torontozoo',
-    title: 'Zoolife - The world\'s first digital zoo. - Toronto Zoo',
+    title: 'Zoolife - The world\'s first virtual zoo. - Toronto Zoo',
     ...envData,
   },
   {
     url: '/pmmc',
-    title: 'Zoolife - The world\'s first digital zoo. - Pacific Marine Mammal Center',
+    title: 'Zoolife - The world\'s first virtual zoo. - Pacific Marine Mammal Center',
     ...envData,
   },
   {
     url: '/pmmccamp',
-    title: 'Zoolife - The world\'s first digital zoo. - Pacific Marine Mammal Center Camp',
+    title: 'Zoolife - The world\'s first virtual zoo. - Pacific Marine Mammal Center Camp',
     ...envData,
   },
   {
     url: '/sazoo',
-    title: 'Zoolife - The world\'s first digital zoo. - San Antonio Zoo',
+    title: 'Zoolife - The world\'s first virtual zoo. - San Antonio Zoo',
     ...envData,
   },
   {

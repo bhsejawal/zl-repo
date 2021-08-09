@@ -47,7 +47,7 @@ import { logPageView, logAndGetCampaignData } from '../../helpers';
 import { updateReferralData } from '../../redux/actions';
 import { useIsHabitatTabbed } from '../../hooks';
 
-const homeTitle = "The world's first digital zoo.";
+const homeTitle = "The world's first virtual zoo.";
 
 const Main = ({
   onRouteChange,

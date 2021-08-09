@@ -1,6 +1,7 @@
 import { Button } from 'grommet';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSpinner, faChevronRight } from '@fortawesome/pro-solid-svg-icons';
+import { useState, useEffect, useRef } from 'preact/hooks';
 import classnames from 'classnames';
 
 import style from './style.scss';
@@ -15,6 +16,7 @@ const getLabel = (loading, label) => {
 
   return label;
 }
+
 export const PrimaryButton = ({
   loading,
   label,
@@ -48,14 +50,38 @@ export const OutlineButton = ({
   />
 );
 
-export const FloatingButton = ({ className, onClick }) => (
-  <button type="button" onClick={onClick} className={classnames(className, style.floatingButton)}>
-    <div className={style.wrapper}>
-      <span />
-      <FontAwesomeIcon icon={faChevronRight} />
-    </div>
-  </button>
-);
+export const FloatingButton = ({ className, onClick }) => {
+  const [show, setShow] = useState();
+  const ref = useRef();
+
+  useEffect(() => {
+    const pageContainerElm = ref.current.nextSibling;
+
+    const scrollHandler = () => {
+      const partnerElm = pageContainerElm.querySelector('[class^="partnersContainer"]');
+      const rect = partnerElm.getBoundingClientRect();
+      setShow(rect.top < pageContainerElm.clientHeight);
+    };
+
+    pageContainerElm.addEventListener('scroll', scrollHandler);
+
+    return () => pageContainerElm.removeEventListener('scroll', scrollHandler);
+  }, []);
+
+  return (
+    <button
+      ref={ref}
+      type="button"
+      onClick={onClick}
+      className={classnames(className, style.floatingButton, { [style.show]: show })}
+    >
+      <div className={style.wrapper}>
+        <span />
+        <FontAwesomeIcon icon={faChevronRight} />
+      </div>
+    </button>
+  )
+};
 
 export const LandingPrimary = ({
   className,
