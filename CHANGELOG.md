@@ -2,6 +2,24 @@
 This file keeps track of all relevant change for every release.
 
 ## [Unreleased]
+## [5.14.0] - 2021-08-06
+### Added
+- Clipping feature is now available on Mobile
+- Public content page is now live and content modal share links to it
+- Cancel button on Snapshot Modal, which will delete the photo on cancel
+### Changed
+- Updated the Website title for SEO
+- Habitats Updater will now get new state every minute instead of every five minutes
+- 'Click to move' indicator styling
+- Offline image can be up to a mb and should be jpeg/jpg
+- Increased event title for schedules to 50 chars
+- Pink button on the landing page will show on scroll
+- CSS for custom text on partner landing pages
+- After capture a photo/clip, the Content Modal will be displayed instead of the Share Modal.
+
+### Fixed
+- Issue where calendar would not be updated on habitat change
+
 ## [5.13.0] - 2021-08-03
 ### Added
 - Offline mode on habitats
