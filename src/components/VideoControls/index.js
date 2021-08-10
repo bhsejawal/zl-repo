@@ -21,6 +21,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { faVolume, faVolumeMute, faCompress } from '@fortawesome/pro-solid-svg-icons';
 import RoundButton from 'Components/RoundButton';
+import { PrimaryButton } from 'Components/Buttons';
 import { getDeviceType, formatSecondsToVideoDuration } from '../../helpers';
 
 import { useIsHabitatTabbed } from '../../hooks';
@@ -90,6 +91,7 @@ const VideoControls = forwardRef(({
   updateVideoTimeHandler,
   mode = 'webrtc',
   muted = true,
+  onNextHandler,
 }, ref) => {
   const [showVolumeBar, setShowVolumeBar] = useState(false)
   const [isMuted, setIsMuted] = useState();
@@ -100,10 +102,11 @@ const VideoControls = forwardRef(({
 
   useEffect(() => {
     setIsMuted(muted);
-  }, []);
+  }, [muted]);
 
   useEffect(() => {
     const handleFullscreenMode = () => {
+      console.log('ta vindo aqui??????', document.fullscreenElement)
       setIsFullscreen(document.fullscreenElement !== null);
     }
 
@@ -117,13 +120,15 @@ const VideoControls = forwardRef(({
   // so the "video.play()"" is throwing errors
   const video = ref.current;
 
-  const togglePlay = () => {
+  const togglePlay = (evt) => {
+    evt.stopPropagation();
     if (typeof onPauseHandler === 'function') {
       onPauseHandler();
     }
   }
 
-  const toggleMute = () => {
+  const toggleMute = (evt) => {
+    evt.stopPropagation();
     video.muted = !video.muted;
     setIsMuted(video.muted);
   }
@@ -135,8 +140,9 @@ const VideoControls = forwardRef(({
     setIsMuted(video.muted);
   };
 
-  const openFullscreen = () => {
+  const openFullscreen = (evt) => {
     let target;
+    evt.stopPropagation();
 
     if (isFullscreen) {
       target = document;
@@ -161,7 +167,8 @@ const VideoControls = forwardRef(({
     }
   };
 
-  const togglePictureInPicture = () => {
+  const togglePictureInPicture = (evt) => {
+    evt.stopPropagation();
     video.requestPictureInPicture();
   }
 
@@ -172,105 +179,111 @@ const VideoControls = forwardRef(({
   return (
     <Box
       className={classnames(style.videoControls, {[style.mobile]: isTabbedView})}
-      direction="row"
-      gap="small"
+      direction="column"
     >
-      {showPlayControl && (
-        <RoundButton
-        onClick={togglePlay}
-        width="28"
-        backgroundColor="var(--hunterGreenMediumDark)"
-        color="white"
-        loading={isLoading}
-        >
-          <FontAwesomeIcon icon={isPlaying ? faPause : faPlay} />
-        </RoundButton>
+      {typeof onNextHandler === 'function' && (
+      <Box direction="row" fill pad={{ vertical: 'xsmall' }} margin={{ bottom: 'small'}} justify="end">
+        <PrimaryButton label="Next Video" onClick={() => onNextHandler()} />
+      </Box>
       )}
-
-      {showVolumeControl && (
-        <div
-        ref={volumeButtonRef}
-        onMouseEnter={() => setShowVolumeBar(true)}
-        onMouseLeave={() => setShowVolumeBar(false)}
-        className={classnames(style.volumeWrapper, {
-          [style.expanded]: showVolumeBar && !isTabbedView,
-        })}
-        >
+      <Box direction="row" fill gap="small" align="center">
+        {showPlayControl && (
           <RoundButton
-            onClick={toggleMute}
+          onClick={togglePlay}
+          width="28"
+          backgroundColor="var(--hunterGreenMediumDark)"
+          color="white"
+          loading={isLoading}
+          >
+            <FontAwesomeIcon icon={isPlaying ? faPause : faPlay} />
+          </RoundButton>
+        )}
+
+        {showVolumeControl && (
+          <div
+          ref={volumeButtonRef}
+          onMouseEnter={() => setShowVolumeBar(true)}
+          onMouseLeave={() => setShowVolumeBar(false)}
+          className={classnames(style.volumeWrapper, {
+            [style.expanded]: showVolumeBar && !isTabbedView,
+          })}
+          >
+            <RoundButton
+              onClick={toggleMute}
+              width="28"
+              backgroundColor="var(--hunterGreenMediumDark)"
+              color="white"
+            >
+              <FontAwesomeIcon icon={isMuted ? faVolumeMute : faVolume} />
+            </RoundButton>
+            {!isTabbedView && showVolumeBar && volumeButtonRef.current && (
+              <div
+                className={classnames(style.volumeContainer, {[style.expanded]: showVolumeBar})}
+              >
+                <Grommet theme={customThemeRangeInputVolume} className={style.rangeInput}>
+                  <InputRange
+                    min={0}
+                    max={1}
+                    step={0.1}
+                    value={volume}
+                    onChange={onVolumeChange}
+                  />
+                </Grommet>
+              </div>
+            )}
+          </div>
+
+        )}
+
+        {showPIPControl && (
+          <RoundButton
+          onClick={togglePictureInPicture}
+          width="28"
+          backgroundColor="var(--hunterGreenMediumDark)"
+          color="white"
+
+          >
+            <FontAwesomeIcon icon={faCompress} />
+          </RoundButton>
+        )}
+
+        {showFullscreenControl && (
+          <RoundButton
+            onClick={openFullscreen}
             width="28"
             backgroundColor="var(--hunterGreenMediumDark)"
             color="white"
           >
-            <FontAwesomeIcon icon={isMuted ? faVolumeMute : faVolume} />
+            <FontAwesomeIcon icon={faExpand} />
           </RoundButton>
-          {!isTabbedView && showVolumeBar && volumeButtonRef.current && (
-            <div
-              className={classnames(style.volumeContainer, {[style.expanded]: showVolumeBar})}
-            >
-              <Grommet theme={customThemeRangeInputVolume} className={style.rangeInput}>
-                <InputRange
-                  min={0}
-                  max={1}
-                  step={0.1}
-                  value={volume}
-                  onChange={onVolumeChange}
-                />
-              </Grommet>
-            </div>
-          )}
-        </div>
 
-      )}
+        )}
 
-      {showPIPControl && (
-        <RoundButton
-        onClick={togglePictureInPicture}
-        width="28"
-        backgroundColor="var(--hunterGreenMediumDark)"
-        color="white"
-
-        >
-          <FontAwesomeIcon icon={faCompress} />
-        </RoundButton>
-      )}
-
-      {showFullscreenControl && (
-        <RoundButton
-          onClick={openFullscreen}
-          width="28"
-          backgroundColor="var(--hunterGreenMediumDark)"
-          color="white"
-        >
-          <FontAwesomeIcon icon={faExpand} />
-        </RoundButton>
-
-      )}
-
-      {mode === 'vod' && (
-        <div className={style.timelineWrapper}>
-          {showSeekBar && (
-            <div className={style.seekBar}>
-              <Grommet theme={customThemeRangeInputSeekbar} className={style.rangeInput}>
-                <InputRange
-                  min={0}
-                  max={videoLength}
-                  step={1}
-                  value={timeElapsed}
-                  onChange={({ target: { value }}) => updateVideoTimeHandler(value)}
-                />
-              </Grommet>
-            </div>
-          )}
-          {showTimeStats && (
-            <div className={style.timeStats}>
-              <Text color="white" weight={700} size="large" margin={{ left: '5px' }}>
-                {`${formatSecondsToVideoDuration(timeElapsed)} / ${formatSecondsToVideoDuration(videoLength)}`}
-              </Text>
-            </div>
-          )}
-        </div>
-      )}
+        {mode === 'vod' && (
+          <div className={style.timelineWrapper}>
+            {showSeekBar && (
+              <div className={style.seekBar}>
+                <Grommet theme={customThemeRangeInputSeekbar} className={style.rangeInput}>
+                  <InputRange
+                    min={0}
+                    max={videoLength}
+                    step={1}
+                    value={timeElapsed}
+                    onChange={({ target: { value }}) => updateVideoTimeHandler(value)}
+                  />
+                </Grommet>
+              </div>
+            )}
+            {showTimeStats && (
+              <div className={style.timeStats}>
+                <Text color="white" weight={700} size="large" margin={{ left: '5px' }}>
+                  {`${formatSecondsToVideoDuration(timeElapsed)} / ${formatSecondsToVideoDuration(videoLength)}`}
+                </Text>
+              </div>
+            )}
+          </div>
+        )}
+      </Box>
     </Box>
   );
 });
