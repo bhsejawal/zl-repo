@@ -39,9 +39,9 @@ const getBenefitText = (interval) => (interval === 'month'
   ? 'Enjoy new animals added every month'
   : 'With an annual membership');
 
-const getBenefitTitle = (interval) => (interval === 'month'
+const getBenefitTitle = (interval, discount) => (interval === 'month'
   ? 'Unlimited Access'
-  : 'Save 30%');
+  : `Save ${discount}`);
 
 const VariantA = ({ plans, isSmallScreen }) => (
   <Box
@@ -51,7 +51,7 @@ const VariantA = ({ plans, isSmallScreen }) => (
     gap="small"
     margin={{ bottom: '20px' }}
   >
-    {plans.filter(({ price }) => price !== 199).map(({
+    {plans.filter(({ price }) => [999, 9799].includes(price)).map(({
       name,
       price,
       interval,
@@ -99,7 +99,7 @@ const VariantB = ({ plans, isSmallScreen }) => (
     gap="large"
     margin="auto"
   >
-    {plans.filter(({ price }) => price !== 699).map(({
+    {plans.filter(({ price }) => ![999, 9799].includes(price)).map(({
       name,
       price,
       interval,
@@ -240,7 +240,7 @@ const SubscriptionSection = ({
         currentPlan: false,
         label: 'Select',
         display: true,
-        benefitTitle: interval === 'visit' ? '' : getBenefitTitle(interval),
+        benefitTitle: interval === 'visit' ? '' : getBenefitTitle(interval, discount),
         benefitText: interval !== 'visit' ? getBenefitText(interval) : 'Unlock all  features for a full day',
         clickHandler: () => checkoutHandler(planProductId, priceId),
         originalPrice,
@@ -363,7 +363,7 @@ const SubscriptionSection = ({
           fill
           basis="full"
         >
-          <Experiment id="SXv6PG4RSdS8yVIgumNibg">
+          <Experiment id="bFcUbpJZS-aZjr5QmZ9JTg">
             <Variant id="0">
               <VariantA plans={plansData} isSmallScreen={isSmallScreen} />
             </Variant>
