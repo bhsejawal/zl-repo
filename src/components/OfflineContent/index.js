@@ -148,6 +148,7 @@ const OfflineContent = ({
           videoURL={currentVideo.videoURL}
           onEnd={onVideoEndHandler}
           videoId={currentVideo._id}
+          onNextHandler={playNextVideo}
         />
       )}
 

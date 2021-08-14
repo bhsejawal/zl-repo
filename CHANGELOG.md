@@ -2,6 +2,14 @@
 This file keeps track of all relevant change for every release.
 
 ## [Unreleased]
+## [5.15.0] - 2021-08-13
+### Added
+- Next button on the offline content container
+- Endless scroll image on the landing page
+### Changed
+- Floating button text on the landing page
+- Set up new price experiment
+
 ## [5.14.0] - 2021-08-06
 ### Added
 - Clipping feature is now available on Mobile

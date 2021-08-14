@@ -55,7 +55,7 @@ const PlanCard = ({
             justify="center"
             className={classnames(style.discountTag, {[style.mobile]: isMobileSize })}
           >
-            <Text weight={900} size="15px">30%</Text>
+            <Text weight={900} size="15px">{discount}</Text>
             <Text size="9px" weight={400}>discount</Text>
           </Box>
         )}
@@ -93,16 +93,14 @@ const PlanCard = ({
                   {`$${planPrice / 100}`}
                 </Heading>
               </Box>
-              {planPrice !== 199 && (
-                <Box align="center">
-                  <Text
-                    size="20px"
-                    style={{ lineHeight: '20px', textDecorationLine: 'line-through'}}
-                  >
-                    {`$${originalPrice / 100}`}
-                  </Text>
-                </Box>
-              )}
+              <Box align="center">
+                <Text
+                  size="20px"
+                  style={{ lineHeight: '20px', textDecorationLine: 'line-through'}}
+                >
+                  {`$${originalPrice / 100}`}
+                </Text>
+              </Box>
             </Box>
 
           </CardHeader>
