@@ -1,3 +1,27 @@
+@import "../../../style/media-query";
+
+@media screen and (max-width: #{$tablet-portrait-width}) {
+
+  .partners {
+    margin-bottom: 103px !important;
+  }
+}
+
+@media screen and (max-width: #{$phone-landscape-width}) {
+
+  .partnersContainer {
+
+    h2 {
+      padding: 0px 25px !important;
+    }
+
+    p {
+      padding: 0px 30px !important;
+    }
+  }
+}
+
+
 .partnersContainer {
   background-image: url(https://assets.zoolife.tv/landing/s2_background.jpg);
   background-size: cover;
@@ -9,7 +33,14 @@
     text-align: center;
     display: block;
     max-width: 780px;
-    padding: 0 60px;
+    padding: 0px;
+  }
+
+  p {
+    text-align: center;
+    font-size: 16px;
+    line-height: 22px;
+    color: #000000;
   }
 }
 
@@ -17,31 +48,64 @@
   cursor: pointer;
 }
 
+
 .partners {
   text-align: center;
   margin-bottom: 130px;
+  margin-top: 43px;
+  overflow: hidden;
+  cursor: pointer;
 
-  > div {
-    display: inline-block;
-    vertical-align: middle;
+  @media screen and (max-width: #{$tablet-portrait-width}) {
 
-    > div {
-      background: #FFFFFF;
-      width: 174px;
-      height: 174px;
-      display: inline-flex;
-      margin: 20px;
-      vertical-align: inherit;
+    .carousel {
+      background-image: url("https://zl-zoolife-tv.s3.ca-central-1.amazonaws.com/assets/landing/carouselImage-mobile.png") !important;
+      background-repeat: repeat-x;
+      height: 118px !important;
 
-      @media screen and (max-width: 450px) {
-        width: 132px;
-        height: 132px;
-      }
+      /* The image width times 3 */
+      width: 7773px !important;
+      animation: slideMobile 60s linear infinite !important;
     }
+
   }
 
-  img {
-    width: 80%;
-    margin: auto;
+
+  .carousel {
+    background-image: url("https://zl-zoolife-tv.s3.ca-central-1.amazonaws.com/assets/landing/carouselImage.png");
+    background-repeat: repeat-x;
+
+    height: 227px;
+
+    /* The image width times 3 */
+    width: 14952px;
+    animation: slide 60s linear infinite;
   }
 }
+
+@keyframes slide {
+
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+
+  100% {
+    /* The image width */
+    transform: translate3d(-4984px, 0, 0);
+  }
+}
+
+
+@keyframes slideMobile {
+
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+
+  100% {
+    /* The image width */
+    transform: translate3d(-2591px, 0, 0);
+  }
+}
+
+
