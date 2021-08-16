@@ -19,8 +19,8 @@ const canEditHabitat = () => {
 }
 
 const isSubscriptionActive = () => {
-  const { user: { subscription: { active } } } = store.getState();
-  return active;
+  const { user: { subscription: { active, productId } } } = store.getState();
+  return active || productId === 'FREEMIUM';
 }
 
 const notTrial = () => {

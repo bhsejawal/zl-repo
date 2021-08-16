@@ -5,9 +5,13 @@ import {
   Grid,
   ResponsiveContext,
   Heading,
+  Button,
 } from 'grommet';
 import { format, isSameDay } from 'date-fns';
 import { Link } from 'preact-router';
+import { connect } from 'react-redux';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faLockAlt } from '@fortawesome/pro-solid-svg-icons';
 
 import BaseHabitatCard from 'Components/HabitatCard/HabitatCardBase';
 import { PrimaryButton } from 'Components/Buttons';
@@ -27,6 +31,8 @@ const ScheduleItem = ({
   zooSlug,
   wideImage,
   online,
+  subscription,
+  habitatId,
   liveTalk,
   onClick,
 }) => {
@@ -53,13 +59,36 @@ const ScheduleItem = ({
                   <Text margin={{ bottom: 'small' }}>{liveTalk.description}</Text>
                 </Box>
                 {liveTalk.sessions.map(({ startTime, sessionId }) => (
-                  <div>
-                    <PrimaryButton
-                      size="small"
-                      label={format(Date.parse(startTime), 'hh:mm aa')}
-                      onClick={() => onClick(sessionId)}
-                    />
-                  </div>
+                  <>
+                    {(subscription.productId !== 'FREEMIUM' || subscription.freeHabitat === habitatId) && (
+                    <div>
+                      <PrimaryButton
+                        size="small"
+                        label={format(Date.parse(startTime), 'hh:mm aa')}
+                        onClick={() => onClick(sessionId)}
+                      />
+                    </div>
+                    )}
+                    {(subscription.productId === 'FREEMIUM' && subscription.freeHabitat !== habitatId) && (
+                    <div>
+                      <Link href={encodeURI(`/plans`)}>
+                        <Button
+                          primary
+                          label={(
+                            <Box direction="row" justify="center" align="center">
+                              <FontAwesomeIcon icon={faLockAlt} color="#2E2D2D" size="1x" />
+                              <Text className={style.buttonText}>
+                                {format(Date.parse(startTime), 'hh:mm aa')}
+                              </Text>
+                            </Box>
+                          )}
+                          size="small"
+                          className={style.lockButtonMobile}
+                        />
+                      </Link>
+                    </div>
+                    )}
+                  </>
                 ))}
               </Box>
             ))}
@@ -123,11 +152,32 @@ const ScheduleItem = ({
               </Box>
               <Grid gap ="xsmall" margin={{ top: 'auto' }} height="xxsmall" columns={['auto', 'auto', 'auto']} rows="xxsmall">
                 {liveTalk.sessions.map(({ startTime, sessionId }) => (
-                  <PrimaryButton
-                    label={format(Date.parse(startTime), 'hh:mm aa')}
-                    className={style.sessionButton}
-                    onClick={() => onClick(sessionId)}
-                  />
+                  <>
+                    {(subscription.productId !== 'FREEMIUM' || subscription.freeHabitat === habitatId) && (
+                      <PrimaryButton
+                        label={format(Date.parse(startTime), 'hh:mm aa')}
+                        className={style.sessionButton}
+                        onClick={() => onClick(sessionId)}
+                      />
+                    )}
+                    {(subscription.productId === 'FREEMIUM' && subscription.freeHabitat !== habitatId) && (
+                      <Link href={encodeURI(`/plans`)}>
+                        <Button
+                          primary
+                          label={(
+                            <Box direction="row" justify="center" align="center">
+                              <FontAwesomeIcon icon={faLockAlt} color="#2E2D2D" size="1x" />
+                              <Text className={style.buttonText}>
+                                {format(Date.parse(startTime), 'hh:mm aa')}
+                              </Text>
+                            </Box>
+                          )}
+                          size="large"
+                          className={style.lockButton}
+                        />
+                      </Link>
+                    )}
+                  </>
                 ))}
               </Grid>
             </Box>
@@ -138,4 +188,4 @@ const ScheduleItem = ({
   );
 };
 
-export default ScheduleItem;
+export default connect(({ user: { subscription }}) => ({ subscription }))(ScheduleItem);

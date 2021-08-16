@@ -59,6 +59,9 @@ const Habitat = ({
   habitatSlug,
   zooName,
   userId,
+  productId,
+  freeHabitat,
+  userRole,
   enteredHabitat,
   hostStreamKey,
   isHostStreamOn,
@@ -182,6 +185,14 @@ const Habitat = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [habitatId, windowWidth]);
 
+  if ((userRole === 'user' && !productId) || !habitatId) {
+    return null;
+  }
+
+  if (userRole === 'user' && productId === 'FREEMIUM' && habitatId !== freeHabitat) {
+    route('/plans', true);
+  }
+
   if (error) {
     // TODO: we need UI for this
     return (
@@ -289,7 +300,16 @@ const ConnectedHabitat = connect(
         isHostStreamOn,
       },
     },
-    user: { userId, termsAccepted = false, enteredHabitat },
+    user: {
+      userId,
+      termsAccepted = false,
+      enteredHabitat,
+      role: userRole,
+      subscription: {
+        productId,
+        freeHabitat,
+      } = {},
+    },
   }) => ({
     streamKey,
     habitatId,
@@ -300,6 +320,9 @@ const ConnectedHabitat = connect(
     hostStreamKey,
     isHostStreamOn,
     enteredHabitat,
+    productId,
+    freeHabitat,
+    userRole,
   }),
   {
     setHabitatAction: setHabitat,

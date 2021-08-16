@@ -108,3 +108,27 @@
     }
   }
 }
+
+.lockButtonMobile svg {
+  margin-right: 5px;
+}
+
+.lockButton {
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+
+  span {
+    font-size: 16px !important;
+    font-weight: bold;
+  }
+
+  svg {
+    font-size: 12px !important;
+    margin-right: 5px;
+  }
+
+  .buttonText {
+    color: #2E2D2D;
+  }
+}

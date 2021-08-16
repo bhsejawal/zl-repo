@@ -3,7 +3,12 @@ import { Link } from 'preact-router';
 import { useMemo, useState } from 'preact/hooks';
 import { connect } from 'react-redux';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faHeart, faSpinner, faTimes } from '@fortawesome/pro-solid-svg-icons';
+import {
+  faHeart,
+  faSpinner,
+  faTimes,
+  faLockAlt,
+} from '@fortawesome/pro-solid-svg-icons';
 import { faHeart as faHeartOutline } from '@fortawesome/pro-light-svg-icons';
 import {
   Button,
@@ -31,6 +36,7 @@ const HabitatCard = ({
   image,
   logo,
   title,
+  subscription,
   description,
   termsAccepted,
   onFavoriteClick,
@@ -42,6 +48,11 @@ const HabitatCard = ({
   const isFavorited = useMemo(
     () => favoriteHabitats.includes(habitatId),
     [favoriteHabitats, habitatId],
+  );
+
+  const isLocked = useMemo(
+    () => subscription.productId === 'FREEMIUM' && subscription.freeHabitat !== habitatId,
+    [subscription, habitatId],
   );
 
   const {
@@ -75,6 +86,10 @@ const HabitatCard = ({
       openTermsModalAction();
     }
   };
+
+  if (!subscription) {
+    return null;
+  }
 
   const defaultOnFavoriteClick = async () => {
     if (isFavorited) {
@@ -116,29 +131,52 @@ const HabitatCard = ({
       </div>
       <div className={style.buttons}>
         <Box width="170px">
-          <Link onClick={onHabitatClick} href={encodeURI(`/h/${zooSlug}/${slug}`)}>
-            <Button primary label="Enter Habitat" size="large" />
-          </Link>
+          {!isLocked && (
+            <Link onClick={onHabitatClick} href={encodeURI(`/h/${zooSlug}/${slug}`)}>
+              <Button primary label="Enter Habitat" size="large" />
+            </Link>
+          )}
+          {isLocked && (
+            <Link href={encodeURI(`/plans`)}>
+              <Button
+                primary
+                label={(
+                  <Box direction="row" justify="center" align="center">
+                    <FontAwesomeIcon icon={faLockAlt} color="#2E2D2D" size="1x" />
+                    <Text className={style.buttonText}>Unlock all Habitats</Text>
+                  </Box>
+                )}
+                size="large"
+                className={style.lockButton}
+              />
+            </Link>
+          )}
         </Box>
-        <Button
+        {!isLocked && (
+          <Button
           onClick={handleFavoriteClick}
           margin={{ right: '5px' }}
           width="20px"
           className={style.iconButton}
-        >
-          <FontAwesomeIcon
-            icon={likeIcon}
-            color={isFavorited && !loading ? "var(--pink)" : "var(--grey)"}
-            spin={likeIcon === faSpinner}
-          />
-        </Button>
+          >
+            <FontAwesomeIcon
+              icon={likeIcon}
+              color={isFavorited && !loading ? "var(--pink)" : "var(--grey)"}
+              spin={likeIcon === faSpinner}
+            />
+          </Button>
+        )}
       </div>
     </HabitatCardBase>
   );
 };
 
 export default connect(
-  ({ user: { termsAccepted, favoriteHabitats } = {} }) => ({ termsAccepted, favoriteHabitats }),
+  (
+    { user: { termsAccepted, favoriteHabitats, subscription } = {} },
+  ) => (
+    { termsAccepted, favoriteHabitats, subscription }
+  ),
   {
     openTermsModalAction: openTermsModal,
     updateFavoriteHabitatAction: updateFavoriteHabitat,

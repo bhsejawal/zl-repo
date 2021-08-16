@@ -132,6 +132,7 @@ const ScheduleList = ({
             wideImage={wideImage}
             online={isStreamOn}
             liveTalk={isHostStreamOn}
+            habitatId={habitatId}
           />
         </Box>
       ))}
