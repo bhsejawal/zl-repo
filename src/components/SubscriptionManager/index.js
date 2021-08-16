@@ -51,7 +51,7 @@ const VariantA = ({ plans, isSmallScreen }) => (
     gap="small"
     margin={{ bottom: '20px' }}
   >
-    {plans.filter(({ price }) => [999, 9799].includes(price)).map(({
+    {plans.filter(({ price }) => [499, 999, 9799].includes(price)).map(({
       name,
       price,
       interval,
