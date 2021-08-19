@@ -27,7 +27,7 @@ import { useIsInitiallyLoaded, useWindowResize } from '../../hooks';
 import { getUser, updateUser } from './api';
 import { updateProfile } from './actions';
 import { setSubscriptionData } from '../../redux/actions';
-import { logPageView } from '../../helpers';
+import { isDev } from '../../helpers';
 
 import 'react-colorful/dist/index.css';
 import accountPageStyle from '../account/style.scss';
@@ -126,7 +126,6 @@ const Profile = ({
           const subscriptionData = await post();
           if (response.ok) {
             setSubscriptionDataAction(subscriptionData);
-            logPageView('/trialStarted');
             logPageViewGA('/trialStarted');
             route('/map');
           }

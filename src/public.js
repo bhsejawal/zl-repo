@@ -25,7 +25,7 @@ import sanAntonioLogo from './components/Main/partners/san-antonio-zoo.png';
 import store from "./redux/store";
 import { initializeGA, logPageViewGA } from './shared/ga';
 
-import { logAndGetCampaignData, logPageView } from './helpers';
+import { logAndGetCampaignData } from './helpers';
 import { updateReferralData } from "./redux/actions";
 
 import '@fortawesome/fontawesome-svg-core/styles.css';
@@ -46,13 +46,10 @@ const Content = ({
   }, [updateReferralDataAction]);
 
   const routerChangeHandler = (props) => {
-    const { url, previous } = props;
+    const { url } = props;
     logPageViewGA(url)
-
-    // Segments sends a beacon when plugin is loaded, hence, we should ignore if previous is empty
-    // Its possible to see some duplicated entries on dev due to hot reload
-    if (url !== previous && typeof previous !== 'undefined') {
-      logPageView();
+    if (typeof window !== 'undefined' && window?.fbq) {
+      window.fbq('track', 'PageView');
     }
   }
 

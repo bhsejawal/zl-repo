@@ -61,7 +61,6 @@ const App = () => {
 
     initializeStripe();
     initializeGA();
-
     return () => {
       document.removeEventListener('fullscreenchange', handleFullscreenMode);
     }
