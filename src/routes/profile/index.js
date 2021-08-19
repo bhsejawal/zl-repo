@@ -128,7 +128,7 @@ const Profile = ({
             setSubscriptionDataAction(subscriptionData);
             logPageView('/trialStarted');
             logPageViewGA('/trialStarted');
-            route('/map');
+            route('/freemiumOnboarding');
           }
 
           if (response.data?.error) {
