@@ -45,7 +45,7 @@ import FreemiumOnboarding from '../../routes/freemiumOnboarding';
 
 import PageWrapper from './PageWrapper';
 
-import { logPageView, logAndGetCampaignData } from '../../helpers';
+import { logAndGetCampaignData } from '../../helpers';
 import { updateReferralData } from '../../redux/actions';
 import { useIsHabitatTabbed } from '../../hooks';
 
@@ -92,7 +92,6 @@ const Main = ({
   const routerChangeHandler = (props) => {
     const {
       url,
-      previous,
       current: { props: { matches } },
     } = props;
     if (!freemiumRoutes.includes(url) && !isFreemiumOnboarded && productId === 'FREEMIUM') {
@@ -102,10 +101,15 @@ const Main = ({
 
     if (url.startsWith('/socialLogin')) {
       logPageViewGA('/socialLogin', true);
+      if (typeof window !== 'undefined' && window.fbq) {
+        window.fbq('trackCustom', 'SocialLogin');
+      }
 
       if (matches?.newUser === "true") {
         logPageViewGA('/signed-up');
-        logPageView('/signed-up', true);
+        if (typeof window !== 'undefined' && window.fbq) {
+          window.fbq('trackCustom', 'SignedUp');
+        }
       }
       if (!isFreemiumOnboarded && productId === 'FREEMIUM') {
         route('/freemiumOnboarding', true);
@@ -119,10 +123,21 @@ const Main = ({
 
     if (url.startsWith('/checkout-completed')) {
       logPageViewGA('/checkout-completed', true);
-      const { passType } = matches;
+      if (typeof window !== 'undefined' && window.fbq) {
+        window.fbq('trackCustom', 'CheckoutCompleted');
+      }
+
+      const { passType, price } = matches;
+
       if (passType) {
         logPageViewGA(`/purchased-${passType}`);
-        logPageView(`/purchased-${passType}`, true);
+        if (typeof window !== 'undefined' && window.fbq) {
+          window.fbq('trackCustom', `Purchased${passType}`);
+          if (price) {
+            const formattedPrice = parseInt(price, 10) / 100;
+            window.fbq('track', 'Purchase', { currency: "USD", value: formattedPrice, passType });
+          }
+        }
       }
       onRouteChange(props);
       setPath(url);
@@ -130,11 +145,8 @@ const Main = ({
     }
     setPath(url);
     logPageViewGA(url);
-
-    // Segments sends a beacon when plugin is loaded, hence, we should ignore if previous is empty
-    // Its possible to see some duplicated entries on dev due to hot reload
-    if (url !== previous && typeof previous !== 'undefined') {
-      logPageView();
+    if (typeof window !== 'undefined' && window.fbq) {
+      window.fbq('track', 'PageView');
     }
 
     onRouteChange(props);
