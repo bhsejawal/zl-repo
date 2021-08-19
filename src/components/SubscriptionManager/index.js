@@ -48,7 +48,6 @@ const getBenefitTitle = (interval, discount) => (interval === 'month'
 const VariantA = ({ plans, isSmallScreen, currentPlan }) => (
   <Box
     direction={isSmallScreen ? 'column' : 'row'}
-    fill
     justify="center"
     align={isSmallScreen ? "center" : "start"}
     gap="small"
@@ -382,29 +381,22 @@ const SubscriptionSection = ({
     <>
       <Box
         direction="column"
-        height="auto"
+        height={{ min: 'fit-content' }}
         alignSelf="center"
         pad={{ top: '58px' }}
         align="center"
-        justify="center"
+        justify={ isSmallScreen ? 'center' : 'start' }
         background={ isSmallScreen ? mobileBackground : desktopBackground }
         fill
       >
-        <Box
-          fill
-          basis="full"
-          align="center"
-        >
-          <Experiment id="bFcUbpJZS-aZjr5QmZ9JTg">
-            <Variant id="0">
-              <VariantA plans={plansData} isSmallScreen={isSmallScreen} currentPlan={productId} />
-            </Variant>
-            <Variant id="1">
-              <VariantB plans={plansData} isSmallScreen={isSmallScreen} currentPlan={productId} />
-            </Variant>
-          </Experiment>
-
-        </Box>
+        <Experiment id="bFcUbpJZS-aZjr5QmZ9JTg">
+          <Variant id="0">
+            <VariantA plans={plansData} isSmallScreen={isSmallScreen} currentPlan={productId} />
+          </Variant>
+          <Variant id="1">
+            <VariantB plans={plansData} isSmallScreen={isSmallScreen} currentPlan={productId} />
+          </Variant>
+        </Experiment>
       </Box>
       <UpdateSubscriptionDialog
         show={dialogSettings.show}
