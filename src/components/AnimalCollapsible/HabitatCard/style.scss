@@ -1,0 +1,29 @@
+.habitatCard {
+  display: flex;
+  flex-direction: row;
+  height: 70px;
+  align-items: center;
+  padding: 10px 33px;
+  background: #F9FCE7;
+  max-width: 350px;
+  min-width: 350px;
+
+  .title {
+    flex-grow: 1;
+    font-weight: bold;
+    font-size: 16px;
+    color: var(--charcoal);
+    line-height: 18.4px;
+    margin: 0px 20px;
+  }
+
+  .habitatImage {
+    width: 42.4px;
+    height: 42.4px;
+    border-radius: 50%;
+  }
+
+  .zooImage {
+    height: 42.4px;
+  }
+}
