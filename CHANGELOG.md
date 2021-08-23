@@ -2,6 +2,22 @@
 This file keeps track of all relevant change for every release.
 
 ## [Unreleased]
+
+## [5.16.0] - 2021-08-23
+### Added
+ - Facebook Pixel integration
+
+### Changed
+ - Added productId to the webrtc logs and changed the periodicity from 30s to 5s
+ - Share Modal now uses the public HTML again
+
+### Removed
+ - A/B Experiment from the Landing Page
+### Fixed
+ - Issue with css on the Share Media modal when viewing a clip
+ - A few typos on the landing page
+
+
 ## [5.15.0] - 2021-08-13
 ### Added
 - Next button on the offline content container
