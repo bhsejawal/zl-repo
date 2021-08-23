@@ -50,6 +50,7 @@ const Stream = ({
   showContentExplorer,
   isStreamOn,
   mode,
+  productId,
   setHabitatStreamStartedAction,
 }) => {
   const videoRef = useRef();
@@ -66,10 +67,11 @@ const Stream = ({
         userId,
         deviceType: getDeviceType(),
         userAgent: navigator.userAgent,
+        productId,
         ...data,
       })
     }
-  }, [socket, userId])
+  }, [socket, userId, productId])
 
   const {
     streamStatus,
@@ -200,7 +202,7 @@ const Stream = ({
 };
 
 export default connect((
-  { user: { userId, showContentExplorer } },
+  { user: { userId, showContentExplorer, subscription: { productId } } },
 ) => (
-  { userId, showContentExplorer }
+  { userId, showContentExplorer, productId }
 ), { setHabitatStreamStartedAction: setHabitatStreamStarted })(Stream);
