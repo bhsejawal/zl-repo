@@ -50,8 +50,7 @@ const VariantA = ({ plans, isSmallScreen, currentPlan }) => (
     direction={isSmallScreen ? 'column' : 'row'}
     justify="center"
     align={isSmallScreen ? "center" : "start"}
-    gap="small"
-    margin={{ bottom: '20px' }}
+    gap="medium"
   >
     {plans.filter(({ price }) => [499, 999, 9799].includes(price)).map(({
       name,
@@ -266,7 +265,7 @@ const SubscriptionSection = ({
         label: 'Select',
         display: true,
         benefitTitle: interval === 'visit' ? '' : getBenefitTitle(interval, discount),
-        benefitText: interval !== 'visit' ? getBenefitText(interval) : 'Unlock all  features for a full day',
+        benefitText: interval !== 'visit' ? getBenefitText(interval) : 'Unlock everything for a full day',
         clickHandler: () => checkoutHandler(planProductId, priceId),
         originalPrice,
       }));
@@ -298,7 +297,7 @@ const SubscriptionSection = ({
           label: 'Renew',
           display: true,
           benefitTitle: interval === 'visit' ? '' : getBenefitTitle(interval),
-          benefitText: interval !== 'visit' ? getBenefitText(interval) : 'Unlock all  features for a full day',
+          benefitText: interval !== 'visit' ? getBenefitText(interval) : 'Unlock everything for a full day',
           clickHandler: () => openDialogHandler('Renew', planProductId, priceId, interval),
           originalPrice,
         }));
@@ -347,7 +346,7 @@ const SubscriptionSection = ({
       }
 
       const benefitTitle = interval === 'visit' ? '' : getBenefitTitle(interval);
-      const benefitText = interval !== 'visit' ? getBenefitText(interval) : 'Unlock all  features for a full day';
+      const benefitText = interval !== 'visit' ? getBenefitText(interval) : 'Unlock everything for a full day';
 
       return {
         planProductId,
@@ -383,7 +382,7 @@ const SubscriptionSection = ({
         direction="column"
         height={{ min: 'fit-content' }}
         alignSelf="center"
-        pad={{ top: '58px' }}
+        pad={{ vertical: '38px' }}
         align="center"
         justify={ isSmallScreen ? 'center' : 'start' }
         background={ isSmallScreen ? mobileBackground : desktopBackground }

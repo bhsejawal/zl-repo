@@ -29,6 +29,7 @@ const PlanCard = ({
   priceId,
   planName,
   planPrice,
+  planType,
   color,
   discount,
   onClickHandler,
@@ -39,7 +40,7 @@ const PlanCard = ({
   benefitTitle,
 }) => {
   const isMobileSize = useIsMobileSize();
-  const maxWidth = isMobileSize ? '330px' : '200px';
+  const maxWidth = isMobileSize ? '300px' : '200px';
   const maxHeight = isMobileSize ? '130px' : '313px';
 
   return (
@@ -64,10 +65,11 @@ const PlanCard = ({
           width={{ min: maxWidth, max: maxWidth }}
           height={{ min: maxHeight, max: maxHeight }}
           direction={isMobileSize ? 'row' : 'column'}
+          className={style.cardShadow}
         >
           <CardHeader
             background={{ color }}
-            width={{min: isMobileSize ? '180px' : '200px', max: isMobileSize ? '180px' : '150px'}}
+            width={{min: isMobileSize ? '150px' : '200px', max: isMobileSize ? '150px' : '150px'}}
             height={{ min: !isMobileSize ? '155px' : '0px' }}
             justify={ planPrice === 'FREE' ? 'center' : 'start'}
           >
@@ -95,9 +97,14 @@ const PlanCard = ({
                 >
                   {planPrice === 'FREE' ? planPrice : `$${planPrice / 100}`}
                 </Heading>
+                {['month', 'year'].includes(planType) && (
+                  <Text alignSelf="end" margin={{ bottom: '2px' }}>
+                    {`/${planType}`}
+                  </Text>
+                )}
               </Box>
               {planPrice !== 'FREE' && (
-              <Box align="center">
+              <Box align="center" margin={{ top: '3px'}}>
                 <Text
                   size="20px"
                   style={{ lineHeight: '20px', textDecorationLine: 'line-through'}}
@@ -111,6 +118,7 @@ const PlanCard = ({
           </CardHeader>
           <CardBody
             width={{min: isMobileSize ? '150px' : '200px', max: isMobileSize ? '150px' : '150px'}}
+            pad={{ horizontal: isMobileSize ? '10px' : '0px'}}
           >
             <Box
               margin={{ top: 'xsmall' }}
