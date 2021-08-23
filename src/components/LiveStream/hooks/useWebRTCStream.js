@@ -52,7 +52,7 @@ export const useWebRTCStream = (streamId, isStreamOn, videoContainer, mode, logS
           logStatsFn(getStreamStats(streamId));
         }
       },
-      30000,
+      5000,
     );
     return () => clearInterval(intervalRef.current);
   }, [streamId, logStatsFn, streamStatus, mode])
