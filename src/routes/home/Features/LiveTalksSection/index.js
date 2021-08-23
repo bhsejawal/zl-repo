@@ -15,7 +15,7 @@ const LiveTalksSection = () => (
     </div>
     <div className={style.right}>
       <div className={style.description}>
-        <h2> Take part in engaging conversations with the experts</h2>
+        <h2> Take part in engaging conversations with the experts.</h2>
         <p>
           Join daily keeper talks and interactive Q&amp;As with animal experts and naturalists.
         </p>

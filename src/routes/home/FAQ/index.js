@@ -1,5 +1,4 @@
 import { h } from 'preact';
-import { Experiment, Variant } from 'react-optimize';
 
 import Accordion from '../../account/Accordion';
 
@@ -41,14 +40,7 @@ const FAQ = () => (
         50% of every purchase directly funds animal care &amp; conservation efforts worldwide.
       </p>
       <p>
-        <Experiment id="SXv6PG4RSdS8yVIgumNibg">
-          <Variant id="0">
-            Single Day Pass: $6.99
-          </Variant>
-          <Variant id="1">
-            Single Day Pass: $1.99
-          </Variant>
-        </Experiment>
+        Single Day Pass: $4.99
         <br />
         Monthly Membership: $9.99/month
         <br />

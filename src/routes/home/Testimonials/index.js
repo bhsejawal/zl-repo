@@ -110,7 +110,7 @@ const Testimonials = () => (
           </h1>
           <p className="body">50% of your purchase directly funds animal care & conservation efforts led by our partners.</p>
 
-          <LandingPrimary onClick={goToSignup}>Join The Community</LandingPrimary>
+          <LandingPrimary onClick={goToSignup}>Join the Community</LandingPrimary>
         </div>
       </div>
       <img
