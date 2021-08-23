@@ -88,6 +88,7 @@ const ShareModal = ({
     username,
     profile,
     title,
+    htmlURL,
   } = data;
   const shareUrl = `${window.location.origin}/album/${videoURL ? 'videos' : 'photos'}/${_id}?utm_source=zoolife&utm_medium=public&utm_campaign=albumpage`;
   const isMobileSize = useIsMobileSize();
@@ -334,7 +335,7 @@ const ShareModal = ({
                       className={style.shareIcon}
                     >
                       <a
-                        href={generateFacebookURL(shareUrl)}
+                        href={generateFacebookURL(htmlURL)}
                         target="_blank"
                         rel="noreferrer"
                         onClick={() => logShare('facebook')}
@@ -350,7 +351,7 @@ const ShareModal = ({
                       className={style.shareIcon}
                     >
                       <a
-                        href={generateTwitterURL(shareUrl)}
+                        href={generateTwitterURL(htmlURL)}
                         target="_blank"
                         rel="noreferrer"
                         onClick={() => logShare('twitter')}
