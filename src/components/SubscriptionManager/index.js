@@ -27,6 +27,8 @@ import { setPlans, setSubscriptionData } from '../../redux/actions';
 
 import { useIsMobileSize } from '../../hooks';
 
+import plansBackground from './plansBackground.jpg';
+
 const defaultDialogSettings = {
   show: false,
   planId: null,
@@ -43,11 +45,11 @@ const getBenefitTitle = (interval, discount) => (interval === 'month'
   ? 'Unlimited Access'
   : `Save ${discount}`);
 
-const VariantA = ({ plans, isSmallScreen }) => (
+const VariantA = ({ plans, isSmallScreen, currentPlan }) => (
   <Box
     direction={isSmallScreen ? 'column' : 'row'}
-    fill
     justify="center"
+    align={isSmallScreen ? "center" : "start"}
     gap="small"
     margin={{ bottom: '20px' }}
   >
@@ -87,10 +89,20 @@ const VariantA = ({ plans, isSmallScreen }) => (
         originalPrice={originalPrice}
       />
     ))}
+    {currentPlan === 'FREEMIUM' && (
+      <PlanCard
+        key="freemium"
+        planPrice="FREE"
+        color="#C5D8FF"
+        benefitText="Access a single Zoolife habitat"
+        disabled
+        buttonLabel="Current"
+      />
+    )}
   </Box>
 );
 
-const VariantB = ({ plans, isSmallScreen }) => (
+const VariantB = ({ plans, isSmallScreen, currentPlan }) => (
   <Box
     direction={isSmallScreen ? 'column' : 'row'}
     fill
@@ -135,6 +147,16 @@ const VariantB = ({ plans, isSmallScreen }) => (
         originalPrice={originalPrice}
       />
     ))}
+    {currentPlan === 'FREEMIUM' && (
+      <PlanCard
+        key="freemium"
+        planPrice="FREE"
+        color="#C5D8FF"
+        benefitText="Access a single Zoolife habitat"
+        disabled
+        buttonLabel="Current"
+      />
+    )}
   </Box>
 );
 
@@ -149,6 +171,9 @@ const SubscriptionSection = ({
   const { stripe } = useContext(StripeContext);
   const isSmallScreen = useIsMobileSize();
   const [showCancelDialog, setShowCancelDialog] = useState(false);
+
+  const mobileBackground = '#24412B';
+  const desktopBackground = { image: `url(${plansBackground})`, size: 'cover', position: 'left bottom' };
 
   const [dialogSettings, setDialogSettings] = useState(defaultDialogSettings);
 
@@ -356,23 +381,22 @@ const SubscriptionSection = ({
     <>
       <Box
         direction="column"
-        height="auto"
+        height={{ min: 'fit-content' }}
         alignSelf="center"
+        pad={{ top: '58px' }}
+        align="center"
+        justify={ isSmallScreen ? 'center' : 'start' }
+        background={ isSmallScreen ? mobileBackground : desktopBackground }
+        fill
       >
-        <Box
-          fill
-          basis="full"
-        >
-          <Experiment id="bFcUbpJZS-aZjr5QmZ9JTg">
-            <Variant id="0">
-              <VariantA plans={plansData} isSmallScreen={isSmallScreen} />
-            </Variant>
-            <Variant id="1">
-              <VariantB plans={plansData} isSmallScreen={isSmallScreen} />
-            </Variant>
-          </Experiment>
-
-        </Box>
+        <Experiment id="bFcUbpJZS-aZjr5QmZ9JTg">
+          <Variant id="0">
+            <VariantA plans={plansData} isSmallScreen={isSmallScreen} currentPlan={productId} />
+          </Variant>
+          <Variant id="1">
+            <VariantB plans={plansData} isSmallScreen={isSmallScreen} currentPlan={productId} />
+          </Variant>
+        </Experiment>
       </Box>
       <UpdateSubscriptionDialog
         show={dialogSettings.show}

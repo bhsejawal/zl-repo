@@ -27,6 +27,7 @@ import { useIsInitiallyLoaded, useWindowResize } from '../../hooks';
 import { getUser, updateUser } from './api';
 import { updateProfile } from './actions';
 import { setSubscriptionData } from '../../redux/actions';
+import { isDev } from '../../helpers';
 
 import 'react-colorful/dist/index.css';
 import accountPageStyle from '../account/style.scss';
@@ -122,11 +123,11 @@ const Profile = ({
 
       if (step) {
         if (user.role === 'user' && !user.subscription?.productId) {
-          const subscriptionData = await post();
+          const subscriptionData = await post({ mode: isDev() ? 'freemium' : 'trial' });
           if (response.ok) {
             setSubscriptionDataAction(subscriptionData);
             logPageViewGA('/trialStarted');
-            route('/map');
+            route('/freemiumOnboarding');
           }
 
           if (response.data?.error) {

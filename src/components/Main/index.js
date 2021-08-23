@@ -1,4 +1,4 @@
-import { Router } from 'preact-router';
+import { Router, route } from 'preact-router';
 import { Box } from 'grommet';
 import { useState, useEffect } from 'preact/hooks';
 import { connect } from 'react-redux';
@@ -11,6 +11,7 @@ import TermsAndConditions from 'Components/TermsAndConditions';
 import { PRIVACY_PDF_URL, TERMS_PDF_URL } from 'Components/TermsAndConditions/constants';
 import ContactUsModalLoader from 'Components/async/ContactUsModalLoader';
 import InviteModalLoader from 'Components/async/InviteModalLoader';
+import HabitatsUpdater from 'Components/HabitatsUpdater';
 
 import { logPageViewGA } from 'Shared/ga';
 import { patch, buildURL } from 'Shared/fetch';
@@ -40,6 +41,7 @@ import Favorite from '../../routes/favorite';
 import Account from '../../routes/account';
 import Habitat from '../../routes/habitat';
 import Welcome from '../../routes/welcome';
+import FreemiumOnboarding from '../../routes/freemiumOnboarding';
 
 import PageWrapper from './PageWrapper';
 
@@ -48,12 +50,26 @@ import { updateReferralData } from '../../redux/actions';
 import { useIsHabitatTabbed } from '../../hooks';
 
 const homeTitle = "The world's first virtual zoo.";
+const freemiumRoutes = [
+  '/',
+  '/torontozoo',
+  '/twitch',
+  '/orana',
+  '/oranapark',
+  '/pmmc',
+  '/pmmccamp',
+  '/sazoo',
+  '/freemiumOnboarding',
+  '/socialLogin',
+];
 
 const Main = ({
   onRouteChange,
   showContactUs,
   showInvite,
   logged,
+  productId,
+  isFreemiumOnboarded,
   timezone,
   updateReferralDataAction,
 }) => {
@@ -78,6 +94,10 @@ const Main = ({
       url,
       current: { props: { matches } },
     } = props;
+    if (!freemiumRoutes.includes(url) && !isFreemiumOnboarded && productId === 'FREEMIUM') {
+      route('/freemiumOnboarding', true);
+      setPath('/freemiumOnboarding');
+    }
 
     if (url.startsWith('/socialLogin')) {
       logPageViewGA('/socialLogin', true);
@@ -91,8 +111,13 @@ const Main = ({
           window.fbq('trackCustom', 'SignedUp');
         }
       }
-      onRouteChange(props);
-      setPath(url);
+      if (!isFreemiumOnboarded && productId === 'FREEMIUM') {
+        route('/freemiumOnboarding', true);
+        setPath('/freemiumOnboarding')
+      } else {
+        onRouteChange(props);
+        setPath(url);
+      }
       return;
     }
 
@@ -227,6 +252,10 @@ const Main = ({
           </PageWrapper>
         </AuthGuard>
 
+        <AuthGuard path="/freemiumOnboarding" title="Onboarding" redirectTo="/login" permission="freemiumOnboarding:view">
+          <FreemiumOnboarding />
+        </AuthGuard>
+
         <TermsAndPrivacy
           path="/terms-and-conditions"
           title="Terms and Conditions"
@@ -249,18 +278,26 @@ const Main = ({
       <TermsAndConditions />
       <ContactUsModalLoader isOpen={showContactUs} />
       <InviteModalLoader isOpen={showInvite} />
+      <HabitatsUpdater />
     </Box>
   )
 };
 
 export default connect(({
-  user: { logged, timezone },
+  user: {
+    logged,
+    timezone,
+    isFreemiumOnboarded,
+    subscription: { productId },
+  },
   modals: { contactus: { isOpen: showContactUs }, invite: { isOpen: showInvite }},
 }) => ({
   showContactUs,
   showInvite,
   logged,
   timezone,
+  productId,
+  isFreemiumOnboarded,
 }), {
   updateReferralDataAction: updateReferralData,
 })(Main);

@@ -1,5 +1,8 @@
 import { formatDistanceToNowStrict, parseISO, intervalToDuration } from "date-fns";
 
+const FREEMIUM_PRODUCT_ID = 'FREEMIUM';
+const TRIAL_PRODUCT_ID = 'TRIAL';
+
 export const isValidUrl = (url) => {
   try {
     return !!(new URL(url.startsWith('/')
@@ -142,3 +145,9 @@ export const formatSecondsToVideoDuration = (timeInSeconds) => {
   } = intervalToDuration({ start: 0, end: timeInSeconds * 1000});
   return `${hours > 0 ? `${(`0${hours}`).slice(-2)}:` : ''}${(`0${minutes}`).slice(-2)}:${(`0${seconds}`).slice(-2)}`;
 };
+
+export const isHabitatUnlocked = (userSubscription, habitatId) => {
+  const { productId, freeHabitat } = userSubscription;
+  return ![FREEMIUM_PRODUCT_ID, TRIAL_PRODUCT_ID].includes(productId)
+    || (productId === FREEMIUM_PRODUCT_ID && freeHabitat === habitatId);
+}

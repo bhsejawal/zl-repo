@@ -2,70 +2,57 @@ import { useContext } from 'preact/hooks';
 import {
   Box,
   Heading,
-  Text,
   ResponsiveContext,
 } from 'grommet';
+
 import SubscriptionManager from 'Components/SubscriptionManager';
-
 import SubscriptionBenefits from 'Components/SubscriptionBenefits';
+import AnimalCollapsible from 'Components/AnimalCollapsible';
 
-import backgroundDesktop from './assets/backgroundDesktop.png';
-import backgroundMobile from './assets/backgroundMobile.png';
-import backgroundTablet from './assets/backgroundTablet.png';
+import { useIsMobileSize } from '../../hooks';
+
+import mobilePlans from './assets/mobileImage.jpg';
 
 import style from './style.module.scss';
 
-const getBackgroundByScreenSize = (size) => {
-  if (['xsmall', 'small'].includes(size)) {
-    return backgroundMobile;
-  }
-  if (size === 'medium') {
-    return backgroundTablet;
-  }
-
-  return backgroundDesktop;
-}
-
 const Plans = () => {
   const size = useContext(ResponsiveContext);
+  const isMobileSize = useIsMobileSize();
 
   return (
     <Box
-      height="100%"
       responsive
+      height={{ min: '100%' }}
       direction="column"
-      fill={['medium', 'large'].includes(size)}
+      // fill={['medium', 'large'].includes(size)}
       overflow="auto"
       background="var(--hunterGreenMediumLight)"
       className={style.plansPageWrapper}
     >
-      <img src={getBackgroundByScreenSize(size)} className={style.bottomImage} alt="Map Top" />
-      <Box
-        height={{ min: 'unset' }}
-        flex="grow"
-      >
+
+      {isMobileSize && (<img src={mobilePlans} alt="animals" />)}
+      {!isMobileSize && (
         <Box
-          width={{ max: '930px' }}
+          fill="horizontal"
           height={{ min: 'max-content' }}
           alignSelf="center"
           pad={{ horizontal: ['xsmall', 'small'].includes(size) ? '35px' : '95px'}}
+          background="#F9FCE7"
         >
           <Heading
             level={['xsmall', 'small'].includes(size) ? 3 : 2}
             textAlign="center"
             fill
-            color="white"
+            color="var(--charcoal)"
+            margin={{ bottom: '0px' }}
           >
-            Make a contribution to continue exploring Zoolife.
+            Make a contribution to unlock all habitats.
           </Heading>
-          <Text textAlign="center" size="xlarge" color="white" weight={700} margin={{ bottom: '30px' }}>
-            {/* eslint-disable-next-line max-len */}
-            50% of your purchase directly funds essential animal care &amp; conservation efforts led by our AZA-accredited partners around the world.
-          </Text>
         </Box>
-        <SubscriptionBenefits />
-        <SubscriptionManager />
-      </Box>
+      )}
+      <SubscriptionBenefits />
+      <AnimalCollapsible />
+      <SubscriptionManager />
     </Box>
   );
 };

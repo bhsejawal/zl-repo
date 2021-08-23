@@ -30,6 +30,21 @@
   }
 }
 
+.lockButton {
+  justify-content: center;
+  align-items: center;
+  padding: 11px !important;
+
+  svg {
+    font-size: 9px !important;
+    margin-right: 5px;
+  }
+
+  .buttonText {
+    color: #2E2D2D;
+  }
+}
+
 .logo {
   width: 85px;
   height: 85px;

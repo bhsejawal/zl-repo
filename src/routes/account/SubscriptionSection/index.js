@@ -7,7 +7,7 @@ import {
   ResponsiveContext,
 } from 'grommet';
 
-import background from 'Components/SubscriptionManager/plansBackground.png';
+import background from 'Components/SubscriptionManager/plansBackground.jpg';
 
 import SubscriptionManager from 'Components/SubscriptionManager';
 import ZoolifeBenefits from 'Components/Benefits';

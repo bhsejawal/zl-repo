@@ -68,12 +68,15 @@ const PlanCard = ({
           <CardHeader
             background={{ color }}
             width={{min: isMobileSize ? '180px' : '200px', max: isMobileSize ? '180px' : '150px'}}
+            height={{ min: !isMobileSize ? '155px' : '0px' }}
+            justify={ planPrice === 'FREE' ? 'center' : 'start'}
           >
             <Box
               fill
               textAlign="center"
-              alignSelf="start"
-              pad={{ top: '20px' }}
+              alignSelf={ planPrice === 'FREE' ? 'center' : 'start'}
+              pad={{ top: planPrice === 'FREE' ? '0px' : '20px' }}
+              justify={ planPrice === 'FREE' ? 'center' : 'start'}
               margin={{
                 bottom: isMobileSize ? '0px' : getMarginBottom(planPrice),
               }}>
@@ -86,13 +89,14 @@ const PlanCard = ({
               </Text>
               <Box direction="row" justify="center" align="center" >
                 <Heading
-                  margin={{ top: '12px', bottom: '0' }}
+                  margin={{ top: planPrice === 'FREE' ? '0px' : '12px', bottom: '0' }}
                   alignSelf="center"
                   level="2"
                 >
-                  {`$${planPrice / 100}`}
+                  {planPrice === 'FREE' ? planPrice : `$${planPrice / 100}`}
                 </Heading>
               </Box>
+              {planPrice !== 'FREE' && (
               <Box align="center">
                 <Text
                   size="20px"
@@ -101,6 +105,7 @@ const PlanCard = ({
                   {`$${originalPrice / 100}`}
                 </Text>
               </Box>
+              )}
             </Box>
 
           </CardHeader>
