@@ -26,7 +26,6 @@ import {
   passwordRegex,
   getDeviceType,
   getCampaignData,
-  logPageView,
   loadPage,
 } from '../../helpers';
 
@@ -119,7 +118,9 @@ const Signup = ({
         setServerError(error); // recheck
       } else if (user) {
         logPageViewGA('/signed-up', false, false);
-        logPageView('/signed-up');
+        if (typeof window !== 'undefined' && window.fbq) {
+          window.fbq('trackCustom', 'SignedUp')
+        }
         setServerError();
         setUserDataAction(user);
         loadPage('/profile');

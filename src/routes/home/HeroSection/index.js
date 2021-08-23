@@ -1,6 +1,5 @@
 import { h } from 'preact';
 import { LandingPrimary } from 'Components/Buttons';
-import { Experiment, Variant } from 'react-optimize';
 
 import { useState, useEffect, useRef } from 'preact/hooks';
 
@@ -80,21 +79,10 @@ const HeroSection = ({ partnerImage, partner }) => {
                   <img alt="partner-logo" src={partnerImage} className={style.partnerLogo} />
                 </div>
               )}
-              <Experiment id="OLguIG20RSuAWwX9_96_VA">
-                <Variant id="0">
-                  <h1>{defaultHeroText?.heading}</h1>
-                  <p className="body" style={{ padding: defaultHeroText.paragraphPadding }}>
-                    {defaultHeroText?.paragraph}
-                  </p>
-                </Variant>
-                <Variant id="1">
-                  <h1>Live, unfiltered, uncut.</h1>
-                  <p className="body">
-                    Explore the daily lives of animals with nature experts & zoo staff.
-                    Streaming from AZA zoos worldwide.
-                  </p>
-                </Variant>
-              </Experiment>
+              <h1>{defaultHeroText?.heading}</h1>
+              <p className="body" style={{ padding: defaultHeroText.paragraphPadding }}>
+                {defaultHeroText?.paragraph}
+              </p>
               <LandingPrimary onClick={goToSignup}>Meet the Animals</LandingPrimary>
             </div>
           </div>
@@ -103,42 +91,21 @@ const HeroSection = ({ partnerImage, partner }) => {
           <div className={style.videoContainer}>
             <div className={style.videoWrapper}>
               <div className={style.videoContent}>
-                <Experiment id="OLguIG20RSuAWwX9_96_VA">
-                  <Variant id="0">
-                    <img className={style.videoPlaceholder} src={featuresMediaUrls[0]} alt="" />
-                    <video
-                      key={featuresMediaUrls[1]}
-                      muted
-                      autoPlay
-                      loop
-                      playsInline
-                      ref={videoRef}
-                      controls={false}
-                      onLoadedData={onVideoDataLoaded}
-                      style={{ visibility: videoVisible ? "visible" : "hidden" }}
-                    >
-                      <source src={featuresMediaUrls[1]} type="video/mp4" />
-                      Your browser does not support the video tag.
-                    </video>
-                  </Variant>
-                  <Variant id="1">
-                    <img className={style.videoPlaceholder} src={mediaUrls[0]} alt="" />
-                    <video
-                      key={mediaUrls[1]}
-                      muted
-                      autoPlay
-                      loop
-                      playsInline
-                      ref={videoRef}
-                      controls={false}
-                      onLoadedData={onVideoDataLoaded}
-                      style={{ visibility: videoVisible ? "visible" : "hidden" }}
-                    >
-                      <source src={mediaUrls[1]} type="video/mp4" />
-                      Your browser does not support the video tag.
-                    </video>
-                  </Variant>
-                </Experiment>
+                <img className={style.videoPlaceholder} src={featuresMediaUrls[0]} alt="" />
+                <video
+                  key={featuresMediaUrls[1]}
+                  muted
+                  autoPlay
+                  loop
+                  playsInline
+                  ref={videoRef}
+                  controls={false}
+                  onLoadedData={onVideoDataLoaded}
+                  style={{ visibility: videoVisible ? "visible" : "hidden" }}
+                >
+                  <source src={featuresMediaUrls[1]} type="video/mp4" />
+                  Your browser does not support the video tag.
+                </video>
               </div>
             </div>
           </div>

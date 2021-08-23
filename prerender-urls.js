@@ -7,7 +7,7 @@ const envData = {
   segmentId: process.env.PREACT_APP_SEGMENT_ID,
   optimizeId: process.env.PREACT_APP_OPTIMIZE_ID,
   gaId: process.env.PREACT_APP_GA_APPID,
-  mouseflowId: process.env.PREACT_APP_MOUSEFLOW_ID,
+  pixelId: process.env.PREACT_APP_FB_PIXELID,
 };
 
 module.exports = [
