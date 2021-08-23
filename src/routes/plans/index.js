@@ -35,8 +35,8 @@ const Plans = () => {
         <Box
           fill="horizontal"
           height={{ min: 'max-content' }}
+          pad={{ top: '20px' }}
           alignSelf="center"
-          pad={{ horizontal: ['xsmall', 'small'].includes(size) ? '35px' : '95px'}}
           background="#F9FCE7"
         >
           <Heading

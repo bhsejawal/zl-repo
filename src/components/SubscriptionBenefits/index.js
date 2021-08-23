@@ -14,7 +14,7 @@ const ZoolifeBenefits = () => {
     <Box
       align="center"
       height={{ min: 'max-content' }}
-      pad={{ vertical: isMobileSize ? '25px' : '40px' }}
+      pad={{ vertical: isMobileSize ? '25px' : '50px' }}
       background="#F9FCE7"
     >
       <Box
