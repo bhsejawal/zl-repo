@@ -5,7 +5,6 @@ import {
   Box,
   Grommet,
   Heading,
-  Text,
 } from 'grommet';
 import Carousel from 'react-multi-carousel';
 import { PrimaryButton } from 'Components/Buttons';
@@ -76,9 +75,6 @@ const MobileOnboarding = ({ updateOnboarding, error }) => {
                     <span className={style.blue}>Tap&nbsp;</span>
                     the stream to move the camera!
                   </Heading>
-                  <Text size="xlarge" color="var(--charcoal)">
-                    Everyone on Zoolife can move the camera together!
-                  </Text>
                 </div>
 
                 <div className={style.content}>
@@ -89,9 +85,6 @@ const MobileOnboarding = ({ updateOnboarding, error }) => {
                     <span className={style.blue}>&nbsp;Expert Talks&nbsp;</span>
                     daily!
                   </Heading>
-                  <Text size="xlarge" color="var(--charcoal)">
-                    Ask all your burning questions. Check the schedule for when the next talk is.
-                  </Text>
                 </div>
               </Carousel>
             </Box>
