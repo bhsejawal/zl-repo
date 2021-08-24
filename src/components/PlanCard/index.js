@@ -7,7 +7,7 @@ import {
   Heading,
 } from 'grommet';
 import classnames from 'classnames';
-import { PrimaryButton } from '../Buttons';
+import { PrimaryButton, OutlineButton } from '../Buttons';
 
 import { useIsMobileSize } from '../../hooks';
 
@@ -143,13 +143,24 @@ const PlanCard = ({
 
             </Box>
             <Box justify="end" direction="column" pad="xsmall" margin={{ vertical: isMobileSize ? '11px' : '16px' }}>
-              <PrimaryButton
-                alignSelf="center"
-                disabled={disabled}
-                label={buttonLabel}
-                onClick={() => onClickHandler(planId, priceId)}
-                size={isMobileSize ? 'medium' : 'large'}
-              />
+              {buttonLabel === 'Cancel' && (
+                <OutlineButton
+                  alignSelf="center"
+                  disabled={disabled}
+                  label={buttonLabel}
+                  onClick={() => onClickHandler(planId, priceId)}
+                  size={isMobileSize ? 'medium' : 'large'}
+                />
+              )}
+              {buttonLabel !== 'Cancel' && (
+                <PrimaryButton
+                  alignSelf="center"
+                  disabled={disabled}
+                  label={buttonLabel}
+                  onClick={() => onClickHandler(planId, priceId)}
+                  size={isMobileSize ? 'medium' : 'large'}
+                />
+              )}
             </Box>
           </CardBody>
         </Card>

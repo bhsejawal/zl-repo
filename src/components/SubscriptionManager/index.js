@@ -7,7 +7,7 @@ import {
 } from 'preact/hooks';
 
 import { connect } from 'react-redux';
-import { Box } from 'grommet';
+import { Box, Text } from 'grommet';
 
 import useFetch from 'use-http';
 import { route } from 'preact-router';
@@ -28,6 +28,8 @@ import { setPlans, setSubscriptionData } from '../../redux/actions';
 import { useIsMobileSize } from '../../hooks';
 
 import plansBackground from './plansBackground.jpg';
+
+import style from './style.scss';
 
 const defaultDialogSettings = {
   show: false,
@@ -166,6 +168,7 @@ const SubscriptionSection = ({
   subscriptionStatus,
   setPlansAction,
   setSubscriptionDataAction,
+  showCancelCTA,
 }) => {
   const { stripe } = useContext(StripeContext);
   const isSmallScreen = useIsMobileSize();
@@ -378,6 +381,13 @@ const SubscriptionSection = ({
 
   return (
     <>
+      {showCancelCTA && (
+        <Box background="#F9FCE7" pad={isSmallScreen ? 'large' : 'medium'} align="center" justify="center">
+          <Text onClick={cancelSubscription} className={style.cancelText}>
+            Looking to cancel your pass? Click here.
+          </Text>
+        </Box>
+      )}
       <Box
         direction="column"
         height={{ min: 'fit-content' }}
@@ -387,6 +397,7 @@ const SubscriptionSection = ({
         justify={ isSmallScreen ? 'center' : 'start' }
         background={ isSmallScreen ? mobileBackground : desktopBackground }
         fill
+        flex={{ grow: 1 }}
       >
         <Experiment id="bFcUbpJZS-aZjr5QmZ9JTg">
           <Variant id="0">

@@ -10,7 +10,7 @@ const LoaderModal = ({
     animation="fadeIn"
     full={full}
   >
-    <Box fill justify="center">
+    <Box fill justify="center" background="white">
       <Loader height={height} width={width} fill={full} />
     </Box>
   </Layer>
