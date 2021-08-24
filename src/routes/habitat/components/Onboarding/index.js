@@ -2,19 +2,16 @@ import { h } from 'preact';
 import { connect } from 'react-redux';
 import useFetch from 'use-http';
 import { buildURL } from 'Shared/fetch';
-import { useEffect, useMemo } from 'preact/hooks';
+import { useEffect } from 'preact/hooks';
 
 import { logGAEvent } from 'Shared/ga';
 
 import { setUserData } from '../../../../redux/actions';
 import { getDeviceType } from '../../../../helpers';
 
-import DesktopOnboarding from './DesktopModal';
 import MobileOnboarding from './MobileModal';
 
 const Onboarding = ({ isOnboarded, setUserDataAction }) => {
-  const isMobile = useMemo(() => ['phone', 'tablet'].includes(getDeviceType()), []);
-
   const { post, error, data } = useFetch(buildURL('/users/onboarding'), {
     credentials: 'include',
     cachePolicy: 'no-cache',
@@ -49,11 +46,7 @@ const Onboarding = ({ isOnboarded, setUserDataAction }) => {
     return null;
   }
 
-  if (isMobile) {
-    return <MobileOnboarding updateOnboarding={updateOnboarding} error={error} />
-  }
-
-  return <DesktopOnboarding updateOnboarding={updateOnboarding} error={error} />
+  return <MobileOnboarding updateOnboarding={updateOnboarding} error={error} />
 };
 
 export default connect(
