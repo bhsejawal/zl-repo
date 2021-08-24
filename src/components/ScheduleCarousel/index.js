@@ -107,6 +107,7 @@ const ScheduleCarousel = ({
             text,
             profileImage,
             description,
+            habitatId,
           }) => (
             <Card
               key={_id}
@@ -117,6 +118,7 @@ const ScheduleCarousel = ({
               header={text}
               description={description}
               image={profileImage}
+              habitatId={habitatId}
             />
           ))}
         </Carousel>

@@ -37,6 +37,7 @@ const Upcoming = () => {
           text,
           profileImage,
           description,
+          habitatId,
         }) => (
           <Card
           key={_id}
@@ -49,6 +50,7 @@ const Upcoming = () => {
           description={description}
           image={profileImage}
           isReminder
+          habitatId={habitatId}
           />
         ))}
       </div>

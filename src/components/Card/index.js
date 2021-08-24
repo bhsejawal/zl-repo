@@ -3,7 +3,17 @@ import { connect } from 'react-redux';
 import { useEffect, useMemo } from 'preact/hooks';
 import classnames from 'classnames';
 import useFetch from 'use-http';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faLockAlt } from '@fortawesome/pro-solid-svg-icons';
+import { Link } from 'preact-router';
+import {
+  Button,
+  Box,
+  Text,
+} from 'grommet';
+
 import { buildURL } from 'Shared/fetch';
+
 import { setUserData } from '../../redux/actions';
 import { PrimaryButton } from '../Buttons';
 import { showScheduleModal } from '../../routes/habitat/components/ScheduleModal/actions';
@@ -24,6 +34,9 @@ const Card = ({
   scheduledEvents,
   setUserDataAction,
   showScheduleModalAction,
+  productId,
+  freeHabitat,
+  habitatId,
 }) => {
   const {
     post,
@@ -35,6 +48,11 @@ const Card = ({
     cachePolicy: 'no-cache',
     headers: { 'Content-Type': 'application/json' },
   });
+
+  const isLocked = useMemo(
+    () => productId === 'FREEMIUM' && freeHabitat !== habitatId,
+    [freeHabitat, productId, habitatId],
+  );
 
   const isReminded = useMemo(() => {
     if (scheduleId || (title && zoo && startTime)) {
@@ -100,15 +118,34 @@ const Card = ({
         </div>
         <div className={style.right}>
           <img src={image} className={classnames({ shimmer: loading })} alt="" />
-          <PrimaryButton
-            onClick={onClickHandler(scheduleId)}
-            disabled={isReminder && isReminded}
-            className={classnames({ shimmer: loading })}
-            size="small"
-            label={buttonText}
-            margin={{top: '10px'}}
-            loading={sendingReminder && !loading}
-          />
+          {!isLocked && (
+            <PrimaryButton
+              onClick={onClickHandler(scheduleId)}
+              disabled={isReminder && isReminded}
+              className={classnames({ shimmer: loading })}
+              size="small"
+              label={buttonText}
+              margin={{top: '10px'}}
+              loading={sendingReminder && !loading}
+            />
+
+          )}
+          {isLocked && (
+            <Link href={encodeURI(`/plans`)}>
+              <Button
+                primary
+                label={(
+                  <Box direction="row" justify="center" align="center">
+                    <FontAwesomeIcon icon={faLockAlt} color="#2E2D2D" size="1x" />
+                    <Text className={style.buttonText}>Unlock</Text>
+                  </Box>
+                )}
+                size="large"
+                className={style.lockButton}
+                style={{ width: '80px'}}
+              />
+            </Link>
+          )}
         </div>
       </div>
     </div>
@@ -116,7 +153,11 @@ const Card = ({
 };
 
 export default connect(
-  ({ user: { scheduledEvents }}) => ({ scheduledEvents }),
+  (
+    { user: { scheduledEvents, subscription: { productId, freeHabitat } } },
+  ) => (
+    { scheduledEvents, productId, freeHabitat }
+  ),
   {
     setUserDataAction: setUserData,
     showScheduleModalAction: showScheduleModal,

@@ -184,3 +184,18 @@ $cardWidth: 240px;
     border-radius: 5px;
   }
 }
+
+.lockButton {
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+
+  svg {
+    font-size: 9px !important;
+    margin-right: 5px;
+  }
+
+  .buttonText {
+    color: #2E2D2D;
+  }
+}
