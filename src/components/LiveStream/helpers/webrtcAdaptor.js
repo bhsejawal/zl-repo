@@ -1,3 +1,4 @@
+/* eslint-disable class-methods-use-this */
 /* eslint-disable import/prefer-default-export */
 import adapter from 'webrtc-adapter';
 import { PeerStats } from './peerStats';
@@ -16,7 +17,7 @@ export class WebRTCAdaptor {
     this.playStreamId = [];
     this.micGainNode = null;
     this.localStream = null;
-    this.bandwidth = 900; // default bandwidth kbps
+    this.bandwidth = { video: 600, audio: 90 }; // default bandwidth kbps
     this.isMultiPeer = false; // used for multiple peer client
     this.multiPeerStreamId = null; // used for multiple peer client
     this.roomTimerId = -1;
@@ -31,18 +32,17 @@ export class WebRTCAdaptor {
       video: {
         width: 640,
         height: 360,
-        aspectRatio: 1,
       },
       audio: {
         echoCancellation: true,
       },
-      aspectRatio: 1,
     };
 
     this.videoContainer = null;
     this.candidateTypes = ["udp", "tcp"];
     this.desktopStream = null;
     this.isInitialized = false;
+    this.mode = 'viewer';
 
     Object.entries(initialValues).forEach(([key, value]) => {
       if (Object.prototype.hasOwnProperty.call(initialValues, key)) {
@@ -51,29 +51,26 @@ export class WebRTCAdaptor {
     });
   }
 
-  init () {
+  async init () {
     if (this.isInitialized) {
       return;
     }
 
     this.isInitialized = true;
+    if (!this.isPlayMode) {
+      const stream = await navigator.mediaDevices.getUserMedia(this.mediaConstraints);
+      const devices = await this.getDevices();
+      const { deviceId: audioId } = devices.find(({ kind, selected }) => (kind === 'audioinput' && selected));
+      const { deviceId: videoId } = devices.find(({ kind, selected }) => (kind === 'videoinput' && selected));
+      this.audioId = audioId;
+      this.videoId = videoId;
+      this.gotStream(stream);
+      this.callback('available_devices', devices);
+    }
 
     if (!("WebSocket" in window)) {
       console.log("WebSocket not supported.");
       this.callbackError("WebSocketNotSupported");
-      return;
-    }
-
-    if (!this.isPlayMode && typeof this.mediaConstraints !== "undefined" && this.localStream == null) {
-      if (typeof this.mediaConstraints.video !== "undefined" && this.mediaConstraints.video !== false) {
-        this.openStream(this.mediaConstraints, this.mode);
-      } else {
-        // get only audio
-        const mediaAudioConstraint = { audio: this.mediaConstraints.audio };
-        this.navigatorUserMedia(mediaAudioConstraint, (stream) => {
-          this.gotStream(stream);
-        }, true)
-      }
     }
   }
 
@@ -109,13 +106,14 @@ export class WebRTCAdaptor {
       mediaConstraints,
       (stream) => this.updateAudioTrack(stream, streamId, mediaConstraints, onEndedCallback),
       true,
-    );
+    )
   }
 
   changeBandwidth(bandwidth, streamId) {
     let errorDefinition = '';
 
     const videoSender = this.getVideoSender(streamId);
+    const audioSender = this.getAudioSender(streamId);
 
     if (videoSender != null) {
       const parameters = videoSender.getParameters();
@@ -124,13 +122,33 @@ export class WebRTCAdaptor {
         parameters.encodings = [{}];
       }
 
-      if (bandwidth === 'unlimited') {
+      if (bandwidth.video === 'unlimited') {
         delete parameters.encodings[0].maxBitrate;
       } else {
-        parameters.encodings[0].maxBitrate = bandwidth * 1000;
+        parameters.encodings[0].maxBitrate = bandwidth.video * 1000;
       }
 
-      return videoSender.setParameters(parameters);
+      videoSender.setParameters(parameters);
+    }
+
+    if (audioSender != null) {
+      const parameters = audioSender.getParameters();
+
+      if (!parameters.encodings) {
+        parameters.encodings = [{}];
+      }
+
+      if (bandwidth.audio === 'unlimited') {
+        delete parameters.encodings[0].maxBitrate;
+      } else {
+        parameters.encodings[0].maxBitrate = bandwidth.audio * 1000;
+      }
+
+      audioSender.setParameters(parameters);
+    }
+
+    if (audioSender || videoSender) {
+      return Promise.resolve();
     }
 
     errorDefinition = 'Video sender not found to change bandwidth. Streaming may not be active';
@@ -139,7 +157,7 @@ export class WebRTCAdaptor {
 
   async navigatorUserMedia(mediaConstraints, callback) {
     try {
-      const userMedia = await navigator.mediaDevices.getUserMedia(mediaConstraints);
+      const userMedia = await navigator.mediaDevices.getUserMedia(this.mediaConstraints);
       callback(userMedia);
     } catch (err) {
       if (err.name === 'NotFoundError') {
@@ -150,18 +168,16 @@ export class WebRTCAdaptor {
     }
   }
 
+  // eslint-disable-next-line consistent-return
   async getDevices() {
     try {
       const devices = await navigator.mediaDevices.enumerateDevices();
       const deviceArray = [];
 
-      let checkAudio = false;
-
       const hasDefaultDevice = {
         videoinput: false,
         audioinput: false,
       };
-
       devices.forEach((device) => {
         const { kind } = device;
 
@@ -175,44 +191,22 @@ export class WebRTCAdaptor {
           // eslint-disable-next-line no-param-reassign
           device.selected = isSelected;
           deviceArray.push(device);
-
-          if (device.kind === 'audioinput') {
-            checkAudio = true;
-          }
         }
       });
 
-      this.callback('available_devices', deviceArray);
-
-      if (!checkAudio && this.localStream === null) {
-        console.log('Audio input not found');
-        console.log('Retrying to get user media without audio');
-        this.openStream({ video: true, audio: false }, this.mode);
-      }
+      return deviceArray;
     } catch (err) {
       console.error(`Cannot get devices -> error name: ${err.name} : ${err.message}`);
     }
   }
 
-  openStream(mediaConstraints) {
-    this.mediaConstraints = mediaConstraints;
-    let audioConstraint = false;
-    if (typeof mediaConstraints.audio !== 'undefined' && mediaConstraints.audio !== false) {
-      audioConstraint = mediaConstraints.audio;
-    }
+  openStream = () => this.getUserMedia(this.mediaConstraints);
 
-    if (typeof mediaConstraints.video !== 'undefined') {
-      this.getUserMedia(mediaConstraints, audioConstraint);
-    } else {
-      console.error('MediaConstraint video is not defined');
-      this.callbackError('media_constraint_video_not_defined');
-    }
-  }
-
-  getUserMedia(mediaConstraints, audioConstraint, streamId) {
+  getUserMedia(mediaConstraints) {
+    const { audio: audioConstraint, video: videoConstraint } = mediaConstraints;
     this.navigatorUserMedia(
       mediaConstraints,
-      ((stream) => this.prepareStreamTracks(mediaConstraints, audioConstraint, stream, streamId)),
+      ((stream) => this.prepareStreamTracks(videoConstraint, audioConstraint, stream)),
       true,
     );
   }
@@ -268,6 +262,29 @@ export class WebRTCAdaptor {
     }
 
     return videoSender;
+  }
+
+  getAudioSender(streamId) {
+    let audioSender = null;
+    if (
+      (adapter.browserDetails.browser === 'chrome' || (adapter.browserDetails.browser === 'firefox' || (adapter.browserDetails.browser === 'safari' && adapter.browserDetails.version >= 64)))
+      && 'RTCRtpSender' in window
+      && 'setParameters' in window.RTCRtpSender.prototype
+    ) {
+      if (this.remotePeerConnection[streamId] != null) {
+        const senders = this.remotePeerConnection[streamId].getSenders();
+
+        // eslint-disable-next-line no-plusplus
+        for (let i = 0; i < senders.length; i++) {
+          if (senders[i].track != null && senders[i].track.kind === 'audio') {
+            audioSender = senders[i];
+            break;
+          }
+        }
+      }
+    }
+
+    return audioSender;
   }
 
   joinRoom(roomName, streamId) {
@@ -386,6 +403,10 @@ export class WebRTCAdaptor {
   }
 
   switchVideoCameraCapture(streamId, deviceId) {
+    if (this.videoId === deviceId) {
+      return;
+    }
+    this.videoId = deviceId;
     const videoTrack = this.localStream.getVideoTracks()[0];
 
     if (videoTrack) {
@@ -402,9 +423,9 @@ export class WebRTCAdaptor {
     this.setVideoCameraSource(streamId, this.mediaConstraints, null, true, deviceId);
   }
 
-  setVideoCameraSource(streamId, mediaConstraints, onEndedCallback, stopDesktop) {
+  setVideoCameraSource(streamId, mediaConstraints, onEndedCallback) {
     this.navigatorUserMedia(mediaConstraints, (stream) => {
-      this.updateVideoTrack(stream, streamId, mediaConstraints, onEndedCallback, stopDesktop);
+      this.updateVideoTrack(stream, streamId, mediaConstraints, onEndedCallback);
       this.updateAudioTrack(stream, streamId, mediaConstraints, onEndedCallback);
     }, true);
   }
@@ -680,7 +701,7 @@ export class WebRTCAdaptor {
         if (!this.isPlayMode) {
           if (this.remotePeerConnection[streamId].iceConnectionState === "connected") {
             this.changeBandwidth(this.bandwidth, streamId).then(() => {
-              console.log(`Bandwidth is changed to ${this.bandwidth}`);
+              console.log(`Bandwidth is changed to ${JSON.stringify(this.bandwidth)}`);
             })
               .catch((e) => console.error(e));
           }

@@ -11,8 +11,6 @@ import {
   Box,
   Card,
   CardBody,
-  CardFooter,
-  Text,
   Drop,
   Select,
 } from 'grommet';
@@ -25,7 +23,6 @@ import {
   faQuestionCircle,
 } from '@fortawesome/pro-solid-svg-icons';
 import { connect } from 'react-redux';
-import { format } from "date-fns";
 
 import { wsMessages } from 'Components/LiveStream/helpers/constants';
 import { useWebRTCStream } from 'Components/LiveStream/hooks/useWebRTCStream';
@@ -56,6 +53,8 @@ const Broadcast = ({
   isHostStreamOn,
   resetBroadcastContainer,
   habitatId,
+  width,
+  height,
   toggleIsBroadcastingAction,
   openContactUsModalAction,
 }) => {
@@ -129,21 +128,29 @@ const Broadcast = ({
     }
   }, [hostStreamKey, isHostStreamOn, initializeAdapter])
 
-  const videoSources = useMemo(() => availableDevices.filter(({ kind }) => (kind === 'videoinput')), [availableDevices]);
-  const audioSources = useMemo(() => availableDevices.filter(({ kind }) => (kind === 'audioinput')), [availableDevices]);
+  const videoSources = useMemo(() => availableDevices.filter(({ kind, deviceId }) => (kind === 'videoinput' && deviceId.length)), [availableDevices]);
+  const audioSources = useMemo(() => availableDevices.filter(({ kind, deviceId }) => (kind === 'audioinput' && deviceId.length)), [availableDevices]);
 
   useEffect(() => {
-    if (availableDevices.length) {
+    if (videoSources.length && audioSources.length) {
       const [{ deviceId: currentVideoSource } = {}] = videoSources.filter(
         ({ selected }) => (selected === true),
       );
       const [{ deviceId: currentAudioSource }] = audioSources.filter(
         ({ selected }) => (selected === true),
       );
+
       setSelectedAudioDevice(currentAudioSource);
       setSelectedVideoDevice(currentVideoSource);
     }
-  }, [availableDevices, videoSources, audioSources, hostStreamKey]);
+  }, [
+    availableDevices,
+    videoSources,
+    audioSources,
+    hostStreamKey,
+    switchAudioInput,
+    switchVideoInput,
+  ]);
 
   useEffect(() => () => removeWebRTCAdaptor(hostStreamKey), [removeWebRTCAdaptor, hostStreamKey]);
 
@@ -165,15 +172,14 @@ const Broadcast = ({
   }
 
   return (
-    <Box>
-      <Box flex="grow" fill justify="center" align="center">
+    <Box className={style.wrapper}>
+      <Box flex="grow" fill justify="center" align="center" ref={buttonRef}>
         <Card
           elevation="none" style={{ position: 'relative', borderRadius: '5px'}}
           width="auto"
           height={{ min: !nextTalk && [PLAY_STARTED, PUBLISH_STARTED].includes(streamStatus) ? `${videoRef?.current?.offsetHeight}px` : '140px' }}
         >
           <CardBody flex="grow">
-            {/* Replace the livetag date with a date from the livetalks */}
             {![PLAY_STARTED, PUBLISH_STARTED, ERROR, STREAM_IN_USE].includes(streamStatus) && (
               <Box className={style.fallbackContainer}>
                 <Fallback type="loading" />
@@ -182,13 +188,12 @@ const Broadcast = ({
             {[ERROR, STREAM_IN_USE].includes(streamStatus) && (
               <Box
                 className={style.fallbackContainer}
-                height={nextTalk ? `${videoRef?.current?.offsetHeight}px` : '140px'}
               >
                 <Fallback type="error" text={ streamStatus === ERROR ? 'Please try again.' : 'Someone is already streaming.'} />
               </Box>
             )}
             {[PLAY_STARTED, PUBLISH_STARTED].includes(streamStatus) && (
-              <Box className={style.controlContainer} ref={buttonRef}>
+              <Box className={style.controlContainer}>
                 <RoundButton
                   onClick={() => setShowMenu(!showMenu)}
                   className={isBroadcasting ? style.online : style.offline}
@@ -202,45 +207,16 @@ const Broadcast = ({
             {streamStatus === PUBLISH_STARTED && nextTalk && (
               <LiveTag endTime={nextTalk.stopTime} />
             )}
-
             {streamStatus !== PUBLISH_STARTED && <PreviewTag />}
             <video
               autoPlay
               muted
+              playsInline
               ref={videoRef}
-              style={{ maxHeight: '140px', maxWidth: '240px', width: '100%' }}
+              className={style.video}
+              style={{ width, height }}
             />
           </CardBody>
-          {nextTalk && (
-          <CardFooter
-            background="#24412B"
-            direction="column"
-            justify="center"
-            align="center"
-            pad={{ horizontal: '12px', vertical: '6px' }}
-            gap="xxsmall"
-          >
-            <Text
-              size="8px"
-              textAlign="center"
-              style={{
-                textTransform: 'uppercase',
-                lineHeight: "10px",
-                letterSpacing: ".5px",
-              }}
-            >
-              {nextTalk.title}
-            </Text>
-            <Text
-              align="center"
-              size="9px"
-              weight={400}
-              style={{ lineHeight: '18px' }}
-            >
-              {`Starts at ${format(nextTalk.startTime, 'HH:mm aa')}`}
-            </Text>
-          </CardFooter>
-          )}
         </Card>
       </Box>
       {showMenu && (

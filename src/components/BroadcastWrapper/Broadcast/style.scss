@@ -1,3 +1,10 @@
+.wrapper {
+  position: absolute;
+  top: 7px;
+  right: 10.63px;
+  z-index: 4;
+}
+
 .controls {
 
   .title {
@@ -54,8 +61,8 @@
 
 .controlContainer {
   position: absolute;
-  left: 6px;
-  top: 6px;
+  top: 1px;
+  right: 1px;
   z-index: 3;
 
   .online {
@@ -69,7 +76,11 @@
 
 .fallbackContainer {
   position: absolute;
-  left: 0;
-  max-height: 140px;
   width: 100%;
+  height: 100%;
+}
+
+.video {
+  background: black;
+  object-fit: cover;
 }

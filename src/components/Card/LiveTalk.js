@@ -13,25 +13,21 @@ const LiveTalk = ({
   isHostStreamOn,
   description,
   name,
-  disabled,
+  size,
 }) => {
   const isMobileView = useIsHabitatTabbed();
   const isSmallScreen = useIsMobileSize();
 
-  if (disabled) {
-    return null;
-  }
-
   return (
-    <div className={classnames(style.card, style.liveTalk, {
+    <div className={classnames(style.liveTalk, {
       [style.tablet]: isMobileView, [style.phone]: isSmallScreen,
     })}>
       <LiveStream
-        width="auto"
-        height="140px"
         streamId={hostStreamKey}
         isStreamOn={isHostStreamOn}
         mode="liveTalk"
+        width={size}
+        height={size}
       />
       {(description || name) && (
         <div className={style.bottomSection}>

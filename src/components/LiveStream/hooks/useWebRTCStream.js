@@ -14,6 +14,7 @@ import {
   stop,
   switchAudioInputSource,
   switchVideoCameraCapture,
+  getUserMedia,
 } from '../helpers';
 
 import { iOSDevice } from '../../../helpers';
@@ -44,6 +45,12 @@ export const useWebRTCStream = (streamId, isStreamOn, videoContainer, mode, logS
   const [isInitialized, setIsInitialized] = useState(false);
   const [availableDevices, setAvailableDevices] = useState([]);
   const intervalRef = useRef(null);
+
+  useEffect(() => {
+    if (videoContainer.current && mode === 'broadcaster') {
+      getUserMedia();
+    }
+  }, [mode, videoContainer]);
 
   useEffect(() => {
     intervalRef.current = setInterval(

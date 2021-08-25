@@ -25,7 +25,6 @@ import MobileControls from './MobileControls.js';
 import { useWebRTCStream } from './hooks/useWebRTCStream';
 import { wsMessages } from './helpers/constants';
 import { useIsHabitatTabbed, useIsMobileSize } from '../../hooks';
-import { MOBILE_CONTROLS_HEIGHT } from '../../routes/habitat/constants';
 import { setHabitatStreamStarted } from "../../routes/habitat/actions";
 
 import { getDeviceType } from '../../helpers';
@@ -129,7 +128,7 @@ const Stream = ({
       <div
         className={style.streamContainer}
         style={{
-          height: height + (isSmallScreen ? MOBILE_CONTROLS_HEIGHT : 0),
+          height,
         }}
         ref={containerRef}
         onMouseEnter={() => setShowControls(true)}

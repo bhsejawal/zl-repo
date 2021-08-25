@@ -17,6 +17,7 @@ import { buildURL, post } from 'Shared/fetch';
 import GlobalsContextProvider from "Components/GlobalsContextProvider";
 import LiveStream from 'Components/LiveStream';
 import Loader from 'Components/Loader';
+import BroadcastWrapper from 'Components/BroadcastWrapper';
 import Notifications from 'Components/Notifications';
 
 import { openTermsModal } from 'Components/TermsAndConditions/actions';
@@ -65,6 +66,7 @@ const Habitat = ({
   enteredHabitat,
   hostStreamKey,
   isHostStreamOn,
+  isBroadcasting,
   setHabitatAction,
   unsetHabitatAction,
   openTermsModalAction,
@@ -242,7 +244,14 @@ const Habitat = ({
                 mode="stream"
                 isStreamOn={isStreamOn}
               />}
-              {isTabbed && hostStreamKey && isHostStreamOn && <LiveTalk streamId={hostStreamKey} />}
+
+              {hostStreamKey && (!isHostStreamOn || (isHostStreamOn && isBroadcasting)) && (
+                <BroadcastWrapper size={streamWidth * 0.3 } />
+              )}
+
+              {hostStreamKey && isHostStreamOn && !isBroadcasting && (
+                <LiveTalk streamId={hostStreamKey} size={streamWidth * 0.3 } />
+              )}
             </div>
             {!isTabbed && <Chat width={chatWidth} height={height} />}
           </div>
@@ -300,6 +309,7 @@ const ConnectedHabitat = connect(
         isHostStreamOn,
       },
     },
+    mainStream: { interactionState: { isBroadcasting } },
     user: {
       userId,
       termsAccepted = false,
@@ -320,6 +330,7 @@ const ConnectedHabitat = connect(
     hostStreamKey,
     isHostStreamOn,
     enteredHabitat,
+    isBroadcasting,
     productId,
     freeHabitat,
     userRole,
