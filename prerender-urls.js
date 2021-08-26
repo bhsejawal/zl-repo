@@ -52,6 +52,11 @@ module.exports = [
     ...envData,
   },
   {
+    url: '/sbzoo',
+    title: 'Zoolife - The world\'s first virtual zoo. - Santa Barbara Zoo',
+    ...envData,
+  },
+  {
     url: '/terms-and-conditions',
     title: 'Terms and Conditions',
     ...envData,

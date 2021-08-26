@@ -22,6 +22,8 @@ import oranaZooLogo from './components/Main/partners/orana-zoo.png';
 import torontoZooLogo from './components/Main/partners/toronto-zoo.png';
 import pmmcLogo from './components/Main/partners/pmmc.png';
 import sanAntonioLogo from './components/Main/partners/san-antonio-zoo.png';
+import santaBarbaraLogo from './components/Main/partners/santa-barbara-zoo.png';
+
 import store from "./redux/store";
 import { initializeGA, logPageViewGA } from './shared/ga';
 
@@ -71,6 +73,7 @@ const Content = ({
         <Home path="/pmmc" partnerImage={pmmcLogo} exact title={homeTitle} partner="pmmc" />
         <Home path="/pmmccamp" partnerImage={pmmcLogo} exact title={homeTitle} partner="pmmc" />
         <Home path="/sazoo" partnerImage={sanAntonioLogo} exact title={homeTitle} partner="sazoo" />
+        <Home path="/sbzoo" partnerImage={santaBarbaraLogo} exact title={homeTitle} partner="sbzoo" />
         {/* these routes can be briefly rendered on slow devices
         while waiting for the full page load */}
         <AppLoader path="/login" title="Log In" />

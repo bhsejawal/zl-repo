@@ -20,6 +20,7 @@ import oranaZooLogo from './partners/orana-zoo.png';
 import torontoZooLogo from './partners/toronto-zoo.png';
 import pmmcLogo from './partners/pmmc.png';
 import sanAntonioLogo from './partners/san-antonio-zoo.png';
+import santaBarbaraLogo from './partners/santa-barbara-zoo.png';
 
 // Code-splitting is automated for `routes` directory
 import PasswordReset from '../../routes/passwordReset';
@@ -61,6 +62,7 @@ const freemiumRoutes = [
   '/sazoo',
   '/freemiumOnboarding',
   '/socialLogin',
+  '/sbzoo',
 ];
 
 const Main = ({
@@ -163,6 +165,7 @@ const Main = ({
         <Home path="/pmmc" partnerImage={pmmcLogo} exact title={homeTitle} partner="pmmc" />
         <Home path="/pmmccamp" partnerImage={pmmcLogo} exact title={homeTitle} partner="pmmc" />
         <Home path="/sazoo" partnerImage={sanAntonioLogo} exact title={homeTitle} partner="sazoo" />
+        <Home path="/sbzoo" partnerImage={santaBarbaraLogo} exact title={homeTitle} partner="sbzoo" />
 
         <Redirect path="/socialLogin" to="/map" />
         <Redirect path="/checkout-completed" to="/welcome" />
