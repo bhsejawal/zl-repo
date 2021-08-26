@@ -119,27 +119,27 @@ export const useWebRTCStream = (streamId, isStreamOn, videoContainer, mode, logS
       }
     }
 
-    const onSuspendeHandler = () => {
-      // the suspense handler also activates when a video plays
-      // the check bellow will avoid stopping the stream after
-      // the user manually starts the video
-      if (![LOADING, PLAY_STARTED].includes(streamStatus)) {
-        setStreamStatus(PLAY_PAUSED);
-        stop(streamId);
-      }
-    }
+    // const onSuspendeHandler = () => {
+    //   // the suspense handler also activates when a video plays
+    //   // the check bellow will avoid stopping the stream after
+    //   // the user manually starts the video
+    //   if (![LOADING, PLAY_STARTED].includes(streamStatus)) {
+    //     setStreamStatus(PLAY_PAUSED);
+    //     stop(streamId);
+    //   }
+    // }
 
     const { current: htmlVideoContainer } = videoContainer;
 
     if (htmlVideoContainer) {
       htmlVideoContainer.addEventListener('play', onPlayHandler);
-      htmlVideoContainer.addEventListener('suspend', onSuspendeHandler);
+      // htmlVideoContainer.addEventListener('suspend', onSuspendeHandler);
     }
 
     return () => {
       if (htmlVideoContainer) {
         htmlVideoContainer.removeEventListener('play', onPlayHandler);
-        htmlVideoContainer.removeEventListener('suspend', onSuspendeHandler);
+        // htmlVideoContainer.removeEventListener('suspend', onSuspendeHandler);
       }
     }
   }, [videoContainer, streamStatus, streamId]);

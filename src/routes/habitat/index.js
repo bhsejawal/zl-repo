@@ -245,12 +245,17 @@ const Habitat = ({
                 isStreamOn={isStreamOn}
               />}
 
-              {hostStreamKey && (!isHostStreamOn || (isHostStreamOn && isBroadcasting)) && (
-                <BroadcastWrapper size={streamWidth * 0.3 } />
+              {hasPermission('habitat:broadcast') && hostStreamKey && (!isHostStreamOn || isBroadcasting) && (
+                <BroadcastWrapper
+                  size={isTabbed ? streamWidth * 0.35 : streamWidth * 0.25 }
+                />
               )}
 
               {hostStreamKey && isHostStreamOn && !isBroadcasting && (
-                <LiveTalk streamId={hostStreamKey} size={streamWidth * 0.3 } />
+                <LiveTalk
+                  streamId={hostStreamKey}
+                  size={isTabbed ? streamWidth * 0.35 : streamWidth * 0.25 }
+                />
               )}
             </div>
             {!isTabbed && <Chat width={chatWidth} height={height} />}

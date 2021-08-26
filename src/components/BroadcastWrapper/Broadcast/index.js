@@ -13,6 +13,7 @@ import {
   CardBody,
   Drop,
   Select,
+  Anchor,
 } from 'grommet';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -20,7 +21,6 @@ import {
   faSignalStream,
   faVideo,
   faMicrophone,
-  faQuestionCircle,
 } from '@fortawesome/pro-solid-svg-icons';
 import { connect } from 'react-redux';
 
@@ -226,8 +226,11 @@ const Broadcast = ({
           margin={{ left: "-5px", top: "5px" }}
           className={style.controls}
         >
-          <Box width="240px" background="white" style={{ borderRadius: '5px' }} pad="small" flex="grow">
-            <span className={style.title}>Stream Setup</span>
+          <Box background="white" style={{ borderRadius: '5px' }} pad="small" flex="grow">
+            <Box direction="row" align="center" justify="between">
+              <span className={style.title}>Stream Setup</span>
+              <Anchor color="var(--charcoal)" className={style.contactUs} onClick={openContactUsModalAction}>Need help?</Anchor>
+            </Box>
             <Box direction="row" pad={{vertical: '7px' }} align="center">
               <FontAwesomeIcon icon={faVideo} size="1x" style={{ minWidth: '20px' }} color="#CDCDCD" />
               <Box margin={{ left: "14px"}} flex="grow" width={{ max: 'calc(100% - 34px)' }}>
@@ -262,18 +265,13 @@ const Broadcast = ({
                 className={isBroadcasting ? style.online : style.offline}
                 disabled={!selectedAudioDevice || !selectedVideoDevice || isLoading}
               />
-
-              <OutlineButton
-                size="medium"
-                label={(
-                  <>
-                    <FontAwesomeIcon icon={faQuestionCircle} />
-                    &nbsp;
-                    Help
-                  </>
-                )}
-                onClick={() => openContactUsModalAction()}
-              />
+              {!isBroadcasting && (
+                <OutlineButton
+                  size="medium"
+                  label="Exit Hosting"
+                  onClick={resetBroadcastContainer}
+                />
+              )}
             </Box>
           </Box>
         </Drop>
