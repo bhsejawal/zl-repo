@@ -24,7 +24,6 @@ const Plans = () => {
       responsive
       height={{ min: '100%' }}
       direction="column"
-      // fill={['medium', 'large'].includes(size)}
       overflow="auto"
       background="var(--hunterGreenMediumLight)"
       className={style.plansPageWrapper}

@@ -16,6 +16,8 @@ const SubscriptionSection = () => {
     <Box
       height={{ min: '100%' }}
       background="#24412B"
+      responsive
+      overflow="auto"
     >
       <Box pad={{ vertical: "large" }} background="#F9FCE7">
         <Heading

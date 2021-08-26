@@ -174,6 +174,18 @@ const SubscriptionSection = ({
   const isSmallScreen = useIsMobileSize();
   const [showCancelDialog, setShowCancelDialog] = useState(false);
 
+  const showCancelButton = useMemo(() => {
+    if (['FREEMIUM', 'TRIAL'].includes(productId)) {
+      return false;
+    }
+
+    const dailyPlans = plans.filter(({ interval }) => interval === 'visit').map(({ productId: planProductId }) => planProductId);
+    if (dailyPlans.includes(productId)) {
+      return false;
+    }
+    return true;
+  }, [productId, plans]);
+
   const mobileBackground = '#24412B';
   const desktopBackground = { image: `url(${plansBackground})`, size: 'cover', position: 'left bottom' };
 
@@ -381,7 +393,7 @@ const SubscriptionSection = ({
 
   return (
     <>
-      {showCancelCTA && (
+      {showCancelCTA && showCancelButton && (
         <Box background="#F9FCE7" pad={isSmallScreen ? 'large' : 'medium'} align="center" justify="center">
           <Text onClick={cancelSubscription} className={style.cancelText}>
             Looking to cancel your pass? Click here.
@@ -397,7 +409,7 @@ const SubscriptionSection = ({
         justify={ isSmallScreen ? 'center' : 'start' }
         background={ isSmallScreen ? mobileBackground : desktopBackground }
         fill
-        flex={{ grow: 1 }}
+        flex={ !isSmallScreen && showCancelCTA ? { grow: 1 } : 'shrink' }
       >
         <Experiment id="bFcUbpJZS-aZjr5QmZ9JTg">
           <Variant id="0">
