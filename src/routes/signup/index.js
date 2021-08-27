@@ -31,7 +31,7 @@ import {
 
 import Layout from '../../layouts/LoginSignup';
 
-import signupImage from './zoolife-signup.jpeg';
+import signupImage from './zoolife-signup.jpg';
 
 import style from '../login/style.scss';
 
