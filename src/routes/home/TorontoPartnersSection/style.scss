@@ -1,0 +1,143 @@
+@import "../../../style/media-query";
+
+@media screen and (max-width: #{$tablet-portrait-width}) {
+
+  .partners {
+    margin-bottom: 10px !important;
+  }
+}
+
+.textBlock {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  padding: 40px 0px;
+}
+
+.tag {
+  font-size: 10px !important;
+  line-height: 10px;
+  letter-spacing: .5px;
+  color: #081B0C;
+  font-weight: bold;
+  margin-bottom: 0px;
+  text-transform: uppercase;
+}
+
+.partnersContainer {
+  background: linear-gradient(90deg, rgb(142, 170, 191) 0%, 14.1839%, rgb(210, 178, 190) 28.3679%, 42.0984%, rgb(242, 200, 178) 55.829%, 66.2537%, rgb(222, 191, 193) 76.6784%, 88.3392%, rgb(197, 191, 195) 100%);
+  display: flex;
+  flex-direction: column;
+  padding: 40px 0px;
+
+  h2 {
+    text-align: center;
+    display: block;
+    max-width: 780px;
+    padding: 0 175px;
+    margin: 18px;
+  }
+
+  p {
+    text-align: center;
+    font-size: 16px;
+    line-height: 22px;
+    color: #000000;
+    margin: 0px;
+  }
+}
+
+.clickable {
+  cursor: pointer;
+}
+
+@media screen and (max-width: #{$phone-landscape-width}) {
+
+  .partnersContainer {
+
+    h2 {
+      padding: 0px 25px !important;
+    }
+
+    p {
+      padding: 0px 30px !important;
+    }
+  }
+
+  .textBlock {
+    padding: 40px 20px 0 20px;
+  }
+}
+
+@media screen and (max-width: #{$tablet-portrait-width}) {
+
+  .textBlock {
+    padding: 40px 20px 0 20px;
+  }
+
+  .partnersContainer {
+    padding: 60px 0px;
+  }
+}
+
+
+.partners {
+  text-align: center;
+  margin-bottom: 10px;
+  overflow: hidden;
+  cursor: pointer;
+
+  @media screen and (max-width: #{$tablet-portrait-width}) {
+
+    .carousel {
+      background-image: url("https://zl-zoolife-tv.s3.ca-central-1.amazonaws.com/assets/landing/carouselImage-mobilev2.jpg") !important;
+      background-repeat: repeat-x;
+      height: 118px !important;
+
+      /* The image width times 3 */
+      width: 7773px !important;
+      animation: slideMobile 60s linear infinite !important;
+    }
+
+  }
+
+
+  .carousel {
+    background-image: url("https://zl-zoolife-tv.s3.ca-central-1.amazonaws.com/assets/landing/carouselImage-v2.jpg");
+    background-repeat: repeat-x;
+
+    height: 227px;
+
+    /* The image width times 3 */
+    width: 14952px;
+    animation: slide 60s linear infinite;
+  }
+}
+
+@keyframes slide {
+
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+
+  100% {
+    /* The image width */
+    transform: translate3d(-4984px, 0, 0);
+  }
+}
+
+
+@keyframes slideMobile {
+
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+
+  100% {
+    /* The image width */
+    transform: translate3d(-2591px, 0, 0);
+  }
+}
+
+

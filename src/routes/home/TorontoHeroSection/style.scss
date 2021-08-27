@@ -1,0 +1,199 @@
+@import "../../../style/media-query";
+
+$animationDuration: 2.5s;
+
+.underline {
+  text-decoration: underline;
+}
+
+.heroContainer {
+  display: flex;
+  flex-direction: column;
+  background-color: var(--hunterGreen);
+
+  .top {
+    display: flex;
+    flex-direction: row;
+
+    .left {
+      display: flex;
+      width: unquote("min(50%, 600px)");
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      min-height: 500px;
+      color: white;
+
+      > div {
+        max-width: 350px;
+      }
+    }
+
+    .right {
+      display: flex;
+      flex-grow: 1;
+      height: auto;
+      position: relative;
+    }
+
+    h1 {
+      margin-top: 0;
+      margin-bottom: 30px;
+      font-size: 30px;
+      line-height: 40px;
+    }
+
+    :global(.body) {
+      font-size: 16px;
+      line-height: 22px;
+      margin: 0 0 50px 0;
+    }
+  }
+
+  .bottom {
+    min-height: 68px;
+    background: #E4EFA2;
+    display: flex;
+    justify-items: center;
+    align-items: center;
+    padding: 0 40px;
+    text-align: center;
+    flex-direction: row;
+    justify-content: center;
+
+    img {
+      margin-right: 25px;
+      width: 28px;
+      height: 30px;
+    }
+  }
+
+
+  .videoContainer {
+    width: 100%;
+
+    .videoWrapper {
+      padding-top: calc(100% * (2/3));
+      position: relative;
+
+      .videoContent {
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+      }
+    }
+  }
+
+  video,
+  .videoPlaceholder {
+    width: auto;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    height: 100%;
+  }
+}
+
+.partner {
+  margin-bottom: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  span {
+    margin: 0 15px;
+  }
+
+  .partnerLogo {
+    height: 60px;
+    border-radius: 9px;
+    background: white;
+    padding: 4px;
+  }
+}
+
+// reduce left side width
+@media screen and (max-width: 1370px) {
+
+  .heroContainer .top .left {
+    width: 450px;
+  }
+}
+
+// right side fit video height and hide overflow
+@media screen and (max-width: 1215px) {
+
+  .heroContainer .top .right .videoWrapper {
+    height: 100%;
+
+    .videoContent {
+      overflow: hidden;
+
+      > * {
+        left: 50%;
+        transform: translateX(-50%)
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 940px) {
+
+  .heroContainer .top .left {
+    width: unquote("min(50%, 500px)");
+  }
+}
+
+@media screen and (max-width: #{$tablet-portrait-width}) {
+
+  .heroContainer {
+
+    .top {
+      flex-direction: column-reverse;
+
+      .left {
+        width: 100%;
+        min-height: 400px;
+        padding: 30px;
+
+        h1 {
+          font-size: 22px;
+          line-height: 28px;
+        }
+
+        :global(.body) {
+          font-size: 13px;
+          line-height: 18px;
+        }
+      }
+
+      .right {
+        width: 100%;
+
+        .videoWrapper {
+          padding-top: calc(100% * (9/16));
+        }
+
+        .videoContent > * {
+          width: 100%;
+        }
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 840px) and (min-width: #{$tablet-portrait-width}) {
+
+  .heroContainer .top .left {
+    padding: 0 20px;
+
+    h1 {
+      font-size: 30px;
+      line-height: normal;
+    }
+  }
+}
