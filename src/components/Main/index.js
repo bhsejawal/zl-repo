@@ -54,7 +54,7 @@ import FreemiumOnboarding from '../../routes/freemiumOnboarding';
 
 import PageWrapper from './PageWrapper';
 
-import { logAndGetCampaignData } from '../../helpers';
+import { logAndGetCampaignData, isProfileSet } from '../../helpers';
 import { updateReferralData } from '../../redux/actions';
 import { useIsHabitatTabbed } from '../../hooks';
 
@@ -82,6 +82,7 @@ const Main = ({
   productId,
   isFreemiumOnboarded,
   timezone,
+  profile,
   updateReferralDataAction,
 }) => {
   const [path, setPath] = useState();
@@ -100,6 +101,13 @@ const Main = ({
         .catch((error) => console.error('Failed to update timezone', error));
     }
   }, [logged, timezone]);
+
+  useEffect(() => {
+    if (logged && !isProfileSet(profile)) {
+      route('/profile', true);
+      setPath('/profile')
+    }
+  }, [logged, profile]);
 
   const checkoutHandler = useCallback(async (planId, priceId) => {
     try {
@@ -122,7 +130,11 @@ const Main = ({
       url,
       current: { props: { matches } },
     } = props;
-    if (!freemiumRoutes.includes(url) && !isFreemiumOnboarded && productId === 'FREEMIUM') {
+
+    if (logged && !isProfileSet(profile)) {
+      route('/profile', true);
+      setPath('/profile')
+    } else if (!freemiumRoutes.includes(url) && !isFreemiumOnboarded && productId === 'FREEMIUM') {
       route('/freemiumOnboarding', true);
       setPath('/freemiumOnboarding');
     }
@@ -144,6 +156,7 @@ const Main = ({
           return;
         }
       }
+
       if (!isFreemiumOnboarded && productId === 'FREEMIUM') {
         route('/freemiumOnboarding', true);
         setPath('/freemiumOnboarding')
@@ -323,6 +336,7 @@ export default connect(({
     timezone,
     isFreemiumOnboarded,
     subscription: { productId },
+    profile,
   },
   modals: { contactus: { isOpen: showContactUs }, invite: { isOpen: showInvite }},
 }) => ({
@@ -332,6 +346,7 @@ export default connect(({
   timezone,
   productId,
   isFreemiumOnboarded,
+  profile,
 }), {
   updateReferralDataAction: updateReferralData,
 })(Main);

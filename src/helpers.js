@@ -151,3 +151,5 @@ export const isHabitatUnlocked = (userSubscription, habitatId) => {
   return ![FREEMIUM_PRODUCT_ID, TRIAL_PRODUCT_ID].includes(productId)
     || (productId === FREEMIUM_PRODUCT_ID && freeHabitat === habitatId);
 }
+
+export const isProfileSet = (profile) => profile?.animalIcon && profile?.color;

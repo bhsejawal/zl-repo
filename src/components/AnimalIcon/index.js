@@ -1,6 +1,5 @@
 import { h } from 'preact';
 import { connect } from 'react-redux';
-import { route } from 'preact-router';
 import { useMemo } from 'preact/hooks';
 
 import { getIconUrl, getIconKeys } from 'Shared/profileIcons';
@@ -8,7 +7,6 @@ import { getIconUrl, getIconKeys } from 'Shared/profileIcons';
 import style from './style.scss';
 
 const AnimalIcon = ({
-  logged,
   animalIcon,
   color,
   width = 30,
@@ -37,17 +35,6 @@ const AnimalIcon = ({
     // getIconUrl(getIconKeys()[0]) is defensive part in case 'userIcon' is not found
     return getIconUrl(animalIcon) || getIconUrl(getIconKeys()[0]);
   }, [animalIcon]);
-
-  // TODO #179409935: Refactor this logic, it wont trigger for mobile
-  if (!userIcon && !animalIcon) {
-    if (!logged) {
-      return null
-    }
-    // If profile is not defined and header is being shown, redirect user to the
-    // account page to set it up
-    route('/profile', true);
-    return null;
-  }
 
   return (
     <div
