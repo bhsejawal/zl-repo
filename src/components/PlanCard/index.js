@@ -7,6 +7,9 @@ import {
   Heading,
 } from 'grommet';
 import classnames from 'classnames';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faBook } from '@fortawesome/pro-regular-svg-icons';
+
 import { PrimaryButton, OutlineButton } from '../Buttons';
 
 import { useIsMobileSize } from '../../hooks';
@@ -46,8 +49,9 @@ const PlanCard = ({
   return (
     <div>
       <Box
-        pad={{ horizontal: isMobileSize ? 'xsmall' : 'medium', vertical: '10px' }}
+        pad={{ vertical: '10px' }}
         className={style.planCard}
+        margin={{ bottom: isMobileSize ? '0px' : '20px' }}
       >
         {discount && (
           <Box
@@ -82,13 +86,28 @@ const PlanCard = ({
               margin={{
                 bottom: isMobileSize ? '0px' : getMarginBottom(planPrice),
               }}>
-              <Text
-                alignSelf="center"
-                size="xlarge"
-                weight={800}
-              >
-                {planName}
-              </Text>
+              {planName === 'Class Pass' && (
+                <Box direction="row" align="center" justify="center">
+                  <FontAwesomeIcon icon={faBook} />
+                  <Text
+                    alignSelf="center"
+                    size="xlarge"
+                    weight={800}
+                    margin={{ left: '8px'}}
+                  >
+                    {planName}
+                  </Text>
+                </Box>
+              )}
+              {planName !== 'Class Pass' && (
+                <Text
+                  alignSelf="center"
+                  size="xlarge"
+                  weight={800}
+                >
+                  {planName}
+                </Text>
+              )}
               <Box direction="row" justify="center" align="center" >
                 <Heading
                   margin={{ top: planPrice === 'FREE' ? '0px' : '12px', bottom: '0' }}
@@ -103,7 +122,7 @@ const PlanCard = ({
                   </Text>
                 )}
               </Box>
-              {planPrice !== 'FREE' && (
+              {originalPrice && (
               <Box align="center" margin={{ top: '3px'}}>
                 <Text
                   size="20px"

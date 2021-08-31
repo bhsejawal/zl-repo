@@ -20,14 +20,12 @@ import useFetch from 'use-http';
 import { openTermsModal } from 'Components/TermsAndConditions/actions';
 import { getIconKeys, getIconUrl } from 'Shared/profileIcons';
 import { buildURL } from 'Shared/fetch';
-import { logPageViewGA } from 'Shared/ga';
 import backgroundImg from './profileBackground.png';
 
 import { useIsInitiallyLoaded, useWindowResize } from '../../hooks';
 import { getUser, updateUser } from './api';
 import { updateProfile } from './actions';
 import { setSubscriptionData } from '../../redux/actions';
-import { isDev } from '../../helpers';
 
 import 'react-colorful/dist/index.css';
 import accountPageStyle from '../account/style.scss';
@@ -123,10 +121,9 @@ const Profile = ({
 
       if (step) {
         if (user.role === 'user' && !user.subscription?.productId) {
-          const subscriptionData = await post({ mode: isDev() ? 'freemium' : 'trial' });
+          const subscriptionData = await post({ mode: 'freemium' });
           if (response.ok) {
             setSubscriptionDataAction(subscriptionData);
-            logPageViewGA('/trialStarted');
             route('/freemiumOnboarding');
           }
 

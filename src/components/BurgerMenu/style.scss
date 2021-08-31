@@ -11,8 +11,13 @@
 }
 
 .menuDrop nav {
+  padding-top: 10px;
   justify-content: flex-start;
   width: 100%;
+}
+
+.menuDrop button {
+  margin-top: 10px;
 }
 
 .burgerBtn {

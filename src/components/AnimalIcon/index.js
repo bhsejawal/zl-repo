@@ -38,6 +38,7 @@ const AnimalIcon = ({
     return getIconUrl(animalIcon) || getIconUrl(getIconKeys()[0]);
   }, [animalIcon]);
 
+  // TODO #179409935: Refactor this logic, it wont trigger for mobile
   if (!userIcon && !animalIcon) {
     if (!logged) {
       return null

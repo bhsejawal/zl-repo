@@ -47,14 +47,23 @@ const getBenefitTitle = (interval, discount) => (interval === 'month'
   ? 'Unlimited Access'
   : `Save ${discount}`);
 
-const VariantA = ({ plans, isSmallScreen, currentPlan }) => (
+const VariantA = ({
+  plans,
+  isSmallScreen,
+  currentPlan,
+  showFreemium,
+  isPublicPage,
+  goToSignup,
+}) => (
   <Box
     direction={isSmallScreen ? 'column' : 'row'}
     justify="center"
     align={isSmallScreen ? "center" : "start"}
+    pad={{ horizontal: isSmallScreen ? 'xsmall' : 'medium' }}
     gap="medium"
+    wrap
   >
-    {plans.filter(({ price }) => [499, 999, 9799].includes(price)).map(({
+    {plans.filter(({ price }) => [499, 999, 2599, 9799].includes(price)).map(({
       name,
       price,
       interval,
@@ -85,25 +94,39 @@ const VariantA = ({ plans, isSmallScreen, currentPlan }) => (
         discount={discount}
         currentPlan={currentPlan}
         buttonLabel={label}
-        onClickHandler={clickHandler}
+        onClickHandler={() => {
+          if (isPublicPage) {
+            goToSignup(planProductId, priceId);
+          } else {
+            clickHandler();
+          }
+        }}
         disabled={disabled}
         originalPrice={originalPrice}
       />
     ))}
-    {currentPlan === 'FREEMIUM' && (
+    {(currentPlan === 'FREEMIUM' || showFreemium) && (
       <PlanCard
         key="freemium"
         planPrice="FREE"
         color="#C5D8FF"
         benefitText="Access a single Zoolife habitat"
-        disabled
-        buttonLabel="Current"
+        disabled={currentPlan}
+        buttonLabel={currentPlan === 'FREEMIUM' ? 'Current' : 'Select'}
+        onClickHandler={() => route('/signup')}
       />
     )}
   </Box>
 );
 
-const VariantB = ({ plans, isSmallScreen, currentPlan }) => (
+const VariantB = ({
+  plans,
+  isSmallScreen,
+  currentPlan,
+  showFreemium,
+  isPublicPage,
+  goToSignup,
+}) => (
   <Box
     direction={isSmallScreen ? 'column' : 'row'}
     fill
@@ -111,6 +134,8 @@ const VariantB = ({ plans, isSmallScreen, currentPlan }) => (
     justify="center"
     gap="large"
     margin="auto"
+    wrap
+    pad={{ horizontal: isSmallScreen ? 'xsmall' : 'medium' }}
   >
     {plans.filter(({ price }) => ![999, 9799].includes(price)).map(({
       name,
@@ -143,32 +168,41 @@ const VariantB = ({ plans, isSmallScreen, currentPlan }) => (
         discount={discount}
         currentPlan={currentPlan}
         buttonLabel={label}
-        onClickHandler={clickHandler}
+        onClickHandler={() => {
+          if (isPublicPage) {
+            goToSignup(planProductId, priceId);
+          } else {
+            clickHandler();
+          }
+        }}
         disabled={disabled}
         originalPrice={originalPrice}
       />
     ))}
-    {currentPlan === 'FREEMIUM' && (
+    {(currentPlan === 'FREEMIUM' || showFreemium) && (
       <PlanCard
         key="freemium"
         planPrice="FREE"
         color="#C5D8FF"
         benefitText="Access a single Zoolife habitat"
-        disabled
-        buttonLabel="Current"
+        disabled={currentPlan}
+        buttonLabel={currentPlan === 'FREEMIUM' ? 'Current' : 'Select'}
+        onClickHandler={() => route('/signup')}
       />
     )}
   </Box>
 );
 
 const SubscriptionSection = ({
-  plans,
+  plans = [],
   productId,
   isSubscriptionActive,
   subscriptionStatus,
   setPlansAction,
   setSubscriptionDataAction,
   showCancelCTA,
+  showFreemium,
+  isPublicPage,
 }) => {
   const { stripe } = useContext(StripeContext);
   const isSmallScreen = useIsMobileSize();
@@ -176,6 +210,9 @@ const SubscriptionSection = ({
 
   const showCancelButton = useMemo(() => {
     if (['FREEMIUM', 'TRIAL'].includes(productId)) {
+      return false;
+    }
+    if (!plans || !plans.length) {
       return false;
     }
 
@@ -204,6 +241,10 @@ const SubscriptionSection = ({
   useEffect(() => {
     fetchPlans();
   }, [fetchPlans])
+
+  const goToSignup = useCallback(async (planId, priceId) => {
+    route(`/signup?plan=${planId}&price=${priceId}`);
+  }, [])
 
   const checkoutHandler = useCallback(async (planId, priceId) => {
     try {
@@ -267,6 +308,8 @@ const SubscriptionSection = ({
         order,
         price,
         originalPrice,
+        title,
+        description,
       }) => ({
         planProductId,
         priceId,
@@ -279,8 +322,8 @@ const SubscriptionSection = ({
         currentPlan: false,
         label: 'Select',
         display: true,
-        benefitTitle: interval === 'visit' ? '' : getBenefitTitle(interval, discount),
-        benefitText: interval !== 'visit' ? getBenefitText(interval) : 'Unlock everything for a full day',
+        benefitTitle: title,
+        benefitText: description,
         clickHandler: () => checkoutHandler(planProductId, priceId),
         originalPrice,
       }));
@@ -413,10 +456,24 @@ const SubscriptionSection = ({
       >
         <Experiment id="bFcUbpJZS-aZjr5QmZ9JTg">
           <Variant id="0">
-            <VariantA plans={plansData} isSmallScreen={isSmallScreen} currentPlan={productId} />
+            <VariantA
+              plans={plansData}
+              isSmallScreen={isSmallScreen}
+              currentPlan={productId}
+              showFreemium={showFreemium}
+              isPublicPage={isPublicPage}
+              goToSignup={goToSignup}
+            />
           </Variant>
           <Variant id="1">
-            <VariantB plans={plansData} isSmallScreen={isSmallScreen} currentPlan={productId} />
+            <VariantB
+              plans={plansData}
+              isSmallScreen={isSmallScreen}
+              currentPlan={productId}
+              isPublicPage={isPublicPage}
+              goToSignup={goToSignup}
+              showFreemium={showFreemium}
+            />
           </Variant>
         </Experiment>
       </Box>

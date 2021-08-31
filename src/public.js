@@ -79,6 +79,7 @@ const Content = ({
         <AppLoader path="/login" title="Log In" />
         <AppLoader path="/login/token/:token" title="Log In" />
         <AppLoader path="/signup" title="Sign Up" />
+        <AppLoader path="/prices" title="Sign Up" />
 
         <Album mediaType="photos" path="/album/photos/:photoId" />
         <Album mediaType="videos" path="/album/videos/:videoId" />

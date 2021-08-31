@@ -1,7 +1,13 @@
 import { Router, route } from 'preact-router';
 import { Box } from 'grommet';
-import { useState, useEffect } from 'preact/hooks';
+import {
+  useState,
+  useEffect,
+  useContext,
+  useCallback,
+} from 'preact/hooks';
 import { connect } from 'react-redux';
+import { loadStripe } from '@stripe/stripe-js/pure';
 
 import TimeBar from 'Components/TimeBar';
 import AuthGuard from 'Components/Authorize/AuthGuard';
@@ -14,7 +20,8 @@ import InviteModalLoader from 'Components/async/InviteModalLoader';
 import HabitatsUpdater from 'Components/HabitatsUpdater';
 
 import { logPageViewGA } from 'Shared/ga';
-import { patch, buildURL } from 'Shared/fetch';
+import { patch, post, buildURL } from 'Shared/fetch';
+import { StripeContext } from 'Shared/context';
 
 import oranaZooLogo from './partners/orana-zoo.png';
 import torontoZooLogo from './partners/toronto-zoo.png';
@@ -42,6 +49,7 @@ import Favorite from '../../routes/favorite';
 import Account from '../../routes/account';
 import Habitat from '../../routes/habitat';
 import Welcome from '../../routes/welcome';
+import Prices from '../../routes/prices';
 import FreemiumOnboarding from '../../routes/freemiumOnboarding';
 
 import PageWrapper from './PageWrapper';
@@ -63,6 +71,7 @@ const freemiumRoutes = [
   '/freemiumOnboarding',
   '/socialLogin',
   '/sbzoo',
+  '/prices',
 ];
 
 const Main = ({
@@ -78,6 +87,7 @@ const Main = ({
   const [path, setPath] = useState();
   const isTabbed = useIsHabitatTabbed();
   const isTabbedHabitatPath = isTabbed && path?.startsWith('/h/');
+  const { stripe } = useContext(StripeContext);
   useEffect(() => {
     const campaignData = logAndGetCampaignData();
     updateReferralDataAction(campaignData);
@@ -90,6 +100,22 @@ const Main = ({
         .catch((error) => console.error('Failed to update timezone', error));
     }
   }, [logged, timezone]);
+
+  const checkoutHandler = useCallback(async (planId, priceId) => {
+    try {
+      const session = await post(buildURL(`/checkout/${planId}/${priceId}`));
+      if (!stripe?.redirectToCheckout) {
+        // in case theres a problem with loading stripe, we should try to load it again
+        const localStripe = await loadStripe(process.env.PREACT_APP_STRIPE_PUBLIC_KEY);
+        await localStripe.redirectToCheckout(session);
+        return;
+      }
+      await stripe.redirectToCheckout(session);
+    } catch (err) {
+      console.error('Error trying to start checkout process', err);
+      // TODO: display error modal
+    }
+  }, [stripe])
 
   const routerChangeHandler = (props) => {
     const {
@@ -111,6 +137,11 @@ const Main = ({
         logPageViewGA('/signed-up');
         if (typeof window !== 'undefined' && window.fbq) {
           window.fbq('trackCustom', 'SignedUp');
+        }
+
+        if (matches?.price && matches?.plan) {
+          checkoutHandler(matches.plan, matches.price);
+          return;
         }
       }
       if (!isFreemiumOnboarded && productId === 'FREEMIUM') {
@@ -166,7 +197,7 @@ const Main = ({
         <Home path="/pmmccamp" partnerImage={pmmcLogo} exact title={homeTitle} partner="pmmc" />
         <Home path="/sazoo" partnerImage={sanAntonioLogo} exact title={homeTitle} partner="sazoo" />
         <Home path="/sbzoo" partnerImage={santaBarbaraLogo} exact title={homeTitle} partner="sbzoo" />
-
+        <Prices path="/prices" exact title="Pricing" />
         <Redirect path="/socialLogin" to="/map" />
         <Redirect path="/checkout-completed" to="/welcome" />
         <Redirect path="/checkout-cancelled" to="/plans" />

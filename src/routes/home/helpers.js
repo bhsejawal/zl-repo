@@ -7,3 +7,7 @@ export const goToSignup = () => {
 export const goToLogin = () => {
   loadPage('/login', true);
 }
+
+export const goToPrices = () => {
+  loadPage('/prices', true);
+}

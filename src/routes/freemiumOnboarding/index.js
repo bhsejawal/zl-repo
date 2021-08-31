@@ -12,6 +12,7 @@ import { faLockAlt } from '@fortawesome/pro-solid-svg-icons';
 
 import { PrimaryButton } from 'Components/Buttons';
 import { buildURL, post } from 'Shared/fetch';
+import { logPageViewGA } from 'Shared/ga';
 
 import { setUserData } from '../../redux/actions';
 
@@ -26,13 +27,17 @@ const FreemiumOnboarding = ({
   const selectedHabitat = useMemo(() => allHabitats.find(
     ({ _id }) => _id === freeHabitat,
   ), [allHabitats, freeHabitat]);
-
   const paidHabitats = allHabitats.filter(({ _id }) => _id !== freeHabitat).slice(0, 10);
 
   const goToHabitat = async () => {
     if (!isFreemiumOnboarded) {
       try {
         const { user } = await post(buildURL('/users/freemiumOnboarding'));
+        logPageViewGA('/trialStarted');
+        if (typeof window !== 'undefined' && window.fbq) {
+          window.fbq('trackCustom', 'TrialStarted');
+        }
+
         setUserDataAction(user);
       } catch (err) {
         console.error('Failed to update user entered freemium onboarded flag', err)

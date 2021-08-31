@@ -1,0 +1,15 @@
+.pricesPage {
+  padding-top: var(--headerHeight);
+}
+
+.content {
+  position: relative;
+  overflow-y: scroll;
+  max-height: calc(100vh - var(--headerHeight));
+  height: calc(100vh - var(--headerHeight));
+
+
+  * {
+    z-index: 2;
+  }
+}

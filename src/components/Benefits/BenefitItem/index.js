@@ -11,7 +11,7 @@ const BenefitItem = ({ icon, text }) => (
     align="center"
   >
     <Image src={icon} style={{ width: '28px', maxHeight: '28px' }} />
-    <Box flex="grow" fill justify="center">
+    <Box fill justify="center">
       <Text size="xlarge" margin={{ left: 'medium' }} responsive color="white">
         {text}
       </Text>

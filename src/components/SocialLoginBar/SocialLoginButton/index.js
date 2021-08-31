@@ -30,6 +30,14 @@ const SocialLoginButton = ({ variant, referralData }) => {
   const { userAgent } = navigator;
   queryParams.append('userAgent', userAgent);
 
+  const { searchParams } = new URL(document.location);
+  const plan = searchParams.get('plan');
+  const price = searchParams.get('price');
+  if (plan && price) {
+    queryParams.append('plan', plan);
+    queryParams.append('price', price);
+  }
+
   return (
     <a
       native
