@@ -190,7 +190,7 @@ const ItemModal = ({
                       name={property}
                       labelKey="label"
                       valueKey={{ key: 'value', reduce: true }}
-                      value={get(values, property)}
+                      value={typeof get(values, property) === 'boolean' ? get(values, property).toString() : get(values, property)}
                       options={selectValues}
                       onChange={onInputChange}
                     />

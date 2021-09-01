@@ -8,7 +8,7 @@ import useFetch from 'use-http';
 import AdminTable from 'Components/AdminTable';
 import ImageSelector from 'Components/ImageSelector';
 import { buildURL } from 'Shared/fetch';
-import { TEXTAREA, TEXT_AUTOCOMPLETE } from 'Components/AdminTable/constants';
+import { TEXTAREA, TEXT_AUTOCOMPLETE, SELECT } from 'Components/AdminTable/constants';
 
 import editImagePlaceholder from './editImagePlaceholder.png';
 
@@ -80,6 +80,11 @@ const CreatedAtCell = ({ createdAt }) => (
   </Text>
 );
 
+const IsFreemiumCell = ({ isFreemium }) => (
+  <Text size="large">
+    {isFreemium ? 'true' : 'false'}
+  </Text>
+);
 const responseTransform = ({ habitats } = {}) => habitats;
 
 const Habitats = () => {
@@ -127,6 +132,20 @@ const Habitats = () => {
   }, {
     title: 'Status',
     property: 'status',
+  }, {
+    title: 'Is Freemium',
+    property: 'isFreemium',
+    render: IsFreemiumCell,
+    editable: true,
+    type: SELECT,
+    selectValues: [{ label: 'true', value: true }, { label: 'false', value: false }].map(({ label, value }) => (
+      { label, value: value.toString() }
+    )),
+  }, {
+    title: 'Freemium Priority',
+    property: 'freemiumPriority',
+    editable: true,
+    hiddenOnTable: true,
   }, {
     title: 'Last Modified',
     property: 'updatedAt',
