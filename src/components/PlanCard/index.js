@@ -8,7 +8,7 @@ import {
 } from 'grommet';
 import classnames from 'classnames';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBook } from '@fortawesome/pro-regular-svg-icons';
+import { faGraduationCap } from '@fortawesome/pro-solid-svg-icons';
 
 import { PrimaryButton, OutlineButton } from '../Buttons';
 
@@ -88,7 +88,7 @@ const PlanCard = ({
               }}>
               {planName === 'Class Pass' && (
                 <Box direction="row" align="center" justify="center">
-                  <FontAwesomeIcon icon={faBook} />
+                  <FontAwesomeIcon icon={faGraduationCap} />
                   <Text
                     alignSelf="center"
                     size="xlarge"

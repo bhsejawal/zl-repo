@@ -28,12 +28,15 @@ const getColumnSize = (size) => {
   return ['auto', 'auto', 'auto'];
 }
 
-const AnimalCollapsible = ({ freeHabitat, allHabitats}) => {
+const AnimalCollapsible = ({ freeHabitat, allHabitats = []}) => {
   const size = useContext(ResponsiveContext);
-
   const habitats = useMemo(() => allHabitats.filter(
     ({ _id}) => (_id !== freeHabitat),
   ), [freeHabitat, allHabitats]);
+
+  if (!habitats || !allHabitats) {
+    return null;
+  }
 
   if (habitats.length === 0) {
     return null;

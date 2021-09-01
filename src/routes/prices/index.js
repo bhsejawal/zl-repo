@@ -53,7 +53,9 @@ const Plans = () => {
           </Box>
         )}
         <SubscriptionBenefits />
-        <AnimalCollapsible />
+        <div>
+          <AnimalCollapsible />
+        </div>
         <SubscriptionManager showFreemium isPublicPage />
       </Box>
     </div>
