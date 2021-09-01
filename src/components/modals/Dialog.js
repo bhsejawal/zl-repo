@@ -18,7 +18,7 @@ const DialogModal = ({
   onCancel,
   onConfirm,
 }) => (
-  <Layer position="center" onClickOutside={onCancel} onEsc={onCancel}>
+  <Layer position="center" onClickOutside={onCancel} onEsc={onCancel} background="white">
     <Box width="400px">
       <Box
         direction="row"
@@ -29,7 +29,7 @@ const DialogModal = ({
         style={{ position: 'relative' }}
         fill="horizontal"
       >
-        <Heading level="3">{title}</Heading>
+        <Heading level="3" color="var(--charcoal)">{title}</Heading>
         <Button
           plain
           margin="small"
@@ -43,7 +43,7 @@ const DialogModal = ({
         align="center"
         pad={{ vertical: '0', horizontal: 'large' }}
       >
-        <Text textAlign="center" size="large">{text}</Text>
+        <Text textAlign="center" size="large" color="var(--charcoal)">{text}</Text>
 
         <Box width={{ min: '140px' }} margin={{ vertical: 'large' }}>
           <Button primary size="large" label={buttonLabel} onClick={onConfirm} />

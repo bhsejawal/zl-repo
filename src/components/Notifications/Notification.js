@@ -27,7 +27,6 @@ const Notification = ({ data, removeNotificationAction }) => {
   }, [close, data.id, data.timeout]);
 
   const { type } = data;
-
   if (type === 'liveTalkToast' && data?.id) {
     return (
       <div className={classnames(style.liveTalkCardToast, { [style.animateIn]: animateIn })}>
@@ -43,6 +42,7 @@ const Notification = ({ data, removeNotificationAction }) => {
           header={<Tag label="LIVE NOW" varient="online" />}
           description={data?.schedule?.description}
           image={data.schedule?.habitat?.profileImage}
+          habitatId={data?.schedule?.habitat?._id}
           onClick={() => {
             route(`/h/${data.zooSlug}/${data.habitatSlug}`);
             removeNotificationAction(data.id);

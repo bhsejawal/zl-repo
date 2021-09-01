@@ -49,6 +49,7 @@ export const useUpcomingTalks = (habitatId, quantity = 3) => {
           stopTime: parseISO(stopTime),
           profileImage: habitat?.profileImage,
           link: `/h/${habitat?.zoo?.slug}/${habitat?.slug}`,
+          habitatId: habitat?._id,
           description: habitat?.description,
           isStreamLive: !!camera && camera.cameraStatus !== 'off',
         }))

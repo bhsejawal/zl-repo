@@ -1,4 +1,4 @@
-import { Box, Grid } from 'grommet';
+import { Box, Grid, Text } from 'grommet';
 
 import talk from './assets/talk.svg';
 import elephant from './assets/elephant.svg';
@@ -14,23 +14,41 @@ const ZoolifeBenefits = () => {
     <Box
       align="center"
       height={{ min: 'max-content' }}
-      margin={{ top: '20px' }}
+      pad={{ vertical: isMobileSize ? '25px' : '30px' }}
+      background="#F9FCE7"
     >
+      <Box
+        pad={{ horizontal: isMobileSize ? '35px' : '95px'}}
+        margin={{ bottom: isMobileSize ? '20px' : '40px' }}
+      >
+        <Text
+          size={isMobileSize ? 'large' : 'xlarge'}
+          color="var(--charcoal)"
+          textAlign="center"
+          responsive
+        >
+          50% of your purchase directly funds conservation efforts led by our accredited partners.
+        </Text>
+
+      </Box>
       <Grid
         columns={['auto', 'auto', 'auto']}
-        gap={isMobileSize ? 'xxsmall' : 'large'}
+        gap={isMobileSize ? 'medium' : 'large'}
         pad={{ horizontal: "20px"}}
       >
         <BenefitItem
-          text="New animals added every month"
+          title="New animals"
+          text="added every month"
           icon={elephant}
         />
         <BenefitItem
-          text="Live expert talks &amp; animal updates daily"
+          title="Live Expert Talks "
+          text="animal updates daily"
           icon={talk}
         />
         <BenefitItem
-          text="Go behind-the-scenes on any device, 24/7"
+          title="Behind the scenes"
+          text=" on any device, 24/7"
           icon={binoculars}
         />
       </Grid>

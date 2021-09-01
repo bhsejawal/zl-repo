@@ -17,6 +17,7 @@ import { buildURL, post } from 'Shared/fetch';
 import GlobalsContextProvider from "Components/GlobalsContextProvider";
 import LiveStream from 'Components/LiveStream';
 import Loader from 'Components/Loader';
+import BroadcastWrapper from 'Components/BroadcastWrapper';
 import Notifications from 'Components/Notifications';
 
 import { openTermsModal } from 'Components/TermsAndConditions/actions';
@@ -59,9 +60,13 @@ const Habitat = ({
   habitatSlug,
   zooName,
   userId,
+  productId,
+  freeHabitat,
+  userRole,
   enteredHabitat,
   hostStreamKey,
   isHostStreamOn,
+  isBroadcasting,
   setHabitatAction,
   unsetHabitatAction,
   openTermsModalAction,
@@ -182,6 +187,14 @@ const Habitat = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [habitatId, windowWidth]);
 
+  if ((userRole === 'user' && !productId) || !habitatId) {
+    return null;
+  }
+
+  if (userRole === 'user' && productId === 'FREEMIUM' && habitatId !== freeHabitat) {
+    route('/plans', true);
+  }
+
   if (error) {
     // TODO: we need UI for this
     return (
@@ -231,7 +244,19 @@ const Habitat = ({
                 mode="stream"
                 isStreamOn={isStreamOn}
               />}
-              {isTabbed && hostStreamKey && isHostStreamOn && <LiveTalk streamId={hostStreamKey} />}
+
+              {hasPermission('habitat:broadcast') && hostStreamKey && (!isHostStreamOn || isBroadcasting) && (
+                <BroadcastWrapper
+                  size={isTabbed ? streamWidth * 0.35 : streamWidth * 0.25 }
+                />
+              )}
+
+              {hostStreamKey && isHostStreamOn && !isBroadcasting && (
+                <LiveTalk
+                  streamId={hostStreamKey}
+                  size={isTabbed ? streamWidth * 0.35 : streamWidth * 0.25 }
+                />
+              )}
             </div>
             {!isTabbed && <Chat width={chatWidth} height={height} />}
           </div>
@@ -289,7 +314,17 @@ const ConnectedHabitat = connect(
         isHostStreamOn,
       },
     },
-    user: { userId, termsAccepted = false, enteredHabitat },
+    mainStream: { interactionState: { isBroadcasting } },
+    user: {
+      userId,
+      termsAccepted = false,
+      enteredHabitat,
+      role: userRole,
+      subscription: {
+        productId,
+        freeHabitat,
+      } = {},
+    },
   }) => ({
     streamKey,
     habitatId,
@@ -300,6 +335,10 @@ const ConnectedHabitat = connect(
     hostStreamKey,
     isHostStreamOn,
     enteredHabitat,
+    isBroadcasting,
+    productId,
+    freeHabitat,
+    userRole,
   }),
   {
     setHabitatAction: setHabitat,

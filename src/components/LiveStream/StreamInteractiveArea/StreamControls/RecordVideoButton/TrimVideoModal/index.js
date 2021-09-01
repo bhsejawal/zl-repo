@@ -136,7 +136,7 @@ const TrimVideoModal = ({
               <div className={style.videoWrapper}>
 
                 {/* eslint-disable-next-line jsx-a11y/media-has-caption */}
-                <video ref={videoRef} src={videoData.videoURL} controls />
+                <video ref={videoRef} src={`${videoData.videoURL}#t=0.1`} controls />
               </div>
               <div className={style.rangeInput}>
                 <RangeInput onChange={rangeChangeHandler} initRange={range} />

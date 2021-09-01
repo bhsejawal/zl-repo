@@ -20,7 +20,6 @@ import useFetch from 'use-http';
 import { openTermsModal } from 'Components/TermsAndConditions/actions';
 import { getIconKeys, getIconUrl } from 'Shared/profileIcons';
 import { buildURL } from 'Shared/fetch';
-import { logPageViewGA } from 'Shared/ga';
 import backgroundImg from './profileBackground.png';
 
 import { useIsInitiallyLoaded, useWindowResize } from '../../hooks';
@@ -122,11 +121,10 @@ const Profile = ({
 
       if (step) {
         if (user.role === 'user' && !user.subscription?.productId) {
-          const subscriptionData = await post();
+          const subscriptionData = await post({ mode: 'freemium' });
           if (response.ok) {
             setSubscriptionDataAction(subscriptionData);
-            logPageViewGA('/trialStarted');
-            route('/map');
+            route('/freemiumOnboarding');
           }
 
           if (response.data?.error) {

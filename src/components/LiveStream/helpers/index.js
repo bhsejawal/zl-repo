@@ -46,7 +46,7 @@ const handleSocketCallback = (msg) => {
       // eslint-disable-next-line no-restricted-syntax, no-unused-vars
       for (const [stream, adapter] of webRTCMap.entries()) {
         if (!adapter.isInitialized) {
-          adapter.init();
+          adapter.init(stream);
           adapter.callback('initialized');
         }
       }
@@ -147,7 +147,7 @@ export const initWebRTCAdaptor = (streamId, videoContainer, mode, callback, call
   webRTCMap.set(streamId, adaptor);
 
   if (websocketConnection.connected) {
-    adaptor.init();
+    adaptor.init(streamId);
     adaptor.callback('initialized');
   }
   return adaptor;
@@ -200,5 +200,12 @@ export const switchVideoCameraCapture = (streamId, deviceId) => {
   if (webRTCMap.has(streamId)) {
     const adaptor = webRTCMap.get(streamId);
     adaptor.switchVideoCameraCapture(streamId, deviceId);
+  }
+};
+
+export const getUserMedia = (streamId) => {
+  if (webRTCMap.has(streamId)) {
+    const adaptor = webRTCMap.get(streamId);
+    adaptor.getUserMedia();
   }
 };

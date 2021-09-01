@@ -1,7 +1,13 @@
-import { Router } from 'preact-router';
+import { Router, route } from 'preact-router';
 import { Box } from 'grommet';
-import { useState, useEffect } from 'preact/hooks';
+import {
+  useState,
+  useEffect,
+  useContext,
+  useCallback,
+} from 'preact/hooks';
 import { connect } from 'react-redux';
+import { loadStripe } from '@stripe/stripe-js/pure';
 
 import TimeBar from 'Components/TimeBar';
 import AuthGuard from 'Components/Authorize/AuthGuard';
@@ -11,14 +17,17 @@ import TermsAndConditions from 'Components/TermsAndConditions';
 import { PRIVACY_PDF_URL, TERMS_PDF_URL } from 'Components/TermsAndConditions/constants';
 import ContactUsModalLoader from 'Components/async/ContactUsModalLoader';
 import InviteModalLoader from 'Components/async/InviteModalLoader';
+import HabitatsUpdater from 'Components/HabitatsUpdater';
 
 import { logPageViewGA } from 'Shared/ga';
-import { patch, buildURL } from 'Shared/fetch';
+import { patch, post, buildURL } from 'Shared/fetch';
+import { StripeContext } from 'Shared/context';
 
 import oranaZooLogo from './partners/orana-zoo.png';
 import torontoZooLogo from './partners/toronto-zoo.png';
 import pmmcLogo from './partners/pmmc.png';
 import sanAntonioLogo from './partners/san-antonio-zoo.png';
+import santaBarbaraLogo from './partners/santa-barbara-zoo.png';
 
 // Code-splitting is automated for `routes` directory
 import PasswordReset from '../../routes/passwordReset';
@@ -40,26 +49,46 @@ import Favorite from '../../routes/favorite';
 import Account from '../../routes/account';
 import Habitat from '../../routes/habitat';
 import Welcome from '../../routes/welcome';
+import Prices from '../../routes/prices';
+import FreemiumOnboarding from '../../routes/freemiumOnboarding';
 
 import PageWrapper from './PageWrapper';
 
-import { logAndGetCampaignData } from '../../helpers';
+import { logAndGetCampaignData, isProfileSet } from '../../helpers';
 import { updateReferralData } from '../../redux/actions';
 import { useIsHabitatTabbed } from '../../hooks';
 
 const homeTitle = "The world's first virtual zoo.";
+const freemiumRoutes = [
+  '/',
+  '/torontozoo',
+  '/twitch',
+  '/orana',
+  '/oranapark',
+  '/pmmc',
+  '/pmmccamp',
+  '/sazoo',
+  '/freemiumOnboarding',
+  '/socialLogin',
+  '/sbzoo',
+  '/prices',
+];
 
 const Main = ({
   onRouteChange,
   showContactUs,
   showInvite,
   logged,
+  productId,
+  isFreemiumOnboarded,
   timezone,
+  profile,
   updateReferralDataAction,
 }) => {
   const [path, setPath] = useState();
   const isTabbed = useIsHabitatTabbed();
   const isTabbedHabitatPath = isTabbed && path?.startsWith('/h/');
+  const { stripe } = useContext(StripeContext);
   useEffect(() => {
     const campaignData = logAndGetCampaignData();
     updateReferralDataAction(campaignData);
@@ -73,11 +102,42 @@ const Main = ({
     }
   }, [logged, timezone]);
 
+  useEffect(() => {
+    if (logged && !isProfileSet(profile)) {
+      route('/profile', true);
+      setPath('/profile')
+    }
+  }, [logged, profile]);
+
+  const checkoutHandler = useCallback(async (planId, priceId) => {
+    try {
+      const session = await post(buildURL(`/checkout/${planId}/${priceId}`));
+      if (!stripe?.redirectToCheckout) {
+        // in case theres a problem with loading stripe, we should try to load it again
+        const localStripe = await loadStripe(process.env.PREACT_APP_STRIPE_PUBLIC_KEY);
+        await localStripe.redirectToCheckout(session);
+        return;
+      }
+      await stripe.redirectToCheckout(session);
+    } catch (err) {
+      console.error('Error trying to start checkout process', err);
+      // TODO: display error modal
+    }
+  }, [stripe])
+
   const routerChangeHandler = (props) => {
     const {
       url,
       current: { props: { matches } },
     } = props;
+
+    if (logged && !isProfileSet(profile)) {
+      route('/profile', true);
+      setPath('/profile')
+    } else if (!freemiumRoutes.includes(url) && !isFreemiumOnboarded && productId === 'FREEMIUM') {
+      route('/freemiumOnboarding', true);
+      setPath('/freemiumOnboarding');
+    }
 
     if (url.startsWith('/socialLogin')) {
       logPageViewGA('/socialLogin', true);
@@ -90,9 +150,20 @@ const Main = ({
         if (typeof window !== 'undefined' && window.fbq) {
           window.fbq('trackCustom', 'SignedUp');
         }
+
+        if (matches?.price && matches?.plan) {
+          checkoutHandler(matches.plan, matches.price);
+          return;
+        }
       }
-      onRouteChange(props);
-      setPath(url);
+
+      if (!isFreemiumOnboarded && productId === 'FREEMIUM') {
+        route('/freemiumOnboarding', true);
+        setPath('/freemiumOnboarding')
+      } else {
+        onRouteChange(props);
+        setPath(url);
+      }
       return;
     }
 
@@ -138,7 +209,8 @@ const Main = ({
         <Home path="/pmmc" partnerImage={pmmcLogo} exact title={homeTitle} partner="pmmc" />
         <Home path="/pmmccamp" partnerImage={pmmcLogo} exact title={homeTitle} partner="pmmc" />
         <Home path="/sazoo" partnerImage={sanAntonioLogo} exact title={homeTitle} partner="sazoo" />
-
+        <Home path="/sbzoo" partnerImage={santaBarbaraLogo} exact title={homeTitle} partner="sbzoo" />
+        <Prices path="/prices" exact title="Pricing" />
         <Redirect path="/socialLogin" to="/map" />
         <Redirect path="/checkout-completed" to="/welcome" />
         <Redirect path="/checkout-cancelled" to="/plans" />
@@ -227,6 +299,10 @@ const Main = ({
           </PageWrapper>
         </AuthGuard>
 
+        <AuthGuard path="/freemiumOnboarding" title="Onboarding" redirectTo="/login" permission="freemiumOnboarding:view">
+          <FreemiumOnboarding />
+        </AuthGuard>
+
         <TermsAndPrivacy
           path="/terms-and-conditions"
           title="Terms and Conditions"
@@ -249,18 +325,28 @@ const Main = ({
       <TermsAndConditions />
       <ContactUsModalLoader isOpen={showContactUs} />
       <InviteModalLoader isOpen={showInvite} />
+      <HabitatsUpdater />
     </Box>
   )
 };
 
 export default connect(({
-  user: { logged, timezone },
+  user: {
+    logged,
+    timezone,
+    isFreemiumOnboarded,
+    subscription: { productId },
+    profile,
+  },
   modals: { contactus: { isOpen: showContactUs }, invite: { isOpen: showInvite }},
 }) => ({
   showContactUs,
   showInvite,
   logged,
   timezone,
+  productId,
+  isFreemiumOnboarded,
+  profile,
 }), {
   updateReferralDataAction: updateReferralData,
 })(Main);

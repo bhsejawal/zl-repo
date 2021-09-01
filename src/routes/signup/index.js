@@ -1,5 +1,10 @@
 import { h } from 'preact';
-import { useState, useContext, useEffect } from 'preact/hooks';
+import {
+  useState,
+  useContext,
+  useEffect,
+  useCallback,
+} from 'preact/hooks';
 import { Link } from 'preact-router';
 import { connect } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -12,6 +17,8 @@ import {
   CheckBox,
   ResponsiveContext,
 } from 'grommet';
+import { loadStripe } from '@stripe/stripe-js/pure';
+
 import { buildURL, post } from 'Shared/fetch';
 import classnames from 'classnames';
 import SocialLoginBar from 'Components/SocialLoginBar';
@@ -19,6 +26,8 @@ import logo from 'Components/ZoolifeLogo/zoolife.svg';
 import { PrimaryButton } from 'Components/Buttons';
 import { openTermsModal } from 'Components/TermsAndConditions/actions';
 import { logPageViewGA } from 'Shared/ga';
+
+import { StripeContext } from 'Shared/context';
 
 import { setUserData } from '../../redux/actions';
 import {
@@ -31,7 +40,7 @@ import {
 
 import Layout from '../../layouts/LoginSignup';
 
-import signupImage from './zoolife-signup.jpeg';
+import signupImage from './zoolife-signup.jpg';
 
 import style from '../login/style.scss';
 
@@ -45,6 +54,7 @@ const Signup = ({
   sessionChecked,
 }) => {
   const size = useContext(ResponsiveContext);
+  const { stripe } = useContext(StripeContext);
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
   const [serverError, setServerError] = useState();
@@ -53,6 +63,22 @@ const Signup = ({
   const [showPassword, setShowPassword] = useState(false);
   const [isTermsAccepted, setIsTermsAccepted] = useState(false);
   const [termsError, setTermsError] = useState();
+
+  const checkoutHandler = useCallback(async (planId, priceId) => {
+    try {
+      const session = await post(buildURL(`/checkout/${planId}/${priceId}`));
+      if (!stripe?.redirectToCheckout) {
+        // in case theres a problem with loading stripe, we should try to load it again
+        const localStripe = await loadStripe(process.env.PREACT_APP_STRIPE_PUBLIC_KEY);
+        await localStripe.redirectToCheckout(session);
+        return;
+      }
+      await stripe.redirectToCheckout(session);
+    } catch (err) {
+      console.error('Error trying to start checkout process', err);
+      // TODO: display error modal
+    }
+  }, [stripe])
 
   useEffect(() => {
     const { socialLoginError = false } = matches;
@@ -97,8 +123,13 @@ const Signup = ({
       const termsVersion = TERMS_VERSION;
       const referralData = getCampaignData();
       const { userAgent } = navigator;
+      const { searchParams } = new URL(document.location);
+      const plan = searchParams.get('plan');
+      const price = searchParams.get('price');
+
       const {
         user,
+        planData,
         passwordError,
         emailError,
         error,
@@ -108,6 +139,7 @@ const Signup = ({
         origin,
         termsVersion,
         referralData: { ...referralData, userAgent },
+        planData: { plan, price },
       });
 
       if (passwordError) {
@@ -120,6 +152,11 @@ const Signup = ({
         logPageViewGA('/signed-up', false, false);
         if (typeof window !== 'undefined' && window.fbq) {
           window.fbq('trackCustom', 'SignedUp')
+        }
+        const { plan, price } = planData;
+        if (plan && price) {
+          checkoutHandler(plan, price);
+          return;
         }
         setServerError();
         setUserDataAction(user);

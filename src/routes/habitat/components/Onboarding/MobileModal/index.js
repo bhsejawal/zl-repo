@@ -5,18 +5,28 @@ import {
   Box,
   Grommet,
   Heading,
-  Text,
 } from 'grommet';
 import Carousel from 'react-multi-carousel';
 import { PrimaryButton } from 'Components/Buttons';
 import grommetTheme from '../../../../../grommetTheme';
+import { useIsMobileSize } from '../../../../../hooks';
 
 import style from './style.scss';
 
 const MobileOnboarding = ({ updateOnboarding, error }) => {
+  const isMobile = useIsMobileSize();
   const [slideIndex, setSlideIndex] = useState(0);
   const ref = useRef();
-
+  const customLayerSettings = isMobile ? {
+    layer: {
+      container: {
+        extend: {
+          maxWidth: '100vw',
+          maxHeight: 'calc(100 * var(--vh))',
+        },
+      },
+    },
+  } : {};
   const handler = () => {
     if (slideIndex !== 1) {
       ref.current.goToSlide(1);
@@ -31,14 +41,7 @@ const MobileOnboarding = ({ updateOnboarding, error }) => {
     <Grommet
       theme={{
         ...grommetTheme,
-        layer: {
-          container: {
-            extend: {
-              maxWidth: '100vw',
-              maxHeight: 'calc(100 * var(--vh))',
-            },
-          },
-        },
+        ...customLayerSettings,
       }}>
       <Layer>
         <Box className={style.onboarding}>
@@ -76,9 +79,6 @@ const MobileOnboarding = ({ updateOnboarding, error }) => {
                     <span className={style.blue}>Tap&nbsp;</span>
                     the stream to move the camera!
                   </Heading>
-                  <Text size="xlarge" color="var(--charcoal)">
-                    Everyone on Zoolife can move the camera together!
-                  </Text>
                 </div>
 
                 <div className={style.content}>
@@ -89,9 +89,6 @@ const MobileOnboarding = ({ updateOnboarding, error }) => {
                     <span className={style.blue}>&nbsp;Expert Talks&nbsp;</span>
                     daily!
                   </Heading>
-                  <Text size="xlarge" color="var(--charcoal)">
-                    Ask all your burning questions. Check the schedule for when the next talk is.
-                  </Text>
                 </div>
               </Carousel>
             </Box>

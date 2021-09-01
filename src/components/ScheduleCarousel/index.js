@@ -11,10 +11,7 @@ import { format } from 'date-fns';
 import { isEmpty } from 'lodash-es';
 import classnames from 'classnames';
 
-import BroadcastWrapper from 'Components/BroadcastWrapper';
-import { hasPermission } from 'Components/Authorize';
 import Card from '../Card';
-import LiveTalk from '../Card/LiveTalk';
 import PreviewVideo from '../Card/PreviewVideo';
 import { useUpcomingTalks } from '../../routes/habitat/hooks';
 
@@ -23,9 +20,6 @@ import style from './style.scss';
 
 const ScheduleCarousel = ({
   habitatId,
-  hostStreamKey,
-  isHostStreamOn,
-  isBroadcasting,
   previewVideo,
 }) => {
   const ref = useRef();
@@ -34,17 +28,11 @@ const ScheduleCarousel = ({
   const list = useMemo(() => {
     const items = [];
 
-    if (hasPermission('habitat:broadcast') && (!isHostStreamOn || isBroadcasting)) {
-      items.push(<BroadcastWrapper />)
-    }
-    if (hostStreamKey && isHostStreamOn && !isBroadcasting) {
-      items.push(<LiveTalk streamId={hostStreamKey} />)
-    }
     if (!isEmpty(previewVideo)) {
       items.push(<PreviewVideo videoUrl={previewVideo} />)
     }
     return items;
-  }, [hostStreamKey, isBroadcasting, isHostStreamOn, previewVideo]);
+  }, [previewVideo]);
   const liveTalks = useMemo(
     () => upcoming.map(({ startTime, isStreamLive, ...rest }) => ({
       text: `TALK | ${format(startTime, 'EEE hh:mm aa').toUpperCase()}`,
@@ -59,12 +47,6 @@ const ScheduleCarousel = ({
       setInitiallyLoaded(true);
     }
   }, [loading]);
-
-  useEffect(() => {
-    if (ref.current) {
-      ref.current.goToSlide(0);
-    }
-  }, [isHostStreamOn]);
 
   return (
     <div className={style.container}>
@@ -107,6 +89,7 @@ const ScheduleCarousel = ({
             text,
             profileImage,
             description,
+            habitatId,
           }) => (
             <Card
               key={_id}
@@ -117,6 +100,7 @@ const ScheduleCarousel = ({
               header={text}
               description={description}
               image={profileImage}
+              habitatId={habitatId}
             />
           ))}
         </Carousel>
@@ -130,19 +114,13 @@ export default connect((
     habitat: {
       habitatInfo: {
         _id: habitatId,
-        hostStreamKey,
-        isHostStreamOn,
         previewVideo,
       },
     },
-    mainStream: { interactionState: { isBroadcasting } },
   },
 ) => (
   {
     habitatId,
-    hostStreamKey,
-    isHostStreamOn,
-    isBroadcasting,
     previewVideo,
   }
 ))(ScheduleCarousel);

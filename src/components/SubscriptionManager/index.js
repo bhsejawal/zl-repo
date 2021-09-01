@@ -7,7 +7,7 @@ import {
 } from 'preact/hooks';
 
 import { connect } from 'react-redux';
-import { Box } from 'grommet';
+import { Box, Text } from 'grommet';
 
 import useFetch from 'use-http';
 import { route } from 'preact-router';
@@ -27,6 +27,10 @@ import { setPlans, setSubscriptionData } from '../../redux/actions';
 
 import { useIsMobileSize } from '../../hooks';
 
+import plansBackground from './plansBackground.jpg';
+
+import style from './style.scss';
+
 const defaultDialogSettings = {
   show: false,
   planId: null,
@@ -43,15 +47,23 @@ const getBenefitTitle = (interval, discount) => (interval === 'month'
   ? 'Unlimited Access'
   : `Save ${discount}`);
 
-const VariantA = ({ plans, isSmallScreen }) => (
+const VariantA = ({
+  plans,
+  isSmallScreen,
+  currentPlan,
+  showFreemium,
+  isPublicPage,
+  goToSignup,
+}) => (
   <Box
     direction={isSmallScreen ? 'column' : 'row'}
-    fill
     justify="center"
-    gap="small"
-    margin={{ bottom: '20px' }}
+    align={isSmallScreen ? "center" : "start"}
+    pad={{ horizontal: isSmallScreen ? 'xsmall' : 'medium' }}
+    gap="medium"
+    wrap
   >
-    {plans.filter(({ price }) => [499, 999, 9799].includes(price)).map(({
+    {plans.filter(({ price }) => [499, 999, 2599, 9799].includes(price)).map(({
       name,
       price,
       interval,
@@ -82,15 +94,39 @@ const VariantA = ({ plans, isSmallScreen }) => (
         discount={discount}
         currentPlan={currentPlan}
         buttonLabel={label}
-        onClickHandler={clickHandler}
+        onClickHandler={() => {
+          if (isPublicPage) {
+            goToSignup(planProductId, priceId);
+          } else {
+            clickHandler();
+          }
+        }}
         disabled={disabled}
         originalPrice={originalPrice}
       />
     ))}
+    {(currentPlan === 'FREEMIUM' || showFreemium) && (
+      <PlanCard
+        key="freemium"
+        planPrice="FREE"
+        color="#C5D8FF"
+        benefitText="Access a single Zoolife habitat"
+        disabled={currentPlan}
+        buttonLabel={currentPlan === 'FREEMIUM' ? 'Current' : 'Select'}
+        onClickHandler={() => route('/signup')}
+      />
+    )}
   </Box>
 );
 
-const VariantB = ({ plans, isSmallScreen }) => (
+const VariantB = ({
+  plans,
+  isSmallScreen,
+  currentPlan,
+  showFreemium,
+  isPublicPage,
+  goToSignup,
+}) => (
   <Box
     direction={isSmallScreen ? 'column' : 'row'}
     fill
@@ -98,6 +134,8 @@ const VariantB = ({ plans, isSmallScreen }) => (
     justify="center"
     gap="large"
     margin="auto"
+    wrap
+    pad={{ horizontal: isSmallScreen ? 'xsmall' : 'medium' }}
   >
     {plans.filter(({ price }) => ![999, 9799].includes(price)).map(({
       name,
@@ -130,25 +168,63 @@ const VariantB = ({ plans, isSmallScreen }) => (
         discount={discount}
         currentPlan={currentPlan}
         buttonLabel={label}
-        onClickHandler={clickHandler}
+        onClickHandler={() => {
+          if (isPublicPage) {
+            goToSignup(planProductId, priceId);
+          } else {
+            clickHandler();
+          }
+        }}
         disabled={disabled}
         originalPrice={originalPrice}
       />
     ))}
+    {(currentPlan === 'FREEMIUM' || showFreemium) && (
+      <PlanCard
+        key="freemium"
+        planPrice="FREE"
+        color="#C5D8FF"
+        benefitText="Access a single Zoolife habitat"
+        disabled={currentPlan}
+        buttonLabel={currentPlan === 'FREEMIUM' ? 'Current' : 'Select'}
+        onClickHandler={() => route('/signup')}
+      />
+    )}
   </Box>
 );
 
 const SubscriptionSection = ({
-  plans,
+  plans = [],
   productId,
   isSubscriptionActive,
   subscriptionStatus,
   setPlansAction,
   setSubscriptionDataAction,
+  showCancelCTA,
+  showFreemium,
+  isPublicPage,
 }) => {
   const { stripe } = useContext(StripeContext);
   const isSmallScreen = useIsMobileSize();
   const [showCancelDialog, setShowCancelDialog] = useState(false);
+
+  const showCancelButton = useMemo(() => {
+    if (['FREEMIUM', 'TRIAL'].includes(productId)) {
+      return false;
+    }
+    if (!plans || !plans.length) {
+      return false;
+    }
+
+    const dailyPlans = plans.filter(({ interval }) => interval === 'visit').map(({ productId: planProductId }) => planProductId);
+    if (dailyPlans.includes(productId)) {
+      return false;
+    }
+    return true;
+  }, [productId, plans]);
+
+  const mobileBackground = '#24412B';
+  const desktopBackground = { image: `url(${plansBackground})`, size: 'cover', position: 'left bottom' };
 
   const [dialogSettings, setDialogSettings] = useState(defaultDialogSettings);
 
@@ -165,6 +241,10 @@ const SubscriptionSection = ({
   useEffect(() => {
     fetchPlans();
   }, [fetchPlans])
+
+  const goToSignup = useCallback(async (planId, priceId) => {
+    route(`/signup?plan=${planId}&price=${priceId}`);
+  }, [])
 
   const checkoutHandler = useCallback(async (planId, priceId) => {
     try {
@@ -228,6 +308,8 @@ const SubscriptionSection = ({
         order,
         price,
         originalPrice,
+        title,
+        description,
       }) => ({
         planProductId,
         priceId,
@@ -240,8 +322,8 @@ const SubscriptionSection = ({
         currentPlan: false,
         label: 'Select',
         display: true,
-        benefitTitle: interval === 'visit' ? '' : getBenefitTitle(interval, discount),
-        benefitText: interval !== 'visit' ? getBenefitText(interval) : 'Unlock all  features for a full day',
+        benefitTitle: title,
+        benefitText: description,
         clickHandler: () => checkoutHandler(planProductId, priceId),
         originalPrice,
       }));
@@ -273,7 +355,7 @@ const SubscriptionSection = ({
           label: 'Renew',
           display: true,
           benefitTitle: interval === 'visit' ? '' : getBenefitTitle(interval),
-          benefitText: interval !== 'visit' ? getBenefitText(interval) : 'Unlock all  features for a full day',
+          benefitText: interval !== 'visit' ? getBenefitText(interval) : 'Unlock everything for a full day',
           clickHandler: () => openDialogHandler('Renew', planProductId, priceId, interval),
           originalPrice,
         }));
@@ -322,7 +404,7 @@ const SubscriptionSection = ({
       }
 
       const benefitTitle = interval === 'visit' ? '' : getBenefitTitle(interval);
-      const benefitText = interval !== 'visit' ? getBenefitText(interval) : 'Unlock all  features for a full day';
+      const benefitText = interval !== 'visit' ? getBenefitText(interval) : 'Unlock everything for a full day';
 
       return {
         planProductId,
@@ -354,25 +436,46 @@ const SubscriptionSection = ({
 
   return (
     <>
+      {showCancelCTA && showCancelButton && (
+        <Box background="#F9FCE7" pad={isSmallScreen ? 'large' : 'medium'} align="center" justify="center">
+          <Text onClick={cancelSubscription} className={style.cancelText}>
+            Looking to cancel your pass? Click here.
+          </Text>
+        </Box>
+      )}
       <Box
         direction="column"
-        height="auto"
+        height={{ min: 'fit-content' }}
         alignSelf="center"
+        pad={{ vertical: '38px' }}
+        align="center"
+        justify={ isSmallScreen ? 'center' : 'start' }
+        background={ isSmallScreen ? mobileBackground : desktopBackground }
+        fill
+        flex={ !isSmallScreen && showCancelCTA ? { grow: 1 } : 'shrink' }
       >
-        <Box
-          fill
-          basis="full"
-        >
-          <Experiment id="bFcUbpJZS-aZjr5QmZ9JTg">
-            <Variant id="0">
-              <VariantA plans={plansData} isSmallScreen={isSmallScreen} />
-            </Variant>
-            <Variant id="1">
-              <VariantB plans={plansData} isSmallScreen={isSmallScreen} />
-            </Variant>
-          </Experiment>
-
-        </Box>
+        <Experiment id="bFcUbpJZS-aZjr5QmZ9JTg">
+          <Variant id="0">
+            <VariantA
+              plans={plansData}
+              isSmallScreen={isSmallScreen}
+              currentPlan={productId}
+              showFreemium={showFreemium}
+              isPublicPage={isPublicPage}
+              goToSignup={goToSignup}
+            />
+          </Variant>
+          <Variant id="1">
+            <VariantB
+              plans={plansData}
+              isSmallScreen={isSmallScreen}
+              currentPlan={productId}
+              isPublicPage={isPublicPage}
+              goToSignup={goToSignup}
+              showFreemium={showFreemium}
+            />
+          </Variant>
+        </Experiment>
       </Box>
       <UpdateSubscriptionDialog
         show={dialogSettings.show}

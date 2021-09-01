@@ -5,15 +5,27 @@ import { useRef, useState } from 'preact/hooks';
 import { connect } from 'react-redux';
 import classnames from 'classnames';
 import { Box, Heading } from 'grommet';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faLockAlt } from '@fortawesome/pro-solid-svg-icons';
 
 import Can from 'Components/Authorize'
 import { selectHabitat, toggleMapModal } from '../../actions';
 import PinIcon from './PinIcon';
 import style from './style.scss';
+import { isHabitatUnlocked } from '../../../../helpers';
 
-const HabitatMap = ({ habitats, selectHabitatAction, activeHabitatId }) => {
+const HabitatMap = ({
+  subscription,
+  habitats,
+  selectHabitatAction,
+  activeHabitatId,
+}) => {
   const [coordinates, setCoordinates] = useState(null);
   const mapRef = useRef(null);
+
+  if (!subscription) {
+    return null;
+  }
 
   const habitatClickHandler = (evt, _id) => {
     evt.stopPropagation();
@@ -55,10 +67,26 @@ const HabitatMap = ({ habitats, selectHabitatAction, activeHabitatId }) => {
                 style.pinWrapper,
                 {[style.selected]: _id === activeHabitatId },
               )}>
-                <div className={classnames(style.pin, { [style.offline]: !online })}>
+                {subscription.productId === 'FREEMIUM' && subscription.freeHabitat === _id && (
+                  <div className={style.freeLabel}>
+                    FREE
+                  </div>
+                )}
+                <div className={classnames(
+                  style.pin,
+                  {
+                    [style.offline]: !online,
+                    [style.freemiumPin]: subscription.productId === 'FREEMIUM' && subscription.freeHabitat === _id,
+                  },
+                )}>
                   <PinIcon />
                 </div>
                 <img src={profileImage} alt="Habitat" className={style.profile} />
+                {!isHabitatUnlocked(subscription, _id) && (
+                  <div className={style.lock}>
+                    <FontAwesomeIcon icon={faLockAlt} />
+                  </div>
+                )}
               </div>
             </div>
           ))}
@@ -85,7 +113,15 @@ const HabitatMap = ({ habitats, selectHabitatAction, activeHabitatId }) => {
 };
 
 export default connect(
-  ({ allHabitats: habitats, map: { activeHabitatId } }) => ({ habitats, activeHabitatId }),
+  (
+    {
+      allHabitats: habitats,
+      map: { activeHabitatId },
+      user: { subscription } = {},
+    },
+  ) => (
+    { habitats, activeHabitatId, subscription }
+  ),
   {
     selectHabitatAction: selectHabitat,
     toggleMapModalAction: toggleMapModal,

@@ -7,7 +7,10 @@ import {
   Heading,
 } from 'grommet';
 import classnames from 'classnames';
-import { PrimaryButton } from '../Buttons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faGraduationCap } from '@fortawesome/pro-solid-svg-icons';
+
+import { PrimaryButton, OutlineButton } from '../Buttons';
 
 import { useIsMobileSize } from '../../hooks';
 
@@ -29,6 +32,7 @@ const PlanCard = ({
   priceId,
   planName,
   planPrice,
+  planType,
   color,
   discount,
   onClickHandler,
@@ -39,14 +43,15 @@ const PlanCard = ({
   benefitTitle,
 }) => {
   const isMobileSize = useIsMobileSize();
-  const maxWidth = isMobileSize ? '330px' : '200px';
+  const maxWidth = isMobileSize ? '300px' : '200px';
   const maxHeight = isMobileSize ? '130px' : '313px';
 
   return (
     <div>
       <Box
-        pad={{ horizontal: isMobileSize ? 'xsmall' : 'medium', vertical: '10px' }}
+        pad={{ vertical: '10px' }}
         className={style.planCard}
+        margin={{ bottom: isMobileSize ? '0px' : '20px' }}
       >
         {discount && (
           <Box
@@ -64,36 +69,61 @@ const PlanCard = ({
           width={{ min: maxWidth, max: maxWidth }}
           height={{ min: maxHeight, max: maxHeight }}
           direction={isMobileSize ? 'row' : 'column'}
+          className={style.cardShadow}
         >
           <CardHeader
             background={{ color }}
-            width={{min: isMobileSize ? '180px' : '200px', max: isMobileSize ? '180px' : '150px'}}
+            width={{min: isMobileSize ? '150px' : '200px', max: isMobileSize ? '150px' : '150px'}}
+            height={{ min: !isMobileSize ? '155px' : '0px' }}
+            justify={ planPrice === 'FREE' ? 'center' : 'start'}
           >
             <Box
               fill
               textAlign="center"
-              alignSelf="start"
-              pad={{ top: '20px' }}
+              alignSelf={ planPrice === 'FREE' ? 'center' : 'start'}
+              pad={{ top: planPrice === 'FREE' ? '0px' : '20px' }}
+              justify={ planPrice === 'FREE' ? 'center' : 'start'}
               margin={{
                 bottom: isMobileSize ? '0px' : getMarginBottom(planPrice),
               }}>
-              <Text
-                alignSelf="center"
-                size="xlarge"
-                weight={800}
-              >
-                {planName}
-              </Text>
+              {planName === 'Class Pass' && (
+                <Box direction="row" align="center" justify="center">
+                  <FontAwesomeIcon icon={faGraduationCap} />
+                  <Text
+                    alignSelf="center"
+                    size="xlarge"
+                    weight={800}
+                    margin={{ left: '8px'}}
+                  >
+                    {planName}
+                  </Text>
+                </Box>
+              )}
+              {planName !== 'Class Pass' && (
+                <Text
+                  alignSelf="center"
+                  size="xlarge"
+                  weight={800}
+                >
+                  {planName}
+                </Text>
+              )}
               <Box direction="row" justify="center" align="center" >
                 <Heading
-                  margin={{ top: '12px', bottom: '0' }}
+                  margin={{ top: planPrice === 'FREE' ? '0px' : '12px', bottom: '0' }}
                   alignSelf="center"
                   level="2"
                 >
-                  {`$${planPrice / 100}`}
+                  {planPrice === 'FREE' ? planPrice : `$${planPrice / 100}`}
                 </Heading>
+                {['month', 'year'].includes(planType) && (
+                  <Text alignSelf="end" margin={{ bottom: '2px' }}>
+                    {`/${planType}`}
+                  </Text>
+                )}
               </Box>
-              <Box align="center">
+              {originalPrice && (
+              <Box align="center" margin={{ top: '3px'}}>
                 <Text
                   size="20px"
                   style={{ lineHeight: '20px', textDecorationLine: 'line-through'}}
@@ -101,11 +131,13 @@ const PlanCard = ({
                   {`$${originalPrice / 100}`}
                 </Text>
               </Box>
+              )}
             </Box>
 
           </CardHeader>
           <CardBody
             width={{min: isMobileSize ? '150px' : '200px', max: isMobileSize ? '150px' : '150px'}}
+            pad={{ horizontal: isMobileSize ? '10px' : '0px'}}
           >
             <Box
               margin={{ top: 'xsmall' }}
@@ -130,13 +162,24 @@ const PlanCard = ({
 
             </Box>
             <Box justify="end" direction="column" pad="xsmall" margin={{ vertical: isMobileSize ? '11px' : '16px' }}>
-              <PrimaryButton
-                alignSelf="center"
-                disabled={disabled}
-                label={buttonLabel}
-                onClick={() => onClickHandler(planId, priceId)}
-                size={isMobileSize ? 'medium' : 'large'}
-              />
+              {buttonLabel === 'Cancel' && (
+                <OutlineButton
+                  alignSelf="center"
+                  disabled={disabled}
+                  label={buttonLabel}
+                  onClick={() => onClickHandler(planId, priceId)}
+                  size={isMobileSize ? 'medium' : 'large'}
+                />
+              )}
+              {buttonLabel !== 'Cancel' && (
+                <PrimaryButton
+                  alignSelf="center"
+                  disabled={disabled}
+                  label={buttonLabel}
+                  onClick={() => onClickHandler(planId, priceId)}
+                  size={isMobileSize ? 'medium' : 'large'}
+                />
+              )}
             </Box>
           </CardBody>
         </Card>

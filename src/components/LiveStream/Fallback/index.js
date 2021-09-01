@@ -13,6 +13,8 @@ import {
 import Loader from 'Components/Loader';
 import { openContactUsModal } from 'Components/modals/ContactUs/actions'
 
+import { useIsMobileSize } from '../../../hooks';
+
 import background from './videoBackground.png';
 
 import style from './style.scss';
@@ -24,6 +26,7 @@ const Fallback = ({
   openContactUsModalAction,
   onClick,
 }) => {
+  const isMobileSize = useIsMobileSize();
   const clickHandler = () => {
     if (typeof onClick === 'function') {
       onClick();
@@ -83,13 +86,29 @@ const Fallback = ({
       )}
 
       {type === 'paused' && (
-        <Box onClick={clickHandler} justify="center" align="center" fill>
-          <FontAwesomeIcon icon={faPlay} size="4x" color="white" />
+        <Box onClick={clickHandler} justify="center" align="center" fill pad={{ horizontal: 'xsmall' }}>
+          <FontAwesomeIcon icon={faPlay} size={ isMobileSize ? '1x' : '4x' } color="white" />
           <Box width={{ max: '400px' }} align="center">
-            <Heading level="3" color="white" margin={{ top: 'large' }} textAlign="center">
-              Your video is paused
-            </Heading>
-            <Text color="white" size="xlarge">
+            {isMobileSize && (
+              <Text
+                color="white"
+                textAlign="center"
+                margin={{ top: 'small' }}
+              >
+                Your video is paused
+              </Text>
+            )}
+            {!isMobileSize && (
+              <Heading
+                level={3}
+                color="white"
+                margin={{ top: 'large' }}
+                textAlign="center"
+              >
+                Your video is paused
+              </Heading>
+            )}
+            <Text color="white" size={ isMobileSize ? 'small' : 'xlarge' }>
               Click to resume playing.
             </Text>
           </Box>

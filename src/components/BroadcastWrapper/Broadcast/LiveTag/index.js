@@ -42,7 +42,7 @@ const Livetime = ({ endTime }) => {
     >
       <div className={style.bullet} />
       <Text
-        size="12px"
+        size="10px"
         weight={500}
         margin={{ left: "5px"}}
         color="white"

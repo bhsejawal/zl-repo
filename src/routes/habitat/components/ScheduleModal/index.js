@@ -87,6 +87,7 @@ const Modal = ({
               wideImage={schedule.wideImage}
               online={schedule.isStreamOn}
               liveTalk={schedule.isHostStreamOn}
+              habitatId={schedule.habitatId}
             />
           )}
           <Upcoming />

@@ -31,6 +31,10 @@
   > div {
     display: flex;
   }
+
+  video {
+    object-fit: cover;
+  }
 }
 
 .timeBar {

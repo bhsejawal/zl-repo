@@ -16,7 +16,7 @@ import {
   Grommet,
 } from 'grommet';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSearch } from '@fortawesome/pro-solid-svg-icons';
+import { faSearch, faLockAlt } from '@fortawesome/pro-solid-svg-icons';
 import { deepMerge } from 'grommet/utils';
 import { differenceInMinutes } from 'date-fns';
 import classnames from 'classnames';
@@ -48,7 +48,12 @@ const theme = deepMerge(grommet, zoolifeTheme, {
   },
 });
 
-const Search = ({ className, allHabitats, setHabitatsAction }) => {
+const Search = ({
+  className,
+  allHabitats,
+  subscription,
+  setHabitatsAction,
+}) => {
   const [suggestionOpen, setSuggestionOpen] = useState(false);
   const [value, setValue] = useState('');
   const boxRef = useRef();
@@ -130,12 +135,23 @@ const Search = ({ className, allHabitats, setHabitatsAction }) => {
                 })}
               />
             </Box>
-            <Text>{title}</Text>
-            {windowWidth >= 460 && <HabitatStatus online={online} liveTalk={liveTalk} />}
+            <Text className={style.title}>{title}</Text>
+            {subscription.productId !== 'FREEMIUM' && (
+              <>
+                {windowWidth >= 460 && <HabitatStatus online={online} liveTalk={liveTalk} />}
+              </>
+            )}
+            {subscription.productId === 'FREEMIUM' && _id !== subscription.freeHabitat && (
+              <div className={classnames(style.lock, { [style.offline]: !online })}>
+                <div>
+                  <FontAwesomeIcon icon={faLockAlt} />
+                </div>
+              </div>
+            )}
           </Box>
         </Link>
       ),
-    })), [allHabitats, onHabitatClick, value, windowWidth]);
+    })), [allHabitats, onHabitatClick, value, windowWidth, subscription]);
 
   return (
     <Grommet theme={theme}>
@@ -177,6 +193,10 @@ const Search = ({ className, allHabitats, setHabitatsAction }) => {
   );
 };
 
-export default connect(({ allHabitats }) => ({ allHabitats }), {
+export default connect((
+  { allHabitats, user: { subscription } },
+) => (
+  { allHabitats, subscription }
+), {
   setHabitatsAction: setHabitats,
 })(Search);

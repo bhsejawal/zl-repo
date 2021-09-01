@@ -36,7 +36,7 @@ const EditLogoRender = ({ logo: logoProp }) => {
             constraints={{
               maxResolution: 500,
               maxFileSize: 100_000,
-              acceptedFormats: ['jpeg', 'jpg'],
+              acceptedFormats: ['jpeg', 'jpg', 'png'],
             }}
             onChange={setLogo}
           />

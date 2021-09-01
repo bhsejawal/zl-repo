@@ -10,6 +10,8 @@ const BroadcastFallback = ({ type, text }) => (
   <Box
     background={{image: `url(${background})`}}
     fill
+    width="100%"
+    height="100%"
     justify="center"
     align="center"
   >

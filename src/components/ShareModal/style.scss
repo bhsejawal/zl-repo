@@ -88,14 +88,11 @@
     width: 100%;
     position: relative;
     aspect-ratio: 16/9;
-    margin: auto;
-
 
     @supports not (aspect-ratio: 16 / 9) {
 
       &::before {
         float: left;
-        padding-top: 56.25%;
         content: "";
       }
 

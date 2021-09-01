@@ -122,13 +122,13 @@ const VideoPlayer = ({
     setTimeElapsed(0);
   }, [videoURL]);
 
-  const onSuspendeHandler = useCallback(() => {
-    if (isMobile && !isPlaying) {
-      setIsLoading(false);
-      setIsPlaying(false);
-      handleScreenClick();
-    }
-  }, [handleScreenClick, isMobile, isPlaying]);
+  // const onSuspendeHandler = useCallback(() => {
+  //   if (isMobile && !isPlaying) {
+  //     setIsLoading(false);
+  //     setIsPlaying(false);
+  //     handleScreenClick();
+  //   }
+  // }, [handleScreenClick, isMobile, isPlaying]);
 
   useEffect(() => {
     if (videoRef?.current) {
@@ -137,7 +137,7 @@ const VideoPlayer = ({
       videoRef.current.addEventListener('timeupdate', onTimeUpdate);
       videoRef.current.addEventListener('loadedmetadata', onLoadMetadata);
       videoRef.current.addEventListener('loadeddata', onLoadedData);
-      videoRef.current.addEventListener('suspend', onSuspendeHandler);
+      // videoRef.current.addEventListener('suspend', onSuspendeHandler);
     }
 
     return () => {
@@ -147,7 +147,7 @@ const VideoPlayer = ({
         videoRef.current.removeEventListener('timeupdate', onTimeUpdate);
         videoRef.current.removeEventListener('loadedmetadata', onLoadMetadata);
         videoRef.current.removeEventListener('loadeddata', onLoadedData)
-        videoRef.current.removeEventListener('suspend', onSuspendeHandler);
+        // videoRef.current.removeEventListener('suspend', onSuspendeHandler);
       }
     }
   }, [
@@ -158,7 +158,7 @@ const VideoPlayer = ({
     onTimeUpdate,
     onLoadMetadata,
     onLoadedData,
-    onSuspendeHandler,
+    // onSuspendeHandler,
   ]);
 
   return (

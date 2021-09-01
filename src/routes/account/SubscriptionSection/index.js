@@ -3,50 +3,35 @@ import { useContext } from 'preact/hooks';
 import {
   Box,
   Heading,
-  Text,
   ResponsiveContext,
 } from 'grommet';
 
-import background from 'Components/SubscriptionManager/plansBackground.png';
-
 import SubscriptionManager from 'Components/SubscriptionManager';
-import ZoolifeBenefits from 'Components/Benefits';
+import SubscriptionBenefits from 'Components/SubscriptionBenefits';
 
 const SubscriptionSection = () => {
   const size = useContext(ResponsiveContext);
 
   return (
-    <>
-      <Box
-        fill={['medium', 'large'].includes(size)}
-        responsive
-        direction="column"
-      >
-        <Box
-          fill
-          basis="full"
-          background={{
-            image: `url(${background})`,
-            size: 'contain',
-            position: 'bottom',
-            repeat: 'no-repeat',
-            attachment: 'fixed',
-          }}
+    <Box
+      height={{ min: '100%' }}
+      background="#24412B"
+      responsive
+      overflow="auto"
+    >
+      <Box pad={{ vertical: "large" }} background="#F9FCE7">
+        <Heading
+          level={['xsmall', 'small'].includes(size) ? 3 : 1}
+          textAlign="center"
+          size="25px"
+          margin="0px"
         >
-          <Box pad={{ vertical: "large", horizontal: "25%" }}>
-            <Heading level={['xsmall', 'small'].includes(size) ? 3 : 1} textAlign="center" fill size="25px" weight={700}>
-              Manage Subscription
-            </Heading>
-            <Text textAlign="center" size="16px">
-              50% of your ticket directly funds conservation
-              &amp; animal care efforts led by our AZA-accredited partners.
-            </Text>
-          </Box>
-          <SubscriptionManager />
-        </Box>
-        <ZoolifeBenefits />
+          Manage Subscription
+        </Heading>
+        <SubscriptionBenefits />
       </Box>
-    </>
+      <SubscriptionManager showCancelCTA />
+    </Box>
   )
 };
 
