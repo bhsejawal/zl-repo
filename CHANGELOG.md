@@ -2,6 +2,24 @@
 This file keeps track of all relevant change for every release.
 
 ## [Unreleased]
+## [5.17.0] - 2021-09-01
+### Added
+ - Support for the freemium experience
+ - A public price page
+ - Support for host mode on mobile
+ - Santa Barbara Zoo landing page
+ - A/B test for the toronto zoo page
+ - Is Freemium and Freemium Priority to the Admin Dashboard
+### Changed
+ - Partner logo can also be a PNG file now
+ - Desktop uses the same onboarding process as mobile
+ - Minor changes on the landing page (copies, scrolling image, and spacing)
+ - Plans/Subscription manage page layout
+ - Start Trial is now triggered from the Freemium Onboarding page
+
+### Fixed
+ - An issue on the profile check which allowed mobile users to not have to go through the Start Trial process
+ - Small css/logic issues on the video player within the UGC modal
 
 ## [5.16.0] - 2021-08-23
 ### Added
