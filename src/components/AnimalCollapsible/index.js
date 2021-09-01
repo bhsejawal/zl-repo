@@ -30,8 +30,9 @@ const getColumnSize = (size) => {
 
 const AnimalCollapsible = ({ freeHabitat, allHabitats = []}) => {
   const size = useContext(ResponsiveContext);
+
   const habitats = useMemo(() => allHabitats.filter(
-    ({ _id}) => (_id !== freeHabitat),
+    ({ _id, hidden }) => (_id !== freeHabitat && !hidden ),
   ), [freeHabitat, allHabitats]);
 
   if (!habitats || !allHabitats) {
