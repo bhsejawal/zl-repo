@@ -5,14 +5,18 @@
   min-height: max-content;
 
   &.alternate {
-    background-color: white;
+    background: unset;
+
+    .inputContainer .inputWrapper {
+      border-radius: 100px;
+      width: 100%;
+      overflow: hidden;
+      padding-right: 30px;
+      background: #EBEBEB;
+    }
 
     * {
       color: #2E2D2D !important
-    }
-
-    .inputContainer input {
-      background: #EBEBEB;
     }
 
     .SendButton {
@@ -25,17 +29,24 @@
     flex-grow: 1;
     position: relative;
 
-    input {
+    .inputWrapper {
       border-radius: 100px;
+      width: 100%;
+      overflow: hidden;
+      padding-right: 32px;
+      background: white;
+    }
+
+    input {
       font-size: 14px;
       border: 0;
       outline: none;
-      padding: 8px 32px 9px 10px;
-      box-sizing: content-box;
+      padding: 8px 0 9px 10px;
       width: 100%;
+      background: transparent;
 
-      &:placeholder {
-        color: white;
+      &::placeholder {
+        color: var(--grey);
       }
     }
 
