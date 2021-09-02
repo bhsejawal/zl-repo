@@ -1,5 +1,5 @@
 .habitatCard {
-  width: 310px;
+  min-width: 310px;
   min-height: 340px;
   background: #FFFFFF;
   box-shadow: 0 4px 15px rgba(0, 0, 0, .25);
@@ -27,6 +27,8 @@
   .wideImage img {
     height: 102px;
     width: 100%;
+    object-fit: cover;
+    object-position: top left;
   }
 }
 
