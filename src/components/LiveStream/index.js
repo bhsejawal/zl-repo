@@ -53,6 +53,7 @@ const Stream = ({
   setHabitatStreamStartedAction,
 }) => {
   const videoRef = useRef();
+  const timeoutRef = useRef();
   const containerRef = useRef(null);
   const { socket } = useContext(GlobalsContext);
   const [isInitialized, setIsInitialized] = useState(false);
@@ -70,7 +71,23 @@ const Stream = ({
         ...data,
       })
     }
-  }, [socket, userId, productId])
+  }, [socket, userId, productId]);
+
+  const handleScreenClick = useCallback(() => {
+    if (isTabbed) {
+      const action = showControls ? 'show' : 'hide';
+      setShowControls(!showControls);
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
+
+      if (action === 'show') {
+        timeoutRef.current = setTimeout(() => {
+          setShowControls(false);
+        }, 5000);
+      }
+    }
+  }, [isTabbed, showControls]);
 
   const {
     streamStatus,
@@ -133,6 +150,7 @@ const Stream = ({
         ref={containerRef}
         onMouseEnter={() => setShowControls(true)}
         onMouseLeave={() => setShowControls(false)}
+        onClick={handleScreenClick}
       >
         <div
           className={classnames(style.videoContainer, {
@@ -153,7 +171,7 @@ const Stream = ({
               />
               <VideoControls
                 ref={videoRef}
-                showControls={showControls || isTabbed}
+                showControls={showControls}
                 showPlayControl={mode !== 'liveTalk'}
                 showVolumeControl
                 showFullscreenControl

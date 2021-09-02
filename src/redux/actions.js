@@ -26,6 +26,7 @@ import {
   UNSET_HABITATS,
   UPDATE_CLIP_BUTTON_CLICKED,
   UPDATE_STREAM_TAPPED,
+  UPDATE_VIEWERS,
 } from './types';
 
 export const setSubscriptionData = (payload) => ({ type: SET_SUBSCRIPTION_DATA, payload });
@@ -146,4 +147,9 @@ export const setClipButtonClicked = (clicked) => ({
 export const setStreamClicked = (clicked) => ({
   type: UPDATE_STREAM_TAPPED,
   payload: { clicked },
+});
+
+export const setHabitatViewers = (viewers) => ({
+  type: UPDATE_VIEWERS,
+  payload: { viewers },
 });
