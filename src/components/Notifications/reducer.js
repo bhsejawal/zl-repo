@@ -8,6 +8,10 @@ import { ADD_NOTIFICATION, REMOVE_NOTIFICATION } from './types';
 //     timeout: 4000,
 //   },
 //   {
+//     id: '2021-072',
+//     type: 'feedback',
+//   },
+//   {
 //     id: Math.random(),
 //     type: 'toast',
 //     text: 'INIT TOAST TEST',

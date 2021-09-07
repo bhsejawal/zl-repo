@@ -7,12 +7,18 @@ import classnames from 'classnames';
 import { buildURL } from 'Shared/fetch';
 import { logGAEvent } from 'Shared/ga';
 import CloseButton from 'Components/modals/CloseButton';
+import { addNotification } from './actions';
 import { getDeviceType } from '../../helpers';
 import { setUserData } from '../../redux/actions';
 
 import style from './style.scss';
 
-const Rate = ({ onCLose, className, setUserDataAction}) => {
+const Rate = ({
+  onClose,
+  className,
+  setUserDataAction,
+  addNotificationAction,
+}) => {
   const [rate, setRate] = useState();
 
   const { post, data, error } = useFetch(buildURL('/users/rate'), {
@@ -23,7 +29,7 @@ const Rate = ({ onCLose, className, setUserDataAction}) => {
 
   useEffect(() => {
     if (rate) {
-      post({ rate });
+      post({ stars: rate });
       logGAEvent( 'nps', 'user-rated-app', getDeviceType(), rate );
     }
   }, [post, rate]);
@@ -33,15 +39,18 @@ const Rate = ({ onCLose, className, setUserDataAction}) => {
 
     if (!error && data?.user) {
       setUserDataAction(data.user);
-      timeout = setTimeout(() => onCLose(), 1500);
+      timeout = setTimeout(() => {
+        onClose();
+        addNotificationAction({ id: new Date(), type: 'feedback' });
+      }, 1500);
     }
 
     return () => clearTimeout(timeout);
-  }, [data, error, onCLose, setUserDataAction]);
+  }, [data, error, onClose, setUserDataAction, addNotificationAction]);
 
   return (
     <div className={className}>
-      <CloseButton onClick={onCLose} className={style.close} />
+      <CloseButton onClick={onClose} className={style.close} />
       <div className={style.content}>
         <span className={style.text}>
           How likely are you to recommend Zoolife to a friend?
@@ -62,4 +71,7 @@ const Rate = ({ onCLose, className, setUserDataAction}) => {
   )
 }
 
-export default connect(null, { setUserDataAction: setUserData })(Rate);
+export default connect(null, {
+  setUserDataAction: setUserData,
+  addNotificationAction: addNotification,
+})(Rate);
