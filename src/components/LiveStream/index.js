@@ -191,7 +191,7 @@ const Stream = ({
             />
           )}
 
-          {(interactive && isStreamOn && hasPermission('habitat:edit-stream')) && <AdminButton />}
+          {(interactive && isStreamOn && (hasPermission('habitat:edit-stream') || hasPermission('habitat:switch-stream'))) && <AdminButton />}
         </div>
 
         {/* mobile controls */}
@@ -210,7 +210,7 @@ const Stream = ({
         {streamStatus === ERROR && (
           <>
             <Fallback type="error" />
-            {(interactive && hasPermission('habitat:edit-stream')) && <AdminButton />}
+            {(interactive && (hasPermission('habitat:edit-stream') || hasPermission('habitat:switch-stream'))) && <AdminButton />}
           </>
         )}
       </div>

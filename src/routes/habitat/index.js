@@ -241,7 +241,7 @@ const Habitat = ({
               {!isStreamOn && (
                 <>
                   <OfflineContent width={streamWidth} height={height} />
-                  {(hasPermission('habitat:edit-stream')) && <AdminButton />}
+                  {(hasPermission('habitat:edit-stream') || hasPermission('habitat:switch-stream')) && <AdminButton />}
                 </>
 
               )}
