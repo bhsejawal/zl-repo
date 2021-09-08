@@ -61,7 +61,7 @@ const VariantA = ({
     align={isSmallScreen ? "center" : "start"}
     pad={{ horizontal: isSmallScreen ? 'xsmall' : 'medium' }}
     gap="medium"
-    wrap
+    wrap={!isSmallScreen}
   >
     {plans.filter(({ price }) => [499, 999, 2599, 9799].includes(price)).map(({
       name,
@@ -134,7 +134,7 @@ const VariantB = ({
     justify="center"
     gap="large"
     margin="auto"
-    wrap
+    wrap={!isSmallScreen}
     pad={{ horizontal: isSmallScreen ? 'xsmall' : 'medium' }}
   >
     {plans.filter(({ price }) => ![999, 9799].includes(price)).map(({
@@ -445,7 +445,7 @@ const SubscriptionSection = ({
       )}
       <Box
         direction="column"
-        height={{ min: 'fit-content' }}
+        height={{ min: 'max-content' }}
         alignSelf="center"
         pad={{ vertical: '38px' }}
         align="center"
@@ -453,6 +453,7 @@ const SubscriptionSection = ({
         background={ isSmallScreen ? mobileBackground : desktopBackground }
         fill
         flex={ !isSmallScreen && showCancelCTA ? { grow: 1 } : 'shrink' }
+        style={{ height: isSmallScreen ? "fit-content" : "100%" }}
       >
         <Experiment id="bFcUbpJZS-aZjr5QmZ9JTg">
           <Variant id="0">
