@@ -51,7 +51,7 @@ const HabitatMobileCard = ({ subscription, habitat, isOffline }) => {
       }
     >
       <Box height={{ min: '132px' }} style={{ borderBottom: '1px solid #EBEBEB'}}>
-        <Box height={{ min: '70px' }}>
+        <Box pad={{ vertical: '25px' }}>
           <Text size="xlarge">
             {habitat.description}
           </Text>
