@@ -38,8 +38,6 @@ const WeatherWidget = ({
     [upcoming],
   );
 
-  console.log({ nextTalk });
-
   if (!weather || !location) {
     return null;
   }
@@ -79,10 +77,12 @@ const WeatherWidget = ({
       </Box>
       <Tip
         content={
-          <Box background="white" pad="xsmall" width="150px">
+          <Box pad="xsmall">
             <Text size="small" textAlign="center">Click to see the talk schedule</Text>
           </Box>
         }
+        plain
+        dropProps={{ align: { top: 'bottom' }, background: { color: 'white' }, margin: { top: '10px' }}}
       >
         <Box
           className={style.schedule}
@@ -92,7 +92,7 @@ const WeatherWidget = ({
         >
           {nextTalk && (
             <>
-              <FontAwesomeIcon icon={faCalendarAlt} color="white" size={10} />
+              <FontAwesomeIcon icon={faCalendarAlt} color="white" />
               <Text size="small">
                 {`Next talk: ${nextTalk}`}
               </Text>
@@ -100,7 +100,7 @@ const WeatherWidget = ({
           )}
           {!nextTalk && (
             <>
-              <FontAwesomeIcon icon={faCalendarAlt} color="white" size={10} />
+              <FontAwesomeIcon icon={faCalendarAlt} color="white" />
               <Text size="small">Click to see talk schedule</Text>
             </>
           )}

@@ -64,7 +64,7 @@ const Feedback = ({ onClose, className, setUserDataAction }) => {
         <PrimaryButton
           onClick={sendFeedback}
           loading={loading}
-          disabled={data?.user || loading || !text.length}
+          disabled={!!data?.user || loading || !text.length}
           label={data?.user ? 'Sent' : 'Send'}
           size="small"
         />
