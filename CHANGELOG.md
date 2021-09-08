@@ -2,6 +2,22 @@
 This file keeps track of all relevant change for every release.
 
 ## [Unreleased]
+
+## [5.18.0] - 2021-09-08
+
+### Added
+ - Viewers count on the habitat pages
+ - Support to switch camera on habitats that has more than one camera
+ - Admin page to download product metrics
+ - After a user rates the application, we now prompt them to offer feedback
+### Fixed
+ - Issue with scroll that would affect some browsers
+ - Issue on the chatbox that would hide the text behind the emote button on some browsers
+ - Issue with alignment on the pricing page
+
+ ### Changed
+  - We removed the Schedule Card from the top of the chat and extended the weather widget to show the schedule data
+
 ## [5.17.0] - 2021-09-01
 ### Added
  - Support for the freemium experience
