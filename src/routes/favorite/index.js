@@ -111,7 +111,7 @@ const Favorite = ({ updateFavoriteHabitatAction }) => {
         justify={width < 850 ? 'center' : 'start' }
         className={classnames(style.content, 'customScrollBar')}
         pad={{
-          horizontal: isSmallScreen ? 'small' : 'xlarge',
+          horizontal: isSmallScreen ? '8px' : 'xlarge',
           vertical: 'medium',
         }}
       >
@@ -135,7 +135,7 @@ const Favorite = ({ updateFavoriteHabitatAction }) => {
           description,
           wideImage: image,
         }) => (
-          <Box key={_id} pad="small" flex="shrink">
+          <Box key={_id} pad={isSmallScreen ? '8px' : 'small' } flex="shrink">
             <HabitatCard
               favorite
               slug={slug}

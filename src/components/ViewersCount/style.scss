@@ -1,0 +1,43 @@
+@import "../../style/media-query";
+
+.viewerCountWrapper {
+  min-width: 50px;
+  min-height: 30px;
+  width: max-content;
+  height: max-content;
+  background-color: var(--hunterGreenMediumDark);
+  position: absolute;
+  bottom: 10px;
+  right: 7px;
+  border-radius: 100px;
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0px 10px;
+
+  @media screen and (max-width: #{$phone-landscape-width}) {
+    right: 8px;
+    min-height: 28px;
+  }
+}
+
+.viewerCount {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  color: white;
+  fill: white;
+
+  span {
+    font-weight: 700;
+    size: 12px;
+    line-height: 18px;
+  }
+
+  svg {
+    margin-right: 7px;
+  }
+}

@@ -31,6 +31,8 @@ import Tab from 'Components/Tabs/Tab';
 import LiveTalk from 'Components/Card/LiveTalk';
 import ShareModal from 'Components/ShareModal';
 import OfflineContent from 'Components/OfflineContent';
+import ViewersCount from 'Components/ViewersCount';
+
 import ScheduleModal from './components/ScheduleModal';
 import Chat from './components/Chat';
 import LiveChannelsBar from './components/LiveChannelsBar';
@@ -42,7 +44,7 @@ import Album from './components/Album';
 
 import { useIsHabitatTabbed, useWindowResize } from '../../hooks';
 import { setHabitat, unsetHabitat, setHabitatProps } from './actions';
-import { setUserData } from '../../redux/actions';
+import { setUserData, setHabitatViewers } from '../../redux/actions';
 
 import { generateTitle, getDeviceType } from '../../helpers';
 import { MOBILE_CONTROLS_HEIGHT } from './constants';
@@ -73,6 +75,7 @@ const Habitat = ({
   termsAccepted,
   setHabitatPropsAction,
   setUserDataAction,
+  setHabitatViewersAction,
 }) => {
   // this will be undefined most of the time
   // but in case camera is changed, this value will be set by from socket message
@@ -122,18 +125,24 @@ const Habitat = ({
       setCameraId(camId);
     };
 
+    const onViewersCount = ({ count }) => {
+      setHabitatViewersAction(count);
+    }
+
     if (socket) {
       socket.on('streamUpdated', onStreamUpdated);
       socket.on('cameraChanged', onCameraChange);
+      socket.on('viewers-count', onViewersCount);
     }
 
     return () => {
       if (socket) {
         socket.off('streamUpdated', onStreamUpdated);
         socket.off('cameraChanged', onCameraChange);
+        socket.off('viewers-count', onViewersCount);
       }
     }
-  }, [socket, setHabitatPropsAction]);
+  }, [socket, setHabitatPropsAction, setHabitatViewersAction]);
 
   const { loading: habitatLoading, error, response } = useFetch(
     buildURL(`/zoos/${zooName}/habitats/${habitatSlug}`),
@@ -232,7 +241,7 @@ const Habitat = ({
               {!isStreamOn && (
                 <>
                   <OfflineContent width={streamWidth} height={height} />
-                  {(hasPermission('habitat:edit-stream')) && <AdminButton />}
+                  {(hasPermission('habitat:edit-stream') || hasPermission('habitat:switch-stream')) && <AdminButton />}
                 </>
 
               )}
@@ -244,6 +253,8 @@ const Habitat = ({
                 mode="stream"
                 isStreamOn={isStreamOn}
               />}
+
+              {isStreamOn && <ViewersCount />}
 
               {hasPermission('habitat:broadcast') && hostStreamKey && (!isHostStreamOn || isBroadcasting) && (
                 <BroadcastWrapper
@@ -346,6 +357,7 @@ const ConnectedHabitat = connect(
     openTermsModalAction: openTermsModal,
     setHabitatPropsAction: setHabitatProps,
     setUserDataAction: setUserData,
+    setHabitatViewersAction: setHabitatViewers,
   },
 )(Habitat);
 

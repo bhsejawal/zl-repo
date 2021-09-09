@@ -48,15 +48,17 @@ const InputBox = ({
   return (
     <div className={classnames(style.inputBox, {[style.alternate]: alternate })}>
       <div className={style.inputContainer}>
-        <input
-          type="text"
-          placeholder="Type your message"
-          value={input}
-          onChange={(e) => setInput(e.target.value)}
-          onKeyDown={onKeyDownHandler}
+        <div className={style.inputWrapper}>
+          <input
+            type="text"
+            placeholder="Type your message"
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
+            onKeyDown={onKeyDownHandler}
 
-        />
-        {!isMobileSize && <EmoteInput value={input} onSelection={setInput} />}
+          />
+          {!isMobileSize && <EmoteInput value={input} onSelection={setInput} />}
+        </div>
       </div>
       <button type="button" onClick={() => sendMessage(input)} className={style.SendButton}>
         Send

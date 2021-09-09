@@ -5,6 +5,7 @@ import {
   TOGGLE_SHOW_EMOJI_BASKET,
   SHOW_SNAPSHOT_SHARE_POPUP,
   TOGGLE_IS_BROADCASTING,
+  UPDATE_VIEWERS,
 } from '../types';
 
 const mockEmojis = [
@@ -61,6 +62,7 @@ const initialState = {
     isStreamPlaying: false,
     isBroadcasting: false,
   },
+  viewers: 0,
 };
 
 export default (state = initialState, { type, payload }) => {
@@ -69,6 +71,13 @@ export default (state = initialState, { type, payload }) => {
       return {
         ...state,
         userInteractions: [...state.userInteractions, payload],
+      }
+    }
+    case UPDATE_VIEWERS: {
+      const { viewers } = payload;
+      return {
+        ...state,
+        viewers,
       }
     }
 

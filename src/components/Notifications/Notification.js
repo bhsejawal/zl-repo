@@ -6,6 +6,8 @@ import CloseButton from 'Components/modals/CloseButton';
 import Tag from 'Components/Tag';
 import Card from 'Components/Card';
 import Rate from './Rate';
+import Feedback from './Feedback';
+
 import { removeNotification } from './actions';
 
 import style from './style.scss';
@@ -66,7 +68,16 @@ const Notification = ({ data, removeNotificationAction }) => {
     return (
       <Rate
         className={classnames(style.score, { [style.animateIn]: animateIn })}
-        onCLose={close}
+        onClose={close}
+      />
+    );
+  }
+
+  if (type === 'feedback' && data?.id) {
+    return (
+      <Feedback
+        className={classnames(style.feedback, { [style.animateIn]: animateIn })}
+        onClose={close}
       />
     );
   }
