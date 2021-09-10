@@ -78,7 +78,7 @@ const Configuration = ({
                   acceptedFormats: ['mp4'],
                   maxFileSize: 8_000_000,
                 }}
-                onChange={(value) => setVideoURL({ videoURL: value })}
+                onChange={(value) => setVideoURL(value)}
               />
             </Box>
 
