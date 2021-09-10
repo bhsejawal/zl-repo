@@ -77,7 +77,12 @@ const App = () => {
   return (
     <Provider store={store}>
       <StripeContext.Provider value={{ stripe }}>
-        <Grommet full className="calculated-full-height" theme={customBreakpoints} >
+        <Grommet
+          full
+          className="calculated-full-height"
+          theme={customBreakpoints}
+          background="transparent"
+          >
           <Main onRouteChange={onRouteChange} />
         </Grommet>
       </StripeContext.Provider>

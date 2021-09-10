@@ -74,6 +74,7 @@ const Schedule = ({ setFilterOptionsAction }) => {
             pad={collapseHeader ? '20px 18px' : '24px 18px' }
             align={collapseHeader ? undefined : 'center'}
             flex="grow"
+            border={{ color: '#DFDFDF', size: '1px', side: 'bottom' }}
           >
             <Heading
               level="2"
@@ -117,18 +118,14 @@ const Schedule = ({ setFilterOptionsAction }) => {
             )}
           </Box>
 
-          <Box
-            fill
-            style={{ background: 'var(--hunterGreenMediumLight)'}}
-            align="center"
-          >
+          <Box fill align="center">
             <Box
               fill
               overflow="auto"
-              className="customScrollBar"
+              className="customScrollBar grey"
               pad={{
                 horizontal: isSmallScreen ? '8px' : 'xlarge',
-                vertical: isSmallScreen ? '8px' : 'medium',
+                vertical: isSmallScreen ? '8px' : '44px',
               }}
             >
               <ScheduleList />

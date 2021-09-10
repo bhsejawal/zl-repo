@@ -2,6 +2,17 @@
 
 .searchWrapper {
   border-radius: 50px;
+
+  input::-webkit-input-placeholder,
+  input::-moz-placeholder,
+  input:-ms-input-placeholder,
+  input:-moz-placeholder,
+  input::placeholder {
+    font-weight: bold;
+    font-size: 10px;
+    line-height: 16px;
+    color: #CDCDCD;
+  }
 }
 
 .suggestion {

@@ -183,11 +183,11 @@ const Search = ({
           onSuggestionsClose={onSuggestionsClose}
           onFocus={onSearchFocus}
           onSelect={() => boxRef.current.querySelector('input').blur()}
-          style={{ padding: '8px' }}
+          style={{ padding: '2px' }}
           dropHeight="medium"
         />
 
-        <FontAwesomeIcon icon={faSearch} color="var(--grey)" />
+        <FontAwesomeIcon icon={faSearch} color="var(--grey)" style={{ width: '14px' }} />
       </Box>
     </Grommet>
   );

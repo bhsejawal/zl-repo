@@ -26,12 +26,13 @@
     color: var(--grey);
     text-decoration: none;
     display: inline-block;
-    margin: 0 15px;
+    margin: 0 12px;
     min-width: 50px;
     text-decoration: unset;
     cursor: pointer;
     width: 100%;
     padding: 10px;
+    font-size: inherit;
 
     svg {
       margin-right: 6px;

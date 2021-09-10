@@ -2,8 +2,6 @@ import { h } from 'preact';
 import { lazy, Suspense } from 'preact/compat';
 import { connect } from 'react-redux';
 
-import ScheduleCarousel from 'Components/ScheduleCarousel';
-
 import style from './style.scss';
 
 const ChatComponent = lazy(() => import('Components/Chat'));
@@ -18,7 +16,6 @@ const Chat = ({ height, width, habitatId }) => (
       width,
     }}
   >
-    <ScheduleCarousel />
     <Suspense>
       <ChatComponent channelId={habitatId} />
     </Suspense>

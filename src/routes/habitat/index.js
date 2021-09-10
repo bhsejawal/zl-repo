@@ -213,9 +213,9 @@ const Habitat = ({
     );
   }
 
-  const sideBarWidth = 85;
-  const chatWidth = 285;
-  const maxStreamWidth = 1920 - sideBarWidth - chatWidth;
+  const sideBarWidth = 50;
+  const chatWidth = 345;
+  const maxStreamWidth = 1440 - sideBarWidth - chatWidth;
   const maxStreamHeight = maxStreamWidth * 0.5625;
   const calcStreamWidth = isTabbed ? windowWidth : (pageWidth - sideBarWidth - chatWidth);
   const streamWidth = Math.min(maxStreamWidth, calcStreamWidth);
