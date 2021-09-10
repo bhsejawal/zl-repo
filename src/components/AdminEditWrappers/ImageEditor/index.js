@@ -30,7 +30,8 @@ const ImageEditor = ({
     setImgUrl(initialImgUrl);
   }, [initialImgUrl]);
 
-  const onEditBtnClick = () => {
+  const onEditBtnClick = (evt) => {
+    evt.stopPropagation();
     setEditModalOpen(true);
   };
 

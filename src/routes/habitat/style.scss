@@ -33,11 +33,11 @@
 }
 
 .middleSection {
-  padding: 40px $ypadding;
+  padding: 40px;
 }
 
 .bottomSection {
-  padding: 0 $ypadding;
+  padding: 0 40px;
 }
 
 .livestreamWrapper {
@@ -49,7 +49,6 @@
 
   .middleSection,
   .bottomSection {
-    padding-left: $ypadding / 2;
-    padding-right: $ypadding / 2;
+    padding: 23px 21px 0px 21px;
   }
 }
