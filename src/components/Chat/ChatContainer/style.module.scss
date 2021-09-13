@@ -11,6 +11,19 @@
   }
 }
 
+.chatHeader {
+  display: flex;
+  flex-direction: row;
+  padding: 10px 13px;
+  color: white;
+  font-size: 12px;
+  line-height: 18px;
+
+  span {
+    flex-grow: 1;
+  }
+}
+
 .chatContainer {
   background: var(--hunterGreenMediumLight);
   flex-grow: 1;

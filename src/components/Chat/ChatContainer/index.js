@@ -10,6 +10,7 @@ import classnames from 'classnames';
 import { usePubNub } from 'pubnub-react';
 
 import { logGAEvent } from 'Shared/ga';
+import ViewersCount from 'Components/ViewersCount';
 
 import InputBox from './InputBox';
 
@@ -29,6 +30,7 @@ const ChatContainer = ({
   mediaType,
   slug,
   isGuest,
+  showHeader,
 }) => {
   const [internalMessages, setInternalMessages] = useState([]);
   const [showModal, setShowModal] = useState(false);
@@ -105,6 +107,12 @@ const ChatContainer = ({
 
   return (
     <>
+      {showHeader && (
+        <div className={style.chatHeader}>
+          <span>Community Chat</span>
+          <ViewersCount plain />
+        </div>
+      )}
       <div
         ref={chatContainerRef}
         className={classnames(style.chatContainer, 'customScrollBar', {[style.alternate]: alternate})}

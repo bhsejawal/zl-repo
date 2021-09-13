@@ -254,7 +254,7 @@ const Habitat = ({
                 isStreamOn={isStreamOn}
               />}
 
-              {isStreamOn && <ViewersCount />}
+              {isStreamOn && isTabbed && (<ViewersCount />)}
 
               {hasPermission('habitat:broadcast') && hostStreamKey && (!isHostStreamOn || isBroadcasting) && (
                 <BroadcastWrapper
@@ -269,7 +269,7 @@ const Habitat = ({
                 />
               )}
             </div>
-            {!isTabbed && <Chat width={chatWidth} height={height} />}
+            {!isTabbed && <Chat width={chatWidth} height={height} showHeader />}
           </div>
 
           <div className={style.contentSection} style={{ height: `calc((var(--vh) * 100) - var(--headerHeight) - ${height + (isTabletOrLarger ? 0 : MOBILE_CONTROLS_HEIGHT)}px)` }}>
