@@ -70,6 +70,16 @@
   }
 }
 
+.searchClickIndicator {
+  pointer-events: all;
+
+  div,
+  svg {
+    z-index: 1;
+    pointer-events: all;
+  }
+}
+
 :global {
 
   ol[class^="StyledTextInput__StyledSuggestions"] li {

@@ -53,3 +53,10 @@
     padding: 23px 21px 0px 21px;
   }
 }
+
+.albumClickIndicator {
+
+  svg {
+    z-index: 1;
+  }
+}

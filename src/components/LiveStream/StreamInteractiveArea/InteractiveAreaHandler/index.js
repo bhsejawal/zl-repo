@@ -8,9 +8,9 @@ import {
 } from 'preact/hooks';
 import { connect } from 'react-redux';
 import { createPortal } from 'preact/compat';
-import classnames from 'classnames';
 
 import { GlobalsContext } from 'Shared/context';
+import ClickMessageTip from 'Components/ClickMessageTip';
 
 import { addUserInteraction, setStreamClicked } from '../../../../redux/actions';
 
@@ -183,11 +183,15 @@ const InteractiveAreaHandler = ({
     >
       <div
         id="CursorsContainer"
-        className={classnames(style.CursorsContainer, {
-          [style.clickIndicator]: !streamClicked && streamStarted && isMobileSize,
-        })}
+        className={style.CursorsContainer}
         ref={containerRef}
       >
+        {streamStarted && !streamClicked && (
+          <div className={style.clickIndicator}>
+            <ClickMessageTip align={{ bottom: 'top' }} text={`${isMobileSize ? 'Tap' : 'Click'} to move!`} />
+          </div>
+        )}
+
         <CursorPortal>
           <div ref={ownCursorRef} className={style.ownCursor} >
             <CustomCursor cursorState={cursorState} color={color} animal={animal} />

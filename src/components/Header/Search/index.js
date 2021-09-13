@@ -23,8 +23,9 @@ import classnames from 'classnames';
 import useFetch from 'use-http';
 
 import HabitatStatus from 'Components/HabitatCard/HabitatStatus';
+import ClickMessageTip from 'Components/ClickMessageTip';
 import { buildURL } from 'Shared/fetch';
-import { setHabitats } from '../../../redux/actions';
+import { setHabitats, setSearchClicked } from '../../../redux/actions';
 import { useWindowResize } from '../../../hooks';
 import zoolifeTheme from '../../../grommetTheme';
 
@@ -52,7 +53,11 @@ const Search = ({
   className,
   allHabitats,
   subscription,
+  searchClicked,
+  albumClicked,
+  streamClicked,
   setHabitatsAction,
+  setSearchClickedAction,
 }) => {
   const [suggestionOpen, setSuggestionOpen] = useState(false);
   const [value, setValue] = useState('');
@@ -77,6 +82,10 @@ const Search = ({
       if (response.ok) {
         setHabitatsAction(response.data.habitats)
       }
+    }
+
+    if (!searchClicked) {
+      setSearchClickedAction(true);
     }
   };
 
@@ -187,16 +196,38 @@ const Search = ({
           dropHeight="medium"
         />
 
-        <FontAwesomeIcon icon={faSearch} color="var(--grey)" style={{ width: '14px' }} />
+        <ClickMessageTip
+          align={{ top: 'bottom' }}
+          disable={searchClicked || !albumClicked || !streamClicked}
+          text="Discover more habitats">
+          <Box onClick={() => boxRef.current.querySelector('input').focus()} className={style.searchClickIndicator}>
+            <FontAwesomeIcon
+              icon={faSearch}
+              color="var(--grey)"
+              style={{ width: '14px' }}
+            />
+          </Box>
+        </ClickMessageTip>
       </Box>
     </Grommet>
   );
 };
 
-export default connect((
-  { allHabitats, user: { subscription } },
-) => (
-  { allHabitats, subscription }
-), {
+export default connect(({
+  allHabitats,
+  user: {
+    subscription,
+    searchClicked,
+    albumClicked,
+    streamClicked,
+  },
+}) => ({
+  allHabitats,
+  subscription,
+  searchClicked,
+  albumClicked,
+  streamClicked,
+}), {
   setHabitatsAction: setHabitats,
+  setSearchClickedAction: setSearchClicked,
 })(Search);

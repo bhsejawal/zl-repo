@@ -10,6 +10,8 @@ import {
   UPDATE_REFERRAL_DATA,
   UPDATE_CLIP_BUTTON_CLICKED,
   UPDATE_STREAM_TAPPED,
+  UPDATE_ALBUM_CLICKED,
+  UPDATE_SEARCH_CLICKED,
 } from '../types';
 
 const initialState = {
@@ -44,8 +46,12 @@ const initialState = {
   enteredMap: false,
   // flag to show clip button pulse animation
   clipButtonClicked: false,
-  // flag to show stream tap animation
+  // flag to show stream tap indicator
   streamClicked: false,
+  // flag to show album click indicator
+  albumClicked: false,
+  // flag to show album click indicator
+  searchClicked: false,
 };
 
 export default (state = initialState, { type, payload }) => {
@@ -170,6 +176,22 @@ export default (state = initialState, { type, payload }) => {
     return {
       ...state,
       streamClicked: clicked,
+    }
+  }
+
+  if (type === UPDATE_ALBUM_CLICKED) {
+    const { clicked } = payload;
+    return {
+      ...state,
+      albumClicked: clicked,
+    }
+  }
+
+  if (type === UPDATE_SEARCH_CLICKED) {
+    const { clicked } = payload;
+    return {
+      ...state,
+      searchClicked: clicked,
     }
   }
 

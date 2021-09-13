@@ -10,7 +10,10 @@ import {
   faUsers,
 } from '@fortawesome/pro-regular-svg-icons';
 import { faPhotoVideo } from '@fortawesome/pro-solid-svg-icons';
+import classnames from 'classnames';
+import ClickMessageTip from 'Components/ClickMessageTip';
 
+import { setAlbumClicked } from '../../../../../redux/actions';
 import { useIsHabitatTabbed } from '../../../../../hooks';
 import { setActiveTab } from '../actions';
 import {
@@ -26,11 +29,18 @@ import ToggleButton from '../toggleButton';
 
 import style from './style.scss';
 
-const Tabs = ({ active, setActiveTabAction }) => {
+const Tabs = ({
+  active,
+  albumClicked,
+  streamClicked,
+  setActiveTabAction,
+  setAlbumClickedAction,
+}) => {
   const isTabbed = useIsHabitatTabbed();
   const onClick = useCallback(({ target }) => {
     setActiveTabAction(target.dataset.value);
-  }, [setActiveTabAction]);
+    setAlbumClickedAction(true);
+  }, [setActiveTabAction, setAlbumClickedAction]);
 
   // reset on unload
   // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -90,12 +100,17 @@ const Tabs = ({ active, setActiveTabAction }) => {
 
       {!isTabbed && (
         <ToggleButton
-          className={style.tabBtn}
+          className={classnames(style.tabBtn, { [style.albumClickIndicator]: !albumClicked })}
           active={active === ALBUM}
           value={ALBUM}
           onClick={onClick}
         >
-          <FontAwesomeIcon className={style.icon} icon={faPhotoVideo} />
+          <ClickMessageTip
+            align={{ bottom: 'top' }}
+            disable={albumClicked || !streamClicked}
+            text="View photos and clips">
+            <FontAwesomeIcon className={style.icon} icon={faPhotoVideo} />
+          </ClickMessageTip>
           Album
         </ToggleButton>
       )}
@@ -104,6 +119,9 @@ const Tabs = ({ active, setActiveTabAction }) => {
 };
 
 export default connect(
-  null,
-  { setActiveTabAction: setActiveTab },
+  ({ user: { albumClicked, streamClicked } }) => ({ albumClicked, streamClicked }),
+  {
+    setActiveTabAction: setActiveTab,
+    setAlbumClickedAction: setAlbumClicked,
+  },
 )(Tabs);
