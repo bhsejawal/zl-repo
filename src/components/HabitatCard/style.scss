@@ -79,6 +79,10 @@
   flex-direction: column;
   flex-grow: 2;
   padding: 20px;
+
+  a {
+    text-decoration: none;
+  }
 }
 
 .buttons {

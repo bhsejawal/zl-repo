@@ -147,7 +147,6 @@ const Favorite = ({ updateFavoriteHabitatAction }) => {
             width={{ min: 'fit-content' }}
           >
             <HabitatCard
-              favorite
               slug={slug}
               zooSlug={zoo?.slug}
               habitatId={_id}

@@ -124,9 +124,11 @@ const HabitatCard = ({
       logo={logo}
     >
       <div style={{ flexGrow: 1 }}>
-        <Heading level="4" margin={{ top: "0px", bottom: "15px" }}>{title || "Dummy Title"}</Heading>
+        <Link onClick={onHabitatClick} href={encodeURI(`/h/${zooSlug}/${slug}`)}>
+          <Heading level="4" margin={{ top: "0px", bottom: "15px" }}>{title}</Heading>
+        </Link>
         <Text size="xlarge" as="p">
-          {description || "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy"}
+          {description}
         </Text>
       </div>
       <div className={style.buttons}>
