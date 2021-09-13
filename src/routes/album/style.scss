@@ -2,13 +2,12 @@
 $horizontal-padding: 62px;
 
 .page {
-  padding-top: var(--headerHeight);
   overflow-y: auto;
 }
 
 .container {
-  overflow-y: scroll;
-  max-height: calc(100vh - var(--headerHeight));
+  overflow-y: auto;
+  max-height: 100vh;
 }
 
 .wrapper {

@@ -23,10 +23,8 @@ import zoolifeLogo from 'Components/ZoolifeLogo/zoolife.svg';
 import VideoPlayer from 'Components/VideoPlayer';
 
 import MediaContent from '../habitat/components/Album/MediaContent/Standalone';
-import Header from '../home/Header';
 import FilterButton from './FilterButton';
 
-import { goToSignup } from '../home/helpers';
 import zoolifeTheme from '../../grommetTheme';
 
 import style from './style.scss';
@@ -55,6 +53,10 @@ const Album = ({ mediaType: mediaTypeProp, matches: { photoId, videoId } = {} })
     () => zoos.map(({ name, _id }) => ({ label: name, value: _id })),
     [zoos],
   );
+
+  const goToZoolife = () => {
+    window.parent.location = 'https://zoolife.tv/signup?utm_source=zoolife&utm_medium=public&utm_campaign=albumpage';
+  };
 
   const onMainItemLoad = () => {
     setLoading(false);
@@ -135,8 +137,6 @@ const Album = ({ mediaType: mediaTypeProp, matches: { photoId, videoId } = {} })
   return (
     <Grommet full theme={customBreakpoints}>
       <div className={style.page}>
-        <Header />
-
         <div className={style.container}>
           <div className={style.wrapper}>
             <div className={style.main}>
@@ -149,7 +149,7 @@ const Album = ({ mediaType: mediaTypeProp, matches: { photoId, videoId } = {} })
                   <br />
                   the world&apos;s top zoos, hosted by nature experts.
                 </p>
-                <LandingPrimary onClick={goToSignup}>
+                <LandingPrimary onClick={goToZoolife}>
                   Start Your Free Trial
                 </LandingPrimary>
               </div>
