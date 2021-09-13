@@ -18,9 +18,15 @@ $circle-size: 40px;
   }
 }
 
-.step .wrapper {
-  margin: auto;
-  height: auto;
+.step {
+  background: white;
+  max-width: var(--maxWidth);
+  margin: 0 auto;
+
+  .wrapper {
+    margin: auto;
+    height: auto;
+  }
 }
 
 .pickSection {

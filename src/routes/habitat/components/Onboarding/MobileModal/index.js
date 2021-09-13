@@ -11,6 +11,7 @@ import { PrimaryButton } from 'Components/Buttons';
 import grommetTheme from '../../../../../grommetTheme';
 import { useIsMobileSize } from '../../../../../hooks';
 
+import 'react-multi-carousel/lib/styles.css';
 import style from './style.scss';
 
 const MobileOnboarding = ({ updateOnboarding, error }) => {
