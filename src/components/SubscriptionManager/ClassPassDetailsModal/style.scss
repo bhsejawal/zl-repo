@@ -1,0 +1,29 @@
+@import "../../../style/media-query";
+
+.modalWrapper {
+
+  div {
+    width: 90vw;
+  }
+
+  img {
+    width: 100%;
+    height: auto;
+    border-radius: 10px;
+  }
+
+}
+
+.closeButton {
+  position: absolute;
+  top: 0;
+  right: 0;
+  font-size: 12px;
+  cursor: pointer;
+  transform: translate3d(-50%, 25%, 0);
+
+  @media screen and (max-width: #{$tablet-portrait-width - 1}) {
+    transform: translate3d(-75%, -75%, 0);
+    font-size: 10px;
+  }
+}
