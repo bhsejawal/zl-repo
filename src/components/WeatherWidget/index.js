@@ -32,8 +32,8 @@ const WeatherWidget = ({
       if (!upcoming?.length) {
         return null;
       }
-      const [nextTalk] = upcoming;
-      return format(nextTalk.startTime, 'EEE hh:mm aa').toUpperCase();
+      const [{ startTime, _id }] = upcoming;
+      return { time: format(startTime, 'EEE hh:mm aa').toUpperCase(), startTime, _id };
     },
     [upcoming],
   );
@@ -88,13 +88,16 @@ const WeatherWidget = ({
           className={style.schedule}
           direction="row"
           flex="grow"
-          onClick={showScheduleModalAction}
+          onClick={() => showScheduleModalAction(
+            nextTalk?._id ?? undefined,
+            nextTalk?.startTime ?? undefined,
+          )}
         >
           {nextTalk && (
             <>
               <FontAwesomeIcon icon={faCalendarAlt} color="white" />
               <Text size="small">
-                {`Next talk: ${nextTalk}`}
+                {`Next talk: ${nextTalk.time}`}
               </Text>
             </>
           )}
