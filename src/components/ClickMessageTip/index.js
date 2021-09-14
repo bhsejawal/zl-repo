@@ -12,7 +12,7 @@ const ClickMessageTip = ({
   const targetRef = useRef();
   const [, setShowDrop] = useState(false);
 
-  useEffect(() => setShowDrop(true), []);
+  useEffect(() => setShowDrop(!!targetRef.current), [children]);
 
   if (disable) {
     return children;
@@ -25,6 +25,7 @@ const ClickMessageTip = ({
       </Box>
       {targetRef.current && (
         <Drop
+          key={text}
           plain
           align={align}
           target={targetRef.current}
