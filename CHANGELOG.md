@@ -2,7 +2,18 @@
 This file keeps track of all relevant change for every release.
 
 ## [Unreleased]
+## [5.19.0] - 2021-09-13
+### Added
+ - Click indicator on the search bar and the album tab
+ - Details popup for the class pass
+ - Link to all habitat cards
 
+### Changed
+ - Responsiveness across the application
+ - Habitat Trailer UI
+
+### Fixed
+ - Issue with Schedule Popup not showing all the info
 ## [5.18.0] - 2021-09-08
 
 ### Added
