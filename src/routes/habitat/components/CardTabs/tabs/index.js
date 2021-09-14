@@ -39,7 +39,7 @@ const Tabs = ({
   const isTabbed = useIsHabitatTabbed();
   const onClick = useCallback(({ target }) => {
     setActiveTabAction(target.dataset.value);
-    setAlbumClickedAction(true);
+    setAlbumClickedAction(target.dataset.value === ALBUM);
   }, [setActiveTabAction, setAlbumClickedAction]);
 
   // reset on unload
