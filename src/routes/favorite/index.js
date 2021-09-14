@@ -14,7 +14,7 @@ import HabitatCard from 'Components/HabitatCard';
 import Loader from 'Components/Loader';
 import NoContentFallback from 'Components/NoContentFallback';
 
-import { useIsInitiallyLoaded, useIsMobileSize, useWindowResize } from '../../hooks';
+import { useIsInitiallyLoaded, useIsMobileSize } from '../../hooks';
 import { updateFavoriteHabitat } from '../../redux/actions';
 
 import style from './style.scss';
@@ -45,7 +45,6 @@ const reducer = (state, { type, payload }) => {
 const url = buildURL('/habitats/favorite');
 
 const Favorite = ({ updateFavoriteHabitatAction }) => {
-  const { width } = useWindowResize();
   const [{ habitats = [] }, dispatch] = useReducer(reducer, {});
   const { loading, error, get } = useFetch(url, {
     credentials: 'include',
@@ -88,28 +87,34 @@ const Favorite = ({ updateFavoriteHabitatAction }) => {
         direction="row"
         align="center"
       >
-        <Box justify="start" margin={{ top: '0', bottom: '0', right: '20px' }}>
-          <Heading
-            color="var(--charcoal)"
-            level="3"
-          >
-            My Favorites
-          </Heading>
-        </Box>
-        <Box justify="center">
-          <Text margin="0" size="xlarge" color="var(--charcoalLight)">
-            Your top habitats at a glance.
-          </Text>
+        <Box
+          justify="evenly"
+          direction="row"
+          alignContent="center"
+        >
+          <Box justify="center" margin={{ top: '0', bottom: '0', right: '20px' }} width={{ min: 'fit-content' }}>
+            <Heading
+              color="var(--charcoal)"
+              level="3"
+            >
+              My Favorites
+            </Heading>
+          </Box>
+          <Box justify="center">
+            <Text margin="0" size="xlarge" color="var(--charcoalLight)">
+              Your top habitats at a glance.
+            </Text>
+          </Box>
         </Box>
       </Box>
 
       <Box
         wrap
-        background="var(--hunterGreenMediumLight)"
+        background="white"
         flex="grow"
         direction="row"
-        justify={width < 850 ? 'center' : 'start' }
-        className={classnames(style.content, 'customScrollBar')}
+        justify="start"
+        className={classnames(style.content, 'customScrollBar grey')}
         pad={{
           horizontal: isSmallScreen ? '8px' : 'xlarge',
           vertical: 'medium',
@@ -135,9 +140,13 @@ const Favorite = ({ updateFavoriteHabitatAction }) => {
           description,
           wideImage: image,
         }) => (
-          <Box key={_id} pad={isSmallScreen ? '8px' : 'small' } flex="shrink">
+          <Box
+            key={_id}
+            pad={isSmallScreen ? '8px' : '15px' }
+            flex="shrink"
+            width={{ min: 'fit-content' }}
+          >
             <HabitatCard
-              favorite
               slug={slug}
               zooSlug={zoo?.slug}
               habitatId={_id}

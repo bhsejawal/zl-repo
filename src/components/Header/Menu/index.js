@@ -40,7 +40,8 @@ const Menu = ({ unsetUserDataAction, openContactUsModalAction }) => {
   return (
     <div className={style.menuContainer}>
       <Box
-        pad="12px"
+        pad="8px"
+        margin={{ right: '10px' }}
         align="center"
         justify="start"
         ref={buttonRef}

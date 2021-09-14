@@ -238,7 +238,11 @@ const Users = ({ pageSize = 20 }) => {
   const refreshData = () => get();
 
   return (
-    <Main height={{ min: '100vh' }} pad={{ vertical: '60px', horizontal: 'large' }}>
+    <Main
+      height={{ min: '100vh' }}
+      pad={{ vertical: '60px', horizontal: 'large' }}
+      background="white"
+    >
       <Box direction="row" justify="between" align="center" height={{ min: '100px' }}>
         <Heading level="3">Users</Heading>
         <Box direction="row" gap="medium" align="center">

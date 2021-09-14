@@ -47,8 +47,8 @@
   --lightGrey: #EBEBEB; // Charcoal/5
   --white: #FFFFFF; // Light Grey
 
-  --headerHeight: 60px;
-  --maxWidth: 1920px;
+  --headerHeight: 45px;
+  --maxWidth: 1440px;
   --lavenderGradient: linear-gradient(180deg, var( --lavenderLight) 62.5%, #FEDFC9 100%);
 }
 
@@ -67,6 +67,7 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   overflow: hidden;
+  background: linear-gradient(180deg, #8EC2A5 27.08%, #8BA0D2 100%);
 }
 
 * {

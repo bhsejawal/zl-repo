@@ -22,6 +22,7 @@ import LoaderModal from 'Components/LoaderModal';
 import { StripeContext } from 'Shared/context';
 
 import UpdateSubscriptionDialog from './UpdateSubscriptionDialog';
+import ClassPassDetailsModal from './ClassPassDetailsModal';
 
 import { setPlans, setSubscriptionData } from '../../redux/actions';
 
@@ -54,6 +55,7 @@ const VariantA = ({
   showFreemium,
   isPublicPage,
   goToSignup,
+  openDetailsModalHandler,
 }) => (
   <Box
     direction={isSmallScreen ? 'column' : 'row'}
@@ -103,6 +105,8 @@ const VariantA = ({
         }}
         disabled={disabled}
         originalPrice={originalPrice}
+        showDetailsModal={name === 'Class Pass'}
+        openDetailsModalHandler={openDetailsModalHandler}
       />
     ))}
     {(currentPlan === 'FREEMIUM' || showFreemium) && (
@@ -126,6 +130,7 @@ const VariantB = ({
   showFreemium,
   isPublicPage,
   goToSignup,
+  openDetailsModalHandler,
 }) => (
   <Box
     direction={isSmallScreen ? 'column' : 'row'}
@@ -177,6 +182,8 @@ const VariantB = ({
         }}
         disabled={disabled}
         originalPrice={originalPrice}
+        showDetailsModal={name === 'Class Pass'}
+        openDetailsModalHandler={openDetailsModalHandler}
       />
     ))}
     {(currentPlan === 'FREEMIUM' || showFreemium) && (
@@ -207,7 +214,7 @@ const SubscriptionSection = ({
   const { stripe } = useContext(StripeContext);
   const isSmallScreen = useIsMobileSize();
   const [showCancelDialog, setShowCancelDialog] = useState(false);
-
+  const [showClassPassModal, setShowClassPassModal] = useState(false);
   const showCancelButton = useMemo(() => {
     if (['FREEMIUM', 'TRIAL'].includes(productId)) {
       return false;
@@ -282,6 +289,9 @@ const SubscriptionSection = ({
       show: true,
     })
   }
+  const openDetailsModalHandler = useCallback(() => {
+    setShowClassPassModal(true);
+  }, []);
 
   const onCancelHandler = () => {
     setDialogSettings(defaultDialogSettings);
@@ -436,6 +446,7 @@ const SubscriptionSection = ({
 
   return (
     <>
+      {showClassPassModal && <ClassPassDetailsModal onClose={() => setShowClassPassModal(false)} />}
       {showCancelCTA && showCancelButton && (
         <Box background="#F9FCE7" pad={isSmallScreen ? 'large' : 'medium'} align="center" justify="center">
           <Text onClick={cancelSubscription} className={style.cancelText}>
@@ -464,6 +475,7 @@ const SubscriptionSection = ({
               showFreemium={showFreemium}
               isPublicPage={isPublicPage}
               goToSignup={goToSignup}
+              openDetailsModalHandler={openDetailsModalHandler}
             />
           </Variant>
           <Variant id="1">
@@ -474,6 +486,7 @@ const SubscriptionSection = ({
               isPublicPage={isPublicPage}
               goToSignup={goToSignup}
               showFreemium={showFreemium}
+              openDetailsModalHandler={openDetailsModalHandler}
             />
           </Variant>
         </Experiment>

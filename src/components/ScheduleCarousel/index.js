@@ -12,7 +12,7 @@ import PreviewVideo from '../Card/PreviewVideo';
 
 import 'react-multi-carousel/lib/styles.css';
 import style from './style.scss';
-
+// TODO Check if this will be reused
 const ScheduleCarousel = ({
   previewVideo,
 }) => {

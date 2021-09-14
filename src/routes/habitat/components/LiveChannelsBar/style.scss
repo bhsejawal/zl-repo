@@ -25,12 +25,12 @@
   white-space: nowrap;
 
   span {
-    margin-left: 10px;
+    margin-left: 5px;
   }
 
   svg {
     font-size: 8px;
-    margin-right: 4px;
+    margin-right: 5px;
   }
 }
 
@@ -49,7 +49,7 @@
 
   .item {
     margin-bottom: 10px;
-    height: 70px;
+    height: 50px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -64,24 +64,20 @@
     }
 
     img {
-      width: 50px;
-      height: 50px;
+      width: 36px;
+      height: 36px;
       max-height: 50px;
       border-radius: 50%;
     }
 
     .liveTag {
+      font-size: 10px;
+      line-height: 10px;
       position: absolute;
-      bottom: 0;
-      transform: translateY(50%);
+      bottom: -6px;
       color: var(--charcoal);
-      display: flex;
-      align-items: center;
-
-      svg {
-        width: 5px;
-        margin-right: 5px;
-      }
+      background: #CDD565;
+      border-radius: 3px;
     }
 
     span > div {

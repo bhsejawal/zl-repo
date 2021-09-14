@@ -1,12 +1,11 @@
 @import "../../style/media-query.scss";
 
-@import "./variables";
-
 .page {
   height: calc((var(--vh) * 100) - var(--headerHeight));
   display: flex;
   flex-direction: column;
   position: relative;
+  background: white;
 }
 
 :global(.fullscreen) {
@@ -33,11 +32,13 @@
 }
 
 .middleSection {
-  padding: 40px $ypadding;
+  padding: 40px;
+  background: white;
 }
 
 .bottomSection {
-  padding: 0 $ypadding;
+  padding: 0 40px;
+  background: white;
 }
 
 .livestreamWrapper {
@@ -49,7 +50,13 @@
 
   .middleSection,
   .bottomSection {
-    padding-left: $ypadding / 2;
-    padding-right: $ypadding / 2;
+    padding: 23px 21px 0px 21px;
+  }
+}
+
+.albumClickIndicator {
+
+  svg {
+    z-index: 1;
   }
 }

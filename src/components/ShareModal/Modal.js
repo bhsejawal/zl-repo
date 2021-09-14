@@ -74,6 +74,7 @@ const ShareModal = ({
   habitat,
   slug,
   isGuest,
+  isDownloadAllowed = true,
 }) => {
   const {
     _id,
@@ -90,7 +91,6 @@ const ShareModal = ({
     title,
     htmlURL,
   } = data;
-  const shareUrl = `${window.location.origin}/album/${videoURL ? 'videos' : 'photos'}/${_id}?utm_source=zoolife&utm_medium=public&utm_campaign=albumpage`;
   const isMobileSize = useIsMobileSize();
   const [showEmailError, setShowEmailError] = useState();
   const [showEmailSuccess, setShowEmailSuccess] = useState();
@@ -148,7 +148,7 @@ const ShareModal = ({
   };
 
   const webShareHandler = async () => {
-    const data = { url: shareUrl };
+    const data = { url: htmlURL };
     try {
       await navigator.share(data);
       logShare('webShare');
@@ -223,7 +223,7 @@ const ShareModal = ({
           <Box className={style.shareMedia} >
             {url && <img src={url} alt="" />}
             {videoURL && (
-              <VideoPlayer videoURL={videoURL} autoPlay muted isGuest={isGuest} />
+              <VideoPlayer videoURL={videoURL} autoPlay muted isGuest={isGuest} videoId={mediaId} />
             )}
           </Box>
           <Box width={{ min: '285px' }} background="white" className={style.rightSection}>
@@ -295,24 +295,26 @@ const ShareModal = ({
                     {!loading && <FontAwesomeIcon icon={showEmailSuccess ? faCheck : faEnvelope} />}
                   </RoundButton>
                 )}
-                <RoundButton
-                  type="button"
-                  backgroundColor="#71475D"
-                  color="white"
-                  width={20}
-                  className={style.shareIcon}
-                >
-                  <a
-                    download
-                    target="_blank"
-                    rel="noreferrer"
-                    href={url || videoURL}
-                    onClick={() => logShare('download')}
+                {isDownloadAllowed && (
+                  <RoundButton
+                    type="button"
+                    backgroundColor="#71475D"
+                    color="white"
+                    width={20}
+                    className={style.shareIcon}
                   >
-                    <FontAwesomeIcon icon={faDownload} />
-                  </a>
-                </RoundButton>
-                {(androidDevice() || iOSDevice()) && (
+                    <a
+                      download
+                      target="_blank"
+                      rel="noreferrer"
+                      href={url || videoURL}
+                      onClick={() => logShare('download')}
+                    >
+                      <FontAwesomeIcon icon={faDownload} />
+                    </a>
+                  </RoundButton>
+                )}
+                {(androidDevice() || iOSDevice()) && htmlURL && (
                   <RoundButton
                     onClick={webShareHandler}
                     type="button"
@@ -325,7 +327,7 @@ const ShareModal = ({
                     {iOSDevice() && <FontAwesomeIcon icon={faShareSquare} />}
                   </RoundButton>
                 )}
-                {!androidDevice() && !iOSDevice() && (
+                {!androidDevice() && !iOSDevice() && htmlURL && (
                   <>
                     <RoundButton
                       type="button"

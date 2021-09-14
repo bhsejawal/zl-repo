@@ -1,11 +1,16 @@
 import { h, toChildArray } from 'preact';
-import { useMemo, useState } from 'preact/hooks';
+import { useCallback, useMemo, useState } from 'preact/hooks';
 import { Box, Button, Text } from 'grommet';
 import classnames from 'classnames';
 
 import style from './style.scss';
 
-const Tabs = ({ children, className, show = true }) => {
+const Tabs = ({
+  children,
+  className,
+  show = true,
+  onChange,
+}) => {
   const [activeIndex, setActiveIndex] = useState(0);
 
   const activeTabContent = useMemo(
@@ -13,11 +18,16 @@ const Tabs = ({ children, className, show = true }) => {
     [children, activeIndex],
   );
 
+  const onClickHandler = useCallback((index) => {
+    setActiveIndex(index);
+    onChange({ label: toChildArray(children)[index].props.label, index });
+  }, [children, onChange]);
+
   // TODO: maybe to move it to another component to prevent it from running on large screens
   const tabButtons = useMemo(() => (
     <Box className={style.tabControls} flex={{ shrink: 0 }} direction="row" justify="evenly">
       {toChildArray(children).map(({ props: { label, icon } }, ind) => (
-        <Button plain onClick={() => setActiveIndex(ind)}>
+        <Button plain onClick={() => onClickHandler(ind)}>
           <Box
             pad="medium"
             align="center"
@@ -34,7 +44,7 @@ const Tabs = ({ children, className, show = true }) => {
         </Button>
       ))}
     </Box>
-  ), [children, activeIndex]);
+  ), [children, onClickHandler, activeIndex]);
 
   if (!show) {
     return toChildArray(children)[0];

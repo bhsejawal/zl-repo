@@ -86,7 +86,7 @@ blocks:
     skip:
       when: pull_request !~ '.*'
 execution_time_limit:
-  minutes: 10
+  minutes: 15
 promotions:
   - name: Dev deploy
     pipeline_file: dev-deploy.yml

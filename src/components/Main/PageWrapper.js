@@ -8,7 +8,11 @@ const PageWrapper = ({ children, ...props }) => {
   return (
     <Box fill className="pageWrapper">
       <Box fill overflow="auto">
-        <Box fill width={{ max: "var(--maxWidth)", min: "350px" }} margin={{ horizontal: 'auto' }}>
+        <Box
+          fill
+          width={{ max: "var(--maxWidth)", min: "350px" }}
+          margin={{ horizontal: 'auto' }}
+          background="white">
           {childrenWithProps}
         </Box>
       </Box>

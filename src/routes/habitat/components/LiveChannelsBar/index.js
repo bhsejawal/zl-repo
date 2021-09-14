@@ -5,7 +5,6 @@ import {
   useMemo,
 } from 'preact/hooks';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCircle } from '@fortawesome/pro-solid-svg-icons';
 import { faChevronLeft, faChevronRight } from '@fortawesome/pro-regular-svg-icons';
 import { Text, Tip, Box } from 'grommet';
 import classnames from 'classnames';
@@ -46,7 +45,7 @@ const LiveChannelsBar = ({
       <div ref={ref} className={style.liveTalkBar} style={{ height, minWidth: width }}>
         <div className={classnames(style.expandBar, {[style.active]: expand})}>
           <button type="button" className={style.liveTalkExpandButton} onClick={() => setExpand(!expand)}>
-            <Text size="medium" margin={{ right: '5px' }}>Live Now</Text>
+            <Text size="medium" margin={{ right: '5px' }}>Live</Text>
             <FontAwesomeIcon icon={faChevronLeft} />
           </button>
           <div className={classnames(style.listWrapper, 'customScrollBar')}>
@@ -76,7 +75,7 @@ const LiveChannelsBar = ({
 
         <div className={style.content}>
           <button type="button" className={style.liveTalkExpandButton} onClick={() => setExpand(!expand)}>
-            <Text size="medium">Live Now</Text>
+            <Text size="medium">Live</Text>
             <FontAwesomeIcon icon={faChevronRight} />
           </button>
           <ul className="customScrollBar">
@@ -100,7 +99,7 @@ const LiveChannelsBar = ({
                   </Box>
                 )}
                 plain
-                dropProps={{ align: { left: "right" }, background: { color: 'white' }, margin: { left: '-7.5px' }}}
+                dropProps={{ align: { left: "right" }, background: { color: 'white' }}}
               >
                 <li key={_id} className={style.item}>
                   <Link href={encodeURI(`/h/${zooSlug}/${habitatSlug}`)}>
@@ -108,12 +107,7 @@ const LiveChannelsBar = ({
                     {liveTalk && (
                       <Tag
                         className={style.liveTag}
-                        label={(
-                          <>
-                            <FontAwesomeIcon icon={faCircle} color="black" />
-                            Talk
-                          </>
-                        )}
+                        label="TALK"
                         varient="online"
                       />
                     )}

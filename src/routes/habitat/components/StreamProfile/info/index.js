@@ -1,5 +1,10 @@
 import { h } from 'preact';
-import { useMemo, useState } from 'preact/hooks';
+import {
+  useMemo,
+  useState,
+  useEffect,
+  useCallback,
+} from 'preact/hooks';
 import { connect } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHeart as faHeartSolid, faSpinner, faTimes } from '@fortawesome/pro-solid-svg-icons';
@@ -8,15 +13,14 @@ import useFetch from 'use-http';
 import classnames from 'classnames';
 import { Heading } from 'grommet';
 
-import { buildURL } from 'Shared/fetch';
+import { buildURL, API_BASE_URL } from 'Shared/fetch';
 
 import TextEditor from 'Components/AdminEditWrappers/TextEditor';
 import ImageEditor from 'Components/AdminEditWrappers/ImageEditor';
+import ShareModal from 'Components/ShareModal/Standalone';
 
 import { setHabitatLiked } from '../../../actions';
 import { useIsHabitatTabbed } from '../../../../../hooks';
-
-import profileMask from './profile-mask.svg';
 
 import style from './style.scss';
 
@@ -25,12 +29,13 @@ const Info = ({
   title,
   profileImage,
   zooLogo,
-  // zooSlug, this will be used for zoo page link
   isLiked,
   setLikedAction,
 }) => {
   const [error, setError] = useState();
   const isTabbedLayout = useIsHabitatTabbed();
+  const [showTrailer, setShowTrailer] = useState(false);
+  const [habitatTrailer, setHabitatTrailer] = useState(undefined);
 
   const {
     post,
@@ -42,6 +47,35 @@ const Info = ({
     cachePolicy: 'no-cache',
     headers: { 'Content-Type': 'application/json' },
   });
+
+  const {
+    get,
+    data: habitatTrailerData,
+    response: habitatTrailerResponse,
+    loading: habitatTrailerLoading,
+  } = useFetch(API_BASE_URL, {
+    credentials: 'include',
+    cachePolicy: 'no-cache',
+    headers: { 'Content-Type': 'application/json' },
+  });
+
+  useEffect(() => {
+    if (habitatTrailerResponse.status === 200) {
+      setHabitatTrailer(habitatTrailerData)
+    } else {
+      setHabitatTrailer(undefined);
+    }
+  }, [habitatTrailerResponse, habitatTrailerData])
+
+  const getHabitatTrailer = useCallback(async (habitatId) => {
+    await get(`/habitats/${habitatId}/trailer`);
+  }, [get])
+
+  useEffect(() => {
+    if (habitatId && habitatId !== habitatTrailer?.habitat?.id) {
+      getHabitatTrailer(habitatId);
+    }
+  }, [habitatId, getHabitatTrailer, habitatTrailer]);
 
   const likeIcon = useMemo(() => {
     if (loading) {
@@ -56,7 +90,8 @@ const Info = ({
     return faHeart;
   }, [isLiked, loading, error]);
 
-  const onFavClick = async () => {
+  const onFavClick = async (evt) => {
+    evt.stopPropagation();
     if (isLiked) {
       await del({ habitatId });
     } else {
@@ -73,16 +108,40 @@ const Info = ({
     }
   };
 
+  if (habitatTrailerLoading) {
+    return null;
+  }
+
   return (
     <div className={style.info}>
+      {habitatTrailer && (
+        <ShareModal
+          open={showTrailer}
+          data={habitatTrailer}
+          onClose={() => setShowTrailer(false)}
+          mediaId={habitatTrailer._id}
+          isDownloadAllowed={false}
+        />
+      )}
       <div
         className={classnames(style.profileImgWrapper, {[style.mobile]: isTabbedLayout})}
+        onClick={() => setShowTrailer(true)}
       >
+        <button onClick={onFavClick} type="button" className={style.favBtn}>
+          <FontAwesomeIcon
+            icon={likeIcon}
+            color={isLiked && !loading ? "var(--pink)" : "var(--grey)"}
+            spin={likeIcon === faSpinner}
+          />
+        </button>
+        {habitatTrailer && (
+          <div className={style.background} />
+        )}
         <ImageEditor
           initialImgUrl={profileImage}
           postToUrl={`/admin/habitats/${habitatId}/prop`}
           imageProp="profileImage"
-          editBtnPosition={{ right: '50px', top: '10px' }}
+          editBtnPosition={{ right: '18px', top: '10px' }}
           constraints={{
             maxResolution: 240,
             acceptedFormats: ['jpg', 'jpeg', 'png', 'svg'],
@@ -91,21 +150,13 @@ const Info = ({
           }}
         >
           {(img) => (
-            <div className={style.profileImg}>
+            <div className={classnames(style.profileImg, {[style.interactive]: habitatTrailer })}>
               <div>
                 <img src={img} alt="Profile" />
               </div>
             </div>
           )}
         </ImageEditor>
-        <button onClick={onFavClick} type="button" className={style.favBtn}>
-          <FontAwesomeIcon
-            icon={likeIcon}
-            color={isLiked && !loading ? "var(--pink)" : "var(--grey)"}
-            spin={likeIcon === faSpinner}
-          />
-        </button>
-        <img className={style.mask} src={profileMask} alt="Mask" />
       </div>
 
       <div>
@@ -122,9 +173,6 @@ const Info = ({
         <p className={style.zooNameWrapper}>
           at
           &nbsp;
-          {/* TODO: we need to agree on this routing path */}
-          {/* maybe we could use `/z/${zooName}` */}
-          {/* if we go with only `/${zooName}` we would need to do much more work to handle 404 */}
           <img src={zooLogo} alt="logo" />
         </p>
       </div>

@@ -1,3 +1,5 @@
+@import "../../style/media-query";
+
 .notificationsContainer {
   position: fixed;
   top: 0;
@@ -9,8 +11,8 @@
   align-items: flex-end;
   z-index: 20;
 
-  @media screen and (min-width: 1920px) {
-    right: calc(50% - (1920px / 2));
+  @media screen and (min-width: #{$max-width}) {
+    right: calc(50% - (var(--maxWidth) / 2));
   }
 
   .wrapper {

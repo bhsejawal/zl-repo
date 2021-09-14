@@ -24,6 +24,7 @@ const Chat = ({
   mediaType,
   alternate = false,
   isGuest,
+  showHeader,
 }) => {
   const pubnub = usePubNub();
 
@@ -137,6 +138,7 @@ const Chat = ({
       alternate={alternate}
       mediaType={mediaType}
       isGuest={isGuest}
+      showHeader={showHeader}
     />
   );
 }

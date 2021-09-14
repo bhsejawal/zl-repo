@@ -41,6 +41,8 @@ const PlanCard = ({
   benefitText,
   originalPrice,
   benefitTitle,
+  showDetailsModal,
+  openDetailsModalHandler,
 }) => {
   const isMobileSize = useIsMobileSize();
   const maxWidth = isMobileSize ? '300px' : '200px';
@@ -131,6 +133,23 @@ const PlanCard = ({
                   {`$${originalPrice / 100}`}
                 </Text>
               </Box>
+              )}
+              {showDetailsModal && (
+                <Box
+                  pad="xsmall"
+                  justify="center"
+                  align="center"
+                  margin={{ top: '11px'}}
+                  onClick={openDetailsModalHandler}
+                >
+                  <Text
+                    color="#376CDE"
+                    size="xlarge"
+                    style={{ textDecoration: 'underline', cursor: 'pointer' }}
+                  >
+                    Learn More
+                  </Text>
+                </Box>
               )}
             </Box>
 

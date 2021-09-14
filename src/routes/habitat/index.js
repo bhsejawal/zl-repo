@@ -32,6 +32,7 @@ import LiveTalk from 'Components/Card/LiveTalk';
 import ShareModal from 'Components/ShareModal';
 import OfflineContent from 'Components/OfflineContent';
 import ViewersCount from 'Components/ViewersCount';
+import ClickMessageTip from 'Components/ClickMessageTip';
 
 import ScheduleModal from './components/ScheduleModal';
 import Chat from './components/Chat';
@@ -44,7 +45,7 @@ import Album from './components/Album';
 
 import { useIsHabitatTabbed, useWindowResize } from '../../hooks';
 import { setHabitat, unsetHabitat, setHabitatProps } from './actions';
-import { setUserData, setHabitatViewers } from '../../redux/actions';
+import {setUserData, setHabitatViewers, setAlbumClicked} from '../../redux/actions';
 
 import { generateTitle, getDeviceType } from '../../helpers';
 import { MOBILE_CONTROLS_HEIGHT } from './constants';
@@ -69,6 +70,8 @@ const Habitat = ({
   hostStreamKey,
   isHostStreamOn,
   isBroadcasting,
+  albumClicked,
+  streamClicked,
   setHabitatAction,
   unsetHabitatAction,
   openTermsModalAction,
@@ -76,6 +79,7 @@ const Habitat = ({
   setHabitatPropsAction,
   setUserDataAction,
   setHabitatViewersAction,
+  setAlbumClickedAction,
 }) => {
   // this will be undefined most of the time
   // but in case camera is changed, this value will be set by from socket message
@@ -213,14 +217,20 @@ const Habitat = ({
     );
   }
 
-  const sideBarWidth = 85;
-  const chatWidth = 285;
-  const maxStreamWidth = 1920 - sideBarWidth - chatWidth;
+  const sideBarWidth = 50;
+  const chatWidth = 345;
+  const maxStreamWidth = 1440 - sideBarWidth - chatWidth;
   const maxStreamHeight = maxStreamWidth * 0.5625;
   const calcStreamWidth = isTabbed ? windowWidth : (pageWidth - sideBarWidth - chatWidth);
   const streamWidth = Math.min(maxStreamWidth, calcStreamWidth);
   const height = Math.min(maxStreamHeight, streamWidth * 0.5625);
   const topSectionHeight = height + (isTabletOrLarger ? 0 : MOBILE_CONTROLS_HEIGHT);
+
+  const onTabChange = ({ label }) => {
+    if (label === 'Album' && !albumClicked) {
+      setAlbumClickedAction(true);
+    }
+  }
 
   return (
     <div className={style.page} ref={pageRef}>
@@ -254,7 +264,7 @@ const Habitat = ({
                 isStreamOn={isStreamOn}
               />}
 
-              {isStreamOn && <ViewersCount />}
+              {isStreamOn && isTabbed && (<ViewersCount />)}
 
               {hasPermission('habitat:broadcast') && hostStreamKey && (!isHostStreamOn || isBroadcasting) && (
                 <BroadcastWrapper
@@ -269,11 +279,11 @@ const Habitat = ({
                 />
               )}
             </div>
-            {!isTabbed && <Chat width={chatWidth} height={height} />}
+            {!isTabbed && <Chat width={chatWidth} height={height} showHeader />}
           </div>
 
           <div className={style.contentSection} style={{ height: `calc((var(--vh) * 100) - var(--headerHeight) - ${height + (isTabletOrLarger ? 0 : MOBILE_CONTROLS_HEIGHT)}px)` }}>
-            <Tabs show={isTabbed}>
+            <Tabs show={isTabbed} onChange={onTabChange}>
               <Tab label="Explore" icon={<FontAwesomeIcon size="lg" icon={faInfoCircle} />}>
                 <div className={style.middleSection}>
                   <StreamProfile />
@@ -294,7 +304,21 @@ const Habitat = ({
                 </Box>
               </Tab>
 
-              <Tab label="Album" icon={<FontAwesomeIcon size="lg" icon={faPhotoVideo} />}>
+              <Tab
+                label="Album"
+                icon={
+                  <ClickMessageTip
+                    align={{ bottom: 'top' }}
+                    disable={albumClicked || !streamClicked}
+                    text="View photos and clips">
+                    <FontAwesomeIcon
+                      className={style.icon}
+                      icon={faPhotoVideo}
+                      style={{ zIndex: '1' }}
+                    />
+                  </ClickMessageTip>
+                }
+              >
                 <Box fill direction="column" justify="start" pad="20px 0">
                   <Suspense fallback={<Loader />}>
                     <Album tab />
@@ -331,6 +355,8 @@ const ConnectedHabitat = connect(
       termsAccepted = false,
       enteredHabitat,
       role: userRole,
+      albumClicked,
+      streamClicked,
       subscription: {
         productId,
         freeHabitat,
@@ -350,6 +376,8 @@ const ConnectedHabitat = connect(
     productId,
     freeHabitat,
     userRole,
+    albumClicked,
+    streamClicked,
   }),
   {
     setHabitatAction: setHabitat,
@@ -358,6 +386,7 @@ const ConnectedHabitat = connect(
     setHabitatPropsAction: setHabitatProps,
     setUserDataAction: setUserData,
     setHabitatViewersAction: setHabitatViewers,
+    setAlbumClickedAction: setAlbumClicked,
   },
 )(Habitat);
 

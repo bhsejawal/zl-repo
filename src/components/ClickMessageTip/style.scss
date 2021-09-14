@@ -1,0 +1,56 @@
+.clickMessageTip {
+  display: contents;
+  pointer-events: none;
+}
+
+.content {
+  padding: 5px 20px;
+  color: black;
+  background-color: var(--oliveLight);
+  border-radius: 100px;
+  min-width: 160px;
+  width: max-content;
+  max-width: 340px;
+  min-height: 28px;
+  text-align: center;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 20px;
+  line-height: 28px;
+}
+
+.pulse {
+  position: relative;
+
+  &:after {
+    content: "";
+    position: absolute;
+    top: calc(50% - (42px / 2));
+    right: calc(50% - (42px / 2));
+    width: 42px;
+    height: 42px;
+    background: var(--oliveLighter);
+    border-radius: 50%;
+    box-shadow: 0 0 0 0 rgba(236, 243, 100, 1);
+    transform: scale(1);
+    animation: pulse 1.5s infinite;
+  }
+}
+
+@keyframes pulse {
+
+  0% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(236, 243, 100, .8);
+  }
+
+  70% {
+    transform: scale(1.1);
+    box-shadow: 0 0 8px 17px rgba(236, 243, 100, .2);
+  }
+
+  100% {
+    transform: scale(.9);
+    box-shadow: 0 0 0 0 rgba(236, 243, 100, 0);
+  }
+}
