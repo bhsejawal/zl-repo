@@ -1,5 +1,10 @@
 @import "../../style/media-query.scss";
 
+.fullModal {
+  max-width: unset;
+  max-height: unset;
+}
+
 .absoluteClose {
   position: absolute;
   top: 50%;
@@ -13,13 +18,14 @@
   }
 
   &.mobile {
-    top: 10px;
-    right: -25px;
+    top: 2px;
+    right: 0;
 
     .close {
       color: black;
-      top: 0px;
-      right: 0px;
+      top: 0;
+      right: 0;
+      font-size: 16px;
     }
   }
 
@@ -80,6 +86,8 @@
 
   .mediaTitle {
     max-width: 285px;
+    min-height: 32px;
+    padding: 20px 15px;
     flex-wrap: wrap;
     word-break: break-word;
   }
@@ -154,6 +162,16 @@
     }
   }
 
+  .mobileHeader {
+    flex-direction: column;
+    padding: 20px 15px;
+    height: fit-content;
+
+    .mediaTitle {
+      padding: 16px 0 0 0;
+    }
+  }
+
   &.mobile {
     max-height: calc(var(--vh) * 100);
     height: calc(var(--vh) * 100);
@@ -164,15 +182,10 @@
     bottom: 0;
     left: 0;
     right: 0;
-    padding-top: 50px;
     background: white;
 
     .rightSection {
       flex-grow: 1;
-    }
-
-    .mediaTitle {
-      max-width: max-content;
     }
 
     .commentSection {
@@ -180,7 +193,7 @@
       max-height: 430px;
     }
 
-    >div {
+    > div:not(.mobileHeader) {
       height: 100%;
       flex-direction: column;
     }
@@ -267,7 +280,7 @@
   &.mobile {
     top: 0;
     left: 0;
-    transform: translate3d(15%, 250%, 0);
+    transform: translate3d(0, calc(104px + 25vw), 0);
   }
 }
 
@@ -277,7 +290,7 @@
   &.mobile {
     top: 0;
     right: 0;
-    transform: translate3d(50%, 250%, 0);
+    transform: translate3d(0, calc(104px + 25vw), 0);
   }
 }
 

@@ -190,7 +190,7 @@ const ShareModal = ({
       onEsc={onClose}
       margin={{ horizontal: isMobileSize ? '0px' : '70px' }}
       full={isMobileSize}
-
+      className={classnames({ [style.fullModal]: isMobileSize })}
     >
       <>
         <div className={classnames(style.absoluteClose, {[style.mobile]: isMobileSize })}>
@@ -219,7 +219,24 @@ const ShareModal = ({
         )}
       </>
       <Box className={classnames(style.shareModalContainer, { [style.mobile]: isMobileSize })}>
-        <Box direction="row">
+        {isMobileSize && (
+          <Box className={style.mobileHeader}>
+            <Box direction="row" align="center">
+              <AnimalIcon
+                width={35}
+                animalIcon={profile?.animal || profile?.animalIcon}
+                color={profile?.color} />
+              <Box margin={{ left: '16px'}}>
+                <Text size="xlarge" weight={700}>{username}</Text>
+                <Text>{`${formatDistanceToNow(new Date(createdAt || creationDate))} ago`}</Text>
+              </Box>
+            </Box>
+            <Box className={style.mediaTitle}>
+              <Text>{title}</Text>
+            </Box>
+          </Box>
+        )}
+        <Box direction="row" className="bbbbbbbbbbbbbbb">
           <Box className={style.shareMedia} >
             {url && <img src={url} alt="" />}
             {videoURL && (
@@ -227,35 +244,33 @@ const ShareModal = ({
             )}
           </Box>
           <Box width={{ min: '285px' }} background="white" className={style.rightSection}>
-            <Box
-              direction="row"
-              pad={{ horizontal: '22px', top: '22px'}}
-              height={{ min: '62px' }}
-            >
-              <Box margin={{ right: '20px' }} align="center" justify="center">
-                <AnimalIcon
-                  width={35}
-                  animalIcon={profile?.animal || profile?.animalIcon}
-                  color={profile?.color} />
-              </Box>
+            {!isMobileSize && (
+              <>
+                <Box
+                  direction="row"
+                  pad={{ horizontal: '22px', top: '22px'}}
+                  height={{ min: '62px' }}
+                >
+                  <Box margin={{ right: '20px' }} align="center" justify="center">
+                    <AnimalIcon
+                      width={35}
+                      animalIcon={profile?.animal || profile?.animalIcon}
+                      color={profile?.color} />
+                  </Box>
 
-              <Box>
-                <Text size="xlarge" weight={700}>{username}</Text>
-                <Text>{`${formatDistanceToNow(new Date(createdAt || creationDate))} ago`}</Text>
-              </Box>
-            </Box>
-            <Box
-              pad={{ horizontal: '22px', vertical: '15px' }}
-              height={{ min: '32px' }}
-              className={style.mediaTitle}
-            >
-              <Text>
-                {title}
-              </Text>
-            </Box>
+                  <Box>
+                    <Text size="xlarge" weight={700}>{username}</Text>
+                    <Text>{`${formatDistanceToNow(new Date(createdAt || creationDate))} ago`}</Text>
+                  </Box>
+                </Box>
+                <Box className={style.mediaTitle}>
+                  <Text>{title}</Text>
+                </Box>
+              </>
+            )}
             <Box
               direction="row"
-              pad={{ left: '20px', right: '14px', vertical: '6px' }}
+              pad={{ vertical: '12px', horizontal: '15px' }}
               fill="horizontal"
               border={{
                 color: '#EBEBEB',
