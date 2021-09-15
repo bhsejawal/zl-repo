@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-import {useEffect, useState} from 'preact/hooks';
+import { useEffect, useState } from 'preact/hooks';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faStar } from '@fortawesome/pro-solid-svg-icons';
 import useFetch from 'use-http';
@@ -8,7 +8,7 @@ import { buildURL } from 'Shared/fetch';
 import { logGAEvent } from 'Shared/ga';
 import CloseButton from 'Components/modals/CloseButton';
 import { addNotification } from './actions';
-import { getDeviceType } from '../../helpers';
+import { getDeviceType, getDesktopOrMobile } from '../../helpers';
 import { setUserData } from '../../redux/actions';
 
 import style from './style.scss';
@@ -29,8 +29,8 @@ const Rate = ({
 
   useEffect(() => {
     if (rate) {
-      post({ stars: rate });
-      logGAEvent( 'nps', 'user-rated-app', getDeviceType(), rate );
+      post({ stars: rate, device: getDesktopOrMobile() });
+      logGAEvent('nps', 'user-rated-app', getDeviceType(), rate );
     }
   }, [post, rate]);
 

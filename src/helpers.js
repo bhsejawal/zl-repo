@@ -38,6 +38,16 @@ export const getDeviceType = () => {
   return "desktop";
 };
 
+export const getDesktopOrMobile = () => {
+  const type = getDeviceType();
+
+  if (type === 'tablet' || type === 'phone') {
+    return 'mobile';
+  }
+
+  return 'desktop';
+}
+
 export const generateTitle = (part) => (part ? `Zoolife - ${part}` : 'Zoolife');
 
 export const formatAge = (dateOfBirth) => formatDistanceToNowStrict(

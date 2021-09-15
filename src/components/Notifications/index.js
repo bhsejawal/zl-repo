@@ -5,6 +5,7 @@ import { format, utcToZonedTime } from 'date-fns-tz';
 import { GlobalsContext } from 'Shared/context';
 import Notification from './Notification';
 import { addNotification } from './actions';
+import { getDesktopOrMobile } from '../../helpers';
 
 import style from './style.scss';
 
@@ -35,7 +36,7 @@ const Notifications = ({
       const date = format(utcToZonedTime(new Date(), 'UTC'), 'yyyy-MM', { timeZone: 'UTC' });
       const existingNotification = notifications.some(({ id }) => id === date);
 
-      if (!rate[date] && !existingNotification) {
+      if (!rate[`${date}-${getDesktopOrMobile()}`] && !existingNotification) {
         timeout = setTimeout(() => addNotificationAction({ id: date, type: 'rate' }), 1000);
       }
     }
