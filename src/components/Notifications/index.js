@@ -31,7 +31,7 @@ const Notifications = ({
   useEffect(() => {
     let timeout;
 
-    if (sessionDurationInSec > 300) { // 5 minutes * 60 seconds
+    if (sessionDurationInSec > 600) { // 10 minutes * 60 seconds
       // date (yyyy-mm) is stored in UTC so it needs to be checked in UTC as well
       const date = format(utcToZonedTime(new Date(), 'UTC'), 'yyyy-MM', { timeZone: 'UTC' });
       const existingNotification = notifications.some(({ id }) => id === date);
