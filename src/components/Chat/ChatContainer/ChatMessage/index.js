@@ -7,7 +7,7 @@ import {
   useCallback,
 } from 'preact/hooks';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSmilePlus, faTrash } from '@fortawesome/pro-regular-svg-icons';
+import { faSmilePlus, faTrash, faFlag } from '@fortawesome/pro-regular-svg-icons';
 import { Drop, Box } from 'grommet';
 import { usePubNub } from 'pubnub-react';
 import { connect } from 'react-redux';
@@ -36,6 +36,7 @@ const ChatMessage = ({
   channelId,
   onDeleteHandler,
   onReactionHandler,
+  onReportHandler,
   alternate,
   media = {},
 }) => {
@@ -151,6 +152,15 @@ const ChatMessage = ({
                       <FontAwesomeIcon icon={faTrash} />
                     </div>
                   )}
+              />
+              <Can
+                perform="chat:report"
+                yes={() => (
+                  // eslint-disable-next-line
+                  <div className={style.actionButton} onClick={() => onReportHandler(timetoken)}>
+                    <FontAwesomeIcon icon={faFlag} />
+                  </div>
+                )}
               />
             </div>
           </div>

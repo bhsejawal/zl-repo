@@ -33,7 +33,7 @@ const rules = {
     static: ['checkout:plans', 'signup:view', 'login:view'],
   },
   user: {
-    static: ['profile:edit', 'redirect:view', 'welcome:view', 'checkout:plans', 'map:view', 'favorite:edit', 'schedule:view', 'freemiumOnboarding:view'],
+    static: ['profile:edit', 'redirect:view', 'welcome:view', 'checkout:plans', 'map:view', 'favorite:edit', 'schedule:view', 'freemiumOnboarding:view', 'chat:report'],
     dynamic: {
       'habitat:view': isSubscriptionActive,
       'subscription:cancel': isSubscriptionActive,
@@ -41,10 +41,10 @@ const rules = {
     },
   },
   vip: {
-    static: ['profile:edit', 'favorite:edit', 'habitat:view', 'map:view', 'redirect:view', 'schedule:view'],
+    static: ['profile:edit', 'favorite:edit', 'habitat:view', 'map:view', 'redirect:view', 'schedule:view', 'chat:report'],
   },
   partner: {
-    static: ['habitat:view', 'map:view', 'profile:edit', 'favorite:edit', 'redirect:view', 'schedule:view', 'habitat:switch-stream'],
+    static: ['habitat:view', 'map:view', 'profile:edit', 'favorite:edit', 'redirect:view', 'schedule:view', 'habitat:switch-stream', 'chat:report'],
     dynamic: {
       "zoo:edit-timezone": canEditZoo,
       "zoo:edit-location": canEditZoo,
@@ -62,7 +62,7 @@ const rules = {
     },
   },
   host: {
-    static: ['habitat:view', 'map:view', 'profile:edit', 'favorite:edit', 'redirect:view', 'schedule:view', 'habitat:switch-stream'],
+    static: ['habitat:view', 'map:view', 'profile:edit', 'favorite:edit', 'redirect:view', 'schedule:view', 'habitat:switch-stream', 'chat:report'],
     dynamic: { "habitat:broadcast": canEditHabitat },
   },
 };

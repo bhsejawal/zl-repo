@@ -8,6 +8,7 @@ import { connect } from 'react-redux';
 import { get, last } from 'lodash-es';
 import classnames from 'classnames';
 import { usePubNub } from 'pubnub-react';
+import { post, buildURL } from 'Shared/fetch';
 
 import { logGAEvent } from 'Shared/ga';
 import ViewersCount from 'Components/ViewersCount';
@@ -19,6 +20,7 @@ import style from './style.module.scss';
 import ChatMessage from './ChatMessage';
 import WelcomeMessage from './ChatMessage/WelcomeMessage';
 import DeleteMessageModal from './DeleteMessageModal';
+import ReportMessageModal from './ReportMessageModal';
 
 let autoScroll = true;
 
@@ -33,8 +35,9 @@ const ChatContainer = ({
   showHeader,
 }) => {
   const [internalMessages, setInternalMessages] = useState([]);
-  const [showModal, setShowModal] = useState(false);
-  const [messageId, setMessageId] = useState(null);
+  const [showDeletionModal, setShowDeletionModal] = useState(false);
+  const [showReportModal, setShowReportModal] = useState(false);
+  const [message, setMessage] = useState(null);
   const [showWelcome, setShowWelcome] = useState(true);
   const chatContainerRef = useRef(null);
   const pubnub = usePubNub();
@@ -45,15 +48,33 @@ const ChatContainer = ({
     }
   }, [alternate]);
 
-  const onCloseHandler = useCallback(() => {
-    setShowModal(false);
-    setMessageId(null);
-  }, [setShowModal, setMessageId]);
+  const closeDeleteModalHandler = useCallback(() => {
+    setShowDeletionModal(false);
+    setMessage(null);
+  }, [setShowDeletionModal, setMessage]);
+
+  const closeReportModalHandler = useCallback(() => {
+    setShowReportModal(false);
+    setMessage(null);
+  }, [setShowReportModal, setMessage]);
+
+  const reportMessage = () => {
+    post(buildURL('habitats/reportMessage'), { habitatId: channelId, message })
+      .catch((err) => console.error(err));
+    closeReportModalHandler();
+  }
 
   const promptDeletion = useCallback((msgId) => {
-    setMessageId(msgId);
-    setShowModal(true);
-  }, []);
+    const msg = internalMessages.find(({ timetoken }) => timetoken === msgId);
+    setMessage(msg);
+    setShowDeletionModal(true);
+  }, [internalMessages]);
+
+  const promptReport = useCallback((msgId) => {
+    const msg = internalMessages.find(({ timetoken }) => timetoken === msgId);
+    setMessage(msg);
+    setShowReportModal(true);
+  }, [internalMessages]);
 
   const onSendHandler = () => {
     if (showWelcome) {
@@ -78,14 +99,14 @@ const ChatContainer = ({
   const deleteMessage = useCallback(() => {
     pubnub.addMessageAction({
       channel: channelId,
-      messageTimetoken: messageId,
+      messageTimetoken: message.timetoken,
       action: {
         type: 'deleted',
         value: 'deleted',
       },
     });
-    onCloseHandler();
-  }, [pubnub, channelId, messageId, onCloseHandler]);
+    closeDeleteModalHandler();
+  }, [pubnub, channelId, message, closeDeleteModalHandler]);
 
   useEffect(() => {
     const { scrollHeight, scrollTop, offsetHeight } = chatContainerRef.current;
@@ -139,6 +160,7 @@ const ChatContainer = ({
             reactions={reactions}
             onDeleteHandler={promptDeletion}
             onReactionHandler={onReactionHandler}
+            onReportHandler={promptReport}
             channelId={channelId}
             alternate={alternate}
             media={media}
@@ -155,7 +177,15 @@ const ChatContainer = ({
           onSendHandler={onSendHandler}
         />
       )}
-      {showModal && <DeleteMessageModal onClose={onCloseHandler} onDelete={deleteMessage} />}
+      {showDeletionModal && (
+        <DeleteMessageModal onClose={closeDeleteModalHandler} onDelete={deleteMessage} />
+      )}
+      {showReportModal && (
+        <ReportMessageModal
+          onClose={closeReportModalHandler}
+          onReport={reportMessage}
+        />
+      )}
     </>
   );
 }
