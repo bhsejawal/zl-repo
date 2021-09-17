@@ -7,11 +7,11 @@ import style from "../style.scss";
 const LiveTalksSection = () => (
   <div className={style.bottom}>
     <div className={style.left}>
-      <video muted autoPlay loop playsInline controls={false}>
-        <source src="https://assets.zoolife.tv/landing/s4_host.webm" type="video/webm" />
-        <source src="https://assets.zoolife.tv/landing/s4_host.mp4" type="video/mp4" />
-        Your browser does not support the video tag.
-      </video>
+      <img
+        src="https://zoolife.tv/assets/talk-image.png"
+        alt="live talks"
+        loading="lazy"
+      />
     </div>
     <div className={style.right}>
       <div className={style.description}>
