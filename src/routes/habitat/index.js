@@ -40,6 +40,7 @@ import LiveChannelsBar from './components/LiveChannelsBar';
 import CardTabs from './components/CardTabs';
 import StreamProfile from './components/StreamProfile';
 import OnboardingModal from './components/Onboarding';
+import CameraControlModal from './components/CameraControlModal';
 import SmallScreenCardTabs from './components/CardTabs/Mobile';
 import Album from './components/Album';
 
@@ -331,6 +332,7 @@ const Habitat = ({
           <OnboardingModal />
           <ShareModal />
           <ScheduleModal />
+          <CameraControlModal />
         </>
       )}
     </div>

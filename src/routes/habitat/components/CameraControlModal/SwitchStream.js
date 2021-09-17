@@ -54,7 +54,7 @@ const SwitchStream = ({ habitatId, cameraId }) => {
         <Box width="500px" pad="medium">
           <Box pad={{ horizontal: 'medium' }} height={{ min: '240px' }}>
 
-            {loadingCameras && (<Box height="80px" margin="auto"><Loader fill /></Box>)}
+            {loadingCameras && (<Box height="150px" margin="auto"><Loader fill /></Box>)}
             {habitatCameras && (
               <Box flex="grow">
                 <Box>
