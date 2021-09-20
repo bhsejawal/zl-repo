@@ -118,6 +118,8 @@ const ShareModal = ({
 
   const { put: likePut } = useFetch(API_BASE_URL, { credentials: 'include', cachePolicy: 'no-cache '});
 
+  const { put: mediaViewedPut } = useFetch(API_BASE_URL, { credentials: 'include', cachePolicy: 'no-cache '});
+
   useEffect(() => {
     if (error) {
       setShowEmailError(true);
@@ -131,6 +133,12 @@ const ShareModal = ({
     setShowEmailError(false);
     setShowEmailSuccess(false);
   }, [_id]);
+
+  useEffect(() => {
+    if (type === 'photo' && mediaId) {
+      mediaViewedPut(`/photos/${mediaId}/viewed`).catch((err) => console.error(err));
+    }
+  }, [mediaId, type, mediaViewedPut]);
 
   const logShare = (platform) => sharePost('/logs/share', {
     userId,

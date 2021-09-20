@@ -228,6 +228,12 @@ const Habitat = ({
   const topSectionHeight = height + (isTabletOrLarger ? 0 : MOBILE_CONTROLS_HEIGHT);
 
   const onTabChange = ({ label }) => {
+    logGAEvent(
+      'Tab-Navigation-Mobile',
+      label,
+      habitatId,
+    );
+
     if (label === 'Album' && !albumClicked) {
       setAlbumClickedAction(true);
     }

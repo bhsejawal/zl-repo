@@ -11,7 +11,9 @@ import {
 } from '@fortawesome/pro-regular-svg-icons';
 import { faPhotoVideo } from '@fortawesome/pro-solid-svg-icons';
 import classnames from 'classnames';
+
 import ClickMessageTip from 'Components/ClickMessageTip';
+import { logGAEvent } from 'Shared/ga';
 
 import { setAlbumClicked } from '../../../../../redux/actions';
 import { useIsHabitatTabbed } from '../../../../../hooks';
@@ -31,6 +33,7 @@ import style from './style.scss';
 
 const Tabs = ({
   active,
+  habitatId,
   albumClicked,
   streamClicked,
   setActiveTabAction,
@@ -38,9 +41,15 @@ const Tabs = ({
 }) => {
   const isTabbed = useIsHabitatTabbed();
   const onClick = useCallback(({ target }) => {
+    logGAEvent(
+      'Tab-Navigation-Desktop',
+      target.dataset.value,
+      habitatId,
+    );
+
     setActiveTabAction(target.dataset.value);
     setAlbumClickedAction(target.dataset.value === ALBUM);
-  }, [setActiveTabAction, setAlbumClickedAction]);
+  }, [setActiveTabAction, setAlbumClickedAction, habitatId]);
 
   // reset on unload
   // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -119,7 +128,10 @@ const Tabs = ({
 };
 
 export default connect(
-  ({ user: { albumClicked, streamClicked } }) => ({ albumClicked, streamClicked }),
+  ({
+    user: { albumClicked, streamClicked },
+    habitat: { habitatInfo: { _id: habitatId } },
+  }) => ({ albumClicked, streamClicked, habitatId }),
   {
     setActiveTabAction: setActiveTab,
     setAlbumClickedAction: setAlbumClicked,
