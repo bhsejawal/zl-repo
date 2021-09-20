@@ -2,6 +2,27 @@
 This file keeps track of all relevant change for every release.
 
 ## [Unreleased]
+## [5.20.0] - 2021-09-20
+### Added
+- Logs on GA when user clicks on an album tabs and images
+- Opening media modal when clicking on a media on the chat
+- Chat allow users to reply to another messages
+- Allow users to report chat messages
+- Adds UI to cancel subscriptions
+
+### Changed
+- Increase number of media itens retrieved from API
+- On visibility change, app should restart on mobile
+- Update time to see feedback notification to 10 min
+- Updates live talk image on the landing page
+- Increases habitat trailer to 12mb
+- Show rate notification one time a month per platform (desktop/mobile)
+- Update share content modal header
+
+### Fixed
+- Move camera switch and power models to an upper level component to prevent unmount when stream status changes
+- Fix grommet drop rendering issue
+
 ## [5.19.0] - 2021-09-13
 ### Added
  - Click indicator on the search bar and the album tab
