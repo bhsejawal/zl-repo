@@ -9,10 +9,11 @@ import { connect } from 'react-redux';
 import { get, isEmpty, last } from 'lodash-es';
 import classnames from 'classnames';
 import { usePubNub } from 'pubnub-react';
-import { post, buildURL } from 'Shared/fetch';
+import { get as fetchGet, post, buildURL } from 'Shared/fetch';
 
 import { logGAEvent } from 'Shared/ga';
 import ViewersCount from 'Components/ViewersCount';
+import ShareModal from 'Components/ShareModal/Standalone';
 
 import InputBox from './InputBox';
 
@@ -38,6 +39,8 @@ const ChatContainer = ({
   const [internalMessages, setInternalMessages] = useState([]);
   const [showDeletionModal, setShowDeletionModal] = useState(false);
   const [showReportModal, setShowReportModal] = useState(false);
+  const [showMediaModal, setShowMediaModal] = useState(false);
+  const [mediaData, setMediaData] = useState();
   const [message, setMessage] = useState(null);
   const [showWelcome, setShowWelcome] = useState(true);
   const chatContainerRef = useRef(null);
@@ -130,6 +133,31 @@ const ChatContainer = ({
     }
   }, [internalMessages, username]);
 
+  const onMediaClickHandler = useCallback(async (mediaType, mediaId) => {
+    let url;
+    if (mediaType === 'video') {
+      const params = new URLSearchParams();
+      params.append('videoIds[]', mediaId);
+      url = buildURL(`videos?${params.toString()}`);
+    } else {
+      const params = new URLSearchParams();
+      params.append('photoIds[]', mediaId);
+      url = buildURL(`photos?${params.toString()}`);
+    }
+
+    const { list: [media] } = await fetchGet(url)
+      .catch((err) => console.error(err));
+    if (media) {
+      setMediaData(media);
+      setShowMediaModal(true);
+    }
+  }, []);
+
+  const clearMediaModalState = useCallback(() => {
+    setShowMediaModal(false);
+    setMediaData();
+  }, []);
+
   return (
     <>
       {showHeader && (
@@ -169,6 +197,7 @@ const ChatContainer = ({
             channelId={channelId}
             alternate={alternate}
             media={media}
+            onMediaClickHandler={onMediaClickHandler}
             reply={!isEmpty(reply) && filteredMessages.find(
               ({ timetoken: token }) => (token === reply),
             )}
@@ -194,6 +223,16 @@ const ChatContainer = ({
           onReport={reportMessage}
         />
       )}
+      {mediaData && (
+        <ShareModal
+          open={showMediaModal}
+          data={mediaData}
+          onClose={clearMediaModalState}
+          mediaId={mediaData._id}
+          isDownloadAllowed
+        />
+      )}
+
     </>
   );
 }

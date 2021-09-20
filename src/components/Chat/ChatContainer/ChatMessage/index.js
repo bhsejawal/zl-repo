@@ -21,6 +21,7 @@ import classnames from 'classnames';
 
 import { getIconUrl } from 'Shared/profileIcons';
 import Can from 'Components/Authorize';
+
 import ReactionBar from './ReactionBar';
 import ReactionBadge from './ReactionBadge';
 
@@ -44,6 +45,7 @@ const ChatMessage = ({
   onDeleteHandler,
   onReactionHandler,
   onReportHandler,
+  onMediaClickHandler,
   alternate,
   media = {},
   reply,
@@ -75,6 +77,7 @@ const ChatMessage = ({
     setShowReactionBar(false);
     setShowActionbar(false);
   }, [])
+
   const toggleReaction = useCallback((reaction) => {
     if (!userReactions[reaction]) {
       pubnub.addMessageAction({
@@ -103,6 +106,11 @@ const ChatMessage = ({
     const message = formatDistanceToNowStrict(timestamp, { roundingMethod: 'ceil'});
     return message.startsWith('0') ? '1 minute' : message;
   }, [timestamp]);
+
+  const clickMediaHandler = (evt) => {
+    evt.stopPropagation();
+    onMediaClickHandler(type, mediaId);
+  }
 
   const [messageTime, setMessageTime] = useState(initialMessage);
   const intervalRef = useRef(null);
@@ -210,14 +218,25 @@ const ChatMessage = ({
               {text}
             </span>
             {mediaId && type === 'image' && (
-              <div className={style.mediaContainer}>
+              <div
+                className={style.mediaContainer}
+                onClick={clickMediaHandler}
+              >
                 <img src={src} alt={text} />
               </div>
             )}
             {mediaId && type === 'video' && (
-              <div className={style.mediaContainer}>
+              <div
+                className={style.mediaContainer}
+                onClick={clickMediaHandler}
+              >
                 {/* eslint-disable-next-line jsx-a11y/media-has-caption */}
-                <video src={src} playsInline controls />
+                <video
+                  src={src}
+                  playsInline
+                  controls
+                  controlsList="nodownload nofullscreen noremoteplayback"
+                />
               </div>
             )}
             <Box direction="row" gap="5px" wrap>
