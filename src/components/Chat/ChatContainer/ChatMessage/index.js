@@ -1,4 +1,5 @@
 import { formatDistanceToNowStrict } from 'date-fns';
+import { isEmpty } from 'lodash-es';
 import {
   useState,
   useEffect,
@@ -7,7 +8,12 @@ import {
   useCallback,
 } from 'preact/hooks';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSmilePlus, faTrash } from '@fortawesome/pro-regular-svg-icons';
+import {
+  faSmilePlus,
+  faTrash,
+  faFlag,
+  faReply,
+} from '@fortawesome/pro-regular-svg-icons';
 import { Drop, Box } from 'grommet';
 import { usePubNub } from 'pubnub-react';
 import { connect } from 'react-redux';
@@ -15,12 +21,14 @@ import classnames from 'classnames';
 
 import { getIconUrl } from 'Shared/profileIcons';
 import Can from 'Components/Authorize';
+
 import ReactionBar from './ReactionBar';
 import ReactionBadge from './ReactionBadge';
 
 import AnimalIcon from '../../../AnimalIcon';
 
 import { useIsHabitatTabbed } from '../../../../hooks';
+import { setReplyMessage } from '../../../../redux/actions';
 
 import style from './style.module.scss';
 
@@ -36,8 +44,12 @@ const ChatMessage = ({
   channelId,
   onDeleteHandler,
   onReactionHandler,
+  onReportHandler,
+  onMediaClickHandler,
   alternate,
   media = {},
+  reply,
+  setReplyMessageAction,
 }) => {
   const pubnub = usePubNub();
   const [showActionBar, setShowActionbar] = useState(false);
@@ -65,6 +77,7 @@ const ChatMessage = ({
     setShowReactionBar(false);
     setShowActionbar(false);
   }, [])
+
   const toggleReaction = useCallback((reaction) => {
     if (!userReactions[reaction]) {
       pubnub.addMessageAction({
@@ -94,6 +107,11 @@ const ChatMessage = ({
     return message.startsWith('0') ? '1 minute' : message;
   }, [timestamp]);
 
+  const clickMediaHandler = (evt) => {
+    evt.stopPropagation();
+    onMediaClickHandler(type, mediaId);
+  }
+
   const [messageTime, setMessageTime] = useState(initialMessage);
   const intervalRef = useRef(null);
   const messageContainer = useRef();
@@ -107,9 +125,16 @@ const ChatMessage = ({
     return () => clearInterval(intervalRef.current);
   }, [messageTime, timestamp]);
 
+  const scrollHandler = () => {
+    document.getElementById(reply.timetoken).scrollIntoView({
+      behavior: 'smooth',
+    });
+  };
+
   return (
     <>
       <div
+        id={timetoken}
         className={classnames(
           style.chatMessageContainer,
           {
@@ -121,29 +146,55 @@ const ChatMessage = ({
         onMouseEnter={() => setShowActionbar(true)}
         onMouseLeave={() => setShowActionbar(showReactionBar)}
       >
-        <AnimalIcon
-          animalIcon={animal.endsWith('.svg') ? animal : getIconUrl(animal)}
-          color={color}
-          width={26}
-        />
-        <div className={style.messageWrapper}>
-          <div className={style.headerWrapper}>
-            <span className={style.userName}>
-              {username}
+        {!isEmpty(reply) && (
+          <div className={style.replyMessageHeader}>
+            <AnimalIcon
+              animalIcon={reply.animal.endsWith('.svg') ? reply.animal : getIconUrl(reply.animal)}
+              color={reply.color}
+              width={13}
+            />
+            <span>
+              <b>{reply.username}</b>
             </span>
-            <span className={style.messageTime}>
-              {` ${messageTime} ago`}
-            </span>
+            {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
+            <a onClick={scrollHandler}>
+              {reply.text}
+            </a>
+          </div>
+        )}
+        <div className={style.wrapper}>
+          <AnimalIcon
+            animalIcon={animal.endsWith('.svg') ? animal : getIconUrl(animal)}
+            color={color}
+            width={26}
+          />
+          <div className={style.messageWrapper}>
+            <div className={style.headerWrapper}>
+              <span className={style.userName}>{username}</span>
+              <span className={style.messageTime}>{` ${messageTime} ago`}</span>
 
-            <div className={classnames(style.actionBar, { [style.hide]: !showActionBar})}>
-              {/* eslint-disable-next-line */}
-              <div
-                className={style.actionButton}
-                onClick={() => setShowReactionBar(true)}
-              >
-                <FontAwesomeIcon icon={faSmilePlus} />
-              </div>
-              <Can
+              <div className={classnames(style.actionBar, { [style.hide]: !showActionBar})}>
+                <div
+                  className={style.actionButton}
+                  onClick={() => {
+                    setReplyMessageAction(
+                      timetoken,
+                      username,
+                      animal,
+                      color,
+                      text,
+                    );
+                  }}
+                >
+                  <FontAwesomeIcon icon={faReply} />
+                </div>
+                <div
+                  className={style.actionButton}
+                  onClick={() => setShowReactionBar(true)}
+                >
+                  <FontAwesomeIcon icon={faSmilePlus} />
+                </div>
+                <Can
                   perform="chat:moderate"
                   yes={() => (
                     // eslint-disable-next-line
@@ -151,33 +202,54 @@ const ChatMessage = ({
                       <FontAwesomeIcon icon={faTrash} />
                     </div>
                   )}
-              />
+                />
+                <Can
+                  perform="chat:report"
+                  yes={() => (
+                    // eslint-disable-next-line
+                    <div className={style.actionButton} onClick={() => onReportHandler(timetoken)}>
+                      <FontAwesomeIcon icon={faFlag} />
+                    </div>
+                  )}
+                />
+              </div>
             </div>
+            <span className={style.message}>
+              {text}
+            </span>
+            {mediaId && type === 'image' && (
+              <div
+                className={style.mediaContainer}
+                onClick={clickMediaHandler}
+              >
+                <img src={src} alt={text} />
+              </div>
+            )}
+            {mediaId && type === 'video' && (
+              <div
+                className={style.mediaContainer}
+                onClick={clickMediaHandler}
+              >
+                {/* eslint-disable-next-line jsx-a11y/media-has-caption */}
+                <video
+                  src={src}
+                  playsInline
+                  controls
+                  controlsList="nodownload nofullscreen noremoteplayback"
+                />
+              </div>
+            )}
+            <Box direction="row" gap="5px" wrap>
+              {reactions && Object.keys(reactions).map((reaction) => (
+                <ReactionBadge
+                  reaction={reaction}
+                  count={reactions[reaction].length}
+                  isReaction={userReactions[reaction] ?? false}
+                  onClick={toggleReaction}
+                />
+              ))}
+            </Box>
           </div>
-          <span className={style.message}>
-            {text}
-          </span>
-          {mediaId && type === 'image' && (
-            <div className={style.mediaContainer}>
-              <img src={src} alt={text} />
-            </div>
-          )}
-          {mediaId && type === 'video' && (
-            <div className={style.mediaContainer}>
-              {/* eslint-disable-next-line jsx-a11y/media-has-caption */}
-              <video src={src} playsInline controls />
-            </div>
-          )}
-          <Box direction="row" gap="5px" wrap>
-            {reactions && Object.keys(reactions).map((reaction) => (
-              <ReactionBadge
-                reaction={reaction}
-                count={reactions[reaction].length}
-                isReaction={userReactions[reaction] ?? false}
-                onClick={toggleReaction}
-              />
-            ))}
-          </Box>
         </div>
       </div>
       {messageContainer.current && showReactionBar && (
@@ -203,4 +275,5 @@ export default connect(({
   },
 }) => ({
   userId,
-}))(ChatMessage);
+}),
+{ setReplyMessageAction: setReplyMessage })(ChatMessage);

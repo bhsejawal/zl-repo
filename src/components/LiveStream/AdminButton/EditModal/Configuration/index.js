@@ -76,7 +76,7 @@ const Configuration = ({
                 placeholder="https://"
                 constraints={{
                   acceptedFormats: ['mp4'],
-                  maxFileSize: 8_000_000,
+                  maxFileSize: 12_000_000,
                 }}
                 onChange={(value) => setVideoURL(value)}
               />

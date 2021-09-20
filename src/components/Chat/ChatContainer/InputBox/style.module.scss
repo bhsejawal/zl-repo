@@ -3,6 +3,8 @@
   background-color: var(--hunterGreenMediumLight);
   padding: 10px;
   min-height: max-content;
+  position: relative;
+  flex-direction: column;
 
   &.alternate {
     background: unset;
@@ -22,6 +24,14 @@
     .SendButton {
       background: #9BB7F1;
     }
+  }
+
+  &.replyMessage {
+    background: var(--hunterGreen);
+  }
+
+  .container {
+    display: flex;
   }
 
   .inputContainer {
@@ -67,3 +77,25 @@
   cursor: pointer;
 }
 
+.replyMessageContainer {
+  position: relative;
+  border-radius: 5px;
+  color: white;
+
+  .close {
+    position: absolute;
+    top: -10px;
+    right: -10px;
+    font-size: 14px;
+    color: inherit;
+  }
+
+  .header {
+    margin-bottom: 10px;
+
+    span {
+      font-size: 12px;
+      line-height: 18px;
+    }
+  }
+}

@@ -104,15 +104,28 @@ const MobileCardsModal = ({
 }) => {
   const cardWrapperRef = useRef();
   const timeoutRef = useRef();
-  const card = cards?.[activeCardIndex];
   const cardsLen = cards?.length;
   const [progress, setProgress] = useState(0);
   const [paused, setPaused] = useState(false);
+  const [currentCardId, setCurrentCardId] = useState(null);
+  const card = useMemo(() => cards?.[activeCardIndex], [activeCardIndex, cards]);
   const noTimedMove = [ANIMAL_BODY_CARD_TYPE, QUIZ_CARD_TYPE].includes(card?.type);
-  const { get } = useFetch(API_BASE_URL, {
+  const { get, put } = useFetch(API_BASE_URL, {
     credentials: 'include',
     cachePolicy: 'no-cache',
   });
+
+  useEffect(() => {
+    if (card?._id !== currentCardId) {
+      setCurrentCardId(card?._id);
+    }
+  }, [card, currentCardId]);
+
+  useEffect(() => {
+    if (currentCardId && put) {
+      put(`/cards/${currentCardId}/viewed`).catch((err) => console.error(err));
+    }
+  }, [currentCardId, put]);
 
   useLayoutEffect(() => {
     setProgress(0);

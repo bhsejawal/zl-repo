@@ -77,7 +77,11 @@ const Power = ({ cameraId }) => {
 
   if (loading) {
     return (
-      <Loader fill />
+      <Box pad={{ bottom: 'medium', horizontal: 'large' }} width="350px" height="210px" align="center">
+        <Box width="150px" height="150px" margin={{ top: '24px' }}>
+          <Loader fill />
+        </Box>
+      </Box>
     );
   }
 
@@ -92,7 +96,7 @@ const Power = ({ cameraId }) => {
   }
 
   return (
-    <Box pad={{ vertical: 'medium', horizontal: 'large' }} width="350px">
+    <Box pad={{ bottom: 'medium', horizontal: 'large' }} width="350px" height="210px">
       <Heading level="4">On/Off Controls</Heading>
 
       <Box pad="small">

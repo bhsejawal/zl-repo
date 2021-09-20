@@ -8,7 +8,7 @@ import { logGAEvent } from 'Shared/ga';
 import { PrimaryButton } from 'Components/Buttons';
 import CloseButton from 'Components/modals/CloseButton';
 
-import { getDeviceType } from '../../helpers';
+import { getDeviceType, getDesktopOrMobile } from '../../helpers';
 import { setUserData } from '../../redux/actions';
 
 import style from './style.scss';
@@ -39,7 +39,7 @@ const Feedback = ({ onClose, className, setUserDataAction }) => {
   }, [data, error, onClose, setUserDataAction]);
 
   const sendFeedback = () => {
-    post({ feedback: text });
+    post({ feedback: text, device: getDesktopOrMobile() });
     logGAEvent( 'nps', 'user-feedback-app', getDeviceType(), text );
   };
 

@@ -3,14 +3,17 @@ import {
   useEffect,
   useRef,
   useCallback,
+  useMemo,
 } from 'preact/hooks';
 import { connect } from 'react-redux';
-import { get, last } from 'lodash-es';
+import { get, isEmpty, last } from 'lodash-es';
 import classnames from 'classnames';
 import { usePubNub } from 'pubnub-react';
+import { get as fetchGet, post, buildURL } from 'Shared/fetch';
 
 import { logGAEvent } from 'Shared/ga';
 import ViewersCount from 'Components/ViewersCount';
+import ShareModal from 'Components/ShareModal/Standalone';
 
 import InputBox from './InputBox';
 
@@ -19,6 +22,7 @@ import style from './style.module.scss';
 import ChatMessage from './ChatMessage';
 import WelcomeMessage from './ChatMessage/WelcomeMessage';
 import DeleteMessageModal from './DeleteMessageModal';
+import ReportMessageModal from './ReportMessageModal';
 
 let autoScroll = true;
 
@@ -33,11 +37,17 @@ const ChatContainer = ({
   showHeader,
 }) => {
   const [internalMessages, setInternalMessages] = useState([]);
-  const [showModal, setShowModal] = useState(false);
-  const [messageId, setMessageId] = useState(null);
+  const [showDeletionModal, setShowDeletionModal] = useState(false);
+  const [showReportModal, setShowReportModal] = useState(false);
+  const [showMediaModal, setShowMediaModal] = useState(false);
+  const [mediaData, setMediaData] = useState();
+  const [message, setMessage] = useState(null);
   const [showWelcome, setShowWelcome] = useState(true);
   const chatContainerRef = useRef(null);
   const pubnub = usePubNub();
+  const filteredMessages = useMemo(
+    () => internalMessages.filter(({ isDeleted }) => !isDeleted), [internalMessages],
+  );
 
   useEffect(() => {
     if (alternate) {
@@ -45,15 +55,33 @@ const ChatContainer = ({
     }
   }, [alternate]);
 
-  const onCloseHandler = useCallback(() => {
-    setShowModal(false);
-    setMessageId(null);
-  }, [setShowModal, setMessageId]);
+  const closeDeleteModalHandler = useCallback(() => {
+    setShowDeletionModal(false);
+    setMessage(null);
+  }, [setShowDeletionModal, setMessage]);
+
+  const closeReportModalHandler = useCallback(() => {
+    setShowReportModal(false);
+    setMessage(null);
+  }, [setShowReportModal, setMessage]);
+
+  const reportMessage = () => {
+    post(buildURL('habitats/reportMessage'), { habitatId: channelId, message })
+      .catch((err) => console.error(err));
+    closeReportModalHandler();
+  }
 
   const promptDeletion = useCallback((msgId) => {
-    setMessageId(msgId);
-    setShowModal(true);
-  }, []);
+    const msg = internalMessages.find(({ timetoken }) => timetoken === msgId);
+    setMessage(msg);
+    setShowDeletionModal(true);
+  }, [internalMessages]);
+
+  const promptReport = useCallback((msgId) => {
+    const msg = internalMessages.find(({ timetoken }) => timetoken === msgId);
+    setMessage(msg);
+    setShowReportModal(true);
+  }, [internalMessages]);
 
   const onSendHandler = () => {
     if (showWelcome) {
@@ -78,14 +106,14 @@ const ChatContainer = ({
   const deleteMessage = useCallback(() => {
     pubnub.addMessageAction({
       channel: channelId,
-      messageTimetoken: messageId,
+      messageTimetoken: message.timetoken,
       action: {
         type: 'deleted',
         value: 'deleted',
       },
     });
-    onCloseHandler();
-  }, [pubnub, channelId, messageId, onCloseHandler]);
+    closeDeleteModalHandler();
+  }, [pubnub, channelId, message, closeDeleteModalHandler]);
 
   useEffect(() => {
     const { scrollHeight, scrollTop, offsetHeight } = chatContainerRef.current;
@@ -105,6 +133,31 @@ const ChatContainer = ({
     }
   }, [internalMessages, username]);
 
+  const onMediaClickHandler = useCallback(async (mediaType, mediaId) => {
+    let url;
+    if (mediaType === 'video') {
+      const params = new URLSearchParams();
+      params.append('videoIds[]', mediaId);
+      url = buildURL(`videos?${params.toString()}`);
+    } else {
+      const params = new URLSearchParams();
+      params.append('photoIds[]', mediaId);
+      url = buildURL(`photos?${params.toString()}`);
+    }
+
+    const { list: [media] } = await fetchGet(url)
+      .catch((err) => console.error(err));
+    if (media) {
+      setMediaData(media);
+      setShowMediaModal(true);
+    }
+  }, []);
+
+  const clearMediaModalState = useCallback(() => {
+    setShowMediaModal(false);
+    setMediaData();
+  }, []);
+
   return (
     <>
       {showHeader && (
@@ -117,7 +170,7 @@ const ChatContainer = ({
         ref={chatContainerRef}
         className={classnames(style.chatContainer, 'customScrollBar', {[style.alternate]: alternate})}
       >
-        {internalMessages.filter(({ isDeleted }) => !isDeleted).map(({
+        {filteredMessages.map(({
           username,
           animal,
           color,
@@ -127,6 +180,7 @@ const ChatContainer = ({
           timetoken,
           reactions,
           media,
+          reply,
         }) => (
           <ChatMessage
             username={username}
@@ -139,9 +193,14 @@ const ChatContainer = ({
             reactions={reactions}
             onDeleteHandler={promptDeletion}
             onReactionHandler={onReactionHandler}
+            onReportHandler={promptReport}
             channelId={channelId}
             alternate={alternate}
             media={media}
+            onMediaClickHandler={onMediaClickHandler}
+            reply={!isEmpty(reply) && filteredMessages.find(
+              ({ timetoken: token }) => (token === reply),
+            )}
           />
         ))}
         {showWelcome && (
@@ -155,7 +214,25 @@ const ChatContainer = ({
           onSendHandler={onSendHandler}
         />
       )}
-      {showModal && <DeleteMessageModal onClose={onCloseHandler} onDelete={deleteMessage} />}
+      {showDeletionModal && (
+        <DeleteMessageModal onClose={closeDeleteModalHandler} onDelete={deleteMessage} />
+      )}
+      {showReportModal && (
+        <ReportMessageModal
+          onClose={closeReportModalHandler}
+          onReport={reportMessage}
+        />
+      )}
+      {mediaData && (
+        <ShareModal
+          open={showMediaModal}
+          data={mediaData}
+          onClose={clearMediaModalState}
+          mediaId={mediaData._id}
+          isDownloadAllowed
+        />
+      )}
+
     </>
   );
 }

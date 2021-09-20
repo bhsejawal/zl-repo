@@ -1,12 +1,12 @@
-import { h } from 'preact';
+import { connect } from 'react-redux';
+import { Menu, ResponsiveContext } from 'grommet';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   useCallback,
   useContext,
   useMemo,
   useState,
 } from 'preact/hooks';
-import { Menu, ResponsiveContext } from 'grommet';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faCamera,
   faCog,
@@ -16,21 +16,20 @@ import {
   faImage,
   faUndo,
 } from '@fortawesome/pro-solid-svg-icons';
-
 import { hasPermission } from 'Components/Authorize';
 import StreamEditModalLoader from './EditModal/Loader';
+import { showSwitchCameraModal } from '../../../routes/habitat/components/CameraControlModal/actions';
+import { POWER, SWITCH } from '../../../routes/habitat/components/CameraControlModal/types';
+
 import {
   EMOJI_SECTION,
   OVERLAY_SECTION,
-  POWER_SECTION,
   CONFIGURATIONS,
   OFFLINE_IMAGE,
-  SWITCH_STREAM,
 } from './constants';
-
 import style from './style.scss';
 
-const AdminButton = () => {
+const AdminButton = ({ showSwitchCameraModalAction }) => {
   const [openSection, setOpenSection] = useState();
   const size = useContext(ResponsiveContext);
 
@@ -52,7 +51,7 @@ const AdminButton = () => {
             size="lg"
           />
         ),
-        onClick: () => setOpenSection(SWITCH_STREAM),
+        onClick: () => showSwitchCameraModalAction(true, SWITCH),
       })
     }
 
@@ -67,7 +66,7 @@ const AdminButton = () => {
             size="lg"
           />
         ),
-        onClick: () => setOpenSection(POWER_SECTION),
+        onClick: () => showSwitchCameraModalAction(true, POWER),
       });
 
       if (size === 'large') {
@@ -138,4 +137,4 @@ const AdminButton = () => {
   );
 };
 
-export default AdminButton;
+export default connect(null, { showSwitchCameraModalAction: showSwitchCameraModal })(AdminButton);

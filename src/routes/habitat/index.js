@@ -40,6 +40,7 @@ import LiveChannelsBar from './components/LiveChannelsBar';
 import CardTabs from './components/CardTabs';
 import StreamProfile from './components/StreamProfile';
 import OnboardingModal from './components/Onboarding';
+import CameraControlModal from './components/CameraControlModal';
 import SmallScreenCardTabs from './components/CardTabs/Mobile';
 import Album from './components/Album';
 
@@ -227,6 +228,12 @@ const Habitat = ({
   const topSectionHeight = height + (isTabletOrLarger ? 0 : MOBILE_CONTROLS_HEIGHT);
 
   const onTabChange = ({ label }) => {
+    logGAEvent(
+      'Tab-Navigation-Mobile',
+      label,
+      habitatId,
+    );
+
     if (label === 'Album' && !albumClicked) {
       setAlbumClickedAction(true);
     }
@@ -331,6 +338,7 @@ const Habitat = ({
           <OnboardingModal />
           <ShareModal />
           <ScheduleModal />
+          <CameraControlModal />
         </>
       )}
     </div>

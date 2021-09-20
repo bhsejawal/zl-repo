@@ -28,6 +28,7 @@ import DeleteModal from './DeleteModal';
 import DataTableWrapper from './DataTableWrapper';
 import DisableModal from './DisableModal';
 import EnableModal from './EnableModal';
+import CancelSubscriptionModal from './CancelSubscriptionModal';
 
 import ResetPasswordModal from './ResetPasswordModal';
 import grommetTheme from '../../grommetTheme';
@@ -78,6 +79,7 @@ const Users = ({ pageSize = 20 }) => {
   const [disableModalOpen, setDisableModalOpen] = useState();
   const [enableModalOpen, setEnableModalOpen] = useState();
   const [resetModalOpen, setResetModalOpen] = useState();
+  const [showCancelSubscriptionModal, setShowCancelSubscriptionModal] = useState(false);
 
   const fetchParams = useMemo(() => {
     const params = new URLSearchParams({ page, pageSize });
@@ -123,12 +125,16 @@ const Users = ({ pageSize = 20 }) => {
     header: <Text size="large">Pass Valid Until</Text>,
     render: cellRender('subscriptionStatus.validUntil', true),
   }, {
+    property: 'subscriptionStatus.status',
+    header: <Text size="large">Subscription Status</Text>,
+    render: cellRender('subscriptionStatus.status'),
+  }, {
     property: 'subscriptionStatus.productId',
     header: <Text size="large">Product</Text>,
     search: false,
     // eslint-disable-next-line react/display-name
     render: (rowData) => (
-      <div style={{ opacity: rowData.disabled ? '.5' : undefined }}>
+      <div style={{ opacity: rowData.disabled ? ".5" : undefined }}>
         <Text size="large">
           {
             products[rowData?.subscriptionStatus?.productId]
@@ -246,10 +252,22 @@ const Users = ({ pageSize = 20 }) => {
       <Box direction="row" justify="between" align="center" height={{ min: '100px' }}>
         <Heading level="3">Users</Heading>
         <Box direction="row" gap="medium" align="center">
+          {
+            selected?.subscriptionStatus?.isRecurring
+            && selected?.subscriptionStatus?.status === 'active'
+            && (
+              <OutlineButton
+                key="cancelSubscription"
+                size="medium"
+                label="Cancel Subscription"
+                onClick={() => setShowCancelSubscriptionModal(true)}
+              />
+            )
+          }
           {selected && (
             <OutlineButton
               key="reset"
-              size="large"
+              size="medium"
               label="Reset Password"
               onClick={() => setResetModalOpen(true)}
             />
@@ -257,7 +275,7 @@ const Users = ({ pageSize = 20 }) => {
           {selected?.disabled && (
             <OutlineButton
               key="enable"
-              size="large"
+              size="medium"
               label="Enable"
               onClick={() => setEnableModalOpen(true)}
             />
@@ -265,6 +283,7 @@ const Users = ({ pageSize = 20 }) => {
 
           {(selected || selected?.disabled) && (
             <OutlineButton
+              size="medium"
               key="delete"
               disabled={!selected}
               label={selected?.disabled ? 'Delete' : 'Disable'}
@@ -276,12 +295,14 @@ const Users = ({ pageSize = 20 }) => {
 
           <OutlineButton
             disabled={!selected}
+            size="medium"
             label="Edit"
             onClick={() => setEditModalOpen(true)}
           />
 
           <PrimaryButton
             label="Add New"
+            size="medium"
             onClick={() => setNewModalOpen(true)}
           />
         </Box>
@@ -369,8 +390,19 @@ const Users = ({ pageSize = 20 }) => {
         />
       )}
 
+      {showCancelSubscriptionModal && (
+        <CancelSubscriptionModal
+          userId={selected._id}
+          date={selected.subscriptionStatus?.validUntil}
+          onClose={() => setShowCancelSubscriptionModal(false)}
+        />
+      )}
+
       {resetModalOpen && (
-        <ResetPasswordModal onClose={() => setResetModalOpen(false)} email={selected.email} />
+        <ResetPasswordModal
+          onClose={() => setResetModalOpen(false)}
+          email={selected.email}
+        />
       )}
     </Main>
   );

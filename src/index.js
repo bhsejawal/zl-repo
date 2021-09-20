@@ -20,6 +20,7 @@ import store from './redux/store';
 import zoolifeTheme from './grommetTheme';
 
 import { generateTitle } from './helpers';
+import { useIsHabitatTabbed } from './hooks';
 
 import './style/globalStyle.scss';
 import '@fortawesome/fontawesome-svg-core/styles.css';
@@ -31,6 +32,7 @@ faConfig.autoAddCss = false;
 
 const App = () => {
   const [stripe, setStripe] = useState(null);
+  const isTabbed = useIsHabitatTabbed();
 
   useErrorBoundary((err) => {
     console.error(err);
@@ -65,6 +67,20 @@ const App = () => {
       document.removeEventListener('fullscreenchange', handleFullscreenMode);
     }
   }, []);
+
+  useEffect(() => {
+    const handleFocus = () => {
+      if (isTabbed && document.visibilityState === 'visible') {
+        window.location.reload();
+      }
+    }
+
+    document.addEventListener('visibilitychange', handleFocus);
+
+    return () => {
+      document.removeEventListener('visibilitychange', handleFocus);
+    }
+  }, [isTabbed]);
 
   const onRouteChange = useCallback(({
     current: { props: { title, skipTitle } },
