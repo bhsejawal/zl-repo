@@ -79,7 +79,7 @@ const Album = ({
 
   useEffect(() => {
     if (habitatId) {
-      get(`habitats/${habitatId}/album/${type}?page=${page}&pageSize=12`);
+      get(`habitats/${habitatId}/album/${type}?page=${page}&pageSize=15`);
     }
   }, [type, get, habitatId, page]);
 
