@@ -4,10 +4,18 @@ import {
   CLEAR_MESSAGES,
   MARK_MESSAGE_AS_DELETED,
   TOGGLE_MESSAGE_REACTION,
+  SET_REPLY_MESSAGE,
 } from '../types';
 
 const initialState = {
   channels: {},
+  replyMessage: {
+    timetoken: null,
+    username: null,
+    animal: null,
+    color: null,
+    text: null,
+  },
 };
 
 const MAX_MESSAGES = 50;
@@ -103,6 +111,26 @@ export default (state = initialState, { type, payload }) => {
               } : message
             )),
           },
+        },
+      }
+    }
+    case SET_REPLY_MESSAGE: {
+      const {
+        timetoken,
+        username,
+        text,
+        animal,
+        color,
+      } = payload;
+
+      return {
+        ...state,
+        replyMessage: {
+          timetoken,
+          username,
+          text,
+          animal,
+          color,
         },
       }
     }

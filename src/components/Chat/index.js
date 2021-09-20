@@ -62,7 +62,7 @@ const Chat = ({
     } else if (type === 'reaction') {
       toggleMessageReactionAction(channelId, messageTimetoken, value, actionTimetoken, uuid);
     }
-  }, [markMessageAsDeletedAction, channelId]);
+  }, [channelId, markMessageAsDeletedAction, toggleMessageReactionAction]);
 
   const handleFetchedMessages = useCallback((status, response) => {
     if (status.statusCode === 200 && response.channels[channelId]) {

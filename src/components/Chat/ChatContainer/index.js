@@ -3,9 +3,10 @@ import {
   useEffect,
   useRef,
   useCallback,
+  useMemo,
 } from 'preact/hooks';
 import { connect } from 'react-redux';
-import { get, last } from 'lodash-es';
+import { get, isEmpty, last } from 'lodash-es';
 import classnames from 'classnames';
 import { usePubNub } from 'pubnub-react';
 import { post, buildURL } from 'Shared/fetch';
@@ -41,6 +42,9 @@ const ChatContainer = ({
   const [showWelcome, setShowWelcome] = useState(true);
   const chatContainerRef = useRef(null);
   const pubnub = usePubNub();
+  const filteredMessages = useMemo(
+    () => internalMessages.filter(({ isDeleted }) => !isDeleted), [internalMessages],
+  );
 
   useEffect(() => {
     if (alternate) {
@@ -138,7 +142,7 @@ const ChatContainer = ({
         ref={chatContainerRef}
         className={classnames(style.chatContainer, 'customScrollBar', {[style.alternate]: alternate})}
       >
-        {internalMessages.filter(({ isDeleted }) => !isDeleted).map(({
+        {filteredMessages.map(({
           username,
           animal,
           color,
@@ -148,6 +152,7 @@ const ChatContainer = ({
           timetoken,
           reactions,
           media,
+          reply,
         }) => (
           <ChatMessage
             username={username}
@@ -164,6 +169,9 @@ const ChatContainer = ({
             channelId={channelId}
             alternate={alternate}
             media={media}
+            reply={!isEmpty(reply) && filteredMessages.find(
+              ({ timetoken: token }) => (token === reply),
+            )}
           />
         ))}
         {showWelcome && (

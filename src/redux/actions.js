@@ -29,6 +29,7 @@ import {
   UPDATE_VIEWERS,
   UPDATE_ALBUM_CLICKED,
   UPDATE_SEARCH_CLICKED,
+  SET_REPLY_MESSAGE,
 } from './types';
 
 export const setSubscriptionData = (payload) => ({ type: SET_SUBSCRIPTION_DATA, payload });
@@ -103,6 +104,28 @@ export const toggleMessageReaction = (channelId, messageId, reaction, reactionId
     userId,
   },
 })
+
+export const setReplyMessage = (timetoken, username, animal, color, text) => ({
+  type: SET_REPLY_MESSAGE,
+  payload: {
+    timetoken,
+    username,
+    text,
+    animal,
+    color,
+  },
+});
+
+export const clearReplyMessage = () => ({
+  type: SET_REPLY_MESSAGE,
+  payload: {
+    timetoken: null,
+    username: null,
+    animal: null,
+    color: null,
+    text: null,
+  },
+});
 
 export const showSnapshotShare = (show) => ({
   type: SHOW_SNAPSHOT_SHARE_POPUP,
