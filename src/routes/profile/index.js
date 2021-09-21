@@ -12,7 +12,7 @@ import {
 import { route } from 'preact-router';
 import { connect } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPencil, faSpinner, faTimes } from '@fortawesome/pro-solid-svg-icons';
+import { faPencil, faSpinner } from '@fortawesome/pro-solid-svg-icons';
 import { PrimaryButton } from 'Components/Buttons';
 import classnames from 'classnames';
 import useFetch from 'use-http';
@@ -20,6 +20,7 @@ import useFetch from 'use-http';
 import { openTermsModal } from 'Components/TermsAndConditions/actions';
 import { getIconKeys, getIconUrl } from 'Shared/profileIcons';
 import { buildURL } from 'Shared/fetch';
+import CloseButton from 'Components/modals/CloseButton';
 import backgroundImg from './profileBackground.png';
 
 import { useIsInitiallyLoaded, useWindowResize } from '../../hooks';
@@ -219,12 +220,7 @@ const Profile = ({
       {isSmallScreen && showModal && (
         <Layer background="rgba(0, 0, 0, 0.65)">
           <div className={style.modalContainer}>
-            <Button
-              className={style.close}
-              plain
-              onClick={() => setShowModal(false)}
-              icon={<FontAwesomeIcon size="2x" icon={faTimes} />}
-            />
+            <CloseButton className={style.close} onClick={() => setShowModal(false)} varient="grey" />
             <div className={style.pickSection}>
               <IconPicker
                 icon={icon}

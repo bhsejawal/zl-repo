@@ -1,3 +1,5 @@
+@import "../../../style/media-query.scss";
+
 .header {
   position: relative;
   font-weight: bold;
@@ -11,9 +13,21 @@
   padding: 30px 48px;
   min-height: fit-content;
 
+  @media screen and (max-width: #{$tablet-portrait-width}) {
+    padding: 20px 28px;
+    font-size: 28px;
+  }
+
   .close {
     position: absolute;
     top: 35px;
     right: 20px;
+
+    @media screen and (max-width: #{$tablet-portrait-width}) {
+      font-size: 22px;
+      top: 22px;
+      right: 8px;
+      padding: 20px 28px;
+    }
   }
 }

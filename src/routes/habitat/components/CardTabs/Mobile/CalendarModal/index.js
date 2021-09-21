@@ -1,16 +1,9 @@
 import { h } from 'preact';
-import { useEffect, useMemo } from 'preact/hooks';
+import { useEffect } from 'preact/hooks';
 import { connect } from 'react-redux';
-import {
-  Layer,
-  Box,
-  Button,
-  Grommet,
-} from 'grommet';
+import { Layer, Box, Grommet } from 'grommet';
 import { deepMerge } from 'grommet/utils';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTimes } from '@fortawesome/pro-solid-svg-icons';
-
+import CloseButton from 'Components/modals/CloseButton';
 import CalendarLoader from '../../Calendar/CalendarLoader';
 import { closeModalCalendar } from '../actions';
 import grommetTheme from '../../../../../../grommetTheme';
@@ -34,29 +27,11 @@ const CalendarModal = ({ closeAction }) => {
     closeAction();
   }, [closeAction]);
 
-  const closeButton = useMemo(() => (
-    <Box className={style.controls}>
-      <Box
-        direction="row"
-        align="center"
-        justify="end"
-        as="header"
-      >
-        <Button
-          plain
-          margin="small"
-          onClick={closeAction}
-          icon={<FontAwesomeIcon size="lg" color="var(--charcoalLight)" icon={faTimes} />}
-        />
-      </Box>
-    </Box>
-  ), [closeAction]);
-
   return (
     <Grommet theme={fullLayerTheme}>
       <Layer full onEsc={closeAction}>
         <Box fill>
-          {closeButton}
+          <CloseButton onClick={closeAction} className={style.controls} />
           <Box fill pad="small" overflow="auto">
             <CalendarLoader />
           </Box>
