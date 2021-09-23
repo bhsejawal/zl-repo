@@ -35,11 +35,10 @@ const HeaderComponent = ({ unsetUserDataAction, openContactUsModalAction }) => {
     <Header className={style.header} gap="none">
       <div className={style.logo}>
         <ZoolifeLogo />
-        <Search className={style.desktopSearch} />
       </div>
-
       {width > cutOffWidth ? (
         <div>
+          <Search className={style.desktopSearch} />
           <div className={style.navBar}>
             <NavItem text="Map" url="/map" icon={faMapMarkerAlt} />
             <NavItem text="Talk Schedule" url="/schedule" icon={faCalendarDay} />
@@ -49,19 +48,22 @@ const HeaderComponent = ({ unsetUserDataAction, openContactUsModalAction }) => {
           <UserMenu />
         </div>
       ) : (
-        <BurgerMenu>
-          <NavItem clickable text={isSmallScreen ? 'Habitats' : 'Map'} url="/map" icon={faMapMarkerAlt} />
-          <NavItem clickable text="Talk Schedule" url="/schedule" icon={faCalendarDay} />
-          <NavItem clickable text="Favorites" url="/favorite" icon={faHeart} />
-          <Invite />
+        <div>
+          <Search className={style.searchConainer} />
+          <BurgerMenu>
+            <NavItem clickable text={isSmallScreen ? 'Habitats' : 'Map'} url="/map" icon={faMapMarkerAlt} />
+            <NavItem clickable text="Talk Schedule" url="/schedule" icon={faCalendarDay} />
+            <NavItem clickable text="Favorites" url="/favorite" icon={faHeart} />
+            <Invite />
 
-          {/* separator */}
-          <Box border={{ color: 'var(--mediumGrey)', position: 'bottom' }} margin={{ bottom: '5px' }} />
+            {/* separator */}
+            <Box border={{ color: 'var(--mediumGrey)', position: 'bottom' }} margin={{ bottom: '5px' }} />
 
-          <NavItem clickable text="My Account" url="/account" icon={faCog} />
-          <NavItem clickable text="Help" onClick={openContactUsModalAction} icon={faCog} />
-          <NavItem clickable text="Log Out" onClick={logout} icon={faSignOut} />
-        </BurgerMenu>
+            <NavItem clickable text="My Account" url="/account" icon={faCog} />
+            <NavItem clickable text="Help" onClick={openContactUsModalAction} icon={faCog} />
+            <NavItem clickable text="Log Out" onClick={logout} icon={faSignOut} />
+          </BurgerMenu>
+        </div>
       )}
     </Header>
   );
