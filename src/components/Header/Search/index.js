@@ -174,7 +174,7 @@ const Search = ({
         elevation={suggestionOpen ? 'medium' : undefined}
         border={{
           side: 'all',
-          color: suggestionOpen ? 'transparent' : 'border',
+          color: suggestionOpen ? 'transparent' : '#EBEBEB',
         }}
         style={suggestionOpen ? {
           borderBottomLeftRadius: '0px',

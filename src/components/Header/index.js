@@ -38,7 +38,7 @@ const HeaderComponent = ({ unsetUserDataAction, openContactUsModalAction }) => {
       </div>
       {width > cutOffWidth ? (
         <div>
-          <Search className={style.desktopSearch} />
+          <Search className={style.searchConainer} />
           <div className={style.navBar}>
             <NavItem text="Map" url="/map" icon={faMapMarkerAlt} />
             <NavItem text="Talk Schedule" url="/schedule" icon={faCalendarDay} />
