@@ -6,12 +6,13 @@ import useFetch from 'use-http';
 
 import { buildURL } from 'Shared/fetch';
 
-import { CALENDAR, ALBUM } from './constants';
+import { CALENDAR, ALBUM, QUESTIONS } from './constants';
 
 import Tabs from './tabs';
 import Cards from './cards';
 import CalendarLoader from './Calendar/CalendarLoader';
 import Album from '../Album';
+import Questions from '../Questions';
 
 import { useOnScreen } from '../../../../hooks';
 import { setUserData } from '../../../../redux/actions';
@@ -28,6 +29,10 @@ const renderActive = (activeTab) => {
 
     case ALBUM: {
       return <Album />;
+    }
+
+    case QUESTIONS: {
+      return <Questions />;
     }
 
     default: {

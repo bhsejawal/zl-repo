@@ -1,10 +1,12 @@
 import {
   CLOSE_MODAL_CALENDAR,
   CLOSE_MODAL_CARDS,
+  CLOSE_MODAL_QUESTIONS_AND_ANSWERS,
   MOBILE_CARD_INDEX_NEXT,
   MOBILE_CARD_INDEX_PREV,
   MOBILE_CARD_INDEX_RESET,
   OPEN_MODAL_CALENDAR,
+  OPEN_MODAL_QUESTIONS_AND_ANSWERS,
   OPEN_MODAL_CARDS,
 } from './types';
 
@@ -25,3 +27,6 @@ export const resetCardInd = () => ({ type: MOBILE_CARD_INDEX_RESET });
 
 export const closeModalCalendar = () => ({ type: CLOSE_MODAL_CALENDAR });
 export const openModalCalendar = () => ({ type: OPEN_MODAL_CALENDAR });
+
+export const closeModalQuestions = () => ({ type: CLOSE_MODAL_QUESTIONS_AND_ANSWERS});
+export const openModalQuestions = () => ({ type: OPEN_MODAL_QUESTIONS_AND_ANSWERS });

@@ -108,7 +108,7 @@ export const toggleMessageReaction = (channelId, messageId, reaction, reactionId
   },
 })
 
-export const setReplyMessage = (timetoken, username, animal, color, text) => ({
+export const setReplyMessage = (timetoken, username, animal, color, text, channel) => ({
   type: SET_REPLY_MESSAGE,
   payload: {
     timetoken,
@@ -116,6 +116,7 @@ export const setReplyMessage = (timetoken, username, animal, color, text) => ({
     text,
     animal,
     color,
+    channel,
   },
 });
 

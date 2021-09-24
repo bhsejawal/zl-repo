@@ -15,6 +15,7 @@ const initialState = {
     animal: null,
     color: null,
     text: null,
+    channel: null,
   },
 };
 
@@ -121,6 +122,7 @@ export default (state = initialState, { type, payload }) => {
         text,
         animal,
         color,
+        channel,
       } = payload;
 
       return {
@@ -131,6 +133,7 @@ export default (state = initialState, { type, payload }) => {
           text,
           animal,
           color,
+          channel,
         },
       }
     }

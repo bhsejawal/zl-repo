@@ -190,6 +190,7 @@ const ChatMessage = ({
                       animal,
                       color,
                       text,
+                      channelId,
                     );
                   }}
                 >

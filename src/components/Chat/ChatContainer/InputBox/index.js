@@ -18,6 +18,7 @@ const InputBox = ({
   replyUsername,
   color,
   timetoken,
+  replyChannel,
   alternate,
   onSendHandler,
   clearReplyMessageAction,
@@ -60,9 +61,9 @@ const InputBox = ({
     <div
       className={classnames(style.inputBox, {
         [style.alternate]: alternate,
-        [style.replyMessage]: timetoken,
+        [style.replyMessage]: timetoken && replyChannel === channelId,
       })}>
-      {timetoken && (
+      {timetoken && replyChannel === channelId && (
         <div className={style.replyMessageContainer}>
           <CloseButton onClick={clearReplyMessageAction} className={style.close} />
           <div className={style.header}>
@@ -105,7 +106,7 @@ export default connect(({
     },
     userBadge,
   },
-  chat: { replyMessage: { timetoken, username: replyUsername }},
+  chat: { replyMessage: { timetoken, username: replyUsername, channel: replyChannel }},
 }) => ({
   username,
   userBadge,
@@ -113,6 +114,7 @@ export default connect(({
   color,
   animal,
   timetoken,
+  replyChannel,
 }), {
   clearReplyMessageAction: clearReplyMessage,
 })(InputBox);

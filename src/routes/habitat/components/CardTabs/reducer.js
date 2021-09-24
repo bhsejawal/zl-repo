@@ -17,6 +17,8 @@ import {
   MOBILE_CARD_INDEX_RESET,
   OPEN_MODAL_CALENDAR,
   CLOSE_MODAL_CALENDAR,
+  OPEN_MODAL_QUESTIONS_AND_ANSWERS,
+  CLOSE_MODAL_QUESTIONS_AND_ANSWERS,
 } from './Mobile/types';
 
 import mobile from './Mobile/reducer';
@@ -126,6 +128,8 @@ export default (state = initialState, action = {}) => {
     case OPEN_MODAL_CARDS:
     case OPEN_MODAL_CALENDAR:
     case CLOSE_MODAL_CALENDAR:
+    case OPEN_MODAL_QUESTIONS_AND_ANSWERS:
+    case CLOSE_MODAL_QUESTIONS_AND_ANSWERS:
     case CLOSE_MODAL_CARDS: {
       return { ...state, mobile: mobile(state.mobile, action) };
     }
