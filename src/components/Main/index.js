@@ -18,6 +18,7 @@ import { PRIVACY_PDF_URL, TERMS_PDF_URL } from 'Components/TermsAndConditions/co
 import ContactUsModalLoader from 'Components/async/ContactUsModalLoader';
 import InviteModalLoader from 'Components/async/InviteModalLoader';
 import HabitatsUpdater from 'Components/HabitatsUpdater';
+import WhatsNew from 'Components/WhatsNew';
 
 import { logPageViewGA } from 'Shared/ga';
 import { patch, post, buildURL } from 'Shared/fetch';
@@ -326,6 +327,7 @@ const Main = ({
       <ContactUsModalLoader isOpen={showContactUs} />
       <InviteModalLoader isOpen={showInvite} />
       <HabitatsUpdater />
+      <WhatsNew />
     </Box>
   )
 };
