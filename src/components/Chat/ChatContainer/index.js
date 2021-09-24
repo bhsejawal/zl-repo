@@ -23,6 +23,7 @@ import ChatMessage from './ChatMessage';
 import WelcomeMessage from './ChatMessage/WelcomeMessage';
 import DeleteMessageModal from './DeleteMessageModal';
 import ReportMessageModal from './ReportMessageModal';
+import { updateUserProperty } from '../../../redux/actions';
 
 let autoScroll = true;
 
@@ -35,6 +36,8 @@ const ChatContainer = ({
   slug,
   isGuest,
   showHeader,
+  isWelcomeMessageShown,
+  updateUserPropertyAction,
 }) => {
   const [internalMessages, setInternalMessages] = useState([]);
   const [showDeletionModal, setShowDeletionModal] = useState(false);
@@ -42,18 +45,11 @@ const ChatContainer = ({
   const [showMediaModal, setShowMediaModal] = useState(false);
   const [mediaData, setMediaData] = useState();
   const [message, setMessage] = useState(null);
-  const [showWelcome, setShowWelcome] = useState(true);
   const chatContainerRef = useRef(null);
   const pubnub = usePubNub();
   const filteredMessages = useMemo(
     () => internalMessages.filter(({ isDeleted }) => !isDeleted), [internalMessages],
   );
-
-  useEffect(() => {
-    if (alternate) {
-      setShowWelcome(false);
-    }
-  }, [alternate]);
 
   const closeDeleteModalHandler = useCallback(() => {
     setShowDeletionModal(false);
@@ -84,8 +80,10 @@ const ChatContainer = ({
   }, [internalMessages]);
 
   const onSendHandler = () => {
-    if (showWelcome) {
-      setShowWelcome(false);
+    if (!alternate && !isWelcomeMessageShown) {
+      post(buildURL('users/steps'), { step: 'isWelcomeMessageShown', value: true })
+        .then((data) => updateUserPropertyAction(data))
+        .catch((err) => console.error('Error while updating welcome message status', err));
     }
 
     logGAEvent(
@@ -205,7 +203,7 @@ const ChatContainer = ({
             badges={badges}
           />
         ))}
-        {showWelcome && (
+        {!isWelcomeMessageShown && (
           <WelcomeMessage onClose={onSendHandler} />
         )}
       </div>
@@ -242,7 +240,7 @@ const ChatContainer = ({
 export default connect((
   {
     chat: { channels },
-    user: { username },
+    user: { username, isWelcomeMessageShown },
     habitat: {
       habitatInfo: {
         slug: habitatSlug,
@@ -257,5 +255,8 @@ export default connect((
     messages: channels,
     username,
     slug: `${zooSlug}/${habitatSlug}`,
+    isWelcomeMessageShown,
   }
-))(ChatContainer);
+), {
+  updateUserPropertyAction: updateUserProperty,
+})(ChatContainer);

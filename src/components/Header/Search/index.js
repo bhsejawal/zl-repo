@@ -24,8 +24,8 @@ import useFetch from 'use-http';
 
 import HabitatStatus from 'Components/HabitatCard/HabitatStatus';
 import ClickMessageTip from 'Components/ClickMessageTip';
-import { buildURL } from 'Shared/fetch';
-import { setHabitats, setSearchClicked } from '../../../redux/actions';
+import { buildURL, post } from 'Shared/fetch';
+import { setHabitats, updateUserProperty } from '../../../redux/actions';
 import { useWindowResize } from '../../../hooks';
 import zoolifeTheme from '../../../grommetTheme';
 
@@ -53,11 +53,11 @@ const Search = ({
   className,
   allHabitats,
   subscription,
-  searchClicked,
-  albumClicked,
-  streamClicked,
+  isAlbumClicked,
+  isStreamClicked,
+  isSearchClicked,
   setHabitatsAction,
-  setSearchClickedAction,
+  updateUserPropertyAction,
 }) => {
   const [suggestionOpen, setSuggestionOpen] = useState(false);
   const [value, setValue] = useState('');
@@ -84,8 +84,10 @@ const Search = ({
       }
     }
 
-    if (!searchClicked) {
-      setSearchClickedAction(true);
+    if (!isSearchClicked) {
+      post(buildURL('users/steps'), { step: 'isSearchClicked', value: true })
+        .then((data) => updateUserPropertyAction(data))
+        .catch((err) => console.error('Error while updating search click indicator', err));
     }
   };
 
@@ -198,7 +200,7 @@ const Search = ({
 
         <ClickMessageTip
           align={{ top: 'bottom' }}
-          disable={searchClicked || !albumClicked || !streamClicked}
+          disable={isSearchClicked || !isAlbumClicked || !isStreamClicked}
           text="Discover more habitats">
           <Box onClick={() => boxRef.current.querySelector('input').focus()} className={style.searchClickIndicator}>
             <FontAwesomeIcon
@@ -217,17 +219,17 @@ export default connect(({
   allHabitats,
   user: {
     subscription,
-    searchClicked,
-    albumClicked,
-    streamClicked,
+    isAlbumClicked,
+    isStreamClicked,
+    isSearchClicked,
   },
 }) => ({
   allHabitats,
   subscription,
-  searchClicked,
-  albumClicked,
-  streamClicked,
+  isAlbumClicked,
+  isStreamClicked,
+  isSearchClicked,
 }), {
   setHabitatsAction: setHabitats,
-  setSearchClickedAction: setSearchClicked,
+  updateUserPropertyAction: updateUserProperty,
 })(Search);

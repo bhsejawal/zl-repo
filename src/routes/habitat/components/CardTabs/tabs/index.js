@@ -10,12 +10,13 @@ import {
   faUsers,
 } from '@fortawesome/pro-regular-svg-icons';
 import { faPhotoVideo } from '@fortawesome/pro-solid-svg-icons';
+import { buildURL, post } from 'Shared/fetch';
 import classnames from 'classnames';
 
 import ClickMessageTip from 'Components/ClickMessageTip';
 import { logGAEvent } from 'Shared/ga';
 
-import { setAlbumClicked } from '../../../../../redux/actions';
+import { updateUserProperty } from '../../../../../redux/actions';
 import { useIsHabitatTabbed } from '../../../../../hooks';
 import { setActiveTab } from '../actions';
 import {
@@ -34,10 +35,10 @@ import style from './style.scss';
 const Tabs = ({
   active,
   habitatId,
-  albumClicked,
-  streamClicked,
+  isAlbumClicked,
+  isStreamClicked,
   setActiveTabAction,
-  setAlbumClickedAction,
+  updateUserPropertyAction,
 }) => {
   const isTabbed = useIsHabitatTabbed();
   const onClick = useCallback(({ target }) => {
@@ -48,8 +49,13 @@ const Tabs = ({
     );
 
     setActiveTabAction(target.dataset.value);
-    setAlbumClickedAction(target.dataset.value === ALBUM);
-  }, [setActiveTabAction, setAlbumClickedAction, habitatId]);
+
+    if (!isAlbumClicked && target.dataset.value === ALBUM) {
+      post(buildURL('users/steps'), { step: 'isAlbumClicked', value: true })
+        .then((data) => updateUserPropertyAction(data))
+        .catch((err) => console.error('Error while updating album click indicator', err));
+    }
+  }, [habitatId, setActiveTabAction, isAlbumClicked, updateUserPropertyAction]);
 
   // reset on unload
   // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -109,14 +115,14 @@ const Tabs = ({
 
       {!isTabbed && (
         <ToggleButton
-          className={classnames(style.tabBtn, { [style.albumClickIndicator]: !albumClicked })}
+          className={classnames(style.tabBtn, { [style.albumClickIndicator]: !isAlbumClicked })}
           active={active === ALBUM}
           value={ALBUM}
           onClick={onClick}
         >
           <ClickMessageTip
             align={{ bottom: 'top' }}
-            disable={albumClicked || !streamClicked}
+            disable={isAlbumClicked || !isStreamClicked}
             text="View photos and clips">
             <FontAwesomeIcon className={style.icon} icon={faPhotoVideo} />
           </ClickMessageTip>
@@ -129,11 +135,11 @@ const Tabs = ({
 
 export default connect(
   ({
-    user: { albumClicked, streamClicked },
+    user: { isAlbumClicked, isStreamClicked },
     habitat: { habitatInfo: { _id: habitatId } },
-  }) => ({ albumClicked, streamClicked, habitatId }),
+  }) => ({ isAlbumClicked, isStreamClicked, habitatId }),
   {
     setActiveTabAction: setActiveTab,
-    setAlbumClickedAction: setAlbumClicked,
+    updateUserPropertyAction: updateUserProperty,
   },
 )(Tabs);
