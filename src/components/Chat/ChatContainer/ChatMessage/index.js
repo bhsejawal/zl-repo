@@ -24,6 +24,7 @@ import Can from 'Components/Authorize';
 
 import ReactionBar from './ReactionBar';
 import ReactionBadge from './ReactionBadge';
+import UserBadge from './UserBadge';
 
 import AnimalIcon from '../../../AnimalIcon';
 
@@ -41,6 +42,7 @@ const ChatMessage = ({
   timetoken,
   reactions,
   userId,
+  badges,
   channelId,
   onDeleteHandler,
   onReactionHandler,
@@ -171,6 +173,11 @@ const ChatMessage = ({
           <div className={style.messageWrapper}>
             <div className={style.headerWrapper}>
               <span className={style.userName}>{username}</span>
+              {badges?.length > 0 && (
+                <div className={style.userBadgesContainer}>
+                  {badges?.map((badge) => <UserBadge badge={badge} />)}
+                </div>
+              )}
               <span className={style.messageTime}>{` ${messageTime} ago`}</span>
 
               <div className={classnames(style.actionBar, { [style.hide]: !showActionBar})}>

@@ -181,6 +181,7 @@ const ChatContainer = ({
           reactions,
           media,
           reply,
+          badges,
         }) => (
           <ChatMessage
             username={username}
@@ -201,6 +202,7 @@ const ChatContainer = ({
             reply={!isEmpty(reply) && filteredMessages.find(
               ({ timetoken: token }) => (token === reply),
             )}
+            badges={badges}
           />
         ))}
         {showWelcome && (

@@ -1,0 +1,15 @@
+.userBadge {
+  width: 18px;
+  height: 18px;
+  border-radius: 2px;
+  margin: 0px 2px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  img {
+    width: 16px;
+    height: 16px;
+    border-radius: 2px;
+  }
+}

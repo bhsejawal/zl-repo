@@ -14,6 +14,7 @@ const InputBox = ({
   channelId,
   animal,
   username,
+  userBadge,
   replyUsername,
   color,
   timetoken,
@@ -39,11 +40,12 @@ const InputBox = ({
       color,
       username,
       reply: timetoken,
+      badges: userBadge ? [userBadge] : [],
     }
     pubnub.publish({ channel: channelId, message }, () => { setInput('') });
     clearReplyMessageAction();
   }, [
-    onSendHandler, animal, color, username,
+    onSendHandler, animal, color, username, userBadge,
     timetoken, pubnub, channelId, clearReplyMessageAction]);
 
   const onKeyDownHandler = (evt) => {
@@ -101,10 +103,12 @@ export default connect(({
       animalIcon: animal,
       color,
     },
+    userBadge,
   },
   chat: { replyMessage: { timetoken, username: replyUsername }},
 }) => ({
   username,
+  userBadge,
   replyUsername,
   color,
   animal,
