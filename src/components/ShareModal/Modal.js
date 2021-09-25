@@ -26,6 +26,7 @@ import CloseButton from 'Components/modals/CloseButton';
 import AnimalIcon from 'Components/AnimalIcon';
 import RoundButton from 'Components/RoundButton';
 import VideoPlayer from 'Components/VideoPlayer';
+import ViewersCount from 'Components/ViewersCount/standalone';
 
 import { API_BASE_URL } from 'Shared/fetch';
 import { getDeviceType, androidDevice, iOSDevice } from '../../helpers';
@@ -90,6 +91,7 @@ const ShareModal = ({
     profile,
     title,
     htmlURL,
+    views,
   } = data;
   const isMobileSize = useIsMobileSize();
   const [showEmailError, setShowEmailError] = useState();
@@ -244,8 +246,9 @@ const ShareModal = ({
             </Box>
           </Box>
         )}
-        <Box direction="row" className="bbbbbbbbbbbbbbb">
+        <Box direction="row">
           <Box className={style.shareMedia} >
+            <ViewersCount className={style.viewerCount} viewers={views} />
             {url && <img src={url} alt="" />}
             {videoURL && (
               <VideoPlayer videoURL={videoURL} autoPlay muted isGuest={isGuest} videoId={mediaId} />
