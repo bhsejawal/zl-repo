@@ -2,6 +2,20 @@
 This file keeps track of all relevant change for every release.
 
 ## [Unreleased]
+## [5.21.0] - 2021-09-27
+### Added
+- Show viewers count on cards, images and videos
+- Implement the What's new popup 
+- Implement Q&A
+- Implements Badge System on the chat
+
+### Changed
+- Only admin should see card stats
+- Enhance video controls in media modal
+- Update click indicators and welcome message to be shown one time only and store that in DB
+- Update search bar layout width, spacing and alignment 
+- Decrease the size of the close button for all modals for mobile screens
+
 ## [5.20.0] - 2021-09-20
 ### Added
 - Logs on GA when user clicks on an album tabs and images
