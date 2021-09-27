@@ -12,7 +12,7 @@ import useFetch from 'use-http';
 import { API_BASE_URL } from 'Shared/fetch';
 
 import Loader from 'Components/Loader';
-import Can from 'Components/Authorize';
+import Can, { hasPermission } from 'Components/Authorize';
 import ViewersCount from 'Components/ViewersCount/standalone';
 import Shortcuts from '../shortcuts';
 import CardEditor from '../CardEditor';
@@ -170,7 +170,7 @@ const Cards = ({
           {loaded && (
             cards.map((card) => (
               <CardEditor card={card}>
-                <ViewersCount viewers={card.views} plain className={style.viewersCount} />
+                {hasPermission('cards:stats') && <ViewersCount viewers={card.views} plain className={style.viewersCount} />}
                 {card.type === SINGLE_ICON_CARD_TYPE && (
                   <SingleIconCard
                     tag={card.tag}

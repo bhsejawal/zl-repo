@@ -33,6 +33,7 @@ import AnimalBodyCard from 'Cards/AnimalBodyCard';
 import QuizCard from 'Cards/QuizCard';
 import Loader from 'Components/Loader';
 import ViewersCount from 'Components/ViewersCount/standalone';
+import { hasPermission } from 'Components/Authorize';
 
 import { API_BASE_URL } from 'Shared/fetch';
 import { fetchCards } from '../../api';
@@ -263,7 +264,7 @@ const MobileCardsModal = ({
         justify="end"
         as="header"
       >
-        {card?.views && <ViewersCount viewers={card.views} className={style.viewersCount} plain />}
+        {card?.views && hasPermission('cards:stats') && <ViewersCount viewers={card.views} className={style.viewersCount} plain />}
         <Button
           plain
           margin="small"
