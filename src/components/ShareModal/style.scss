@@ -114,9 +114,10 @@
     video,
     img {
       display: flex;
-      max-height: 600px;
+      max-height: unquote("min(600px, 100%)");
       max-width: 1066.67px;
       image-rendering: -webkit-optimize-contrast;
+      margin: auto 0;
     }
   }
 
@@ -294,4 +295,10 @@
   }
 }
 
-
+.viewerCount {
+  top: 4px !important;
+  right: 4px !important;
+  width: fit-content;
+  height: fit-content;
+  font-size: 12px;
+}

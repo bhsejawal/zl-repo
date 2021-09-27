@@ -10,9 +10,10 @@ import { connect } from 'react-redux';
 import { createPortal } from 'preact/compat';
 
 import { GlobalsContext } from 'Shared/context';
+import { buildURL, post } from 'Shared/fetch';
 import ClickMessageTip from 'Components/ClickMessageTip';
 
-import { addUserInteraction, setStreamClicked } from '../../../../redux/actions';
+import { addUserInteraction, updateUserProperty } from '../../../../redux/actions';
 
 import CustomCursor from '../CustomCursor';
 import { useCursorHook } from '../CustomCursor/hooks';
@@ -20,8 +21,8 @@ import { useCursorHook } from '../CustomCursor/hooks';
 import style from './style.scss';
 
 import { FULL_CURSOR, LOADING } from '../CustomCursor/constants';
-import {getConfig} from "../../../../helpers";
-import { useIsMobileSize } from "../../../../hooks";
+import {getConfig} from '../../../../helpers';
+import { useIsMobileSize } from '../../../../hooks';
 
 const validDropTypes = ['emoji', 'cursorPin'];
 
@@ -33,11 +34,11 @@ const InteractiveAreaHandler = ({
   animal,
   color,
   emojis,
-  addUserInteractionAction,
   configs,
-  streamClicked,
   streamStarted,
-  setStreamClickedAction,
+  isStreamClicked,
+  addUserInteractionAction,
+  updateUserPropertyAction,
 }) => {
   const { socket } = useContext(GlobalsContext);
   const ownCursorRef = useRef(null);
@@ -95,8 +96,10 @@ const InteractiveAreaHandler = ({
     });
 
     setCursorState(LOADING);
-    if (!streamClicked) {
-      setStreamClickedAction(true);
+    if (!isStreamClicked) {
+      post(buildURL('users/steps'), { step: 'isStreamClicked', value: true })
+        .then((data) => updateUserPropertyAction(data))
+        .catch((err) => console.error('Error while updating stream click indicator', err));
     }
   }, [
     socket,
@@ -105,8 +108,8 @@ const InteractiveAreaHandler = ({
     color,
     userId,
     cursorState,
-    setStreamClickedAction,
-    streamClicked,
+    isStreamClicked,
+    updateUserPropertyAction,
   ]);
 
   const availableEmojis = useMemo(
@@ -186,7 +189,7 @@ const InteractiveAreaHandler = ({
         className={style.CursorsContainer}
         ref={containerRef}
       >
-        {streamStarted && !streamClicked && (
+        {streamStarted && !isStreamClicked && (
           <div className={style.clickIndicator}>
             <ClickMessageTip align={{ bottom: 'top' }} text={`${isMobileSize ? 'Tap' : 'Click'} to move!`} />
           </div>
@@ -211,7 +214,7 @@ export default connect(({
       animalIcon: animal,
       color,
     },
-    streamClicked,
+    isStreamClicked,
   },
   habitat: {
     habitatInfo: {
@@ -228,9 +231,9 @@ export default connect(({
   habitatId,
   emojis,
   configs,
-  streamClicked,
+  isStreamClicked,
   streamStarted,
 }), {
   addUserInteractionAction: addUserInteraction,
-  setStreamClickedAction: setStreamClicked,
+  updateUserPropertyAction: updateUserProperty,
 })(InteractiveAreaHandler);

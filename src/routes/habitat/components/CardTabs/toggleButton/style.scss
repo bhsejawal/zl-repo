@@ -40,11 +40,16 @@
     }
 
     &:nth-child(5) {
+      border-bottom-color: var(--blueDark);
+      color: var(--blueDark);
+    }
+
+    &:nth-child(6) {
       border-bottom-color: var(--mossMedium);
       color: var(--mossMedium);
     }
 
-    &:nth-child(6) {
+    &:nth-child(7) {
       border-bottom-color: var(--blueDark);
       color: var(--blueDark);
     }

@@ -1,0 +1,38 @@
+@import "../../style/media-query";
+
+.container {
+  border-radius: 10px;
+
+  @media screen and (min-width: #{$tablet-landscape-width + 1}) {
+    min-width: 410px;
+    max-width: 410px;
+    max-height: 575px;
+  }
+}
+
+.contentWrapper {
+  padding: 0 30px;
+
+  @media screen and (min-width: #{$tablet-landscape-width + 1}) {
+    padding: 0 56px;
+  }
+}
+
+.header {
+  max-width: 410px;
+
+  img {
+    width: 100%;
+  }
+}
+
+
+.changeLogContainer {
+  max-height: 150px;
+  overflow: auto;
+  margin-top: 20px;
+
+  ul {
+    margin-top: 0px;
+  }
+}

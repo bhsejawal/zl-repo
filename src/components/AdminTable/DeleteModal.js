@@ -1,17 +1,15 @@
 import { h } from 'preact';
 import {
   Box,
-  Button,
   Form,
   Heading,
   Layer,
   Text,
   TextInput,
 } from 'grommet';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTimes } from '@fortawesome/pro-solid-svg-icons';
 import { useMemo, useState } from 'preact/hooks';
 import { PrimaryButton } from 'Components/Buttons';
+import Header from 'Components/modals/Header';
 
 const DeleteModal = ({
   item,
@@ -50,24 +48,9 @@ const DeleteModal = ({
 
   return (
     <Layer onEsc={onClose} onClickOutside={onClose}>
-      <Box
-        width="large"
-        direction="row"
-        align="center"
-        as="header"
-        elevation="small"
-        justify="between"
-      >
-        <Heading level="2" margin={{ vertical: 'medium', horizontal: 'large' }}>
-          {item ? `Edit ${entity}` : `New ${entity}`}
-        </Heading>
-        <Button
-          plain
-          margin="medium"
-          onClick={onClose}
-          icon={<FontAwesomeIcon size="2x" icon={faTimes} />}
-        />
-      </Box>
+      <Header onClose={onClose}>
+        {`Delete ${entity}`}
+      </Header>
 
       <Form onSubmit={onSubmit}>
         <Box pad={{ vertical: 'medium', horizontal: 'large' }}>

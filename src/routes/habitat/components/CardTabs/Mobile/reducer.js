@@ -6,6 +6,8 @@ import {
   MOBILE_CARD_INDEX_RESET,
   OPEN_MODAL_CALENDAR,
   CLOSE_MODAL_CALENDAR,
+  OPEN_MODAL_QUESTIONS_AND_ANSWERS,
+  CLOSE_MODAL_QUESTIONS_AND_ANSWERS,
 } from './types';
 
 const initialState = {
@@ -14,6 +16,7 @@ const initialState = {
   // modal effect will load previous or next card bucket
   activeCardIndex: 0,
   calendarCardOpen: false,
+  questionsCardOpen: false,
 };
 
 export default (state = initialState, { type, payload = {} } = {}) => {
@@ -52,6 +55,14 @@ export default (state = initialState, { type, payload = {} } = {}) => {
 
     case CLOSE_MODAL_CALENDAR: {
       return { ...state, calendarCardOpen: false };
+    }
+
+    case OPEN_MODAL_QUESTIONS_AND_ANSWERS: {
+      return { ...state, questionsCardOpen: true };
+    }
+
+    case CLOSE_MODAL_QUESTIONS_AND_ANSWERS: {
+      return { ...state, questionsCardOpen: false };
     }
 
     default: {

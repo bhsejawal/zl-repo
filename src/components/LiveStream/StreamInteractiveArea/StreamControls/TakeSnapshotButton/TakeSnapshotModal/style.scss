@@ -69,6 +69,10 @@ div.required {
     margin-right: 60px;
     min-height: fit-content;
 
+    @media screen and (max-width: #{$tablet-portrait-width}) {
+      margin-right: auto;
+    }
+
     img {
       margin: auto 0;
       width: 100%;

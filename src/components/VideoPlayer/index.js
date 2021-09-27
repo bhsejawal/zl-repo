@@ -166,7 +166,14 @@ const VideoPlayer = ({
       onMouseEnter={() => setShowControls(true)}
       onMouseLeave={() => setShowControls(false)}
       onClick={handleScreenClick}
-      style={{ width, height, display: 'contents' }}
+      style={{
+        width,
+        height,
+        display: 'flex',
+        flexDirection: 'column',
+        flexGrow: 1,
+        maxHeight: '100%',
+      }}
     >
       {isLoading && <Loader fill absolute />}
       {/* eslint-disable-next-line jsx-a11y/media-has-caption */}

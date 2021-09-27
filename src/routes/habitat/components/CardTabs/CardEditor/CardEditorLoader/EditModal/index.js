@@ -6,12 +6,9 @@ import {
   useState,
 } from 'preact/hooks';
 import { connect } from 'react-redux';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTimes } from '@fortawesome/pro-solid-svg-icons';
 import {
   Box,
   Text,
-  Button,
   Heading,
   Select,
 } from 'grommet';
@@ -21,6 +18,7 @@ import useFetch from 'use-http';
 
 import { API_BASE_URL } from 'Shared/fetch';
 
+import CloseButton from 'Components/modals/CloseButton';
 import SingleIconCard from 'Cards/SingleIconCard';
 import ThreeIconsCard from 'Cards/ThreeIconsCard';
 import FourIconsCard from 'Cards/FourIconsCard';
@@ -226,19 +224,7 @@ const EditModal = ({
 
   return (
     <Box fill style={{ minWidth: '650px', minHeight: '600px' }}>
-      <Box
-        direction="row"
-        align="center"
-        justify="end"
-        as="header"
-      >
-        <Button
-          plain
-          margin="small"
-          onClick={onClose}
-          icon={<FontAwesomeIcon size="lg" icon={faTimes} />}
-        />
-      </Box>
+      <CloseButton className={style.close} onClick={onClose} />
 
       <Box flex="grow" justify="center" align="center">
         {!data && (

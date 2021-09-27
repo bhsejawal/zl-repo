@@ -11,16 +11,18 @@ import {
   faUser,
   faCalendarStar,
 } from '@fortawesome/pro-light-svg-icons';
+import { faBullhorn } from '@fortawesome/pro-solid-svg-icons';
 import useFetch from 'use-http';
 
 import { API_BASE_URL } from 'Shared/fetch';
 import LoaderModal from 'Components/LoaderModal';
 import CardButton from './CardButton';
 import CalendarModal from './CalendarModal';
+import QuestionsModal from './QuestionsModal';
 
 import { fetchCards } from '../api';
 import { setCards, setLoading } from '../actions';
-import { openModalCalendar, openModalCards } from './actions';
+import { openModalCalendar, openModalCards, openModalQuestions } from './actions';
 import {
   BODY,
   INFO,
@@ -35,10 +37,12 @@ const SmallScreenCardTabs = ({
   habitatId,
   activeMobileCardsTab,
   calendarCardOpen,
+  questionsCardOpen,
   setLoadingAction,
   setCardsAction,
   openModalCardsAction,
   openModalCalendarAction,
+  openModalQuestionsAction,
 }) => {
   const { get } = useFetch(API_BASE_URL, {
     credentials: 'include',
@@ -102,6 +106,13 @@ const SmallScreenCardTabs = ({
         overflow={{ horizontal: 'auto' }}
       >
         <CardButton
+          onClick={openModalQuestionsAction}
+          icon={<FontAwesomeIcon size="3x" color="var(--hunterGreenMediumLight)" icon={faBullhorn} />}
+          label="Q&A"
+          color="var(--mossLight)"
+        />
+
+        <CardButton
           onClick={() => onCardBtnClick(MEET)}
           icon={<FontAwesomeIcon size="3x" color="var(--blueDark)" icon={faUser} />}
           label="The Family"
@@ -146,6 +157,10 @@ const SmallScreenCardTabs = ({
       {calendarCardOpen && (
         <CalendarModal />
       )}
+
+      {questionsCardOpen && (
+        <QuestionsModal />
+      )}
     </>
   );
 };
@@ -160,6 +175,7 @@ export default connect(
         mobile: {
           activeMobileCardsTab,
           calendarCardOpen,
+          questionsCardOpen,
         },
       },
     },
@@ -167,11 +183,13 @@ export default connect(
     habitatId,
     activeMobileCardsTab,
     calendarCardOpen,
+    questionsCardOpen,
   }),
   {
     setCardsAction: setCards,
     setLoadingAction: setLoading,
     openModalCardsAction: openModalCards,
     openModalCalendarAction: openModalCalendar,
+    openModalQuestionsAction: openModalQuestions,
   },
 )(SmallScreenCardTabs);

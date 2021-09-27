@@ -46,7 +46,7 @@ import Album from './components/Album';
 
 import { useIsHabitatTabbed, useWindowResize } from '../../hooks';
 import { setHabitat, unsetHabitat, setHabitatProps } from './actions';
-import {setUserData, setHabitatViewers, setAlbumClicked} from '../../redux/actions';
+import { setUserData, setHabitatViewers, updateUserProperty } from '../../redux/actions';
 
 import { generateTitle, getDeviceType } from '../../helpers';
 import { MOBILE_CONTROLS_HEIGHT } from './constants';
@@ -71,16 +71,16 @@ const Habitat = ({
   hostStreamKey,
   isHostStreamOn,
   isBroadcasting,
-  albumClicked,
-  streamClicked,
+  isAlbumClicked,
+  isStreamClicked,
   setHabitatAction,
   unsetHabitatAction,
   openTermsModalAction,
   termsAccepted,
   setHabitatPropsAction,
   setUserDataAction,
+  updateUserPropertyAction,
   setHabitatViewersAction,
-  setAlbumClickedAction,
 }) => {
   // this will be undefined most of the time
   // but in case camera is changed, this value will be set by from socket message
@@ -234,8 +234,10 @@ const Habitat = ({
       habitatId,
     );
 
-    if (label === 'Album' && !albumClicked) {
-      setAlbumClickedAction(true);
+    if (label === 'Album' && !isAlbumClicked) {
+      post(buildURL('users/steps'), { step: 'isAlbumClicked', value: true })
+        .then((data) => updateUserPropertyAction(data))
+        .catch((err) => console.error('Error while updating album click indicator', err));
     }
   }
 
@@ -316,7 +318,7 @@ const Habitat = ({
                 icon={
                   <ClickMessageTip
                     align={{ bottom: 'top' }}
-                    disable={albumClicked || !streamClicked}
+                    disable={isAlbumClicked || !isStreamClicked}
                     text="View photos and clips">
                     <FontAwesomeIcon
                       className={style.icon}
@@ -363,8 +365,8 @@ const ConnectedHabitat = connect(
       termsAccepted = false,
       enteredHabitat,
       role: userRole,
-      albumClicked,
-      streamClicked,
+      isAlbumClicked,
+      isStreamClicked,
       subscription: {
         productId,
         freeHabitat,
@@ -384,8 +386,8 @@ const ConnectedHabitat = connect(
     productId,
     freeHabitat,
     userRole,
-    albumClicked,
-    streamClicked,
+    isAlbumClicked,
+    isStreamClicked,
   }),
   {
     setHabitatAction: setHabitat,
@@ -394,7 +396,7 @@ const ConnectedHabitat = connect(
     setHabitatPropsAction: setHabitatProps,
     setUserDataAction: setUserData,
     setHabitatViewersAction: setHabitatViewers,
-    setAlbumClickedAction: setAlbumClicked,
+    updateUserPropertyAction: updateUserProperty,
   },
 )(Habitat);
 

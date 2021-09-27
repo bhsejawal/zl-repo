@@ -15,6 +15,7 @@ import {
   SHOW_SNAPSHOT_SHARE_POPUP,
   SET_SESSION_CHECHED,
   UNSET_USER_DATA,
+  UPDATE_USER_PROPERTY,
   SET_SUBSCRIPTION_DATA,
   SET_PLANS,
   UPDATE_SUBSCRIPTION_DATA,
@@ -25,16 +26,18 @@ import {
   UPDATE_HABITAT,
   UNSET_HABITATS,
   UPDATE_CLIP_BUTTON_CLICKED,
-  UPDATE_STREAM_TAPPED,
   UPDATE_VIEWERS,
-  UPDATE_ALBUM_CLICKED,
-  UPDATE_SEARCH_CLICKED,
   SET_REPLY_MESSAGE,
 } from './types';
 
 export const setSubscriptionData = (payload) => ({ type: SET_SUBSCRIPTION_DATA, payload });
 
 export const setUserDataAction = (payload) => ({ type: SET_USER_DATA, payload });
+
+export const updateUserProperty = (property) => ({
+  type: UPDATE_USER_PROPERTY,
+  payload: { property },
+});
 
 export const setUserData = ({ _id: userId, ...rest }) => (dispatch) => {
   setGAUserId(userId);
@@ -105,7 +108,7 @@ export const toggleMessageReaction = (channelId, messageId, reaction, reactionId
   },
 })
 
-export const setReplyMessage = (timetoken, username, animal, color, text) => ({
+export const setReplyMessage = (timetoken, username, animal, color, text, channel) => ({
   type: SET_REPLY_MESSAGE,
   payload: {
     timetoken,
@@ -113,6 +116,7 @@ export const setReplyMessage = (timetoken, username, animal, color, text) => ({
     text,
     animal,
     color,
+    channel,
   },
 });
 
@@ -169,22 +173,7 @@ export const setClipButtonClicked = (clicked) => ({
   payload: { clicked },
 });
 
-export const setStreamClicked = (clicked) => ({
-  type: UPDATE_STREAM_TAPPED,
-  payload: { clicked },
-});
-
 export const setHabitatViewers = (viewers) => ({
   type: UPDATE_VIEWERS,
   payload: { viewers },
-});
-
-export const setAlbumClicked = (clicked) => ({
-  type: UPDATE_ALBUM_CLICKED,
-  payload: { clicked },
-});
-
-export const setSearchClicked = (clicked) => ({
-  type: UPDATE_SEARCH_CLICKED,
-  payload: { clicked },
 });

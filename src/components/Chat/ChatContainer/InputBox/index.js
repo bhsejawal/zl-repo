@@ -14,9 +14,11 @@ const InputBox = ({
   channelId,
   animal,
   username,
+  userBadge,
   replyUsername,
   color,
   timetoken,
+  replyChannel,
   alternate,
   onSendHandler,
   clearReplyMessageAction,
@@ -39,11 +41,12 @@ const InputBox = ({
       color,
       username,
       reply: timetoken,
+      badges: userBadge ? [userBadge] : [],
     }
     pubnub.publish({ channel: channelId, message }, () => { setInput('') });
     clearReplyMessageAction();
   }, [
-    onSendHandler, animal, color, username,
+    onSendHandler, animal, color, username, userBadge,
     timetoken, pubnub, channelId, clearReplyMessageAction]);
 
   const onKeyDownHandler = (evt) => {
@@ -58,9 +61,9 @@ const InputBox = ({
     <div
       className={classnames(style.inputBox, {
         [style.alternate]: alternate,
-        [style.replyMessage]: timetoken,
+        [style.replyMessage]: timetoken && replyChannel === channelId,
       })}>
-      {timetoken && (
+      {timetoken && replyChannel === channelId && (
         <div className={style.replyMessageContainer}>
           <CloseButton onClick={clearReplyMessageAction} className={style.close} />
           <div className={style.header}>
@@ -101,14 +104,17 @@ export default connect(({
       animalIcon: animal,
       color,
     },
+    userBadge,
   },
-  chat: { replyMessage: { timetoken, username: replyUsername }},
+  chat: { replyMessage: { timetoken, username: replyUsername, channel: replyChannel }},
 }) => ({
   username,
+  userBadge,
   replyUsername,
   color,
   animal,
   timetoken,
+  replyChannel,
 }), {
   clearReplyMessageAction: clearReplyMessage,
 })(InputBox);

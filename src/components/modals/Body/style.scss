@@ -1,5 +1,11 @@
+@import "../../../style/media-query.scss";
+
 .body {
   padding: 30px 48px;
   display: flex;
   flex-direction: column;
+
+  @media screen and (max-width: #{$tablet-portrait-width}) {
+    padding: 20px 28px;
+  }
 }

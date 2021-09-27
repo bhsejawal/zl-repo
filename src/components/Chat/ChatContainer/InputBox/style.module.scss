@@ -26,7 +26,7 @@
     }
   }
 
-  &.replyMessage {
+  &.replyMessage:not(.alternate) {
     background: var(--hunterGreen);
   }
 

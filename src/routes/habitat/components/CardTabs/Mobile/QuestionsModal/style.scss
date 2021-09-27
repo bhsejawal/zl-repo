@@ -1,0 +1,24 @@
+.container {
+
+  .close {
+    z-index: 3;
+    margin: 10px 10px 0 auto;
+    font-size: 20px;
+    position: absolute;
+    top: 0;
+    right: 0;
+  }
+
+  [class^="questionsContainer"] {
+    margin: 0 !important;
+    padding-top: 0;
+
+    > [class^="askContainer"] {
+      margin-top: 0;
+    }
+  }
+
+  > h4 {
+    margin: 20px 24px 20px 24px;
+  }
+}

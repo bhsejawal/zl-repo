@@ -81,7 +81,7 @@ const TermsAndConditions = ({
             disabled={isCloseDisabled}
             margin="medium"
             onClick={onCloseAction}
-            icon={<FontAwesomeIcon size="2x" icon={faTimes} />}
+            icon={<FontAwesomeIcon style={{ fontSize: size !== 'small' ? '28px' : '20px'}} icon={faTimes} />}
           />
         </Box>
 

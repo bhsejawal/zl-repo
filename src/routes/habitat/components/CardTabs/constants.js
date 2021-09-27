@@ -5,6 +5,7 @@ export const BODY = 'body';
 export const QUIZ = 'quiz';
 export const CALENDAR = 'calendar';
 export const ALBUM = 'album';
+export const QUESTIONS = 'QUESTIONS';
 
 // tags
 export const QUICK_LOOK = 'Quick Look';

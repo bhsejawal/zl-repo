@@ -1,21 +1,11 @@
 import { connect } from 'react-redux';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEye } from '@fortawesome/pro-solid-svg-icons';
-import classnames from 'classnames';
 
-import style from './style.scss';
+import ViewsCount from './standalone';
 
 const VIEWER_ADJUSTMENT = 5;
 
-const ViewersCount = ({ plain, viewers }) => (
-  <div className={classnames({ [style.viewerCountWrapper]: !plain })}>
-    <div className={style.viewerCount}>
-      <FontAwesomeIcon icon={faEye} />
-      <span>
-        {viewers + VIEWER_ADJUSTMENT}
-      </span>
-    </div>
-  </div>
+const ConnectedViewersCount = ({ plain, viewers, className }) => (
+  <ViewsCount viewers={ viewers + VIEWER_ADJUSTMENT } className={className} plain={plain} />
 );
 
-export default connect(({ mainStream: { viewers }}) => ({ viewers }))(ViewersCount);
+export default connect(({ mainStream: { viewers }}) => ({ viewers }))(ConnectedViewersCount);
