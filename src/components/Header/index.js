@@ -38,7 +38,7 @@ const HeaderComponent = ({ unsetUserDataAction, openContactUsModalAction }) => {
       </div>
       {width > cutOffWidth ? (
         <div>
-          <Search className={style.searchConainer} />
+          <Search className={style.searchContainer} />
           <div className={style.navBar}>
             <NavItem text="Map" url="/map" icon={faMapMarkerAlt} />
             <NavItem text="Talk Schedule" url="/schedule" icon={faCalendarDay} />
@@ -49,7 +49,7 @@ const HeaderComponent = ({ unsetUserDataAction, openContactUsModalAction }) => {
         </div>
       ) : (
         <div>
-          <Search className={style.searchConainer} />
+          <Search className={style.searchContainer} />
           <BurgerMenu>
             <NavItem clickable text={isSmallScreen ? 'Habitats' : 'Map'} url="/map" icon={faMapMarkerAlt} />
             <NavItem clickable text="Talk Schedule" url="/schedule" icon={faCalendarDay} />

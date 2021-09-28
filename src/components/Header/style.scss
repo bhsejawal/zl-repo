@@ -31,9 +31,9 @@
   }
 }
 
-div.searchConainer {
+div.searchContainer {
   margin: 0 22px;
-  width: 254px;
+  width: unquote("min(calc(100vw - 200px), 254px)"); // 200 is the ~ (menu + logo + margin)
   padding: 0 8px;
 }
 
