@@ -11,7 +11,6 @@ import {
   Text,
   TextInput,
 } from 'grommet';
-import { utcToZonedTime } from 'date-fns-tz';
 import { faChevronDown } from '@fortawesome/pro-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import classnames from 'classnames';
@@ -53,6 +52,16 @@ const defaultData = {
   frequency: REPEATS,
   singleEvent: false,
 };
+
+const removeTimezoneDifference = (date) => {
+  // Date input takes a string and converts it to a local Date object
+  // Timezone fetched from server is already converted to events timezone
+  // we need an event that uses events time (in habitat timezone), but in local timezone,
+  // so it's not converted by date input automatically
+  const localDate = new Date(date);
+  localDate.setMinutes(localDate.getTimezoneOffset());
+  return localDate.toString();
+}
 
 const Form = ({
   onSubmit,
@@ -353,9 +362,9 @@ const Form = ({
                       <DateInput
                         className={style.dateInput}
                         format="mm/dd/yyyy"
-                        value={utcToZonedTime(
-                          data.date ? new Date(data.date) : new Date(), timezone,
-                        ).toString()}
+                        value={data.date
+                          ? removeTimezoneDifference(data.date)
+                          : new Date().toString()}
                         onChange={changeHandler('date', 'DateInput')}
                         readOnly
                       />
@@ -382,19 +391,16 @@ const Form = ({
   )
 };
 
-export default connect(
-  ({
-    habitat: {
-      habitatInfo: {
-        _id: habitatId,
-        zoo: {
-          timezone,
-        } = {},
-      },
+export default connect(({
+  habitat: {
+    habitatInfo: {
+      _id: habitatId,
+      zoo: {
+        timezone,
+      } = {},
     },
-  }) => ({
-    timezone,
-    habitatId,
-  }),
-  { showDeleteEventModalAction: showDeleteEventModal },
-)(Form);
+  },
+}) => ({ timezone, habitatId }),
+{
+  showDeleteEventModalAction: showDeleteEventModal,
+})(Form);
