@@ -6,22 +6,19 @@
   gap: 10px;
 }
 
-input.required {
-  border-color: #BF3D3F;
-}
-
-div.required {
-  min-height: 18px;
-}
-
-.required {
-  color: #BF3D3F;
-  font-size: 12px;
-  line-height: 18px;
-}
-
 .inputWrapper {
   margin-bottom: 60px;
+}
+
+.close {
+  position: absolute;
+  top: calc(50% - (50 * var(--vh)) + 20px);
+  right: calc(50% - 50vw + 20px);
+  z-index: 1;
+  width: 50px;
+  height: 50px;
+  background: var(--hunterGreenMediumDark);
+  color: white;
 }
 
 .contentContainer {
@@ -39,9 +36,7 @@ div.required {
     width: 290px;
     margin: auto 0 auto auto;
     min-height: fit-content;
-    text-align: center;
     display: flex;
-    align-items: center;
 
     .input {
       margin-top: 40px;
@@ -51,6 +46,7 @@ div.required {
       font-size: 20px;
       line-height: 28px;
       padding-bottom: 4px;
+      padding-left: 0;
 
       &::placeholder {
         font-size: 16px;
@@ -151,30 +147,13 @@ div.required {
 
 @media screen and (max-width: #{$tablet-portrait-width}) {
 
-  .header {
-    padding: 0px;
-    justify-content: center;
-    align-items: center;
-    height: 53px;
-    font-size: 20px;
-    line-height: 28px;
-    font-weight: normal;
-
-    button {
-      display: none;
-    }
-  }
-
   .contentContainer {
     flex-direction: column;
     padding: 0px;
 
     .rightSection {
-      margin-top: 10px;
       padding: 28px 40px;
       width: 100%;
-      text-align: center;
-      align-items: center;
 
       .inputWrapper {
         margin-bottom: 40px;
@@ -199,10 +178,6 @@ div.required {
 
 .mobile {
   max-height: calc((100 * var(--vh)) - 30px);
-
-  .header {
-    font-size: 28px;
-  }
 
   .contentContainer {
 

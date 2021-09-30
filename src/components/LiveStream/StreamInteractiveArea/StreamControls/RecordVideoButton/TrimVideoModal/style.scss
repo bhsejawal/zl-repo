@@ -1,23 +1,20 @@
 @import "../../../../../../style/media-query";
 
+.close {
+  position: absolute;
+  top: calc(50% - (50 * var(--vh)) + 20px);
+  right: calc(50% - 50vw + 20px);
+  z-index: 1;
+  width: 50px;
+  height: 50px;
+  background: var(--hunterGreenMediumDark);
+  color: white;
+}
+
 .buttonsWrapper {
   display: flex;
   flex-direction: row;
   gap: 10px;
-}
-
-input.required {
-  border-color: #BF3D3F;
-}
-
-div.required {
-  min-height: 18px;
-}
-
-.required {
-  color: #BF3D3F;
-  font-size: 12px;
-  line-height: 18px;
 }
 
 .inputWrapper {
@@ -27,14 +24,15 @@ div.required {
 .contentContainer {
   flex-direction: row;
   flex-grow: 1;
-  padding: 25px;
+  padding: 0;
 
   .rightSection {
-    width: 290px;
-    margin: auto 0 auto auto;
-    text-align: center;
+    padding: 26px;
+    width: 285px;
+    margin: auto;
     display: flex;
-    align-items: center;
+    flex-grow: 0;
+    flex-shrink: 0;
 
     .input {
       margin-top: 40px;
@@ -44,11 +42,11 @@ div.required {
       font-size: 20px;
       line-height: 28px;
       padding-bottom: 4px;
+      padding-left: 0;
 
       &::placeholder {
-        font-size: 16px;
+        font-size: 10px;
         color: #CDCDCD;
-        text-align: center;
       }
     }
 
@@ -58,14 +56,14 @@ div.required {
   }
 
   .leftSection {
-    width: 500px;
-    margin-right: 60px;
+    background: black;
+    width: calc(100vw - 315px);
+    justify-content: center;
 
     .videoWrapper {
       width: 100%;
       padding-top: 56.25%;
       position: relative;
-      margin-bottom: 10px;
 
       video {
         position: absolute;
@@ -76,6 +74,14 @@ div.required {
         bottom: 0;
         left: 0;
       }
+    }
+
+    .rangeInput {
+      position: absolute;
+      bottom: 48px;
+      right: 10px;
+      left: 10px;
+      z-index: 2;
     }
   }
 }
@@ -156,30 +162,23 @@ div.required {
 
 @media screen and (max-width: #{$tablet-portrait-width}) {
 
-  .header {
-    padding: 0px;
-    justify-content: center;
-    align-items: center;
-    height: 53px;
-    font-size: 20px;
-    line-height: 28px;
-    font-weight: normal;
-
-    button {
-      display: none;
-    }
-  }
-
   .contentContainer {
     flex-direction: column;
-    padding: 0px;
+
+    .leftSection {
+      width: 100%;
+
+      .rangeInput {
+        position: absolute;
+        bottom: -50px;
+        right: 24px;
+        left: 24px;
+      }
+    }
 
     .rightSection {
-      margin-top: 10px;
-      padding: 28px 40px;
+      padding: 70px 40px 28px 40px;
       width: 100%;
-      text-align: center;
-      align-items: center;
 
       span,
       input {
@@ -191,12 +190,7 @@ div.required {
       input::placeholder {
         font-size: 13px !important;
         color: #CDCDCD;
-        text-align: center;
       }
-    }
-
-    .rangeInput {
-      padding: 0 10px;
     }
   }
 }

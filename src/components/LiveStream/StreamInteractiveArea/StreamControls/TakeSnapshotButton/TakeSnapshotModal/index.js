@@ -10,10 +10,10 @@ import useFetch from 'use-http';
 import classnames from 'classnames';
 import { connect } from 'react-redux';
 
-import { PrimaryButton, OutlineButton } from 'Components/Buttons';
+import { PrimaryButton } from 'Components/Buttons';
 import { API_BASE_URL } from 'Shared/fetch';
 import { logGAEvent } from 'Shared/ga';
-import Header from 'Components/modals/Header';
+import CloseButton from 'Components/modals/CloseButton';
 import ErrorModal from 'Components/modals/Error';
 import { setShareModalData } from 'Components/ShareModal/actions';
 
@@ -80,9 +80,7 @@ const TakeSnapshotModal = ({
   return (
     <Layer position="center" onClickOutside={onCloseHandler}>
       <Box width="960px" height={{ min: '480px' }} className={classnames({ [style.mobile]: isMobileSize })}>
-        <Header onClose={onCloseHandler} className={style.header}>
-          Zoolife Moments
-        </Header>
+        <CloseButton onClick={onCloseHandler} className={style.close} />
 
         <Box className={style.contentContainer}>
           <Box className={style.contentWrapper}>
@@ -99,27 +97,14 @@ const TakeSnapshotModal = ({
                   placeholder="Write a short description"
                   value={title}
                   onChange={({ target: { value }}) => setTitle(value)}
-                  className={classnames(style.input, { [style.required]: !title.length })}
+                  className={style.input}
                   disabled={loading}
                 />
-                <div className={style.required}>
-                  <span>
-                    {!title.length ? 'Please add a description to publish' : ''}
-                  </span>
-                </div>
               </div>
               <div className={style.buttonsWrapper}>
-                <OutlineButton
-                  label="Cancel"
-                  size="medium"
-                  onClick={onCloseHandler}
-                  disabled={loading}
-                  className={style.submit}
-                />
-
                 <PrimaryButton
-                  label="Publish"
-                  size="medium"
+                  label="Save & Share"
+                  size="large"
                   loading={loading}
                   onClick={clickHandler}
                   disabled={!title}

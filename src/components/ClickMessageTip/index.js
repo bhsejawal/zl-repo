@@ -29,6 +29,7 @@ const ClickMessageTip = ({
           plain
           align={align}
           target={targetRef.current}
+          style={{ zIndex: '1' }}
         >
           <Box pad="35px">
             <Box className={style.content}>
