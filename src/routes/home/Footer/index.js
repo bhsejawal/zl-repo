@@ -127,7 +127,7 @@ const Footer = () => {
           <h3>
             <a
               className={`${style.mLink} ${style.bold}`}
-              href="https://brizi.applytojob.com/apply/eG8TqcfWga/Senior-Full-Stack-Software-Developer"
+              href="https://brizi.applytojob.com/apply/"
               target="_blank"
               rel="noopener noreferrer"
             >
