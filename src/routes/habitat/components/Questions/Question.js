@@ -5,6 +5,8 @@ import { formatDistanceToNow } from 'date-fns';
 import { lazy, Suspense } from 'preact/compat';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowRight } from '@fortawesome/pro-solid-svg-icons';
+import { faTrash, faFlag } from '@fortawesome/pro-regular-svg-icons';
+import classnames from 'classnames';
 
 import { getIconUrl } from 'Shared/profileIcons';
 import AnimalIcon from 'Components/AnimalIcon';
@@ -22,12 +24,19 @@ const Question = ({
   createdAt,
   habitatId,
   comments,
+  onReportHandler,
+  onDeleteHandler,
 }) => {
   const [expand, setExpand] = useState(false);
+  const [showActionBar, setShowActionbar] = useState(false);
 
   return (
     <div className={style.question}>
-      <div className={style.header}>
+      <div
+        className={style.header}
+        onMouseEnter={() => setShowActionbar(true)}
+        onMouseLeave={() => setShowActionbar(false)}
+      >
         <AnimalIcon
           animalIcon={animalIcon.endsWith('.svg') ? animalIcon : getIconUrl(animalIcon)}
           color={color}
@@ -36,6 +45,20 @@ const Question = ({
         <div className={style.nameWrapper}>
           <span>{username}</span>
           <span>{`${formatDistanceToNow(new Date(createdAt)).replace('about', '')} ago`}</span>
+        </div>
+        <div className={classnames(style.actionBar, { [style.hide]: !showActionBar})}>
+          <div
+            className={style.actionButton}
+            onClick={() => onDeleteHandler(questionId)}
+          >
+            <FontAwesomeIcon icon={faTrash} />
+          </div>
+          <div
+            className={style.actionButton}
+            onClick={() => onReportHandler(questionId)}
+          >
+            <FontAwesomeIcon icon={faFlag} />
+          </div>
         </div>
       </div>
       <div className={style.body}>
