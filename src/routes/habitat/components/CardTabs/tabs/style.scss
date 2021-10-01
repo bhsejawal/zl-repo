@@ -1,20 +1,131 @@
-.albumClickIndicator > div > div {
-  margin-right: 5px;
+@import "../../../../../style/media-query.scss";
 
-  svg {
-    z-index: 1;
-    margin-right: 0;
+.carousel {
+  border: 0;
+  margin: 0;
+  padding: 0;
+
+  [class*="arrowWrapper"] {
+    background: #FFFFFF;
+    opacity: .9;
+    border: 1px solid #EBEBEB;
+    box-shadow: 0 6px 6px rgba(0, 0, 0, .07);
+    border-radius: 50%;
+    font-size: 10px;
+    color: var(--charcoalLight);
+    display: flex;
+    justify-items: center;
+    align-items: center;
+    justify-content: center;
+    flex-grow: 0;
+
+    &:first-child {
+      position: relative;
+      right: -21px;
+
+      &[class*="arrowDisabled"] {
+        opacity: 0;
+      }
+    }
+
+    &:last-child {
+      position: relative;
+      left: -21px;
+    }
+
+    svg {
+      width: 40px;
+      height: 40px;
+      padding: 10px;
+      margin: 0;
+    }
   }
 }
 
-.tabBtn {
-  font-size: 16px;
-  line-height: 22px;
-  margin-right: 30px;
-  display: inline-flex;
+.tabsContainer {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  max-width: calc(100% - 300px);
+  padding: 0;
+
+  @media screen and (max-width: #{$tablet-portrait-width}) {
+    max-width: 100%;
+    padding: 10px 0;
+  }
 }
 
-.icon {
-  margin-right: 5px;
-  pointer-events: none;
+.tabContainer {
+  padding: 8px 10px;
+  transition: .2s ease-in-out all;
+
+  &.active {
+    padding: 0px 10px;
+
+    .wrapper {
+      width: 166px;
+      height: 236px;
+      padding-bottom: 8px;
+    }
+  }
+
+  .wrapper {
+    width: 160px;
+    height: 220px;
+    display: flex;
+    flex-direction: column;
+    border-radius: 5px;
+    transition: .2s ease-in-out all;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, .15);
+    cursor: pointer;
+  }
+
+  .top {
+    height: 110px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    img {
+      width: auto;
+    }
+  }
+
+  .bottom {
+    height: 110px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    background: white;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+
+    h4 {
+      margin: 0;
+      position: relative;
+
+      &:after {
+        content: "";
+        display: block;
+        width: 10px;
+        height: 1px;
+        background: black;
+        margin: 0 auto;
+        position: absolute;
+        bottom: -4px;
+        right: 0;
+        left: 0;
+      }
+    }
+
+    p {
+      font-size: 10px;
+      line-height: 13px;
+      margin: 10px 0 0 0;
+      text-align: center;
+      max-width: 120px;
+    }
+
+  }
 }

@@ -38,6 +38,7 @@ import ScheduleModal from './components/ScheduleModal';
 import Chat from './components/Chat';
 import LiveChannelsBar from './components/LiveChannelsBar';
 import CardTabs from './components/CardTabs';
+import TabCarousel from './components/CardTabs/tabs/index';
 import StreamProfile from './components/StreamProfile';
 import OnboardingModal from './components/Onboarding';
 import CameraControlModal from './components/CameraControlModal';
@@ -311,12 +312,11 @@ const Habitat = ({
               <Tab label="Explore" icon={<FontAwesomeIcon size="lg" icon={faInfoCircle} />}>
                 <div className={style.middleSection}>
                   <StreamProfile />
+                  {isTabletOrLarger ? <TabCarousel /> : <SmallScreenCardTabs />}
                 </div>
 
                 <div className={style.bottomSection}>
-                  {isTabletOrLarger
-                    ? <CardTabs />
-                    : <SmallScreenCardTabs />}
+                  {isTabletOrLarger && <CardTabs />}
                 </div>
               </Tab>
 

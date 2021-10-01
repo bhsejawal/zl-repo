@@ -35,6 +35,13 @@
     transform: scale(1);
     animation: pulse 1.5s infinite;
   }
+
+  &.large:after {
+    top: calc(50% - (90px / 2));
+    right: calc(50% - (90px / 2));
+    width: 90px;
+    height: 90px;
+  }
 }
 
 @keyframes pulse {

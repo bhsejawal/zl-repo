@@ -159,7 +159,7 @@ const Info = ({
         </ImageEditor>
       </div>
 
-      <div>
+      <div className={style.detailsWrapper}>
         <TextEditor
           postToUrl={`/admin/habitats/${habitatId}/prop`}
           textProp="title"

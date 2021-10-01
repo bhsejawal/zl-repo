@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'preact/compat';
 import { Box, Drop } from 'grommet';
+import classnames from 'classnames';
 
 import style from './style.scss';
 
@@ -8,6 +9,7 @@ const ClickMessageTip = ({
   text,
   disable,
   align,
+  largeIndicator,
 }) => {
   const targetRef = useRef();
   const [, setShowDrop] = useState(false);
@@ -20,7 +22,7 @@ const ClickMessageTip = ({
 
   return (
     <Box className={style.clickMessageTip}>
-      <Box ref={targetRef} className={style.pulse}>
+      <Box ref={targetRef} className={classnames(style.pulse, { [style.large]: largeIndicator })}>
         {children}
       </Box>
       {targetRef.current && (

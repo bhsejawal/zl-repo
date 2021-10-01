@@ -1,27 +1,31 @@
-@import "../../../../../style/media-query.scss";
-
 .desc {
-  flex: 1;
-  min-width: 120px;
+  display: flex;
+  flex-direction: column;
+  color: #2E2D2D;
+  padding-top: 22px;
 
-  @media screen and (min-width: #{$tablet-portrait-width}) and (max-width: #{$tablet-landscape-width}) {
-    flex-basis: 100%;
+  .wrapper {
+    display: flex;
+    flex-direction: row;
   }
 
-  @media screen and (max-width: #{$tablet-landscape-width}) {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-top: 30px;
+  svg {
+    width: 18px;
+    height: 18px;
   }
 }
 
+.members {
+  display: flex;
+  flex-direction: row;
+  font-size: 12px;
+  line-height: 18px;
+}
+
 .text {
+  margin-top: 0;
+  padding-left: 14px;
   font-size: 13px;
   line-height: 18px;
   color: var(--charcoalLight);
-
-  @media screen and (max-width: #{$tablet-landscape-width}) {
-    margin-left: 10px;
-  }
 }

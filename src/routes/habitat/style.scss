@@ -32,13 +32,21 @@
 }
 
 .middleSection {
-  padding: 24px 40px;
+  padding: 12px 0 12px 40px;
   background: white;
+  display: flex;
+  flex-direction: row;
+
+  @media screen and (max-width: #{$tablet-portrait-width}) {
+    flex-direction: column;
+  }
 }
 
 .bottomSection {
   padding: 0 40px;
   background: white;
+  display: flex;
+  flex-direction: row;
 }
 
 .livestreamWrapper {
@@ -50,7 +58,7 @@
 
   .middleSection,
   .bottomSection {
-    padding: 23px 21px 0px 21px;
+    padding: 12px;
   }
 }
 
