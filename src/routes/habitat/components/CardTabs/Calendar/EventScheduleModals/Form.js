@@ -376,6 +376,11 @@ const Form = ({
           )}
         </Box>
       </div>
+      {error && (
+        <Box className={style.formSubmissionError}>
+          {error}
+        </Box>
+      )}
       <Box direction="row" justify="end" margin={{ top: '38px' }} pad={{ right: '20px', left: '40px' }}>
         {isEdit && (
           <OutlineButton
@@ -385,7 +390,6 @@ const Form = ({
           />
         )}
         <PrimaryButton loading={loading} type="submit" label="Publish" />
-        {error && <div className={style.formSubmissionError}>{error}</div>}
       </Box>
     </form>
   )
