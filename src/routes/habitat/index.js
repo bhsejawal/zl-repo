@@ -56,6 +56,20 @@ import style from './style.scss';
 const ChatComponent = lazy(() => import('Components/Chat'));
 const PubNubWrapper = lazy(() => import('Components/PubNubWrapper'));
 
+const getLiveTalkSize = (width) => {
+  const device = getDeviceType();
+
+  if (device === 'phone') {
+    return width * 0.35;
+  }
+
+  if (device === 'tablet') {
+    return width * 0.30;
+  }
+
+  return width * 0.25;
+}
+
 const Habitat = ({
   streamKey,
   isStreamOn,
@@ -226,6 +240,7 @@ const Habitat = ({
   const streamWidth = Math.min(maxStreamWidth, calcStreamWidth);
   const height = Math.min(maxStreamHeight, streamWidth * 0.5625);
   const topSectionHeight = height + (isTabletOrLarger ? 0 : MOBILE_CONTROLS_HEIGHT);
+  const livetalkWidth = getLiveTalkSize(streamWidth);
 
   const onTabChange = ({ label }) => {
     logGAEvent(
@@ -277,14 +292,14 @@ const Habitat = ({
 
               {hasPermission('habitat:broadcast') && hostStreamKey && (!isHostStreamOn || isBroadcasting) && (
                 <BroadcastWrapper
-                  size={isTabbed ? streamWidth * 0.35 : streamWidth * 0.25 }
+                  size={livetalkWidth}
                 />
               )}
 
               {hostStreamKey && isHostStreamOn && !isBroadcasting && (
                 <LiveTalk
                   streamId={hostStreamKey}
-                  size={isTabbed ? streamWidth * 0.35 : streamWidth * 0.25 }
+                  size={livetalkWidth}
                 />
               )}
             </div>
