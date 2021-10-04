@@ -38,14 +38,14 @@ export const getDeviceType = () => {
   return "desktop";
 };
 
-export const getDesktopOrMobile = (isDesktop) => {
+export const getDesktopOrMobile = () => {
   const type = getDeviceType();
 
   if (type === 'tablet' || type === 'phone') {
-    return isDesktop ? false : 'mobile';
+    return 'mobile';
   }
 
-  return isDesktop ? true : 'desktop';
+  return 'desktop';
 }
 
 export const generateTitle = (part) => (part ? `Zoolife - ${part}` : 'Zoolife');

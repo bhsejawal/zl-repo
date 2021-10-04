@@ -45,11 +45,11 @@ import CameraControlModal from './components/CameraControlModal';
 import SmallScreenCardTabs from './components/CardTabs/Mobile';
 import Album from './components/Album';
 
-import { useIsHabitatTabbed, useWindowResize } from '../../hooks';
+import { useIsHabitatTabbed, useShowMobileControls, useWindowResize } from '../../hooks';
 import { setHabitat, unsetHabitat, setHabitatProps } from './actions';
 import { setUserData, setHabitatViewers, updateUserProperty } from '../../redux/actions';
 
-import { generateTitle, getDesktopOrMobile, getDeviceType } from '../../helpers';
+import { generateTitle, getDeviceType } from '../../helpers';
 import { MOBILE_CONTROLS_HEIGHT } from './constants';
 
 import style from './style.scss';
@@ -108,7 +108,7 @@ const Habitat = ({
   const pageRef = useRef();
   const [pageWidth, setPageWidth] = useState(pageRef?.current?.offsetWidth || windowWidth);
   const isTabletOrLarger = ['medium', 'large'].includes(size);
-  const isDesktop = getDesktopOrMobile(true);
+  const showMobileControls = useShowMobileControls();
   const isTabbed = useIsHabitatTabbed();
 
   useEffect(() => {
@@ -241,7 +241,7 @@ const Habitat = ({
   const calcStreamWidth = isTabbed ? windowWidth : (pageWidth - sideBarWidth - chatWidth);
   const streamWidth = Math.min(maxStreamWidth, calcStreamWidth);
   const height = Math.min(maxStreamHeight, streamWidth * 0.5625);
-  const topSectionHeight = height + (isDesktop ? 0 : MOBILE_CONTROLS_HEIGHT);
+  const topSectionHeight = height + (showMobileControls ? MOBILE_CONTROLS_HEIGHT : 0);
   const livetalkWidth = getLiveTalkSize(streamWidth);
 
   const onTabChange = ({ label }) => {
