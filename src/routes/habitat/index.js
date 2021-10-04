@@ -49,7 +49,7 @@ import { useIsHabitatTabbed, useWindowResize } from '../../hooks';
 import { setHabitat, unsetHabitat, setHabitatProps } from './actions';
 import { setUserData, setHabitatViewers, updateUserProperty } from '../../redux/actions';
 
-import { generateTitle, getDeviceType } from '../../helpers';
+import { generateTitle, getDesktopOrMobile, getDeviceType } from '../../helpers';
 import { MOBILE_CONTROLS_HEIGHT } from './constants';
 
 import style from './style.scss';
@@ -108,6 +108,7 @@ const Habitat = ({
   const pageRef = useRef();
   const [pageWidth, setPageWidth] = useState(pageRef?.current?.offsetWidth || windowWidth);
   const isTabletOrLarger = ['medium', 'large'].includes(size);
+  const isDesktop = getDesktopOrMobile(true);
   const isTabbed = useIsHabitatTabbed();
 
   useEffect(() => {
@@ -240,7 +241,7 @@ const Habitat = ({
   const calcStreamWidth = isTabbed ? windowWidth : (pageWidth - sideBarWidth - chatWidth);
   const streamWidth = Math.min(maxStreamWidth, calcStreamWidth);
   const height = Math.min(maxStreamHeight, streamWidth * 0.5625);
-  const topSectionHeight = height + (isTabletOrLarger ? 0 : MOBILE_CONTROLS_HEIGHT);
+  const topSectionHeight = height + (isDesktop ? 0 : MOBILE_CONTROLS_HEIGHT);
   const livetalkWidth = getLiveTalkSize(streamWidth);
 
   const onTabChange = ({ label }) => {
@@ -307,7 +308,7 @@ const Habitat = ({
             {!isTabbed && <Chat width={chatWidth} height={height} showHeader />}
           </div>
 
-          <div className={style.contentSection} style={{ height: `calc((var(--vh) * 100) - var(--headerHeight) - ${height + (isTabletOrLarger ? 0 : MOBILE_CONTROLS_HEIGHT)}px)` }}>
+          <div className={style.contentSection} style={{ height: `calc((var(--vh) * 100) - var(--headerHeight) - ${topSectionHeight}px)` }}>
             <Tabs show={isTabbed} onChange={onTabChange}>
               <Tab label="Explore" icon={<FontAwesomeIcon size="lg" icon={faInfoCircle} />}>
                 <div className={style.middleSection}>
