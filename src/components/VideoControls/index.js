@@ -106,7 +106,6 @@ const VideoControls = forwardRef(({
 
   useEffect(() => {
     const handleFullscreenMode = () => {
-      console.log('ta vindo aqui??????', document.fullscreenElement)
       setIsFullscreen(document.fullscreenElement !== null);
     }
 

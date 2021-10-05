@@ -115,9 +115,18 @@
 }
 
 .formSubmissionError {
-  bottom: 10px;
-  right: 40px;
-  position: absolute;
+  margin-top: 20px;
   color: var(--red);
   font-size: 13px;
+}
+
+:global {
+
+  // Calendar picker should automatically do the calculations to be shown from top or bottom
+  // but its not working as intended so this is a fallback to make the calendar picker autoscroll
+  // when using small screens
+
+  [class^="StyledCalendar"] {
+    overflow-y: auto;
+  }
 }

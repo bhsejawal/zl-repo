@@ -2,14 +2,11 @@
 
 .profile {
   display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-wrap: wrap;
+  flex-direction: column;
+  width: 300px;
 
-  @media screen and (max-width: #{$phone-landscape-width}) {
-    flex-direction: column;
-    height: auto;
-    align-items: flex-start;
+  @media screen and (max-width: #{$tablet-portrait-width}) {
+    width: 100%;
   }
 }
 

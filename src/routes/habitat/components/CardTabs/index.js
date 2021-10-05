@@ -8,7 +8,6 @@ import { buildURL } from 'Shared/fetch';
 
 import { CALENDAR, ALBUM, QUESTIONS } from './constants';
 
-import Tabs from './tabs';
 import Cards from './cards';
 import CalendarLoader from './Calendar/CalendarLoader';
 import Album from '../Album';
@@ -66,10 +65,9 @@ const CardTabs = ({ activeTab, showContentExplorer, setUserDataAction }) => {
   }, [data, setUserDataAction]);
 
   return (
-    <div ref={elementRef} id="cardsSection">
-      <Tabs active={activeTab} />
+    <Box ref={elementRef} id="cardsSection" fill>
       {renderActive(activeTab)}
-    </div>
+    </Box>
   );
 };
 

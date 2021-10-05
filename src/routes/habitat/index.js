@@ -38,13 +38,14 @@ import ScheduleModal from './components/ScheduleModal';
 import Chat from './components/Chat';
 import LiveChannelsBar from './components/LiveChannelsBar';
 import CardTabs from './components/CardTabs';
+import TabCarousel from './components/CardTabs/tabs/index';
 import StreamProfile from './components/StreamProfile';
 import OnboardingModal from './components/Onboarding';
 import CameraControlModal from './components/CameraControlModal';
 import SmallScreenCardTabs from './components/CardTabs/Mobile';
 import Album from './components/Album';
 
-import { useIsHabitatTabbed, useWindowResize } from '../../hooks';
+import { useIsHabitatTabbed, useShowMobileControls, useWindowResize } from '../../hooks';
 import { setHabitat, unsetHabitat, setHabitatProps } from './actions';
 import { setUserData, setHabitatViewers, updateUserProperty } from '../../redux/actions';
 
@@ -55,6 +56,20 @@ import style from './style.scss';
 
 const ChatComponent = lazy(() => import('Components/Chat'));
 const PubNubWrapper = lazy(() => import('Components/PubNubWrapper'));
+
+const getLiveTalkSize = (width) => {
+  const device = getDeviceType();
+
+  if (device === 'phone') {
+    return width * 0.35;
+  }
+
+  if (device === 'tablet') {
+    return width * 0.30;
+  }
+
+  return width * 0.25;
+}
 
 const Habitat = ({
   streamKey,
@@ -93,6 +108,7 @@ const Habitat = ({
   const pageRef = useRef();
   const [pageWidth, setPageWidth] = useState(pageRef?.current?.offsetWidth || windowWidth);
   const isTabletOrLarger = ['medium', 'large'].includes(size);
+  const showMobileControls = useShowMobileControls();
   const isTabbed = useIsHabitatTabbed();
 
   useEffect(() => {
@@ -225,7 +241,8 @@ const Habitat = ({
   const calcStreamWidth = isTabbed ? windowWidth : (pageWidth - sideBarWidth - chatWidth);
   const streamWidth = Math.min(maxStreamWidth, calcStreamWidth);
   const height = Math.min(maxStreamHeight, streamWidth * 0.5625);
-  const topSectionHeight = height + (isTabletOrLarger ? 0 : MOBILE_CONTROLS_HEIGHT);
+  const topSectionHeight = height + (showMobileControls ? MOBILE_CONTROLS_HEIGHT : 0);
+  const livetalkWidth = getLiveTalkSize(streamWidth);
 
   const onTabChange = ({ label }) => {
     logGAEvent(
@@ -277,31 +294,30 @@ const Habitat = ({
 
               {hasPermission('habitat:broadcast') && hostStreamKey && (!isHostStreamOn || isBroadcasting) && (
                 <BroadcastWrapper
-                  size={isTabbed ? streamWidth * 0.35 : streamWidth * 0.25 }
+                  size={livetalkWidth}
                 />
               )}
 
               {hostStreamKey && isHostStreamOn && !isBroadcasting && (
                 <LiveTalk
                   streamId={hostStreamKey}
-                  size={isTabbed ? streamWidth * 0.35 : streamWidth * 0.25 }
+                  size={livetalkWidth}
                 />
               )}
             </div>
             {!isTabbed && <Chat width={chatWidth} height={height} showHeader />}
           </div>
 
-          <div className={style.contentSection} style={{ height: `calc((var(--vh) * 100) - var(--headerHeight) - ${height + (isTabletOrLarger ? 0 : MOBILE_CONTROLS_HEIGHT)}px)` }}>
+          <div className={style.contentSection} style={{ height: `calc((var(--vh) * 100) - var(--headerHeight) - ${topSectionHeight}px)` }}>
             <Tabs show={isTabbed} onChange={onTabChange}>
               <Tab label="Explore" icon={<FontAwesomeIcon size="lg" icon={faInfoCircle} />}>
                 <div className={style.middleSection}>
                   <StreamProfile />
+                  {isTabletOrLarger ? <TabCarousel /> : <SmallScreenCardTabs />}
                 </div>
 
                 <div className={style.bottomSection}>
-                  {isTabletOrLarger
-                    ? <CardTabs />
-                    : <SmallScreenCardTabs />}
+                  {isTabletOrLarger && <CardTabs />}
                 </div>
               </Tab>
 

@@ -15,7 +15,11 @@ const LoadingContent = ({ openContactUsModalAction }) => {
   return (
     <Box justify="center" align="center" margin="auto">
       <Loader height="120px" />
-      <Heading level="3" margin={{ top: 'large' }} textAlign="center">
+      <Heading
+        level="2"
+        margin="32px"
+        textAlign="center"
+      >
         Hang on, we’re generating your moment...
       </Heading>
       <Text color="black" margin={{ top: isMobile ? '0px' : 'large', bottom: '20px' }} size="large">

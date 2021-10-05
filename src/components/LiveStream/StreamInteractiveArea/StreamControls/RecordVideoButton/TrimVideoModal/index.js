@@ -1,6 +1,6 @@
 import { connect} from 'react-redux';
 import { isEmpty } from 'lodash-es';
-import { useEffect, useState, useRef } from 'preact/hooks';
+import { useEffect, useState } from 'preact/hooks';
 import {
   Box,
   Layer,
@@ -8,16 +8,15 @@ import {
   TextInput,
 } from 'grommet';
 import useFetch from 'use-http';
-import classnames from 'classnames';
 
 import { logGAEvent } from 'Shared/ga';
-import Header from 'Components/modals/Header';
+import CloseButton from 'Components/modals/CloseButton';
+import VideoPlayer from 'Components/VideoPlayer';
 import RangeInput from 'Components/RangeInput';
 import ErrorModal from 'Components/modals/Error';
 import { getTimeString } from 'Components/RangeInput/helper';
-import { PrimaryButton, OutlineButton } from 'Components/Buttons';
+import { PrimaryButton } from 'Components/Buttons';
 import { setShareModalData } from 'Components/ShareModal/actions';
-
 import { API_BASE_URL } from 'Shared/fetch';
 import LoadingContent from './LoadingContent';
 
@@ -34,7 +33,6 @@ const TrimVideoModal = ({
   const [showError, setShowError] = useState(false);
   const [range, setRange] = useState([0, 30]);
   const [title, setTitle] = useState('');
-  const videoRef = useRef();
 
   const { data, error, post } = useFetch(API_BASE_URL, {
     credentials: 'include',
@@ -74,6 +72,7 @@ const TrimVideoModal = ({
 
       setShowError(true);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data, error]);
 
   useEffect(() => {
@@ -94,7 +93,6 @@ const TrimVideoModal = ({
   }, [trimData, trimError, setShareModalDataAction, slug, onClose]);
 
   const rangeChangeHandler = ([min, max]) => {
-    videoRef.current.currentTime = min;
     setRange([min, max]);
   };
 
@@ -121,57 +119,50 @@ const TrimVideoModal = ({
 
   return (
     <Layer position="center" onClickOutside={onClose}>
-      <Box width="960px" height={{ min: '530px' }}>
-        <Header onClose={onClose} className={style.header}>
-          Zoolife Moments
-        </Header>
-
+      <CloseButton onClick={onClose} className={style.close} />
+      <Box width="960px">
         {isEmpty(videoData) && (
-          <LoadingContent />
+          <Box pad="24px"><LoadingContent /></Box>
         )}
 
         {!isEmpty(videoData) && isEmpty(trimData) && (
           <Box className={style.contentContainer}>
             <Box className={style.leftSection}>
               <div className={style.videoWrapper}>
+                <VideoPlayer
+                  videoURL={`${videoData.videoURL}#t=0.1`}
+                  autoPlay
+                  muted
+                  isGuest
+                  key={videoData.videoURL}
+                  currentTime={range[0]}
+                />
 
-                {/* eslint-disable-next-line jsx-a11y/media-has-caption */}
-                <video ref={videoRef} src={`${videoData.videoURL}#t=0.1`} controls />
-              </div>
-              <div className={style.rangeInput}>
-                <RangeInput onChange={rangeChangeHandler} initRange={range} />
+                <div className={style.rangeInput}>
+                  <RangeInput onChange={rangeChangeHandler} initRange={range} />
+                </div>
               </div>
             </Box>
             <Box className={style.rightSection}>
-              <Text size="xlarge">
-                Capture clips of your favorite animals to share with friends
-                and the Zoolife community.
+              <Text size="16px" margin={{ bottom: '13px' }}>
+                <b>Great clip!</b>
+              </Text>
+              <Text size="medium" >
+                Add your observations below to help researchers learn about the species.
               </Text>
               <div className={style.inputWrapper}>
                 <TextInput
-                  placeholder="Write a short description"
+                  placeholder="What’s happening in this clip? (required)"
                   value={title}
                   onChange={({ target: { value }}) => setTitle(value)}
-                  className={classnames(style.input, { [style.required]: !title.length })}
+                  className={style.input}
                   disabled={trimLoading}
                 />
-                <div className={style.required}>
-                  <span>
-                    {!title.length ? 'Please add a description to publish' : ''}
-                  </span>
-                </div>
               </div>
               <div className={style.buttonsWrapper}>
-                <OutlineButton
-                  label="Cancel"
-                  size="medium"
-                  onClick={onClose}
-                  disabled={trimLoading}
-                  className={style.submit}
-                />
                 <PrimaryButton
-                  label="Publish"
-                  size="medium"
+                  label="Save & Share"
+                  size="large"
                   loading={trimLoading}
                   onClick={trimVideoHandler}
                   disabled={!title}

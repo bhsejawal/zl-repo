@@ -225,26 +225,12 @@ const ChatMessage = ({
             <span className={style.message}>
               {text}
             </span>
-            {mediaId && type === 'image' && (
+            {mediaId && (
               <div
                 className={style.mediaContainer}
                 onClick={clickMediaHandler}
               >
                 <img src={src} alt={text} />
-              </div>
-            )}
-            {mediaId && type === 'video' && (
-              <div
-                className={style.mediaContainer}
-                onClick={clickMediaHandler}
-              >
-                {/* eslint-disable-next-line jsx-a11y/media-has-caption */}
-                <video
-                  src={src}
-                  playsInline
-                  controls
-                  controlsList="nodownload nofullscreen noremoteplayback"
-                />
               </div>
             )}
             <Box direction="row" gap="5px" wrap>

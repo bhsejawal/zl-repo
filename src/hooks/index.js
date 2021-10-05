@@ -84,6 +84,11 @@ export const useIsHabitatTabbed = () => {
   return windowWidth <= 1024;
 };
 
+export const useShowMobileControls = () => {
+  const { width: windowWidth } = useWindowResize();
+  return windowWidth <= 768;
+};
+
 export const useOnScreen = (ref, rootMargin = "0px") => {
   const [isIntersecting, setIntersecting] = useState(false);
   useEffect(() => {

@@ -3,20 +3,10 @@ import { useEffect } from 'preact/hooks';
 import { lazy, Suspense } from 'preact/compat';
 import { batch, connect } from 'react-redux';
 import { Box } from 'grommet';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {
-  faInfoCircle,
-  faPaw,
-  faPuzzlePiece,
-  faUser,
-  faCalendarStar,
-} from '@fortawesome/pro-light-svg-icons';
-import { faBullhorn } from '@fortawesome/pro-solid-svg-icons';
 import useFetch from 'use-http';
 
 import { API_BASE_URL } from 'Shared/fetch';
 import LoaderModal from 'Components/LoaderModal';
-import CardButton from './CardButton';
 import CalendarModal from './CalendarModal';
 import QuestionsModal from './QuestionsModal';
 
@@ -30,6 +20,14 @@ import {
   QUIZ,
   QUIZ_CARD_TYPE,
 } from '../constants';
+
+import Tab from "../tabs/Tab/Tab";
+import AnimalInfoIcon from "../tabs/icons/AnimalInfo.svg";
+import FamilyIcon from "../tabs/icons/Family.svg";
+import QuestionsIcon from "../tabs/icons/Question.svg";
+import CalendarIcon from "../tabs/icons/Calendar.svg";
+import BodyIcon from "../tabs/icons/Body.svg";
+import QuizIcon from "../tabs/icons/Quiz.svg";
 
 const MobileCardsModal = lazy(() => import('./CardsModal'));
 
@@ -105,46 +103,52 @@ const SmallScreenCardTabs = ({
         direction="row"
         overflow={{ horizontal: 'auto' }}
       >
-        <CardButton
-          onClick={openModalQuestionsAction}
-          icon={<FontAwesomeIcon size="3x" color="var(--hunterGreenMediumLight)" icon={faBullhorn} />}
-          label="Q&A"
-          color="var(--mossLight)"
-        />
-
-        <CardButton
-          onClick={() => onCardBtnClick(MEET)}
-          icon={<FontAwesomeIcon size="3x" color="var(--blueDark)" icon={faUser} />}
-          label="The Family"
-          color="var(--blueLight)"
-        />
-
-        <CardButton
+        <Tab
+          title="The Species"
+          description="Learn about their habitat, behaviour, and more"
           onClick={() => onCardBtnClick(INFO)}
-          icon={<FontAwesomeIcon size="3x" color="var(--coral)" icon={faInfoCircle} />}
-          label="The Species"
-          color="var(--coralLight)"
+          color="#19705A"
+          icon={AnimalInfoIcon}
         />
 
-        <CardButton
-          onClick={() => onCardBtnClick(BODY)}
-          icon={<FontAwesomeIcon size="3x" color="var(--moss)" icon={faPaw} />}
-          label="The Body"
-          color="var(--mossLight)"
+        <Tab
+          title="The Family"
+          description="Get to know the members of this habitat"
+          onClick={() => onCardBtnClick(MEET)}
+          color="#FF97E5"
+          icon={FamilyIcon}
         />
 
-        <CardButton
-          onClick={() => onCardBtnClick(QUIZ)}
-          icon={<FontAwesomeIcon size="3x" color="var(--lavender)" icon={faPuzzlePiece} />}
-          label="Quiz"
-          color="var(--lavenderLight)"
+        <Tab
+          title="Q&A"
+          description="Ask questions and start discussions"
+          onClick={openModalQuestionsAction}
+          color="#FF6E40"
+          icon={QuestionsIcon}
         />
 
-        <CardButton
+        <Tab
+          title="Schedule"
+          description="See when this habitat is online and event times"
           onClick={openModalCalendarAction}
-          icon={<FontAwesomeIcon size="3x" color="var(--hunterGreen)" icon={faCalendarStar} />}
-          label="Calendar"
-          color="var(--hunterGreenLight)"
+          color="#C9D341"
+          icon={CalendarIcon}
+        />
+
+        <Tab
+          title="The Body"
+          description="Explore different parts of the animal body"
+          onClick={() => onCardBtnClick(BODY)}
+          color="#F05E64"
+          icon={BodyIcon}
+        />
+
+        <Tab
+          title="Quiz"
+          description="Test your knowledge of the species with a fun quiz"
+          onClick={() => onCardBtnClick(QUIZ)}
+          color="#418589"
+          icon={QuizIcon}
         />
       </Box>
 

@@ -24,7 +24,7 @@ import MobileControls from './MobileControls.js';
 
 import { useWebRTCStream } from './hooks/useWebRTCStream';
 import { wsMessages } from './helpers/constants';
-import { useIsHabitatTabbed, useIsMobileSize } from '../../hooks';
+import { useIsHabitatTabbed, useShowMobileControls } from '../../hooks';
 import { setHabitatStreamStarted } from "../../routes/habitat/actions";
 
 import { getDeviceType } from '../../helpers';
@@ -57,7 +57,7 @@ const Stream = ({
   const containerRef = useRef(null);
   const { socket } = useContext(GlobalsContext);
   const [isInitialized, setIsInitialized] = useState(false);
-  const isSmallScreen = useIsMobileSize();
+  const showMobileControls = useShowMobileControls();
   const isTabbed = useIsHabitatTabbed();
   const [showControls, setShowControls] = useState(false);
 
@@ -195,7 +195,7 @@ const Stream = ({
         </div>
 
         {/* mobile controls */}
-        {streamStatus === PLAY_STARTED && interactive && isSmallScreen && isStreamOn && (
+        {streamStatus === PLAY_STARTED && interactive && showMobileControls && isStreamOn && (
           <MobileControls />
         )}
 

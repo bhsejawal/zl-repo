@@ -203,7 +203,7 @@ const ChatContainer = ({
             badges={badges}
           />
         ))}
-        {!isWelcomeMessageShown && (
+        {!alternate && !isWelcomeMessageShown && (
           <WelcomeMessage onClose={onSendHandler} />
         )}
       </div>

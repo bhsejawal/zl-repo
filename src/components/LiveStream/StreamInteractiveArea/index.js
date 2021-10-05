@@ -7,15 +7,15 @@ import StreamControls from './StreamControls';
 import InteractiveAreaHandler from './InteractiveAreaHandler';
 
 import { addUserInteraction } from '../../../redux/actions';
-import { useIsMobileSize } from '../../../hooks';
 import EmojiBubbles from './EmojiBubbles';
+import { useShowMobileControls } from '../../../hooks';
 
 const StreamInteractiveArea = () => {
-  const isMobileSize = useIsMobileSize();
+  const showMobileControls = useShowMobileControls();
 
   return (
     <>
-      {!isMobileSize && <StreamControls />}
+      {!showMobileControls && <StreamControls />}
       <StreamInteractions />
       <InteractiveAreaHandler />
       <WeatherWidget />

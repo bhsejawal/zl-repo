@@ -4,6 +4,7 @@ import {
   useState,
   useCallback,
 } from 'preact/hooks';
+import { isNumber } from 'lodash-es';
 import useFetch from 'use-http';
 import { buildURL } from 'Shared/fetch';
 
@@ -25,6 +26,7 @@ const VideoPlayer = ({
   logView = true,
   isGuest,
   onNextHandler,
+  currentTime,
 }) => {
   const videoRef = useRef();
   const timeoutRef = useRef();
@@ -114,6 +116,12 @@ const VideoPlayer = ({
     videoRef.current.currentTime = value;
   }, []);
 
+  useEffect(() => {
+    if (isNumber(currentTime)) {
+      updateVideoTimeHandler(currentTime);
+    }
+  }, [currentTime, updateVideoTimeHandler]);
+
   useEffect(() => () => {
     setIsLoading(true);
     setIsPlaying(false);
@@ -146,7 +154,8 @@ const VideoPlayer = ({
         videoRef.current.removeEventListener('play', onPlay);
         videoRef.current.removeEventListener('timeupdate', onTimeUpdate);
         videoRef.current.removeEventListener('loadedmetadata', onLoadMetadata);
-        videoRef.current.removeEventListener('loadeddata', onLoadedData)
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+        videoRef.current.removeEventListener('loadeddata', onLoadedData);
         // videoRef.current.removeEventListener('suspend', onSuspendeHandler);
       }
     }

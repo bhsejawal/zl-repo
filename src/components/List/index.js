@@ -98,15 +98,11 @@ const List = forwardRef(({ children, className }, ref) => {
   return (
     <div className={classnames(style.wrapper, className)}>
       {layout === 'scroll' && (
-        <div className={style.arrowWrapper}>
+        <div className={classnames(style.arrowWrapper, { [style.arrowDisabled]: scrolledToLeft })}>
           <FontAwesomeIcon
             icon={faChevronLeft}
             size="2x"
-            className={classnames(
-              style.arrow,
-              style.arrowLeft,
-              { [style.arrowDisabled]: scrolledToLeft },
-            )}
+            className={classnames(style.arrow, style.arrowLeft)}
             onClick={onMoveLeft}
           />
         </div>
@@ -127,15 +123,11 @@ const List = forwardRef(({ children, className }, ref) => {
       </div>
 
       {layout === 'scroll' && (
-        <div className={style.arrowWrapper}>
+        <div className={classnames(style.arrowWrapper, { [style.arrowDisabled]: scrolledToRight })}>
           <FontAwesomeIcon
             icon={faChevronRight}
             size="2x"
-            className={classnames(
-              style.arrow,
-              style.arrowRight,
-              { [style.arrowDisabled]: scrolledToRight },
-            )}
+            className={classnames(style.arrow, style.arrowRight)}
             onClick={onMoveRight}
           />
         </div>
