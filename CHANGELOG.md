@@ -2,6 +2,28 @@
 This file keeps track of all relevant change for every release.
 
 ## [Unreleased]
+## [5.22.0] - 2021-10-05
+### Added
+- Chat shows video preview url instead of a video
+- Update the tab System
+- Allow Q&A report and delete by same user or admin
+
+### Changed
+- Show mobile controls for medium screens smaller than 768px
+- End landing page experiment
+- API now returns schedule overlaps
+- Live talk dimensions updated
+- Hiring link on the landing page updated
+- Socket IO upgrade
+
+### Fixed
+- Date picker layout is scrollable for small screens
+- Snapshot modal
+- Send button on chat on safari
+- Calendar date timezone issue
+- Max width of schedule events modal
+- Search bar width for small phones
+
 ## [5.21.0] - 2021-09-27
 ### Added
 - Show viewers count on cards, images and videos
