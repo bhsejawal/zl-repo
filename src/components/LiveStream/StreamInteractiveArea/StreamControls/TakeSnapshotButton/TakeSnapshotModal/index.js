@@ -79,7 +79,7 @@ const TakeSnapshotModal = ({
 
   return (
     <Layer position="center" onClickOutside={onCloseHandler}>
-      <Box width="960px" height={{ min: '480px' }} className={classnames({ [style.mobile]: isMobileSize })}>
+      <Box width="1040px" height={{ min: '420px' }} className={classnames({ [style.mobile]: isMobileSize })}>
         <CloseButton onClick={onCloseHandler} className={style.close} />
 
         <Box className={style.contentContainer}>
