@@ -241,7 +241,7 @@ const Habitat = ({
   const calcStreamWidth = isTabbed ? windowWidth : (pageWidth - sideBarWidth - chatWidth);
   const streamWidth = Math.min(maxStreamWidth, calcStreamWidth);
   const height = Math.min(maxStreamHeight, streamWidth * 0.5625);
-  const topSectionHeight = height + (showMobileControls ? MOBILE_CONTROLS_HEIGHT : 0);
+  const topSectionHeight = height + (showMobileControls && isStreamOn ? MOBILE_CONTROLS_HEIGHT : 0);
   const livetalkWidth = getLiveTalkSize(streamWidth);
 
   const onTabChange = ({ label }) => {
