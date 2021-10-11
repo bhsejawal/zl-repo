@@ -1,5 +1,5 @@
 import { pick } from 'lodash-es';
-import { MEET, QUIZ_CARD_TYPE } from './constants';
+import { ALBUM, MEET, QUIZ_CARD_TYPE } from './constants';
 import {
   ADD_HABITAT_CARD,
   UPDATE_HABITAT_CARD,
@@ -35,7 +35,7 @@ const initialState = {
   loading: false,
   items: [],
   familyCards: [],
-  activeTab: MEET,
+  activeTab: ALBUM,
   canCreateQuizCard: false,
   activeShortcut: null,
   mobile: mobile(),
