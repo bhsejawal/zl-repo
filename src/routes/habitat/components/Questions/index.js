@@ -115,11 +115,13 @@ const Questions = ({ habitatId }) => {
       {questions.map(({
         _id,
         user,
+        userId,
         text,
         createdAt,
         comments,
       }) => (
         <Question
+          questionUserId={userId}
           questionId={_id}
           username={user.username}
           animalIcon={user.animalIcon}

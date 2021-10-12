@@ -16,7 +16,10 @@ import style from './style.scss';
 const Chat = lazy(() => import('Components/Chat'));
 
 const Question = ({
+  role,
   questionId,
+  questionUserId,
+  userId,
   username,
   color,
   animalIcon,
@@ -47,12 +50,14 @@ const Question = ({
           <span>{`${formatDistanceToNow(new Date(createdAt)).replace('about', '')} ago`}</span>
         </div>
         <div className={classnames(style.actionBar, { [style.hide]: !showActionBar})}>
-          <div
-            className={style.actionButton}
-            onClick={() => onDeleteHandler(questionId)}
-          >
-            <FontAwesomeIcon icon={faTrash} />
-          </div>
+          {(role === 'admin' || userId === questionUserId) && (
+            <div
+              className={style.actionButton}
+              onClick={() => onDeleteHandler(questionId)}
+            >
+              <FontAwesomeIcon icon={faTrash} />
+            </div>
+          )}
           <div
             className={style.actionButton}
             onClick={() => onReportHandler(questionId)}
@@ -89,6 +94,7 @@ const Question = ({
   );
 };
 
-export default connect(
-  ({ habitat: { habitatInfo: { _id: habitatId } } }) => ({ habitatId }),
-)(Question);
+export default connect(({
+  habitat: { habitatInfo: { _id: habitatId } },
+  user: { userId, role },
+}) => ({ habitatId, role, userId }))(Question);
