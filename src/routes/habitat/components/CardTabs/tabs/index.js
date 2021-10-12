@@ -3,6 +3,7 @@ import { useCallback, useEffect, useRef } from 'preact/hooks';
 import { connect } from 'react-redux';
 import { buildURL, post } from 'Shared/fetch';
 import { logGAEvent } from 'Shared/ga';
+import { hasPermission } from 'Components/Authorize';
 import List from 'Components/List';
 import ClickMessageTip from 'Components/ClickMessageTip';
 
@@ -17,6 +18,7 @@ import {
   CALENDAR,
   ALBUM,
   QUESTIONS,
+  SCHEDULES,
 } from '../constants';
 
 import AlbumIcon from './icons/Album.svg';
@@ -111,11 +113,22 @@ const Tabs = ({
           icon={QuestionsIcon}
         />
 
+        {hasPermission('habitat:edit-schedule') && (
+          <Tab
+            active={activeTab === CALENDAR}
+            title="Calendar"
+            description="See when this habitat is online and event times"
+            onClick={onClick(CALENDAR)}
+            color="#C9D341"
+            icon={CalendarIcon}
+          />
+        )}
+
         <Tab
-          active={activeTab === CALENDAR}
-          title="Schedule"
+          active={activeTab === SCHEDULES}
+          title="Schedules"
           description="See when this habitat is online and event times"
-          onClick={onClick(CALENDAR)}
+          onClick={onClick(SCHEDULES)}
           color="#C9D341"
           icon={CalendarIcon}
         />

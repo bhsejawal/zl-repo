@@ -4,6 +4,7 @@ export const INFO = 'info';
 export const BODY = 'body';
 export const QUIZ = 'quiz';
 export const CALENDAR = 'calendar';
+export const SCHEDULES = 'SCHEDULES';
 export const ALBUM = 'album';
 export const QUESTIONS = 'QUESTIONS';
 

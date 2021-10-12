@@ -126,7 +126,7 @@
   // but its not working as intended so this is a fallback to make the calendar picker autoscroll
   // when using small screens
 
-  [class^="StyledCalendar"] {
+  [class*="StyledDrop"] > [class^="StyledCalendar"] {
     overflow-y: auto;
   }
 }

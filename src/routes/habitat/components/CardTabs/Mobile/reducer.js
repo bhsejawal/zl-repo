@@ -8,6 +8,8 @@ import {
   CLOSE_MODAL_CALENDAR,
   OPEN_MODAL_QUESTIONS_AND_ANSWERS,
   CLOSE_MODAL_QUESTIONS_AND_ANSWERS,
+  OPEN_MODAL_SCHEDULES,
+  CLOSE_MODAL_SCHEDULES,
 } from './types';
 
 const initialState = {
@@ -17,6 +19,7 @@ const initialState = {
   activeCardIndex: 0,
   calendarCardOpen: false,
   questionsCardOpen: false,
+  SchedulesCardOpen: false,
 };
 
 export default (state = initialState, { type, payload = {} } = {}) => {
@@ -63,6 +66,14 @@ export default (state = initialState, { type, payload = {} } = {}) => {
 
     case CLOSE_MODAL_QUESTIONS_AND_ANSWERS: {
       return { ...state, questionsCardOpen: false };
+    }
+
+    case OPEN_MODAL_SCHEDULES: {
+      return { ...state, SchedulesCardOpen: true };
+    }
+
+    case CLOSE_MODAL_SCHEDULES: {
+      return { ...state, SchedulesCardOpen: false };
     }
 
     default: {

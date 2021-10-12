@@ -1,0 +1,81 @@
+@import "../../../../../../style/media-query.scss";
+
+.streamsContainer {
+  display: flex;
+  flex-direction: column;
+  width: 370px;
+  flex-shrink: 0;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, .25);
+  text-align: center;
+  border-radius: 10px;
+  overflow: hidden;
+  height: fit-content;
+
+  @media screen and (max-width: #{$phone-landscape-width}) {
+    width: calc(100% - 44px);
+    margin: 20px;
+  }
+
+  &:not(:first-child) {
+    margin-left: 40px;
+
+    @media screen and (max-width: #{$tablet-landscape-width}) {
+      margin-left: 0;
+      margin-top: 40px;
+    }
+  }
+
+  &.loading {
+    box-shadow: none;
+  }
+
+  .header {
+    background: var(--oliveMedium);
+    padding: 20px;
+
+    p {
+      font-size: 16px;
+      line-height: 22px;
+    }
+  }
+
+  .body {
+
+    .error {
+      color: var(--red);
+    }
+
+    .item {
+      padding: 20px;
+      font-size: 20px;
+      line-height: 28px;
+      border: 1px solid #EBEBEB;
+
+      &:last-of-type {
+        border: 0;
+      }
+    }
+  }
+}
+
+div.accordion[class*="accordion"] {
+  box-shadow: none;
+  margin-bottom: 22px;
+
+  > button {
+    padding: 0 22px;
+    min-height: fit-content;
+  }
+
+  svg {
+    right: 22px;
+  }
+
+  h4 {
+    margin: 10px 0;
+  }
+
+  > div {
+    border: 0;
+  }
+}

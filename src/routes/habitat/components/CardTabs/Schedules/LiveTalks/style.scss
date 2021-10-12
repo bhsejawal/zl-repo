@@ -1,0 +1,37 @@
+@import "../../../../../../style/media-query.scss";
+
+.liveTalks {
+  background: transparent;
+  display: flex;
+  flex-grow: 1;
+
+  @media screen and (max-width: #{$phone-landscape-width}) {
+
+    > div {
+      padding: 22px;
+    }
+  }
+}
+
+
+div.accordion[class*="accordion"] {
+  box-shadow: none;
+  margin-bottom: 22px;
+
+  > button {
+    padding: 0 22px;
+    min-height: fit-content;
+  }
+
+  svg {
+    right: 22px;
+  }
+
+  h4 {
+    margin: 10px 0;
+  }
+
+  > div {
+    border: 0;
+  }
+}

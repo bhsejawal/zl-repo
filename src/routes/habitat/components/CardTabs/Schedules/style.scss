@@ -1,0 +1,44 @@
+@import "../../../../../style/media-query.scss";
+
+.schedulesTabContainer {
+  background: #F8F8FA;
+  margin: 0 -40px;
+  min-height: 550px;
+  display: flex;
+  flex-direction: column;
+
+  .header {
+    display: flex;
+    flex-direction: row;
+    padding: 24px 40px;
+    align-items: center;
+
+    h3 {
+      margin: 0;
+    }
+
+    > button {
+      margin-left: auto;
+    }
+  }
+
+  .contentWrapper {
+    flex-direction: row;
+    display: flex;
+    padding: 20px 40px;
+    flex-grow: 1;
+
+    @media screen and (max-width: #{$tablet-landscape-width}) {
+      flex-direction: column;
+    }
+  }
+
+  .fallback {
+    display: none;
+
+    &:first-child {
+      display: flex;
+      margin: auto;
+    }
+  }
+}

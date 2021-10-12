@@ -19,6 +19,8 @@ import {
   CLOSE_MODAL_CALENDAR,
   OPEN_MODAL_QUESTIONS_AND_ANSWERS,
   CLOSE_MODAL_QUESTIONS_AND_ANSWERS,
+  OPEN_MODAL_SCHEDULES,
+  CLOSE_MODAL_SCHEDULES,
 } from './Mobile/types';
 
 import mobile from './Mobile/reducer';
@@ -130,6 +132,8 @@ export default (state = initialState, action = {}) => {
     case CLOSE_MODAL_CALENDAR:
     case OPEN_MODAL_QUESTIONS_AND_ANSWERS:
     case CLOSE_MODAL_QUESTIONS_AND_ANSWERS:
+    case OPEN_MODAL_SCHEDULES:
+    case CLOSE_MODAL_SCHEDULES:
     case CLOSE_MODAL_CARDS: {
       return { ...state, mobile: mobile(state.mobile, action) };
     }
