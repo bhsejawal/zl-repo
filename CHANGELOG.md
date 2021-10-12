@@ -2,6 +2,20 @@
 This file keeps track of all relevant change for every release.
 
 ## [Unreleased]
+
+## [5.23.0] - 2021-10-12
+### Added
+- Schedule tab UI update
+- PMMC Info modal
+
+### Changed
+- Improve lighthouse performance score for zoolife
+- Album tab is selected by default
+- Go live button is bellow weather Widget
+
+### Fixed
+- Hide delete button for none admin users that didn't post the Q&A
+
 ## [5.22.0] - 2021-10-05
 ### Added
 - Chat shows video preview url instead of a video
