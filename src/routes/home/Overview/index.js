@@ -89,15 +89,15 @@ const Overview = () => (
         }}
       >
         <div className={style.item}>
-          <img src="https://assets.zoolife.tv/landing/s3_img1.png" alt="" />
+          <img src="https://zoolife.tv/assets/s3_img1.jpg" alt="" />
           <p>Discover what animals do when no one&apos;s watching.</p>
         </div>
         <div className={style.item}>
-          <img src="https://assets.zoolife.tv/landing/s3_img2.png" alt="" />
+          <img src="https://zoolife.tv/assets/s3_img2.jpg" alt="" />
           <p>Reset with healthy screen time for you & loved ones.</p>
         </div>
         <div className={style.item}>
-          <img src="https://assets.zoolife.tv/landing/s3_img3.png" alt="" />
+          <img src="https://zoolife.tv/assets/s3_img3.jpg" alt="" />
           <p>Join the conservation movement.</p>
         </div>
       </Carousel>

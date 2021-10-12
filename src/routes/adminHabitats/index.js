@@ -58,7 +58,7 @@ const EditHabitatRender = ({ profileImage: profileImageProp }) => {
               maxResolution: 800,
               maxFileSize: 100_000,
               aspectRatio: '1:1',
-              acceptedFormats: ['jpeg', 'jpg', 'svg', 'png'],
+              acceptedFormats: ['jpeg', 'jpg', 'svg'],
             }}
             onChange={setProfileImage}
           />

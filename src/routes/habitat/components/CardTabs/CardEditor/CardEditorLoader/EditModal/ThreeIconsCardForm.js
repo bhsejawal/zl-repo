@@ -132,7 +132,7 @@ const ThreeIconsCardForm = forwardRef(({
           url={img1}
           ref={img1Ref}
           placeholder="https://"
-          constraints={{ acceptedFormats: ['svg', 'png', 'jpeg', 'jpg'] }}
+          constraints={{ acceptedFormats: ['svg', 'jpeg', 'jpg'] }}
           onChange={onImg1Change}
         />
       </Box>
@@ -161,7 +161,7 @@ const ThreeIconsCardForm = forwardRef(({
           url={img2}
           ref={img2Ref}
           placeholder="https://"
-          constraints={{ acceptedFormats: ['svg', 'png', 'jpeg', 'jpg'] }}
+          constraints={{ acceptedFormats: ['svg', 'jpeg', 'jpg'] }}
           onChange={onImg2Change}
         />
       </Box>
@@ -190,7 +190,7 @@ const ThreeIconsCardForm = forwardRef(({
           url={img3}
           ref={img3Ref}
           placeholder="https://"
-          constraints={{ acceptedFormats: ['svg', 'png', 'jpeg', 'jpg'] }}
+          constraints={{ acceptedFormats: ['svg', 'jpeg', 'jpg'] }}
           onChange={onImg3Change}
         />
       </Box>

@@ -111,7 +111,7 @@ const SingleIconCardForm = forwardRef(({
           ref={imgSelectorRef}
           placeholder="https://"
           constraints={{
-            acceptedFormats: ['svg', 'jpg', 'jpeg', 'png'],
+            acceptedFormats: ['svg', 'jpg', 'jpeg'],
             maxFileSize: 20_000,
           }}
           onChange={onImgChange}

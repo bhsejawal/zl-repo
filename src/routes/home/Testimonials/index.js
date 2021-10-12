@@ -79,22 +79,22 @@ const Testimonials = () => (
       >
         <Testimonial
           text="You feel like you're right there with an animal family without leaving your couch."
-          image="https://assets.zoolife.tv/landing/s6_testimonial_1.png"
+          image="https://zoolife.tv/assets/s6_testimonial_1.jpg"
           name="Corrine, Denver"
         />
         <Testimonial
           text="The healthiest screen time I've had in months, so therapeutic."
-          image="https://assets.zoolife.tv/landing/s6_testimonial_2.png"
+          image="https://zoolife.tv/assets/s6_testimonial_2.jpg"
           name="Billie, Auckland"
         />
         <Testimonial
           text="An incredible way to experience & protect nature as a family."
-          image="https://assets.zoolife.tv/landing/s6_testimonial_3.png"
+          image="https://zoolife.tv/assets/s6_testimonial_3.jpg"
           name="JP, São Paulo"
         />
         <Testimonial
           text="... and I've never felt more connected with nature than I do on Zoolife."
-          image="https://assets.zoolife.tv/landing/s6_testimonial_4.png"
+          image="https://zoolife.tv/assets/s6_testimonial_4.jpg"
           name="Arjun, Montreal"
         />
       </Carousel>
