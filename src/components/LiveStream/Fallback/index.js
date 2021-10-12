@@ -15,8 +15,6 @@ import { openContactUsModal } from 'Components/modals/ContactUs/actions'
 
 import { useIsMobileSize } from '../../../hooks';
 
-import background from './videoBackground.png';
-
 import style from './style.scss';
 
 const Fallback = ({
@@ -35,7 +33,6 @@ const Fallback = ({
 
   return (
     <Box
-      background={{image: `url(${background})`}}
       fill
       justify="center"
       align="center"
@@ -44,7 +41,7 @@ const Fallback = ({
       {type === 'loading' && (
         <>
           <Box height={mode === 'liveTalk' ? '50%' : ''}>
-            <Loader color="#a0b6ec" fill />
+            <Loader color="#ffffff" fill />
           </Box>
           <Box width={{ max: '80%' }} align="center">
             {mode === 'liveTalk' && (

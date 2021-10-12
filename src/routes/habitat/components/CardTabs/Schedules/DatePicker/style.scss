@@ -1,0 +1,42 @@
+.datePicker {
+  box-shadow: 0 1px 5px rgba(0, 0, 0, .25);
+  border-radius: 100px;
+  min-width: 160px;
+  max-width: 160px;
+  overflow: hidden;
+  height: 35px;
+  margin-left: 20px;
+
+  > div {
+    background: white;
+  }
+
+  button {
+    border-radius: unset;
+    border: unset;
+    padding: 6px 8px;
+    color: var(--grey);
+
+    &.dateButton {
+      padding: 10px 0;
+      font-size: 14px;
+    }
+
+    &:hover {
+      box-shadow: none;
+    }
+
+    &:focus {
+      box-shadow: none !important;
+    }
+  }
+
+  &.active button {
+    border-color: unset;
+    color: #5260DD;
+
+    svg {
+      stroke: #5260DD;
+    }
+  }
+}

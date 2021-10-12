@@ -8,6 +8,8 @@ import {
   OPEN_MODAL_CALENDAR,
   OPEN_MODAL_QUESTIONS_AND_ANSWERS,
   OPEN_MODAL_CARDS,
+  OPEN_MODAL_SCHEDULES,
+  CLOSE_MODAL_SCHEDULES,
 } from './types';
 
 export const closeModalCards = () => ({ type: CLOSE_MODAL_CARDS });
@@ -30,3 +32,6 @@ export const openModalCalendar = () => ({ type: OPEN_MODAL_CALENDAR });
 
 export const closeModalQuestions = () => ({ type: CLOSE_MODAL_QUESTIONS_AND_ANSWERS});
 export const openModalQuestions = () => ({ type: OPEN_MODAL_QUESTIONS_AND_ANSWERS });
+
+export const closeModalSchedules = () => ({ type: CLOSE_MODAL_SCHEDULES });
+export const openModalSchedules = () => ({ type: OPEN_MODAL_SCHEDULES });

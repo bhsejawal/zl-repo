@@ -44,6 +44,7 @@ import OnboardingModal from './components/Onboarding';
 import CameraControlModal from './components/CameraControlModal';
 import SmallScreenCardTabs from './components/CardTabs/Mobile';
 import Album from './components/Album';
+import PMMCModal from './components/PMMCModal';
 
 import { useIsHabitatTabbed, useShowMobileControls, useWindowResize } from '../../hooks';
 import { setHabitat, unsetHabitat, setHabitatProps } from './actions';
@@ -56,6 +57,8 @@ import style from './style.scss';
 
 const ChatComponent = lazy(() => import('Components/Chat'));
 const PubNubWrapper = lazy(() => import('Components/PubNubWrapper'));
+
+const PMMC_HABITAT_ID = '606c7cedaee8334640519342';
 
 const getLiveTalkSize = (width) => {
   const device = getDeviceType();
@@ -110,6 +113,13 @@ const Habitat = ({
   const isTabletOrLarger = ['medium', 'large'].includes(size);
   const showMobileControls = useShowMobileControls();
   const isTabbed = useIsHabitatTabbed();
+  const [showPMMCModal, setShowPPMCModal] = useState(false);
+
+  useEffect(() => {
+    if (habitatId === PMMC_HABITAT_ID) {
+      setShowPPMCModal(true);
+    }
+  }, [habitatId]);
 
   useEffect(() => {
     if (!enteredHabitat) {
@@ -241,7 +251,7 @@ const Habitat = ({
   const calcStreamWidth = isTabbed ? windowWidth : (pageWidth - sideBarWidth - chatWidth);
   const streamWidth = Math.min(maxStreamWidth, calcStreamWidth);
   const height = Math.min(maxStreamHeight, streamWidth * 0.5625);
-  const topSectionHeight = height + (showMobileControls ? MOBILE_CONTROLS_HEIGHT : 0);
+  const topSectionHeight = height + (showMobileControls && isStreamOn ? MOBILE_CONTROLS_HEIGHT : 0);
   const livetalkWidth = getLiveTalkSize(streamWidth);
 
   const onTabChange = ({ label }) => {
@@ -357,6 +367,7 @@ const Habitat = ({
           <ShareModal />
           <ScheduleModal />
           <CameraControlModal />
+          {showPMMCModal && <PMMCModal onClose={() => setShowPPMCModal(false)} />}
         </>
       )}
     </div>

@@ -6,13 +6,19 @@ import { Box } from 'grommet';
 import useFetch from 'use-http';
 
 import { API_BASE_URL } from 'Shared/fetch';
+import { hasPermission } from 'Components/Authorize';
 import LoaderModal from 'Components/LoaderModal';
 import CalendarModal from './CalendarModal';
 import QuestionsModal from './QuestionsModal';
 
 import { fetchCards } from '../api';
 import { setCards, setLoading } from '../actions';
-import { openModalCalendar, openModalCards, openModalQuestions } from './actions';
+import {
+  openModalCalendar,
+  openModalCards,
+  openModalQuestions,
+  openModalSchedules,
+} from './actions';
 import {
   BODY,
   INFO,
@@ -28,6 +34,7 @@ import QuestionsIcon from "../tabs/icons/Question.svg";
 import CalendarIcon from "../tabs/icons/Calendar.svg";
 import BodyIcon from "../tabs/icons/Body.svg";
 import QuizIcon from "../tabs/icons/Quiz.svg";
+import SchedulesModal from "./ScheduleModal";
 
 const MobileCardsModal = lazy(() => import('./CardsModal'));
 
@@ -36,11 +43,13 @@ const SmallScreenCardTabs = ({
   activeMobileCardsTab,
   calendarCardOpen,
   questionsCardOpen,
+  SchedulesCardOpen,
   setLoadingAction,
   setCardsAction,
   openModalCardsAction,
   openModalCalendarAction,
   openModalQuestionsAction,
+  openModalSchedulesAction,
 }) => {
   const { get } = useFetch(API_BASE_URL, {
     credentials: 'include',
@@ -127,10 +136,20 @@ const SmallScreenCardTabs = ({
           icon={QuestionsIcon}
         />
 
+        {hasPermission('habitat:edit-schedule') && (
+          <Tab
+            title="Calendar"
+            description="See when this habitat is online and event times"
+            onClick={openModalCalendarAction}
+            color="#C9D341"
+            icon={CalendarIcon}
+          />
+        )}
+
         <Tab
-          title="Schedule"
+          title="Schedules"
           description="See when this habitat is online and event times"
-          onClick={openModalCalendarAction}
+          onClick={openModalSchedulesAction}
           color="#C9D341"
           icon={CalendarIcon}
         />
@@ -165,6 +184,10 @@ const SmallScreenCardTabs = ({
       {questionsCardOpen && (
         <QuestionsModal />
       )}
+
+      {SchedulesCardOpen && (
+        <SchedulesModal />
+      )}
     </>
   );
 };
@@ -180,6 +203,7 @@ export default connect(
           activeMobileCardsTab,
           calendarCardOpen,
           questionsCardOpen,
+          SchedulesCardOpen,
         },
       },
     },
@@ -188,6 +212,7 @@ export default connect(
     activeMobileCardsTab,
     calendarCardOpen,
     questionsCardOpen,
+    SchedulesCardOpen,
   }),
   {
     setCardsAction: setCards,
@@ -195,5 +220,6 @@ export default connect(
     openModalCardsAction: openModalCards,
     openModalCalendarAction: openModalCalendar,
     openModalQuestionsAction: openModalQuestions,
+    openModalSchedulesAction: openModalSchedules,
   },
 )(SmallScreenCardTabs);

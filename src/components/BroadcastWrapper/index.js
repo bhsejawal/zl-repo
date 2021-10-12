@@ -14,7 +14,7 @@ const BroadcastWrapper = ({ size }) => {
     return (
       <RoundButton
         onClick={() => setIsInitialized(true)}
-        width="36"
+        width="40"
         backgroundColor="var(--blueDark)"
         color="white"
         className={style.broadcastButton}

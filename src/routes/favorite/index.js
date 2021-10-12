@@ -110,7 +110,7 @@ const Favorite = ({ updateFavoriteHabitatAction }) => {
 
       <Box
         wrap
-        background="white"
+        background="var(--hunterGreenMediumLight)"
         flex="grow"
         direction="row"
         justify="start"

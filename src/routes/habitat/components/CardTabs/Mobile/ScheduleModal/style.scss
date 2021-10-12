@@ -1,0 +1,35 @@
+.container {
+
+  .header {
+    display: flex;
+    align-items: center;
+    padding: 22px 0 22px 22px;
+
+    .close {
+      margin: 0 10px 0 auto;
+      font-size: 20px;
+    }
+
+    h3 {
+      margin: 0;
+    }
+
+    h3 + div {
+      background: red;
+    }
+
+  }
+
+  .body {
+    padding: 22px 0;
+  }
+
+  .fallback {
+    display: none;
+
+    &:first-child {
+      display: flex;
+      justify-content: center;
+    }
+  }
+}

@@ -118,7 +118,7 @@ const Schedule = ({ setFilterOptionsAction }) => {
             )}
           </Box>
 
-          <Box fill align="center">
+          <Box fill align="center" background="var(--hunterGreenMediumLight)">
             <Box
               fill
               overflow="auto"

@@ -6,10 +6,16 @@ import useFetch from 'use-http';
 
 import { buildURL } from 'Shared/fetch';
 
-import { CALENDAR, ALBUM, QUESTIONS } from './constants';
+import {
+  CALENDAR,
+  SCHEDULES,
+  ALBUM,
+  QUESTIONS,
+} from './constants';
 
 import Cards from './cards';
 import CalendarLoader from './Calendar/CalendarLoader';
+import Schedules from './Schedules';
 import Album from '../Album';
 import Questions from '../Questions';
 
@@ -24,6 +30,10 @@ const renderActive = (activeTab) => {
           <CalendarLoader />
         </Box>
       );
+    }
+
+    case SCHEDULES: {
+      return <Schedules />;
     }
 
     case ALBUM: {

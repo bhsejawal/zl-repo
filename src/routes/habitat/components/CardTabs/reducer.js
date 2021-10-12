@@ -1,5 +1,5 @@
 import { pick } from 'lodash-es';
-import { MEET, QUIZ_CARD_TYPE } from './constants';
+import { ALBUM, MEET, QUIZ_CARD_TYPE } from './constants';
 import {
   ADD_HABITAT_CARD,
   UPDATE_HABITAT_CARD,
@@ -19,6 +19,8 @@ import {
   CLOSE_MODAL_CALENDAR,
   OPEN_MODAL_QUESTIONS_AND_ANSWERS,
   CLOSE_MODAL_QUESTIONS_AND_ANSWERS,
+  OPEN_MODAL_SCHEDULES,
+  CLOSE_MODAL_SCHEDULES,
 } from './Mobile/types';
 
 import mobile from './Mobile/reducer';
@@ -35,7 +37,7 @@ const initialState = {
   loading: false,
   items: [],
   familyCards: [],
-  activeTab: MEET,
+  activeTab: ALBUM,
   canCreateQuizCard: false,
   activeShortcut: null,
   mobile: mobile(),
@@ -130,6 +132,8 @@ export default (state = initialState, action = {}) => {
     case CLOSE_MODAL_CALENDAR:
     case OPEN_MODAL_QUESTIONS_AND_ANSWERS:
     case CLOSE_MODAL_QUESTIONS_AND_ANSWERS:
+    case OPEN_MODAL_SCHEDULES:
+    case CLOSE_MODAL_SCHEDULES:
     case CLOSE_MODAL_CARDS: {
       return { ...state, mobile: mobile(state.mobile, action) };
     }
