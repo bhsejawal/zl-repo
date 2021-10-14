@@ -308,7 +308,7 @@ const ImageSelector = forwardRef(({
 
       if (error === 'Invalid format') {
         setErrors({ ...errors, [ACCEPTED_FORMAT_CONSTRAINT]: true });
-      } else if (error === 'File too large') {
+      } else if (error === 'MulterError: File too large') {
         setErrors({ ...errors, [FILE_SIZE_CONSTRAINT]: true });
       } else {
         console.error(err);
