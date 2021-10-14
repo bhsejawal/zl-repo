@@ -9,9 +9,15 @@
   z-index: 3 !important;
 
   &.mobile {
-    left: -25px;
+    left: -18px;
     right: unset;
     top: -10px;
+    width: 44px;
+    height: 44px;
+
+    span:first-child {
+      font-size: 12px;
+    }
   }
 }
 

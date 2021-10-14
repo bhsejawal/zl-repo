@@ -45,7 +45,7 @@ const PlanCard = ({
   openDetailsModalHandler,
 }) => {
   const isMobileSize = useIsMobileSize();
-  const maxWidth = isMobileSize ? '300px' : '200px';
+  const maxWidth = isMobileSize ? '330px' : '200px';
   const maxHeight = isMobileSize ? '130px' : '313px';
 
   return (
@@ -57,13 +57,13 @@ const PlanCard = ({
       >
         {discount && (
           <Box
-            background="var(--logoBlue)"
+            background="var(--blueLight)"
             align="center"
             justify="center"
             className={classnames(style.discountTag, {[style.mobile]: isMobileSize })}
           >
-            <Text weight={900} size="15px">{discount}</Text>
-            <Text size="9px" weight={400}>discount</Text>
+            <Text weight={900} size="15px" color="var(--charcoal)">{discount}</Text>
+            <Text size="9px" weight={400} color="var(--charcoal)">discount</Text>
           </Box>
         )}
         <Card
@@ -75,8 +75,8 @@ const PlanCard = ({
         >
           <CardHeader
             background={{ color }}
-            width={{min: isMobileSize ? '150px' : '200px', max: isMobileSize ? '150px' : '150px'}}
-            height={{ min: !isMobileSize ? '155px' : '0px' }}
+            width={{min: isMobileSize ? '180px' : '200px', max: isMobileSize ? '180px' : '150px'}}
+            height={{ min: !isMobileSize ? '130px' : '0px' }}
             justify={ planPrice === 'FREE' ? 'center' : 'start'}
           >
             <Box
@@ -97,7 +97,7 @@ const PlanCard = ({
                     weight={800}
                     margin={{ left: '8px'}}
                   >
-                    {planName}
+                    {`${planName} (USD)`}
                   </Text>
                 </Box>
               )}
@@ -107,12 +107,13 @@ const PlanCard = ({
                   size="xlarge"
                   weight={800}
                 >
-                  {planName}
+                  {planName ? `${planName} (USD)` : ''}
                 </Text>
               )}
               <Box direction="row" justify="center" align="center" >
                 <Heading
-                  margin={{ top: planPrice === 'FREE' ? '0px' : '12px', bottom: '0' }}
+                  // eslint-disable-next-line no-nested-ternary
+                  margin={{ top: !isMobileSize ? planPrice === 'FREE' ? '0px' : '12px' : '0px', bottom: '0' }}
                   alignSelf="center"
                   level="2"
                 >
@@ -127,7 +128,7 @@ const PlanCard = ({
               {originalPrice && (
               <Box align="center" margin={{ top: '3px'}}>
                 <Text
-                  size="20px"
+                  size={ isMobileSize ? '16px' : '20px'}
                   style={{ lineHeight: '20px', textDecorationLine: 'line-through'}}
                 >
                   {`$${originalPrice / 100}`}
@@ -163,7 +164,8 @@ const PlanCard = ({
               align="center"
               justify="center"
               flex="grow"
-              pad={{ horizontal: planPrice === 199 ? 'medium' : '10px'}}
+              // eslint-disable-next-line no-nested-ternary
+              pad={{ horizontal: isMobileSize ? '0px' : planPrice === 199 ? 'medium' : '10px'}}
             >
               <Text
                 margin={{ top: '10px' }}
