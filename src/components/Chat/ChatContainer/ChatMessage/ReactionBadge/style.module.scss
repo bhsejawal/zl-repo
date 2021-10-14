@@ -16,10 +16,20 @@
     height: 15px;
   }
 
+  &.alternate {
+    background-color: #EBEBEB;
+  }
+
+
   &.reacted,
   &:hover {
     cursor: pointer;
     background-color: white;
     color: #2E2D2D;
+
+    &.alternate {
+      background-color: #9BB7F1;
+    }
   }
 }
+
