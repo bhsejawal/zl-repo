@@ -57,7 +57,7 @@ const Tabs = ({
 
   // reset on unload
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  useEffect(() => () => setActiveTabAction(MEET), []);
+  useEffect(() => () => setActiveTabAction(ALBUM), []);
 
   useEffect(() => {
     listRef.current.updateLayout();
