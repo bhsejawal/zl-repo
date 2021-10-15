@@ -42,7 +42,7 @@ const formatDistanceToNowStrictLocale = {
   xYears: '{{count}}y',
 };
 const shortEnLocale = {
-  formatDistance: (token, count) => formatDistanceToNowStrictLocale[token].replace("{{count}}", count),
+  formatDistance: (token, count) => formatDistanceToNowStrictLocale[token].replace('{{count}}', count),
 };
 
 const ChatMessage = ({
