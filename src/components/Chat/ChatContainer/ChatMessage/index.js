@@ -238,9 +238,7 @@ const ChatMessage = ({
                 <ReactionBadge
                   reaction={reaction}
                   count={reactions[reaction].length}
-                  isReaction={userReactions[reaction] ?? false}
                   onClick={toggleReaction}
-                  alternate={alternate}
                 />
               ))}
             </Box>
