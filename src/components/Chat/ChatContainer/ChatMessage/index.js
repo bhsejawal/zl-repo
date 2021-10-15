@@ -33,6 +33,18 @@ import { setReplyMessage } from '../../../../redux/actions';
 
 import style from './style.module.scss';
 
+const formatDistanceToNowStrictLocale = {
+  xSeconds: '{{count}}s',
+  xMinutes: '{{count}}min',
+  xHours: '{{count}}h',
+  xDays: '{{count}}d',
+  xMonths: '{{count}}m',
+  xYears: '{{count}}y',
+};
+const shortEnLocale = {
+  formatDistance: (token, count) => formatDistanceToNowStrictLocale[token].replace("{{count}}", count),
+};
+
 const ChatMessage = ({
   animal,
   color,
@@ -105,7 +117,10 @@ const ChatMessage = ({
   }, [pubnub, timetoken, userReactions, channelId, onReactionHandler]);
 
   const initialMessage = useMemo(() => {
-    const message = formatDistanceToNowStrict(timestamp, { roundingMethod: 'ceil'});
+    const message = formatDistanceToNowStrict(timestamp, {
+      roundingMethod: 'ceil',
+      locale: shortEnLocale,
+    });
     return message.startsWith('0') ? '1 minute' : message;
   }, [timestamp]);
 
@@ -120,7 +135,10 @@ const ChatMessage = ({
 
   useEffect(() => {
     intervalRef.current = setInterval(() => {
-      const timeSinceMsg = formatDistanceToNowStrict(timestamp, { roundingMethod: 'ceil'})
+      const timeSinceMsg = formatDistanceToNowStrict(timestamp, {
+        roundingMethod: 'ceil',
+        locale: shortEnLocale,
+      });
       setMessageTime(timeSinceMsg);
     }, 60000);
 
