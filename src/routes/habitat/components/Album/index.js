@@ -49,7 +49,7 @@ const Album = ({
   appendAlbumDataAction,
   changeContentVisibilityAction,
 }) => {
-  const [type, setType] = useState(PHOTOS);
+  const [type, setType] = useState(CLIPS);
   const [page, setPage] = useState(1);
   const [actionModalState, setActionModalState] = useState(defaultActionModalState);
   const [errorModalState, setErrorModalState] = useState(defaultErrorModalState);
