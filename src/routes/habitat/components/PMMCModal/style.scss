@@ -27,22 +27,12 @@
 
 .header {
   position: relative;
-  
+
   @media screen and (min-width: #{$tablet-landscape-width + 1}) {
     min-width: 410px;
   }
 
   img {
     width: 100%;
-  }
-}
-
-.changeLogContainer {
-  max-height: 150px;
-  overflow: auto;
-  margin-top: 20px;
-
-  ul {
-    margin-top: 0px;
   }
 }
