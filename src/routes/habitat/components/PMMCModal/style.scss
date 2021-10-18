@@ -10,11 +10,24 @@
   }
 }
 
+.layer {
+  overflow: hidden;
+  width: 410px;
+}
+
 .contentWrapper {
-  padding: 0 56px;
+  padding: 0 44px;
+}
+
+.closeBtn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
 }
 
 .header {
+  position: relative;
+  
   @media screen and (min-width: #{$tablet-landscape-width + 1}) {
     min-width: 410px;
   }

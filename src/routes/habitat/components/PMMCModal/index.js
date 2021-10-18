@@ -6,28 +6,35 @@ import {
 } from 'grommet';
 
 import { PrimaryButton } from 'Components/Buttons';
+import CloseButton from 'Components/modals/CloseButton';
 
 import pmmc from './pmmc.jpg';
 
 import style from './style.scss';
 
 const PMMCModal = ({ onClose }) => (
-  <Layer onEsc={onClose} onClickOutside={onClose}>
+  <Layer className={style.layer} onEsc={onClose} onClickOutside={onClose}>
     <div className={style.container}>
       <div className={style.header}>
         <img src={pmmc} alt="marine mammals" />
+        <CloseButton varient="grey" onClick={onClose} className={style.closeBtn} />
       </div>
       <Box className={style.contentWrapper}>
         <Heading level="3" textAlign="center" color="var(--charcoal)">
-          Hooray! This season’s patients have been released.
+          Exciting news!
+          <br />
+          Our rescues have been released back in the wild.
         </Heading>
-        <Text size="xlarge" textAlign="center" color="var(--charcoalLight)">
+        <Text size="large" textAlign="center" color="var(--charcoalLight)">
           {/* eslint-disable-next-line max-len */}
-          PMMC specializes in rescuing and rehabilitating marine mammals so that they can be released back into the wild.
+          After a successful rescue season, PMMC only has a few patients left in their care.
         </Text>
-        <Text size="xlarge" textAlign="center" color="var(--charcoalLight)" margin={{ top: 'medium' }}>
+        <Text size="large" textAlign="center" color="var(--charcoalLight)" margin={{ top: 'medium' }}>
           {/* eslint-disable-next-line max-len */}
-          The pool will be empty until a new group of patients enter PMMC’s care.
+          Tune in to see their newest rescues when stranding season resumes in late winter/early spring.
+          <br />
+          {/* eslint-disable-next-line max-len */}
+          Continue exploring to learn more about PMMC’s ocean and marine mammal conservation mission.
         </Text>
       </Box>
       <Box margin={{ vertical: '30px' }} pad={{ horizontal: '120px' }} align="center">
