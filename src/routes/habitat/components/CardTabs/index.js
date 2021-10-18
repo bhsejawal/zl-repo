@@ -15,7 +15,7 @@ import {
 
 import Cards from './cards';
 import CalendarLoader from './Calendar/CalendarLoader';
-import Schedules from './Schedules';
+import Schedules from '../Schedules';
 import Album from '../Album';
 import Questions from '../Questions';
 

@@ -6,9 +6,9 @@ import CloseButton from 'Components/modals/CloseButton';
 
 import { closeModalSchedules} from '../actions';
 import grommetTheme from '../../../../../../grommetTheme';
-import LiveTalks from '../../Schedules/LiveTalks';
-import StreamTimes from '../../Schedules/StreamTimes';
-import DatePicker from '../../Schedules/DatePicker';
+import LiveTalks from '../../../Schedules/LiveTalks';
+import LiveStreams from '../../../Schedules/LiveStreams';
+import DatePicker from '../../../Schedules/DatePicker';
 
 import style from './style.scss';
 
@@ -45,7 +45,7 @@ const SchedulesModal = ({ closeAction }) => {
           </div>
           <div className={style.body}>
             <LiveTalks date={date} accordion />
-            <StreamTimes date={date} accordion />
+            <LiveStreams date={date} accordion />
             <div className={style.fallback}>
               <h3>No talks or streams on this day</h3>
             </div>

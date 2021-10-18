@@ -9,14 +9,12 @@ import { Box } from 'grommet';
 import useFetch from 'use-http'
 
 import Loader from 'Components/Loader';
-import LoaderModal from 'Components/LoaderModal';
 import NoContentFallback from 'Components/NoContentFallback';
-import Dialog from 'Components/modals/Dialog';
-import ErrorModal from 'Components/modals/Error';
-import SuccessModal from 'Components/modals/Success';
 import { buildURL } from 'Shared/fetch';
 
-import ScheduleItem from './ScheduleItem';
+import TalkSchedule from 'Components/ScheduleEvents/LiveTalk';
+import EditEventModal from 'Components/ScheduleEvents/EventScheduleModals/EditEvent';
+import DeleteEventModal from 'Components/ScheduleEvents/EventScheduleModals/DeleteEvent';
 
 const ScheduleList = ({
   animals,
@@ -29,32 +27,7 @@ const ScheduleList = ({
     loading,
   } = useFetch(buildURL('/livetalks/schedule'), { credentials: 'include', cachePolicy: 'no-cache' });
 
-  const {
-    post,
-    response: reminderResponse,
-    loading: sendingReminder,
-  } = useFetch(buildURL(), { credentials: 'include', cachePolicy: 'no-cache' });
-
   const [schedules, setSchedules] = useState([]);
-  const [showDialog, setShowDialog] = useState(false);
-  const [showErrorModal, setShowErrorModal] = useState(false);
-  const [showSuccessModal, setShowSuccessModal] = useState(false);
-  const [selectedSchedule, setSelectedSchedule] = useState(null);
-
-  const handleScheduleClick = (scheduleId) => {
-    setSelectedSchedule(scheduleId);
-    setShowDialog(true);
-  }
-
-  const sendInvitationHandler = async () => {
-    setShowDialog(false)
-    await post('/schedules/reminder', {scheduleId: selectedSchedule });
-    if (reminderResponse.ok) {
-      setShowSuccessModal(true);
-    } else {
-      setShowErrorModal(true)
-    }
-  }
 
   const getSchedule = useCallback(async (date, animals, zoos) => {
     const params = new URLSearchParams();
@@ -103,61 +76,33 @@ const ScheduleList = ({
 
   return (
     <>
-      {schedules.map(({
-        animal,
-        liveTalks,
-        zoo,
-        habitatId,
-        logo,
-        profileInfo,
-        description,
-        habitatSlug,
-        zooSlug,
-        wideImage,
-        isHostStreamOn,
-        isStreamOn,
-      }, index) => (
+      {schedules.map((schedule, index) => (
         <Box align="center" pad={{ bottom: index !== (schedules.length - 1) ? '35px' : undefined }} height={{ min: 'max-content' }}>
-          <ScheduleItem
-            liveTalks={liveTalks}
-            animal={animal}
-            zoo={zoo}
-            key={habitatId}
-            zooLogo={logo}
-            habitatImage={profileInfo}
-            description={description}
-            onClick={handleScheduleClick}
-            habitatSlug={habitatSlug}
-            zooSlug={zooSlug}
-            wideImage={wideImage}
-            online={isStreamOn}
-            liveTalk={isHostStreamOn}
-            habitatId={habitatId}
+          <TalkSchedule
+            key={schedule._id}
+            id={schedule._id}
+            animal={schedule.animal}
+            zoo={schedule.zoo}
+            zooLogo={schedule.zooLogo}
+            habitatImage={schedule.habitatImage}
+            title={schedule.title}
+            startTime={schedule.startTime}
+            stopTime={schedule.stopTime}
+            description={schedule.description}
+            habitatSlug={schedule.habitatSlug}
+            zooSlug={schedule.zooSlug}
+            wideImage={schedule.wideImage}
+            isStreamOn={schedule.isStreamOn}
+            isHostStreamOn={schedule.isHostStreamOn}
+            habitatId={schedule.habitatId}
+            habitatDescription={schedule.habitatDescription}
+            businessHourId={schedule.businessHourId}
           />
         </Box>
       ))}
-      {showDialog && (
-        <Dialog
-          title="Send reminder?"
-          text="We'll send a calendar invite to your email."
-          buttonLabel="Remind me"
-          onConfirm={sendInvitationHandler}
-          onCancel={() => setShowDialog(false)}
-        />
-      )}
-      {sendingReminder && (<LoaderModal />)}
-      {showErrorModal && (
-        <ErrorModal
-          text="Something went wrong. Please try again"
-          onClose={() => setShowErrorModal(false)}
-        />
-      )}
-      {showSuccessModal && (
-        <SuccessModal
-          text="Invitation sent! Please check your inbox."
-          onClose={() => setShowSuccessModal(false)}
-        />
-      )}
+
+      <EditEventModal onUpdate={() => getSchedule(date, animals, zoos)} />
+      <DeleteEventModal onUpdate={() => getSchedule(date, animals, zoos)} />
     </>
   )
 };

@@ -15,8 +15,8 @@ import {
   Grommet,
 } from 'grommet';
 
-import { useWindowResize } from '../../../../../../hooks';
-import grommetTheme from '../../../../../../grommetTheme';
+import { useWindowResize } from '../../../../../hooks';
+import grommetTheme from '../../../../../grommetTheme';
 
 import style from './style.scss';
 

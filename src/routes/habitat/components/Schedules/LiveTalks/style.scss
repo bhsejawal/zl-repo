@@ -1,14 +1,18 @@
-@import "../../../../../../style/media-query.scss";
+@import "../../../../../style/media-query";
 
 .liveTalks {
   background: transparent;
   display: flex;
   flex-grow: 1;
+  flex-direction: column;
 
-  @media screen and (max-width: #{$phone-landscape-width}) {
-
-    > div {
+  > div {
+    @media screen and (max-width: #{$phone-landscape-width}) {
       padding: 22px;
+    }
+
+    &:not(:last-child) {
+      margin-bottom: 22px;
     }
   }
 }

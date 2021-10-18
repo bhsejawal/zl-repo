@@ -1,16 +1,30 @@
 import { connect } from 'react-redux';
 import { add, format, startOfDay } from 'date-fns';
 import { useEffect, useMemo } from 'preact/hooks';
-import { buildURL } from 'Shared/fetch';
 import useFetch from 'use-http';
 import classnames from 'classnames';
-import Loader from 'Components/Loader';
 
-import Accordion from '../../../../../account/Accordion';
+import { hasPermission } from 'Components/Authorize';
+import { buildURL } from 'Shared/fetch';
+import Loader from 'Components/Loader';
+import EditButton from 'Components/AdminEditWrappers/EditButton';
+import { showEditEventModal } from 'Components/ScheduleEvents/actions';
+
+import Accordion from '../../../../account/Accordion';
+import { useIsMobileSize } from '../../../../../hooks';
+import { setSchedules } from '../actions';
 
 import style from './style.scss';
 
-const StreamTimes = ({ date, habitatId, accordion }) => {
+const LiveStreams = ({
+  date,
+  habitatId,
+  accordion,
+  liveStreams,
+  showEditEventModalAction,
+  setSchedulesAction,
+}) => {
+  const isMobileSize = useIsMobileSize();
   const url = useMemo(() => {
     const params = new URLSearchParams({
       habitatId,
@@ -33,7 +47,11 @@ const StreamTimes = ({ date, habitatId, accordion }) => {
     }
   }, [error]);
 
-  const list = useMemo(() => events.filter(({ eventType }) => (eventType === 'live')), [events]);
+  useEffect(() => {
+    if (events.length) {
+      setSchedulesAction(events);
+    }
+  }, [events, setSchedulesAction]);
 
   useEffect(() => {
     if (error) {
@@ -41,7 +59,7 @@ const StreamTimes = ({ date, habitatId, accordion }) => {
     }
   }, [error]);
 
-  if (!list.length) {
+  if (!liveStreams.length) {
     return null;
   }
 
@@ -60,9 +78,17 @@ const StreamTimes = ({ date, habitatId, accordion }) => {
         <p>Check in during these times to see your favorite animals live:</p>
       </div>
       <div className={style.body}>
-        {list.map((item) => (
-          <div className={style.item}>
-            {`${format(new Date(item.startTime), 'ha')} - ${format(new Date(item.stopTime), 'ha')}`}
+        {liveStreams.map((item) => (
+          <div key={item._id} className={style.item}>
+            {hasPermission('habitat:edit-schedule') && !isMobileSize && (
+              <EditButton onClick={() => showEditEventModalAction(true, {
+                _id: item._id,
+                businessHourId: item.businessHourId,
+                start: item.startTime,
+                habitatId,
+              })} />
+            )}
+            {`${format(new Date(item.startTime), 'hh:mma')} - ${format(new Date(item.stopTime), 'hh:mma')}`}
           </div>
         ))}
       </div>
@@ -83,6 +109,13 @@ const StreamTimes = ({ date, habitatId, accordion }) => {
   return content;
 };
 
-export default connect(
-  ({ habitat: { habitatInfo: { _id: habitatId } } }) => ({ habitatId }),
-)(StreamTimes);
+export default connect(({
+  habitat: {
+    habitatInfo: { _id: habitatId },
+    schedulesTab: { liveStreams },
+  },
+}) => ({ habitatId, liveStreams }),
+{
+  showEditEventModalAction: showEditEventModal,
+  setSchedulesAction: setSchedules,
+})(LiveStreams);

@@ -1,4 +1,4 @@
-@import "../../../../../style/media-query.scss";
+@import "../../../../style/media-query";
 
 .schedulesTabContainer {
   background: #F8F8FA;
@@ -6,6 +6,10 @@
   min-height: 550px;
   display: flex;
   flex-direction: column;
+
+  @media screen and (max-width: #{$tablet-portrait-width}) and (min-width: #{$phone-portrait-width}) {
+    margin: -12px;
+  }
 
   .header {
     display: flex;
