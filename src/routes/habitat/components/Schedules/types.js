@@ -1,0 +1,2 @@
+export const SET_LIVE_TALKS = 'SET_LIVE_TALKS';
+export const SET_LIVE_STREAMS = 'SET_LIVE_STREAMS';

@@ -3,15 +3,17 @@ import { useState, useEffect } from 'preact/hooks';
 
 import { hasPermission } from 'Components/Authorize';
 import { PrimaryButton } from 'Components/Buttons';
-import AddEventModal from '../Calendar/EventScheduleModals/AddEvent';
-import { showAddEventModal } from '../Calendar/EventScheduleModals/actions';
+import AddEventModal from 'Components/ScheduleEvents/EventScheduleModals/AddEvent';
+import EditEventModal from 'Components/ScheduleEvents/EventScheduleModals/EditEvent';
+import DeleteEventModal from 'Components/ScheduleEvents/EventScheduleModals/DeleteEvent';
+import { showAddEventModal } from 'Components/ScheduleEvents/actions';
 import DatePicker from './DatePicker';
-import StreamTimes from './StreamTimes';
+import LiveStreams from './LiveStreams';
 import LiveTalks from './LiveTalks';
 import style from './style.scss';
 
 const SchedulesTab = ({ habitatId, showAddEventModalAction }) => {
-  const [date, setDate] = useState(new Date());
+  const [date, setDate] = useState();
 
   useEffect(() => {
     setDate(new Date());
@@ -19,6 +21,16 @@ const SchedulesTab = ({ habitatId, showAddEventModalAction }) => {
 
   const onChange = (value) => {
     setDate(value);
+  }
+
+  const updateHandler = () => {
+    // updating date and reverting it will refresh children component
+    setDate(null);
+    setTimeout(() => setDate(date), 1);
+  };
+
+  if (!date) {
+    return null;
   }
 
   return (
@@ -33,13 +45,15 @@ const SchedulesTab = ({ habitatId, showAddEventModalAction }) => {
 
       <div className={style.contentWrapper}>
         <LiveTalks date={date} />
-        <StreamTimes date={date} />
+        <LiveStreams date={date} />
         <div className={style.fallback}>
           <h3>No talks or streams on this day</h3>
         </div>
       </div>
 
-      <AddEventModal />
+      <AddEventModal onUpdate={updateHandler} />
+      <EditEventModal onUpdate={updateHandler} />
+      <DeleteEventModal onUpdate={updateHandler} />
     </div>
   )
 };

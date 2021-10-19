@@ -8,17 +8,20 @@ import LoaderModal from 'Components/LoaderModal';
 import Dialog from 'Components/modals/Dialog';
 import ErrorModal from 'Components/modals/Error';
 import SuccessModal from 'Components/modals/Success';
+import TalkSchedule from 'Components/ScheduleEvents/LiveTalk';
 import { buildURL } from 'Shared/fetch';
-import style from './style.scss';
 
-import ScheduleItem from '../../../../../schedule/ScheduleList/ScheduleItem';
-import Accordion from "../../../../../account/Accordion";
+import Accordion from '../../../../account/Accordion';
+import { setLiveTalks } from '../actions';
+import style from './style.scss';
 
 const LiveTalks = ({
   animal,
   zoo,
   date,
   accordion,
+  liveTalks,
+  setLiveTalksAction,
 }) => {
   const {
     get,
@@ -32,7 +35,6 @@ const LiveTalks = ({
     loading: sendingReminder,
   } = useFetch(buildURL(), { credentials: 'include', cachePolicy: 'no-cache' });
 
-  const [schedules, setSchedules] = useState([]);
   const [showDialog, setShowDialog] = useState(false);
   const [showErrorModal, setShowErrorModal] = useState(false);
   const [showSuccessModal, setShowSuccessModal] = useState(false);
@@ -61,8 +63,8 @@ const LiveTalks = ({
     params.append('endTime', endOfDay(date).getTime());
 
     const schedulesData = await get(params);
-    setSchedules(schedulesData);
-  }, [animal, zoo, date, get]);
+    setLiveTalksAction(schedulesData);
+  }, [animal, zoo, date, get, setLiveTalksAction]);
 
   useEffect(() => {
     getSchedule();
@@ -74,41 +76,33 @@ const LiveTalks = ({
     )
   }
 
-  if (response.status === 200 && !loading && !schedules.length) {
+  if (response.status === 200 && !loading && !liveTalks.length) {
     return null;
   }
 
   const content = (
     <div className={style.liveTalks}>
-      {schedules.map(({
-        animal,
-        liveTalks,
-        zoo,
-        habitatId,
-        logo,
-        profileInfo,
-        description,
-        habitatSlug,
-        zooSlug,
-        wideImage,
-        isHostStreamOn,
-        isStreamOn,
-      }) => (
-        <ScheduleItem
-          liveTalks={liveTalks}
-          animal={animal}
-          zoo={zoo}
-          key={habitatId}
-          zooLogo={logo}
-          habitatImage={profileInfo}
-          description={description}
+      {liveTalks.map((schedule) => (
+        <TalkSchedule
+          key={schedule._id}
+          id={schedule._id}
+          animal={schedule.animal}
+          zoo={schedule.zoo}
+          zooLogo={schedule.zooLogo}
+          habitatImage={schedule.habitatImage}
+          title={schedule.title}
+          startTime={schedule.startTime}
+          stopTime={schedule.stopTime}
+          description={schedule.description}
+          habitatSlug={schedule.habitatSlug}
+          zooSlug={schedule.zooSlug}
+          wideImage={schedule.wideImage}
+          isStreamOn={schedule.isStreamOn}
+          isHostStreamOn={schedule.isHostStreamOn}
+          habitatId={schedule.habitatId}
+          habitatDescription={schedule.habitatDescription}
+          businessHourId={schedule.businessHourId}
           onClick={handleScheduleClick}
-          habitatSlug={habitatSlug}
-          zooSlug={zooSlug}
-          wideImage={wideImage}
-          online={isStreamOn}
-          liveTalk={isHostStreamOn}
-          habitatId={habitatId}
         />
       ))}
       {showDialog && (
@@ -151,8 +145,12 @@ const LiveTalks = ({
   return content;
 };
 
-export default connect((
-  { habitat: { habitatInfo: { animal, zoo: { name } }}},
-) => (
-  { animal, zoo: name }
-))(LiveTalks);
+export default connect(
+  ({
+    habitat: {
+      habitatInfo: { animal, zoo: { name } },
+      schedulesTab: { liveTalks },
+    },
+  }) => ({ animal, zoo: name, liveTalks }),
+  { setLiveTalksAction: setLiveTalks },
+)(LiveTalks);

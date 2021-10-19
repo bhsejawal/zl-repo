@@ -7,12 +7,14 @@ import style from './style.module.scss';
 const ReactionBadge = ({
   reaction,
   count,
-  isReaction,
   onClick,
 }) => (
   // eslint-disable-next-line
   <div
-    className={classnames(style.reactionContainer, {[style.reacted]: isReaction })}
+    className={classnames(
+      style.reactionContainer,
+      style.alternate,
+    )}
     onClick={() => onClick(reaction)}
   >
     <img src={images[reaction]} alt={`react with ${reaction}`} />

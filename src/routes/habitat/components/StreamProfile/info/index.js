@@ -144,7 +144,7 @@ const Info = ({
           editBtnPosition={{ right: '18px', top: '10px' }}
           constraints={{
             maxResolution: 240,
-            acceptedFormats: ['jpg', 'jpeg', 'png', 'svg'],
+            acceptedFormats: ['jpg', 'jpeg'],
             aspectRatio: '1:1',
             maxFileSize: 50_000,
           }}

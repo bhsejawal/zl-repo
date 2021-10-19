@@ -4,6 +4,7 @@ import {
   useContext,
   useRef,
   useState,
+  useMemo,
 } from 'preact/hooks';
 import { lazy, Suspense } from 'preact/compat';
 import { connect } from 'react-redux';
@@ -115,6 +116,8 @@ const Habitat = ({
   const isTabbed = useIsHabitatTabbed();
   const [showPMMCModal, setShowPPMCModal] = useState(false);
 
+  const staticViewers = useMemo(() => Math.floor(Math.random() * 5) + 2, [habitatId]);
+
   useEffect(() => {
     if (habitatId === PMMC_HABITAT_ID) {
       setShowPPMCModal(true);
@@ -157,7 +160,7 @@ const Habitat = ({
     };
 
     const onViewersCount = ({ count }) => {
-      setHabitatViewersAction(count);
+      setHabitatViewersAction(count + staticViewers);
     }
 
     if (socket) {

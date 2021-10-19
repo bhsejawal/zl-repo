@@ -3,6 +3,23 @@ This file keeps track of all relevant change for every release.
 
 ## [Unreleased]
 
+## [5.24.0] - 2021-10-18
+### Added
+- Edit controls to the Schedule tab
+
+### Changed
+- Update copy for PMMC popup
+- Album tab is selected by default, set clips to be open by default
+- Reactions background is set to white
+- Move close button to the top corner for modals
+- Habitat image resolution requirement
+- Plans page UI updates
+- Adjust static viewer number to be random
+
+### Fixed
+- Shorten timestamp in chat and posts to prevent long usernames from stacking
+- Fixing styling for alternate chat reactions
+
 ## [5.23.0] - 2021-10-12
 ### Added
 - Schedule tab UI update

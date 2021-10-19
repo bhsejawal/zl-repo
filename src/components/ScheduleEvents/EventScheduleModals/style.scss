@@ -52,6 +52,8 @@
     border: 2px solid #CDCDCD;
     border-radius: 4px;
     height: 36px;
+    display: flex;
+    align-items: center;
 
     select {
       appearance: none;

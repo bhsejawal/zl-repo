@@ -35,7 +35,7 @@ const DialogModal = ({
           margin="small"
           onClick={onCancel}
           icon={<FontAwesomeIcon size="lg" color="--var(grey)" icon={faTimes} />}
-          style={{ position: 'absolute', right: 0 }}
+          style={{ position: 'absolute', right: 0, top: 0 }}
         />
       </Box>
       <Box

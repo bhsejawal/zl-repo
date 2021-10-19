@@ -1,4 +1,4 @@
-@import "../../../../../../style/media-query.scss";
+@import "../../../../../style/media-query";
 
 .streamsContainer {
   display: flex;
@@ -50,9 +50,16 @@
       font-size: 20px;
       line-height: 28px;
       border: 1px solid #EBEBEB;
+      position: relative;
 
       &:last-of-type {
         border: 0;
+      }
+
+      button {
+        right: 10px;
+        top: 18px;
+        transform: none;
       }
     }
   }
