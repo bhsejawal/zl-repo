@@ -11,13 +11,18 @@ import { connect } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faLockAlt } from '@fortawesome/pro-solid-svg-icons';
 
+import { OutlineButton, PrimaryButton } from 'Components/Buttons';
 import Accordion from '../../../account/Accordion';
 
 import style from './style.scss';
 
-const HabitatMobileCard = ({ subscription, habitat, isOffline }) => {
+const HabitatMobileCard = ({
+  subscription,
+  habitat,
+  isOffline,
+  onShowTrailer,
+}) => {
   const [isOpen, setIsOpen] = useState(false);
-
   if (!habitat && !subscription) {
     return null;
   }
@@ -47,6 +52,7 @@ const HabitatMobileCard = ({ subscription, habitat, isOffline }) => {
             )}
           </div>
           <Heading level={4} margin={{ left: "15px" }}>{habitat.title}</Heading>
+          <img src={habitat.zoo.logo} alt="zoo" className={style.zooLogo} />
         </Box>
       }
     >
@@ -57,10 +63,9 @@ const HabitatMobileCard = ({ subscription, habitat, isOffline }) => {
           </Text>
         </Box>
         <Box direction="row" justify="between" align="center" margin={{ bottom: "25px" }}>
-          <img src={habitat.zoo.logo} alt="zoo" className={style.zooLogo} />
           {(subscription.productId !== 'FREEMIUM' || showFreemiumTag) && (
             <Link href={encodeURI(`/h/${habitat.zoo.slug}/${habitat.slug}`)}>
-              <Button primary label="Enter Habitat" size="large" />
+              <PrimaryButton label="Visit" style={{ minWidth: '126px' }} />
             </Link>
           )}
           {subscription.productId === 'FREEMIUM' && !showFreemiumTag && (
@@ -77,6 +82,9 @@ const HabitatMobileCard = ({ subscription, habitat, isOffline }) => {
                 className={style.lockButton}
               />
             </Link>
+          )}
+          {habitat.trailer && (
+            <OutlineButton label="Trailer" height="45px" style={{ minWidth: '126px' }} onClick={() => onShowTrailer(habitat.trailer)} />
           )}
         </Box>
       </Box>

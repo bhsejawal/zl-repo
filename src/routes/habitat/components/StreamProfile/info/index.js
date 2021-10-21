@@ -2,8 +2,6 @@ import { h } from 'preact';
 import {
   useMemo,
   useState,
-  useEffect,
-  useCallback,
 } from 'preact/hooks';
 import { connect } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -13,7 +11,7 @@ import useFetch from 'use-http';
 import classnames from 'classnames';
 import { Heading } from 'grommet';
 
-import { buildURL, API_BASE_URL } from 'Shared/fetch';
+import { buildURL } from 'Shared/fetch';
 
 import TextEditor from 'Components/AdminEditWrappers/TextEditor';
 import ImageEditor from 'Components/AdminEditWrappers/ImageEditor';
@@ -31,11 +29,11 @@ const Info = ({
   zooLogo,
   isLiked,
   setLikedAction,
+  trailer,
 }) => {
   const [error, setError] = useState();
   const isTabbedLayout = useIsHabitatTabbed();
   const [showTrailer, setShowTrailer] = useState(false);
-  const [habitatTrailer, setHabitatTrailer] = useState(undefined);
 
   const {
     post,
@@ -47,35 +45,6 @@ const Info = ({
     cachePolicy: 'no-cache',
     headers: { 'Content-Type': 'application/json' },
   });
-
-  const {
-    get,
-    data: habitatTrailerData,
-    response: habitatTrailerResponse,
-    loading: habitatTrailerLoading,
-  } = useFetch(API_BASE_URL, {
-    credentials: 'include',
-    cachePolicy: 'no-cache',
-    headers: { 'Content-Type': 'application/json' },
-  });
-
-  useEffect(() => {
-    if (habitatTrailerResponse.status === 200) {
-      setHabitatTrailer(habitatTrailerData)
-    } else {
-      setHabitatTrailer(undefined);
-    }
-  }, [habitatTrailerResponse, habitatTrailerData])
-
-  const getHabitatTrailer = useCallback(async (habitatId) => {
-    await get(`/habitats/${habitatId}/trailer`);
-  }, [get])
-
-  useEffect(() => {
-    if (habitatId && habitatId !== habitatTrailer?.habitat?.id) {
-      getHabitatTrailer(habitatId);
-    }
-  }, [habitatId, getHabitatTrailer, habitatTrailer]);
 
   const likeIcon = useMemo(() => {
     if (loading) {
@@ -108,18 +77,14 @@ const Info = ({
     }
   };
 
-  if (habitatTrailerLoading) {
-    return null;
-  }
-
   return (
     <div className={style.info}>
-      {habitatTrailer && (
+      {trailer && (
         <ShareModal
           open={showTrailer}
-          data={habitatTrailer}
+          data={trailer}
           onClose={() => setShowTrailer(false)}
-          mediaId={habitatTrailer._id}
+          mediaId={trailer._id}
           isDownloadAllowed={false}
         />
       )}
@@ -134,7 +99,7 @@ const Info = ({
             spin={likeIcon === faSpinner}
           />
         </button>
-        {habitatTrailer && (
+        {trailer && (
           <div className={style.background} />
         )}
         <ImageEditor
@@ -150,7 +115,7 @@ const Info = ({
           }}
         >
           {(img) => (
-            <div className={classnames(style.profileImg, {[style.interactive]: habitatTrailer })}>
+            <div className={classnames(style.profileImg, {[style.interactive]: trailer })}>
               <div>
                 <img src={img} alt="Profile" />
               </div>
@@ -189,6 +154,7 @@ export default connect(
         profileImage,
         isLiked,
         zoo: { logo: zooLogo, slug: zooSlug } = {},
+        trailer,
       },
     },
   }) => ({
@@ -198,6 +164,7 @@ export default connect(
     zooLogo,
     zooSlug,
     isLiked,
+    trailer,
   }),
   { setLikedAction: setHabitatLiked },
 )(Info);

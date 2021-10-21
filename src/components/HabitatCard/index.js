@@ -20,6 +20,8 @@ import useFetch from 'use-http';
 
 import { buildURL } from 'Shared/fetch';
 import { openTermsModal } from 'Components/TermsAndConditions/actions';
+import { OutlineButton, PrimaryButton } from 'Components/Buttons';
+
 import { updateFavoriteHabitat } from '../../redux/actions';
 
 import HabitatCardBase from './HabitatCardBase';
@@ -36,9 +38,11 @@ const HabitatCard = ({
   image,
   logo,
   title,
+  trailer,
   subscription,
   description,
   termsAccepted,
+  onShowTrailer,
   onFavoriteClick,
   favoriteHabitats,
   openTermsModalAction,
@@ -124,19 +128,49 @@ const HabitatCard = ({
       logo={logo}
     >
       <div style={{ flexGrow: 1 }}>
-        <Link onClick={onHabitatClick} href={encodeURI(`/h/${zooSlug}/${slug}`)}>
-          <Heading level="4" margin={{ top: "0px", bottom: "15px" }}>{title}</Heading>
-        </Link>
+        <div className={style.titleSection}>
+          {!isLocked && (
+            <Button
+              onClick={handleFavoriteClick}
+              margin={{ right: '9px' }}
+              width="20px"
+              className={style.iconButton}
+              >
+              <FontAwesomeIcon
+                icon={likeIcon}
+                color={isFavorited && !loading ? "var(--pink)" : "var(--grey)"}
+                spin={likeIcon === faSpinner}
+              />
+            </Button>
+          )}
+          <Link onClick={onHabitatClick} href={encodeURI(`/h/${zooSlug}/${slug}`)}>
+            <Heading level="4" margin={{ vertical: "0px" }}>{title}</Heading>
+          </Link>
+        </div>
         <Text size="xlarge" as="p">
           {description}
         </Text>
       </div>
       <div className={style.buttons}>
-        <Box width="170px">
+        <Box direction="row" justify="between" fill="horizontal">
           {!isLocked && (
             <Link onClick={onHabitatClick} href={encodeURI(`/h/${zooSlug}/${slug}`)}>
-              <Button primary label="Enter Habitat" size="large" />
+              <PrimaryButton
+                label="Visit"
+                size="large"
+                style={{ minWidth: '126px', width: '126px' }}
+                width="126px"
+              />
             </Link>
+          )}
+          {!isLocked && trailer && (
+            <OutlineButton
+              label="Trailer"
+              height="45px"
+              style={{ minWidth: '126px', width: '126px' }}
+              width="126px"
+              onClick={() => onShowTrailer(trailer)}
+            />
           )}
           {isLocked && (
             <Link href={encodeURI(`/plans`)}>
@@ -154,20 +188,6 @@ const HabitatCard = ({
             </Link>
           )}
         </Box>
-        {!isLocked && (
-          <Button
-          onClick={handleFavoriteClick}
-          margin={{ right: '5px' }}
-          width="20px"
-          className={style.iconButton}
-          >
-            <FontAwesomeIcon
-              icon={likeIcon}
-              color={isFavorited && !loading ? "var(--pink)" : "var(--grey)"}
-              spin={likeIcon === faSpinner}
-            />
-          </Button>
-        )}
       </div>
     </HabitatCardBase>
   );

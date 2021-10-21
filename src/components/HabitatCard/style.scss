@@ -91,7 +91,7 @@
   align-items: center;
 
   a>button {
-    width: 170px;
+    width: 126px;
     height: 45px;
   }
 
@@ -103,4 +103,11 @@
   .iconButton {
     border-radius: 0;
   }
+}
+
+.titleSection {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-bottom: 15px;
 }
