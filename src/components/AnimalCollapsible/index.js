@@ -32,7 +32,7 @@ const AnimalCollapsible = ({ freeHabitat, allHabitats = []}) => {
   const size = useContext(ResponsiveContext);
 
   const habitats = useMemo(() => allHabitats.filter(
-    ({ _id, hidden }) => (_id !== freeHabitat && !hidden ),
+    ({ _id, hidden, zoo }) => (_id !== freeHabitat && !hidden && zoo ),
   ), [freeHabitat, allHabitats]);
 
   if (!habitats || !allHabitats) {

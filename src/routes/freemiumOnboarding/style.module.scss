@@ -74,9 +74,13 @@
 @media screen and (max-width: #{$tablet-portrait-width}) {
 
   .freeHabitatContainer {
-    min-height: 350px;
+    min-height: 250px;
     padding-bottom: 0px;
     margin-top: 95px;
+
+    h4 {
+      margin-bottom: 0px;
+    }
   }
 
   .unlockContainer {
