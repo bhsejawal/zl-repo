@@ -7,11 +7,12 @@ import {
 } from 'grommet';
 import { format, isSameDay } from 'date-fns';
 import { useState } from 'preact/hooks';
-import { Link } from 'preact-router';
+import { Link, route } from 'preact-router';
 import { connect } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faLockAlt } from '@fortawesome/pro-solid-svg-icons';
 import useFetch from 'use-http';
+import { inRange } from 'lodash-es';
 
 import { buildURL } from 'Shared/fetch';
 import { PrimaryButton } from 'Components/Buttons';
@@ -71,6 +72,16 @@ const TalkSchedule = ({
     }
   }
 
+  const onClickTimeHandler = () => {
+    if (inRange(Date.now(), Date.parse(startTime), Date.parse(stopTime))) {
+      route(`/h/${zooSlug}/${habitatSlug}`);
+    } else {
+      setShowDialog(true);
+    }
+  }
+
+  const timeLabel = inRange(Date.now(), Date.parse(startTime), Date.parse(stopTime)) ? 'Now' : format(Date.parse(startTime), 'hh:mm aa');
+
   if (isSmallScreen) {
     return (
       <Box className={style.mobile}>
@@ -98,8 +109,8 @@ const TalkSchedule = ({
                 <div>
                   <PrimaryButton
                     size="small"
-                    label={format(Date.parse(startTime), 'hh:mm aa')}
-                    onClick={() => setShowDialog(true)}
+                    label={timeLabel}
+                    onClick={onClickTimeHandler}
                   />
                 </div>
               )}
@@ -211,9 +222,9 @@ const TalkSchedule = ({
             )}
             {(subscription.productId !== 'FREEMIUM' || subscription.freeHabitat === habitatId) && (
               <PrimaryButton
-                label={format(Date.parse(startTime), 'hh:mm aa')}
+                label={timeLabel}
                 className={style.sessionButton}
-                onClick={() => setShowDialog(true)}
+                onClick={onClickTimeHandler}
               />
             )}
             {(subscription.productId === 'FREEMIUM' && subscription.freeHabitat !== habitatId) && (
