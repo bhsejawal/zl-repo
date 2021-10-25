@@ -89,7 +89,10 @@ const Info = ({
         />
       )}
       <div
-        className={classnames(style.profileImgWrapper, {[style.mobile]: isTabbedLayout})}
+        className={classnames(style.profileImgWrapper, {
+          [style.mobile]: isTabbedLayout,
+          [style.trailer]: trailer,
+        })}
         onClick={() => setShowTrailer(true)}
       >
         <button onClick={onFavClick} type="button" className={style.favBtn}>

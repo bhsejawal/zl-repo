@@ -10,6 +10,8 @@ import {
   OPEN_MODAL_CARDS,
   OPEN_MODAL_SCHEDULES,
   CLOSE_MODAL_SCHEDULES,
+  OPEN_MODAL_ALBUM,
+  CLOSE_MODAL_ALBUM,
 } from './types';
 
 export const closeModalCards = () => ({ type: CLOSE_MODAL_CARDS });
@@ -35,3 +37,6 @@ export const openModalQuestions = () => ({ type: OPEN_MODAL_QUESTIONS_AND_ANSWER
 
 export const closeModalSchedules = () => ({ type: CLOSE_MODAL_SCHEDULES });
 export const openModalSchedules = () => ({ type: OPEN_MODAL_SCHEDULES });
+
+export const closeModalAlbum = () => ({ type: CLOSE_MODAL_ALBUM });
+export const openModalAlbum = () => ({ type: OPEN_MODAL_ALBUM });

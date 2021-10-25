@@ -9,7 +9,6 @@ const BenefitItem = ({ icon, title, text }) => (
     justify="center"
     align="center"
     width={{ max: '155px' }}
-    flex="wrap"
   >
     <Box
       background="#CBDFA6"

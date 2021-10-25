@@ -43,7 +43,7 @@ const defaultErrorModalState = {
 
 const Album = ({
   album,
-  tab,
+  mobile,
   habitatId,
   setAlbumDataAction,
   appendAlbumDataAction,
@@ -79,9 +79,9 @@ const Album = ({
 
   useEffect(() => {
     if (habitatId) {
-      get(`habitats/${habitatId}/album/${type}?page=${page}&pageSize=15`);
+      get(`habitats/${habitatId}/album/${type}?page=${page}&pageSize=${mobile ? '10' : '15'}`);
     }
-  }, [type, get, habitatId, page]);
+  }, [type, get, habitatId, page, mobile]);
 
   const onChangeHandler = (value) => () => {
     setType(value);
@@ -118,7 +118,7 @@ const Album = ({
 
   return (
     <>
-      <div className={classnames(style.album, { [style.tab]: tab })}>
+      <div className={classnames(style.album, { [style.mobile]: mobile })}>
         <div className={style.buttonTabs}>
           <button
             type="button"
@@ -126,7 +126,7 @@ const Album = ({
             onClick={onChangeHandler(CLIPS)}
           >
             <FontAwesomeIcon icon={faFilmAlt} />
-            <span>Animal Clips</span>
+            <span>{`${!mobile ? 'Animal ' : ''}Clips`}</span>
           </button>
           <button
             type="button"
@@ -134,7 +134,7 @@ const Album = ({
             onClick={onChangeHandler(PHOTOS)}
           >
             <FontAwesomeIcon icon={faImage} />
-            <span>Animal Photos</span>
+            <span>{`${!mobile ? 'Animal ' : ''}Photos`}</span>
           </button>
           <button
             type="button"
@@ -184,11 +184,17 @@ const Album = ({
                   />
                 ))
               }
+              {mobile && album.total > album.list.length && (
+                <button className={style.loadMore} type="button" onClick={fetchMore}>
+                  {!loading && 'Load More'}
+                  {loading && (<FontAwesomeIcon icon={faSpinner} spin size="2x" />)}
+                </button>
+              )}
             </div>
           </div>
         )}
 
-        {album.total > album.list.length && (
+        {!mobile && album.total > album.list.length && (
           <button className={style.loadMore} type="button" onClick={fetchMore}>
             {!loading && 'Load More'}
             {loading && (<FontAwesomeIcon icon={faSpinner} spin size="2x" />)}

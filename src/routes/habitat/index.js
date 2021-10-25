@@ -11,7 +11,7 @@ import { connect } from 'react-redux';
 import { route } from 'preact-router';
 import { Box, ResponsiveContext } from 'grommet';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faComment, faInfoCircle, faPhotoVideo } from '@fortawesome/pro-solid-svg-icons';
+import { faComment, faInfoCircle } from '@fortawesome/pro-solid-svg-icons';
 import useFetch from 'use-http';
 
 import { buildURL, post } from 'Shared/fetch';
@@ -33,7 +33,6 @@ import LiveTalk from 'Components/Card/LiveTalk';
 import ShareModal from 'Components/ShareModal';
 import OfflineContent from 'Components/OfflineContent';
 import ViewersCount from 'Components/ViewersCount';
-import ClickMessageTip from 'Components/ClickMessageTip';
 
 import ScheduleModal from './components/ScheduleModal';
 import Chat from './components/Chat';
@@ -44,12 +43,11 @@ import StreamProfile from './components/StreamProfile';
 import OnboardingModal from './components/Onboarding';
 import CameraControlModal from './components/CameraControlModal';
 import SmallScreenCardTabs from './components/CardTabs/Mobile';
-import Album from './components/Album';
 import PMMCModal from './components/PMMCModal';
 
 import { useIsHabitatTabbed, useShowMobileControls, useWindowResize } from '../../hooks';
 import { setHabitat, unsetHabitat, setHabitatProps } from './actions';
-import { setUserData, setHabitatViewers, updateUserProperty } from '../../redux/actions';
+import { setUserData, setHabitatViewers } from '../../redux/actions';
 
 import { generateTitle, getDeviceType } from '../../helpers';
 import { MOBILE_CONTROLS_HEIGHT } from './constants';
@@ -90,15 +88,12 @@ const Habitat = ({
   hostStreamKey,
   isHostStreamOn,
   isBroadcasting,
-  isAlbumClicked,
-  isStreamClicked,
   setHabitatAction,
   unsetHabitatAction,
   openTermsModalAction,
   termsAccepted,
   setHabitatPropsAction,
   setUserDataAction,
-  updateUserPropertyAction,
   setHabitatViewersAction,
 }) => {
   // this will be undefined most of the time
@@ -137,6 +132,7 @@ const Habitat = ({
         })
         .catch((error) => console.error('Failed to update user entered habitat flag', error));
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -263,12 +259,6 @@ const Habitat = ({
       label,
       habitatId,
     );
-
-    if (label === 'Album' && !isAlbumClicked) {
-      post(buildURL('users/steps'), { step: 'isAlbumClicked', value: true })
-        .then((data) => updateUserPropertyAction(data))
-        .catch((err) => console.error('Error while updating album click indicator', err));
-    }
   }
 
   return (
@@ -341,28 +331,6 @@ const Habitat = ({
                   </Suspense>
                 </Box>
               </Tab>
-
-              <Tab
-                label="Album"
-                icon={
-                  <ClickMessageTip
-                    align={{ bottom: 'top' }}
-                    disable={isAlbumClicked || !isStreamClicked}
-                    text="View photos and clips">
-                    <FontAwesomeIcon
-                      className={style.icon}
-                      icon={faPhotoVideo}
-                      style={{ zIndex: '1' }}
-                    />
-                  </ClickMessageTip>
-                }
-              >
-                <Box fill direction="column" justify="start" pad="20px 0">
-                  <Suspense fallback={<Loader />}>
-                    <Album tab />
-                  </Suspense>
-                </Box>
-              </Tab>
             </Tabs>
           </div>
 
@@ -395,8 +363,6 @@ const ConnectedHabitat = connect(
       termsAccepted = false,
       enteredHabitat,
       role: userRole,
-      isAlbumClicked,
-      isStreamClicked,
       subscription: {
         productId,
         freeHabitat,
@@ -416,8 +382,6 @@ const ConnectedHabitat = connect(
     productId,
     freeHabitat,
     userRole,
-    isAlbumClicked,
-    isStreamClicked,
   }),
   {
     setHabitatAction: setHabitat,
@@ -426,7 +390,6 @@ const ConnectedHabitat = connect(
     setHabitatPropsAction: setHabitatProps,
     setUserDataAction: setUserData,
     setHabitatViewersAction: setHabitatViewers,
-    updateUserPropertyAction: updateUserProperty,
   },
 )(Habitat);
 

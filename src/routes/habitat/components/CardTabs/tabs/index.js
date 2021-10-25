@@ -1,14 +1,10 @@
 import { h } from 'preact';
 import { useCallback, useEffect, useRef } from 'preact/hooks';
 import { connect } from 'react-redux';
-import { buildURL, post } from 'Shared/fetch';
 import { logGAEvent } from 'Shared/ga';
 import { hasPermission } from 'Components/Authorize';
 import List from 'Components/List';
-import ClickMessageTip from 'Components/ClickMessageTip';
 
-import { updateUserProperty } from '../../../../../redux/actions';
-import { useIsHabitatTabbed } from '../../../../../hooks';
 import { setActiveTab } from '../actions';
 import {
   MEET,
@@ -36,24 +32,14 @@ import style from './style.scss';
 const Tabs = ({
   activeTab,
   habitatId,
-  isAlbumClicked,
-  isStreamClicked,
   setActiveTabAction,
-  updateUserPropertyAction,
 }) => {
   const listRef = useRef();
-  const isTabbed = useIsHabitatTabbed();
   const onClick = useCallback((tab) => () => {
     logGAEvent('Tab-Navigation-Desktop', tab, habitatId);
 
     setActiveTabAction(tab);
-
-    if (!isAlbumClicked && tab === ALBUM) {
-      post(buildURL('users/steps'), { step: 'isAlbumClicked', value: true })
-        .then((data) => updateUserPropertyAction(data))
-        .catch((err) => console.error('Error while updating album click indicator', err));
-    }
-  }, [habitatId, setActiveTabAction, isAlbumClicked, updateUserPropertyAction]);
+  }, [habitatId, setActiveTabAction]);
 
   // reset on unload
   // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -66,25 +52,14 @@ const Tabs = ({
   return (
     <div className={style.tabsContainer}>
       <List className={style.carousel} ref={listRef}>
-        {!isTabbed && (
-          <Tab
-            active={activeTab === ALBUM}
-            title="Album"
-            description="Updates, photos, clips, past talks, and more"
-            onClick={onClick(ALBUM)}
-            color="#769DFF"
-            iconTip={(
-              <ClickMessageTip
-                align={{ bottom: 'top' }}
-                disable={isAlbumClicked || !isStreamClicked}
-                text="View photos and clips"
-                largeIndicator
-              >
-                <img src={AlbumIcon} alt="" style={{ position: 'relative', zIndex: '1' }} />
-              </ClickMessageTip>
-            )}
-          />
-        )}
+        <Tab
+          active={activeTab === ALBUM}
+          title="Album"
+          description="Updates, photos, clips, past talks, and more"
+          onClick={onClick(ALBUM)}
+          color="#769DFF"
+          icon={AlbumIcon}
+        />
 
         <Tab
           active={activeTab === INFO}
@@ -156,14 +131,8 @@ const Tabs = ({
 };
 
 export default connect(({
-  user: { isAlbumClicked, isStreamClicked },
   habitat: { habitatInfo: { _id: habitatId }, cards: { activeTab } },
 }) => ({
-  isAlbumClicked,
-  isStreamClicked,
   habitatId,
   activeTab,
-}), {
-  setActiveTabAction: setActiveTab,
-  updateUserPropertyAction: updateUserProperty,
-})(Tabs);
+}), { setActiveTabAction: setActiveTab })(Tabs);
