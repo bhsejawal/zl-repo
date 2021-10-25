@@ -12,7 +12,6 @@ import { Box, Text } from 'grommet';
 import useFetch from 'use-http';
 import { route } from 'preact-router';
 import { loadStripe } from '@stripe/stripe-js/pure';
-import { Experiment, Variant } from 'react-optimize';
 
 import { buildURL } from 'Shared/fetch';
 import PlanCard from 'Components/PlanCard';
@@ -47,158 +46,6 @@ const getBenefitText = (interval) => (interval === 'month'
 const getBenefitTitle = (interval, discount) => (interval === 'month'
   ? 'Unlimited Access'
   : `Save ${discount}`);
-
-const VariantA = ({
-  plans,
-  isSmallScreen,
-  currentPlan,
-  showFreemium,
-  isPublicPage,
-  goToSignup,
-  openDetailsModalHandler,
-}) => (
-  <Box
-    direction={isSmallScreen ? 'column' : 'row'}
-    justify="center"
-    align={isSmallScreen ? "center" : "start"}
-    pad={{ horizontal: isSmallScreen ? 'xsmall' : 'medium' }}
-    gap="medium"
-    wrap={!isSmallScreen}
-  >
-    {plans.filter(({ price }) => [499, 999, 2599, 9799].includes(price)).map(({
-      name,
-      price,
-      interval,
-      color,
-      benefitTitle,
-      benefitText,
-      planProductId,
-      priceId,
-      currency,
-      discount,
-      currentPlan,
-      label,
-      clickHandler,
-      disabled,
-      originalPrice,
-    }) => (
-      <PlanCard
-        key={planProductId}
-        planName={name}
-        planPrice={price}
-        planType={interval}
-        planId={planProductId}
-        priceId={priceId}
-        planCurrency={currency}
-        color={color}
-        benefitTitle={benefitTitle}
-        benefitText={benefitText}
-        discount={discount}
-        currentPlan={currentPlan}
-        buttonLabel={label}
-        onClickHandler={() => {
-          if (isPublicPage) {
-            goToSignup(planProductId, priceId);
-          } else {
-            clickHandler();
-          }
-        }}
-        disabled={disabled}
-        originalPrice={originalPrice}
-        showDetailsModal={name === 'Class Pass'}
-        openDetailsModalHandler={openDetailsModalHandler}
-      />
-    ))}
-    {(currentPlan === 'FREEMIUM' || showFreemium) && (
-      <PlanCard
-        key="freemium"
-        planPrice="FREE"
-        color="#C5D8FF"
-        benefitText="Access a single Zoolife habitat"
-        disabled={currentPlan}
-        buttonLabel={currentPlan === 'FREEMIUM' ? 'Current' : 'Select'}
-        onClickHandler={() => route('/signup')}
-      />
-    )}
-  </Box>
-);
-
-const VariantB = ({
-  plans,
-  isSmallScreen,
-  currentPlan,
-  showFreemium,
-  isPublicPage,
-  goToSignup,
-  openDetailsModalHandler,
-}) => (
-  <Box
-    direction={isSmallScreen ? 'column' : 'row'}
-    fill
-    align="center"
-    justify="center"
-    gap="large"
-    margin="auto"
-    wrap={!isSmallScreen}
-    pad={{ horizontal: isSmallScreen ? 'xsmall' : 'medium' }}
-  >
-    {plans.filter(({ price }) => ![999, 9799].includes(price)).map(({
-      name,
-      price,
-      interval,
-      color,
-      benefitTitle,
-      benefitText,
-      planProductId,
-      priceId,
-      currency,
-      discount,
-      currentPlan,
-      label,
-      clickHandler,
-      disabled,
-      originalPrice,
-    }) => (
-      <PlanCard
-        key={planProductId}
-        planName={name}
-        planPrice={price}
-        planType={interval}
-        planId={planProductId}
-        priceId={priceId}
-        planCurrency={currency}
-        color={color}
-        benefitTitle={benefitTitle}
-        benefitText={benefitText}
-        discount={discount}
-        currentPlan={currentPlan}
-        buttonLabel={label}
-        onClickHandler={() => {
-          if (isPublicPage) {
-            goToSignup(planProductId, priceId);
-          } else {
-            clickHandler();
-          }
-        }}
-        disabled={disabled}
-        originalPrice={originalPrice}
-        showDetailsModal={name === 'Class Pass'}
-        openDetailsModalHandler={openDetailsModalHandler}
-      />
-    ))}
-    {(currentPlan === 'FREEMIUM' || showFreemium) && (
-      <PlanCard
-        key="freemium"
-        planPrice="FREE"
-        color="#C5D8FF"
-        benefitText="Access a single Zoolife habitat"
-        disabled={currentPlan}
-        buttonLabel={currentPlan === 'FREEMIUM' ? 'Current' : 'Select'}
-        onClickHandler={() => route('/signup')}
-      />
-    )}
-  </Box>
-);
 
 const SubscriptionSection = ({
   plans = [],
@@ -466,30 +313,70 @@ const SubscriptionSection = ({
         flex={ !isSmallScreen && showCancelCTA ? { grow: 1 } : 'shrink' }
         style={{ height: isSmallScreen ? "fit-content" : "100%" }}
       >
-        <Experiment id="N0zOeDdQRqCDZb_UEem9Dw">
-          <Variant id="0">
-            <VariantA
-              plans={plansData}
-              isSmallScreen={isSmallScreen}
-              currentPlan={productId}
-              showFreemium={showFreemium}
-              isPublicPage={isPublicPage}
-              goToSignup={goToSignup}
+        <Box
+          direction={isSmallScreen ? 'column' : 'row'}
+          justify="center"
+          align={isSmallScreen ? "center" : "start"}
+          pad={{ horizontal: isSmallScreen ? 'xsmall' : 'medium' }}
+          gap="medium"
+          wrap={!isSmallScreen}
+        >
+          {plansData.map(({
+            name,
+            price,
+            interval,
+            color,
+            benefitTitle,
+            benefitText,
+            planProductId,
+            priceId,
+            currency,
+            discount,
+            currentPlan,
+            label,
+            clickHandler,
+            disabled,
+            originalPrice,
+          }) => (
+            <PlanCard
+              key={planProductId}
+              planName={name}
+              planPrice={price}
+              planType={interval}
+              planId={planProductId}
+              priceId={priceId}
+              planCurrency={currency}
+              color={color}
+              benefitTitle={benefitTitle}
+              benefitText={benefitText}
+              discount={discount}
+              currentPlan={currentPlan}
+              buttonLabel={label}
+              onClickHandler={() => {
+                if (isPublicPage) {
+                  goToSignup(planProductId, priceId);
+                } else {
+                  clickHandler();
+                }
+              }}
+              disabled={disabled}
+              originalPrice={originalPrice}
+              showDetailsModal={name === 'Class Pass'}
               openDetailsModalHandler={openDetailsModalHandler}
             />
-          </Variant>
-          <Variant id="1">
-            <VariantB
-              plans={plansData}
-              isSmallScreen={isSmallScreen}
-              currentPlan={productId}
-              isPublicPage={isPublicPage}
-              goToSignup={goToSignup}
-              showFreemium={showFreemium}
-              openDetailsModalHandler={openDetailsModalHandler}
+          ))}
+          {(productId === 'FREEMIUM' || showFreemium) && (
+            <PlanCard
+              key="freemium"
+              planPrice="FREE"
+              color="#C5D8FF"
+              benefitText="Access a single Zoolife habitat"
+              disabled={productId}
+              buttonLabel={productId === 'FREEMIUM' ? 'Current' : 'Select'}
+              onClickHandler={() => route('/signup')}
             />
-          </Variant>
-        </Experiment>
+          )}
+        </Box>
       </Box>
       <UpdateSubscriptionDialog
         show={dialogSettings.show}
