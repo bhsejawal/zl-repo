@@ -3,6 +3,25 @@ This file keeps track of all relevant change for every release.
 
 ## [Unreleased]
 
+## [5.25.0] - 2021-10-26
+### Added
+- Album on full screen for mobile
+- Schedule UI shows live talks
+- Refactoring habitat trailer and add it to the map page
+- Upgrade link to freemium habitat page and update styling
+- Update the hasWatchedFreemiumTalk when a user in Freemium watch a live talk
+- Signup and login UI update
+
+### Changed
+- NPS notification is triggered after 1 min from entering a habitat
+- End pricing experiment
+- Remove search and album click indicators
+
+### Fixed
+- Add card modal borders
+- Chat init scroll issue when media is not loaded
+- Remove deprecated host video mode on Power Modal
+
 ## [5.24.0] - 2021-10-18
 ### Added
 - Edit controls to the Schedule tab
