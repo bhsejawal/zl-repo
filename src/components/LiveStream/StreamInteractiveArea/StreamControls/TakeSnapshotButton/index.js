@@ -1,8 +1,12 @@
-import { h } from 'preact';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCamera, faSpinner } from '@fortawesome/pro-solid-svg-icons';
 import { connect } from 'react-redux';
-import { Button, Drop } from 'grommet';
+import {
+  Button,
+  Drop,
+  Tip,
+  Box,
+} from 'grommet';
 import { isEmpty } from 'lodash-es';
 import {
   useContext,
@@ -12,6 +16,7 @@ import {
 } from 'preact/hooks';
 
 import RoundButton from 'Components/RoundButton';
+import TipContent from 'Components/Tooltip';
 import { GlobalsContext } from 'Shared/context';
 import { useIsMobileSize } from '../../../../../hooks';
 import TakeSnapshotModal from './TakeSnapshotModal';
@@ -115,16 +120,24 @@ const TakeSnapshotButton = ({ plain, habitatId, userId }) => {
           </div>
         </Drop>
       )}
-      <RoundButton
-        onClick={clickHandler}
-        width="36"
-        backgroundColor="var(--blueDark)"
-        color="white"
-        disabled={loading}
-        loading={loading}
+      <Tip
+        dropProps={{ align: { left: 'right' } }}
+        content={<TipContent message="Take a Photo" />}
+        plain
       >
-        <FontAwesomeIcon icon={faCamera} />
-      </RoundButton>
+        <Box>
+          <RoundButton
+            onClick={clickHandler}
+            width="36"
+            backgroundColor="var(--blueDark)"
+            color="white"
+            disabled={loading}
+            loading={loading}
+          >
+            <FontAwesomeIcon icon={faCamera} />
+          </RoundButton>
+        </Box>
+      </Tip>
       {!isEmpty(snapshotData) && (
         <TakeSnapshotModal
           onClose={() => setSnapshotData({})}

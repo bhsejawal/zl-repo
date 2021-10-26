@@ -3,9 +3,10 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faVideo } from '@fortawesome/pro-solid-svg-icons';
 import { useState } from 'preact/hooks';
 import classnames from 'classnames';
-import { Button } from 'grommet';
+import { Button, Tip, Box } from 'grommet';
 
 import RoundButton from 'Components/RoundButton';
+import TipContent from 'Components/Tooltip';
 import TrimVideoModal from './TrimVideoModal';
 import { setClipButtonClicked } from '../../../../../redux/actions'
 
@@ -36,17 +37,23 @@ const RecordVideoButton = ({ isClicked, setClipButtonClickedAction, plain }) => 
 
   return (
     <>
-      <div>
-        <RoundButton
-          onClick={onClickHandler}
-          width="36"
-          backgroundColor="var(--blueDark)"
-          color="white"
-          className={classnames(style.button, { [style.animate]: !isClicked })}
-        >
-          <FontAwesomeIcon icon={faVideo} />
-        </RoundButton>
-      </div>
+      <Tip
+        dropProps={{ align: { left: 'right' } }}
+        content={<TipContent message="Take a Clip" />}
+        plain
+      >
+        <Box>
+          <RoundButton
+            onClick={onClickHandler}
+            width="36"
+            backgroundColor="var(--blueDark)"
+            color="white"
+            className={classnames(style.button, { [style.animate]: !isClicked })}
+          >
+            <FontAwesomeIcon icon={faVideo} />
+          </RoundButton>
+        </Box>
+      </Tip>
       {showModal && <TrimVideoModal onClose={() => setShowModal(false)} />}
     </>
   );
