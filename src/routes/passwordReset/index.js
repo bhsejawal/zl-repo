@@ -17,8 +17,6 @@ import Layout from '../../layouts/LoginSignup';
 import { validateToken } from '../login/ResetModal/actions';
 import { passwordRegex } from '../../helpers';
 
-import loginImage from '../login/login.png';
-
 import style from '../login/style.scss';
 
 const PasswordReset = ({ token, logged }) => {
@@ -74,71 +72,73 @@ const PasswordReset = ({ token, logged }) => {
   };
 
   return (
-    <Layout image={loginImage}>
-      <div className={style.login}>
-        <div className={style.formWrapper}>
-          <img src={ZoolifeLogo} alt="zoolife" />
-          <Heading level="1">Reset Password</Heading>
-          <form onSubmit={onSubmit}>
-            <div className={style.inputContainer}>
-              <Text size="large" color="var(--charcoalLight)">New Password:</Text>
-              <div className={style.inputWrapper}>
-                <input
-                  type={showPassword ? 'text' : 'password'}
-                  value={password}
-                  onChange={onPasswordChange}
-                  className={classnames({[style.errorBorder]: passwordError})}
-                />
-                <button type="button" onClick={() => setShowPassword(!showPassword)}>
-                  <FontAwesomeIcon icon={showPassword ? faEye : faEyeSlash } />
-                </button>
-              </div>
-              <div
-                className={classnames(style.errorSection, {
-                  [style.active]: passwordError,
-                  [style.valid]: !passwordError,
-                })}
-              >
-                <Text size="large" color="var(--grey)">
-                  Use a minimum of 8 characters with at least 1 number and 1 character
-                </Text>
-              </div>
-            </div>
-            <br />
-            <div className={style.inputContainer}>
-              <Text size="large" color="var(--charcoalLight)">Confirm New Password:</Text>
-              <div className={style.inputWrapper}>
-                <input
-                  type={showPasswordConf ? 'text' : 'password'}
-                  value={passwordConf}
-                  onChange={onPasswordConfChange}
-                  className={classnames({[style.errorBorder]: passwordConfError})}
-                />
-                <button type="button" onClick={() => setShowPasswordConf(!showPasswordConf)}>
-                  <FontAwesomeIcon icon={showPasswordConf ? faEye : faEyeSlash } />
-                </button>
-              </div>
-              <div className={classnames(style.errorSection, {
-                [style.active]: passwordConfError || error,
-              })}>
-                {!error ? (
-                  <Text size="large" color={passwordConfError ? `var(--red)` : `var(--grey)`}>
-                    Passwords must match
+    <Box fill width={{ max: "var(--maxWidth)", min: "350px" }} height={{ min: 'max-content' }} margin={{ horizontal: 'auto'}}>
+      <Layout>
+        <div className={style.login}>
+          <div className={style.formWrapper}>
+            <img src={ZoolifeLogo} alt="zoolife" />
+            <Heading level="1">Reset Password</Heading>
+            <form onSubmit={onSubmit}>
+              <div className={style.inputContainer}>
+                <Text size="large" color="var(--charcoalLight)">New Password:</Text>
+                <div className={style.inputWrapper}>
+                  <input
+                    type={showPassword ? 'text' : 'password'}
+                    value={password}
+                    onChange={onPasswordChange}
+                    className={classnames({[style.errorBorder]: passwordError})}
+                  />
+                  <button type="button" onClick={() => setShowPassword(!showPassword)}>
+                    <FontAwesomeIcon icon={showPassword ? faEye : faEyeSlash } />
+                  </button>
+                </div>
+                <div
+                  className={classnames(style.errorSection, {
+                    [style.active]: passwordError,
+                    [style.valid]: !passwordError,
+                  })}
+                >
+                  <Text size="large" color="var(--grey)">
+                    Use a minimum of 8 characters with at least 1 number and 1 character
                   </Text>
-                ) : (
-                  <Text size="large" color="var(--red)">
-                    Something went wrong, please try again!
-                  </Text>
-                )}
+                </div>
               </div>
-            </div>
-            <Box margin={{ top: '36px' }} width="small">
-              <PrimaryButton loading={loading} label="Reset" type="submit" className={style.submitBtn} />
-            </Box>
-          </form>
+              <br />
+              <div className={style.inputContainer}>
+                <Text size="large" color="var(--charcoalLight)">Confirm New Password:</Text>
+                <div className={style.inputWrapper}>
+                  <input
+                    type={showPasswordConf ? 'text' : 'password'}
+                    value={passwordConf}
+                    onChange={onPasswordConfChange}
+                    className={classnames({[style.errorBorder]: passwordConfError})}
+                  />
+                  <button type="button" onClick={() => setShowPasswordConf(!showPasswordConf)}>
+                    <FontAwesomeIcon icon={showPasswordConf ? faEye : faEyeSlash } />
+                  </button>
+                </div>
+                <div className={classnames(style.errorSection, {
+                  [style.active]: passwordConfError || error,
+                })}>
+                  {!error ? (
+                    <Text size="large" color={passwordConfError ? `var(--red)` : `var(--grey)`}>
+                      Passwords must match
+                    </Text>
+                  ) : (
+                    <Text size="large" color="var(--red)">
+                      Something went wrong, please try again!
+                    </Text>
+                  )}
+                </div>
+              </div>
+              <Box margin={{ top: '36px' }} width="small">
+                <PrimaryButton loading={loading} label="Reset" type="submit" className={style.submitBtn} />
+              </Box>
+            </form>
+          </div>
         </div>
-      </div>
-    </Layout>
+      </Layout>
+    </Box>
   );
 };
 

@@ -248,7 +248,10 @@ const ChatMessage = ({
                 className={style.mediaContainer}
                 onClick={clickMediaHandler}
               >
-                <img src={src} alt={text} />
+                <Box width="100%" pad={{ top: '56.2%' }} />
+                <div className={style.imageWrapper}>
+                  <img src={src} alt={text} />
+                </div>
               </div>
             )}
             <Box direction="row" gap="5px" wrap>

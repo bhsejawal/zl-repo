@@ -76,6 +76,7 @@ const ShareModal = ({
   slug,
   isGuest,
   isDownloadAllowed = true,
+  shouldLoadPubnub = false,
 }) => {
   const {
     _id,
@@ -393,17 +394,17 @@ const ShareModal = ({
             </Box>
             <Box className={style.commentSection}>
               <Box fill>
-                {typeof window !== 'undefined' && isGuest && (
+                {typeof window !== 'undefined' && (isGuest || shouldLoadPubnub) && (
                   <Suspense>
-                    <PubNubWrapper isGuest>
+                    <PubNubWrapper isGuest={isGuest}>
                       <Suspense>
-                        <Chat channelId={_id} alternate mediaType={type} isGuest />
+                        <Chat channelId={_id} alternate mediaType={type} isGuest={isGuest} />
                       </Suspense>
                     </PubNubWrapper>
                   </Suspense>
                 )}
 
-                {typeof window !== 'undefined' && mediaId && (
+                {typeof window !== 'undefined' && mediaId && !shouldLoadPubnub && (
                   <Suspense>
                     <Chat channelId={mediaId} alternate mediaType={type} />
                   </Suspense>

@@ -69,8 +69,10 @@
 }
 
 .zooLogo {
-  max-width: 74px;
-  height: 36px;
+  height: 26px;
+  width: auto;
+  margin-left: auto;
+  margin-right: 20px;
 }
 
 div.accordion {
@@ -81,6 +83,7 @@ div.accordion {
 
     svg {
       right: 0px !important;
+      width: 10px !important;
     }
   }
 

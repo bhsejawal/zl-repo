@@ -44,6 +44,7 @@ const initialState = {
   enteredMap: false,
   // flag to show clip button pulse animation
   clipButtonClicked: false,
+  hasWatchedFreemiumTalk: false,
 };
 
 export default (state = initialState, { type, payload }) => {

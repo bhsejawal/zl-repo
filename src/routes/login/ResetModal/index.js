@@ -17,6 +17,7 @@ import useFetch from 'use-http';
 
 import { emailRegex } from '../../../helpers';
 import { showModal, enableSubmit } from './actions';
+import { useIsMobileSize } from '../../../hooks';
 
 import modalStyle from './modalStyle.scss';
 import style from '../style.scss';
@@ -31,6 +32,7 @@ const PasswordResetModal = ({
   const [email, setEmail] = useState();
   const [hasError, setHasError] = useState();
   const [sent, setSent] = useState();
+  const isSmallScreen = useIsMobileSize();
   const {
     loading,
     error,
@@ -86,7 +88,7 @@ const PasswordResetModal = ({
       <button onClick={closeHandler} type="button" className={modalStyle.close}>
         <FontAwesomeIcon icon={faTimes} />
       </button>
-      <Box align="center" width="290px" margin={{vertical: '30px', horizontal: '50px'}}>
+      <Box align="center" width="290px" margin={{vertical: '30px', horizontal: isSmallScreen ? '22px' : '50px'}}>
         <Heading level="3" responsive>
           {invalidToken ? 'Password link expired' : 'Reset Password'}
         </Heading>
@@ -109,7 +111,9 @@ const PasswordResetModal = ({
                 className={classnames({[style.errorBorder]: hasError})}
               />
             </Box>
-            <div className={classnames(style.errorSection, {[style.active]: hasError || error})}>
+            <div className={classnames(style.errorSection, {
+              [style.active]: hasError || error || response?.data?.message === 'No user was found with this email',
+            })}>
               {hasError}
               {error && 'Something went wrong. Please try again!'}
               {!error && !hasError && sent && <p>{response.data.message}</p>}

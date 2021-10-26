@@ -1,10 +1,12 @@
 import { h } from 'preact';
-import { useContext, useEffect } from 'preact/hooks';
+import { useContext, useEffect, useState } from 'preact/hooks';
 import { connect } from 'react-redux';
 import { ResponsiveContext } from 'grommet';
 import { route } from 'preact-router';
+import { lazy, Suspense } from 'preact/compat';
 
 import HabitatsUpdater from 'Components/HabitatsUpdater';
+
 import { buildURL, post } from 'Shared/fetch';
 import { logGAEvent } from 'Shared/ga';
 
@@ -16,6 +18,10 @@ import { getDeviceType } from '../../helpers';
 
 import style from './style.scss';
 
+const ShareModal = lazy(() => import('Components/ShareModal/Standalone'));
+
+const trailerInitialState = { show: false, data: null };
+
 const Map = ({
   enteredMap,
   productId,
@@ -24,6 +30,7 @@ const Map = ({
 }) => {
   const size = useContext(ResponsiveContext);
   const isSmallScreen = ['small', 'xsmall'].includes(size);
+  const [trailer, setTrailer] = useState(trailerInitialState)
 
   useEffect(() => {
     if (!enteredMap && isFreemiumOnboarded) {
@@ -46,11 +53,25 @@ const Map = ({
     }
   }, []);
 
+  const onShowTrailer = (data) => setTrailer({ show: true, data });
+
   return (
     <div className={style.background}>
       <HabitatsUpdater />
-      {isSmallScreen && <MobileMap />}
-      {!isSmallScreen && <DesktopMap />}
+      {isSmallScreen && <MobileMap onShowTrailer={onShowTrailer} />}
+      {!isSmallScreen && <DesktopMap onShowTrailer={onShowTrailer} />}
+      {trailer.show && typeof window !== 'undefined' && (
+        <Suspense>
+          <ShareModal
+            open={trailer.show}
+            data={trailer.data}
+            onClose={() => setTrailer(trailerInitialState)}
+            mediaId={trailer.data._id}
+            isDownloadAllowed={false}
+            shouldLoadPubnub
+          />
+        </Suspense>
+      )}
     </div>
   )
 }

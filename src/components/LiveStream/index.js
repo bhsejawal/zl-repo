@@ -14,6 +14,7 @@ import { hasPermission } from 'Components/Authorize';
 import TimeBar from 'Components/TimeBar';
 import VideoControls from 'Components/VideoControls';
 import ContentExplorer from 'Components/ContentExplorer';
+import { post, buildURL } from 'Shared/fetch';
 
 import Fallback from './Fallback';
 
@@ -25,7 +26,8 @@ import MobileControls from './MobileControls.js';
 import { useWebRTCStream } from './hooks/useWebRTCStream';
 import { wsMessages } from './helpers/constants';
 import { useIsHabitatTabbed, useShowMobileControls } from '../../hooks';
-import { setHabitatStreamStarted } from "../../routes/habitat/actions";
+import { setHabitatStreamStarted } from '../../routes/habitat/actions';
+import { updateUserProperty } from '../../redux/actions';
 
 import { getDeviceType } from '../../helpers';
 
@@ -50,7 +52,9 @@ const Stream = ({
   isStreamOn,
   mode,
   productId,
+  hasWatchedFreemiumTalk,
   setHabitatStreamStartedAction,
+  updateUserPropertyAction,
 }) => {
   const videoRef = useRef();
   const timeoutRef = useRef();
@@ -62,6 +66,12 @@ const Stream = ({
   const [showControls, setShowControls] = useState(false);
 
   const logStreamStatus = useCallback((data) => {
+    if (!hasWatchedFreemiumTalk && productId === 'FREEMIUM' && mode === 'liveTalk') {
+      post(buildURL('users/steps'), { step: 'hasWatchedFreemiumTalk', value: true })
+        .then((data) => updateUserPropertyAction(data))
+        .catch((err) => console.error('Error while updating hasWatchedFreemiumTalk status', err));
+    }
+
     if (data?.startTime && data?.streamId) {
       socket.emit('logWebrtcStats', {
         userId,
@@ -71,7 +81,7 @@ const Stream = ({
         ...data,
       })
     }
-  }, [socket, userId, productId]);
+  }, [socket, userId, productId, hasWatchedFreemiumTalk, mode, updateUserPropertyAction]);
 
   const handleScreenClick = useCallback(() => {
     if (isTabbed) {
@@ -219,7 +229,23 @@ const Stream = ({
 };
 
 export default connect((
-  { user: { userId, showContentExplorer, subscription: { productId } } },
+  {
+    user:
+      {
+        userId,
+        showContentExplorer,
+        subscription: { productId },
+        hasWatchedFreemiumTalk,
+      },
+  },
 ) => (
-  { userId, showContentExplorer, productId }
-), { setHabitatStreamStartedAction: setHabitatStreamStarted })(Stream);
+  {
+    userId,
+    showContentExplorer,
+    productId,
+    hasWatchedFreemiumTalk,
+  }
+), {
+  setHabitatStreamStartedAction: setHabitatStreamStarted,
+  updateUserPropertyAction: updateUserProperty,
+})(Stream);

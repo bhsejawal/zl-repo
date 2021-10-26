@@ -23,9 +23,8 @@ import classnames from 'classnames';
 import useFetch from 'use-http';
 
 import HabitatStatus from 'Components/HabitatCard/HabitatStatus';
-import ClickMessageTip from 'Components/ClickMessageTip';
-import { buildURL, post } from 'Shared/fetch';
-import { setHabitats, updateUserProperty } from '../../../redux/actions';
+import { buildURL } from 'Shared/fetch';
+import { setHabitats } from '../../../redux/actions';
 import { useWindowResize } from '../../../hooks';
 import zoolifeTheme from '../../../grommetTheme';
 
@@ -53,11 +52,7 @@ const Search = ({
   className,
   allHabitats,
   subscription,
-  isAlbumClicked,
-  isStreamClicked,
-  isSearchClicked,
   setHabitatsAction,
-  updateUserPropertyAction,
 }) => {
   const [suggestionOpen, setSuggestionOpen] = useState(false);
   const [value, setValue] = useState('');
@@ -82,12 +77,6 @@ const Search = ({
       if (response.ok) {
         setHabitatsAction(response.data.habitats)
       }
-    }
-
-    if (!isSearchClicked) {
-      post(buildURL('users/steps'), { step: 'isSearchClicked', value: true })
-        .then((data) => updateUserPropertyAction(data))
-        .catch((err) => console.error('Error while updating search click indicator', err));
     }
   };
 
@@ -176,7 +165,7 @@ const Search = ({
         elevation={suggestionOpen ? 'medium' : undefined}
         border={{
           side: 'all',
-          color: suggestionOpen ? 'transparent' : '#EBEBEB',
+          color: suggestionOpen ? 'transparent' : '#CDCDCD',
         }}
         style={suggestionOpen ? {
           borderBottomLeftRadius: '0px',
@@ -197,19 +186,13 @@ const Search = ({
           style={{ padding: '2px' }}
           dropHeight="medium"
         />
-
-        <ClickMessageTip
-          align={{ top: 'bottom' }}
-          disable={isSearchClicked || !isAlbumClicked || !isStreamClicked}
-          text="Discover more habitats">
-          <Box onClick={() => boxRef.current.querySelector('input').focus()} className={style.searchClickIndicator}>
-            <FontAwesomeIcon
-              icon={faSearch}
-              color="var(--grey)"
-              style={{ width: '14px' }}
-            />
-          </Box>
-        </ClickMessageTip>
+        <Box onClick={() => boxRef.current.querySelector('input').focus()} className={style.searchClickIndicator}>
+          <FontAwesomeIcon
+            icon={faSearch}
+            color="var(--grey)"
+            style={{ width: '14px' }}
+          />
+        </Box>
       </Box>
     </Grommet>
   );
@@ -219,17 +202,8 @@ export default connect(({
   allHabitats,
   user: {
     subscription,
-    isAlbumClicked,
-    isStreamClicked,
-    isSearchClicked,
   },
 }) => ({
   allHabitats,
   subscription,
-  isAlbumClicked,
-  isStreamClicked,
-  isSearchClicked,
-}), {
-  setHabitatsAction: setHabitats,
-  updateUserPropertyAction: updateUserProperty,
-})(Search);
+}), { setHabitatsAction: setHabitats })(Search);

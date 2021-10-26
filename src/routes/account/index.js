@@ -67,7 +67,7 @@ const Account = () => {
                   fill="horizontal"
                   pad={{ vertical: '20px', top: '20px', bottom: '40px' }}
                 >
-                  <Heading fill textAlign="center" level="2" margin={isMobileSize && '0 10px 20px'}>Account Information</Heading>
+                  <Heading fill textAlign="center" level="2" margin={isMobileSize ? '0 10px 20px' : undefined}>Account Information</Heading>
                   <EmailSection />
                   <Box pad="20px" />
                   <PasswordSection />

@@ -1,0 +1,14 @@
+.container {
+
+  .close {
+    z-index: 3;
+    font-size: 20px;
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 50px;
+    height: 68px;
+    background: white;
+    border-radius: 0;
+  }
+}

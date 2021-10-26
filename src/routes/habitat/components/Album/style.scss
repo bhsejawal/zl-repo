@@ -4,21 +4,6 @@
   min-height: 690px;
   display: flex;
   flex-direction: column;
-
-  :global {
-
-    .simpleSelect {
-      min-width: 160px;
-      display: flex;
-      width: fit-content;
-      margin: 25px 0;
-
-      select {
-        border-radius: 50px;
-        padding-left: 18px;
-      }
-    }
-  }
 }
 
 .buttonTabs {
@@ -89,10 +74,6 @@
   flex-direction: column;
   margin: 0 5px 10px 5px;
   position: relative;
-
-  @media screen and (max-width: 639px) {
-    width: calc(90%);
-  }
 
   @media screen and (min-width: 640px) {
     width: calc((100% / 2) - 10px);
@@ -232,48 +213,45 @@
   opacity: .5;
 }
 
-
-.album.tab {
-  min-height: fit-content;
-  z-index: 0;
+.album.mobile {
+  min-height: 100%;
+  background: white;
 
   .buttonTabs {
-    padding-left: 20px;
-  }
+    height: 68px;
+    flex-shrink: 0;
+    margin: 0;
+    padding: 0 50px 0 0;
+    align-items: center;
 
-  .section {
-    padding-bottom: 10px;
-    margin-top: 10px;
-
-    h4 {
-      margin-left: 20px;
+    button {
+      font-size: 12px;
+      padding: 7px 12px;
+      margin: 6px;
     }
   }
 
   .mediaWrapper {
-    padding: 0 20px;
+    overflow: auto;
+  }
 
-    @media screen and (min-width: #{$phone-landscape-width}) {
+  .mediaContainer {
+    margin: 3px;
+    width: calc(50% - 6px);
 
-      div.mediaContainer {
-        width: calc((100% / 2) - 10px);
-
-        &:nth-child(even) {
-          margin-right: 0;
-          margin-left: 10px;
-        }
-
-        &:nth-child(odd):not(:first-of-type:last-of-type) {
-          margin-right: 10px;
-        }
-      }
+    .button {
+      min-height: unset;
     }
+  }
 
-    .mediaContainer {
-      display: flex;
-      width: 100%;
-      margin: 0 auto 10px auto;
-    }
+  .section {
+    height: calc(100 * var(--vh) - 68px);
+  }
+
+  .loadMore {
+    margin: 15px auto;
+    width: 100%;
+    justify-content: center;
   }
 }
 

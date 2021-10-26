@@ -23,7 +23,7 @@
   background: white;
   border-radius: 15px;
   height: fit-content;
-  margin: auto 90px auto auto;
+  margin: auto;
 
   h1 img {
     width: 200px;
@@ -63,9 +63,10 @@
     border-radius: 0;
     border-color: #c3d9da;
     color: var(--grey);
-    font-size: 20px;
-    line-height: 28px;
     font-weight: 900;
+    font-size: 16px;
+    line-height: 22px;
+    font-family: inherit;
 
     &:focus {
       border-color: #368185;

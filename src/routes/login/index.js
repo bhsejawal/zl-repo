@@ -6,7 +6,6 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faEyeSlash } from "@fortawesome/pro-solid-svg-icons";
 import classnames from 'classnames';
 import {
-  Image,
   Box,
   Text,
   Anchor,
@@ -16,7 +15,6 @@ import {
 import { buildURL, post } from 'Shared/fetch';
 import SocialLoginBar from 'Components/SocialLoginBar';
 import { PrimaryButton } from 'Components/Buttons';
-import logo from 'Components/ZoolifeLogo/zoolife.svg';
 
 import PasswordResetModal from './ResetModal';
 import Layout from '../../layouts/LoginSignup';
@@ -25,8 +23,6 @@ import { setUserData } from '../../redux/actions';
 import { emailRegex, identifyUser, loadPage } from '../../helpers';
 
 import { showModal, validateToken } from './ResetModal/actions';
-
-import loginImage from './login.png';
 
 import style from './style.scss';
 
@@ -144,21 +140,14 @@ const Login = ({
 
   return (
     <Box fill width={{ max: "var(--maxWidth)", min: "350px" }} height={{ min: 'max-content' }} margin={{ horizontal: 'auto'}}>
-      <Layout image={loginImage}>
+      <Layout>
         <Box direction="row" align="center" height="auto">
-          <Heading level="2">
-            Welcome back
-            <br />
-            to
-            <Box pad={{ horizontal: '10px'}} justify="center" style={{ display: 'inline-flex'}}>
-              <Image src={logo} alt="" />
-            </Box>
-          </Heading>
+          <Heading level="2">Try zoolife free.</Heading>
         </Box>
         <Box fill="horizontal" margin={{ top: 'medium' }}>
           <form onSubmit={onSubmit}>
             <div className={style.inputContainer}>
-              <span className={style.label}>Email</span>
+              <span className={style.label}>Your Email:</span>
               <div className={style.inputWrapper}>
                 <input
                   type="text"
@@ -173,7 +162,7 @@ const Login = ({
               </div>
             </div>
             <div className={style.inputContainer}>
-              <span className={style.label}>Password</span>
+              <span className={style.label}>Your Password:</span>
               <div className={style.inputWrapper}>
                 <input
                   type={showPassword ? 'text' : 'password'}

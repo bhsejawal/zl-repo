@@ -20,6 +20,7 @@ const DesktopMap = ({
   allHabitats,
   showMapModal,
   activeHabitatId,
+  onShowTrailer,
   toggleMapModalAction,
   setEditHabitatAction,
 }) => {
@@ -66,6 +67,8 @@ const DesktopMap = ({
                   image={activeHabitat.wideImage}
                   logo={activeHabitat.zoo?.logo}
                   habitatId={activeHabitat._id}
+                  trailer={activeHabitat.trailer}
+                  onShowTrailer={onShowTrailer}
                 />
               </>
             )}

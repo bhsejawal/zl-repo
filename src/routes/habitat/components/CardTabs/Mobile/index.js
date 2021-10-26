@@ -18,6 +18,7 @@ import {
   openModalCards,
   openModalQuestions,
   openModalSchedules,
+  openModalAlbum,
 } from './actions';
 import {
   BODY,
@@ -27,14 +28,16 @@ import {
   QUIZ_CARD_TYPE,
 } from '../constants';
 
-import Tab from "../tabs/Tab/Tab";
-import AnimalInfoIcon from "../tabs/icons/AnimalInfo.svg";
-import FamilyIcon from "../tabs/icons/Family.svg";
-import QuestionsIcon from "../tabs/icons/Question.svg";
-import CalendarIcon from "../tabs/icons/Calendar.svg";
-import BodyIcon from "../tabs/icons/Body.svg";
-import QuizIcon from "../tabs/icons/Quiz.svg";
-import SchedulesModal from "./ScheduleModal";
+import Tab from '../tabs/Tab/Tab';
+import AnimalInfoIcon from '../tabs/icons/AnimalInfo.svg';
+import FamilyIcon from '../tabs/icons/Family.svg';
+import QuestionsIcon from '../tabs/icons/Question.svg';
+import CalendarIcon from '../tabs/icons/Calendar.svg';
+import BodyIcon from '../tabs/icons/Body.svg';
+import QuizIcon from '../tabs/icons/Quiz.svg';
+import AlbumIcon from '../tabs/icons/Album.svg';
+import SchedulesModal from './ScheduleModal';
+import AlbumModal from './AlbumModal';
 
 const MobileCardsModal = lazy(() => import('./CardsModal'));
 
@@ -43,13 +46,15 @@ const SmallScreenCardTabs = ({
   activeMobileCardsTab,
   calendarCardOpen,
   questionsCardOpen,
-  SchedulesCardOpen,
+  schedulesCardOpen,
+  albumCardOpen,
   setLoadingAction,
   setCardsAction,
   openModalCardsAction,
   openModalCalendarAction,
   openModalQuestionsAction,
   openModalSchedulesAction,
+  openModalAlbumAction,
 }) => {
   const { get } = useFetch(API_BASE_URL, {
     credentials: 'include',
@@ -112,6 +117,14 @@ const SmallScreenCardTabs = ({
         direction="row"
         overflow={{ horizontal: 'auto' }}
       >
+        <Tab
+          title="Album"
+          description="Updates, photos, clips, past talks, and more"
+          onClick={openModalAlbumAction}
+          color="#769DFF"
+          icon={AlbumIcon}
+        />
+
         <Tab
           title="The Species"
           description="Learn about their habitat, behaviour, and more"
@@ -185,8 +198,12 @@ const SmallScreenCardTabs = ({
         <QuestionsModal />
       )}
 
-      {SchedulesCardOpen && (
+      {schedulesCardOpen && (
         <SchedulesModal />
+      )}
+
+      {albumCardOpen && (
+        <AlbumModal />
       )}
     </>
   );
@@ -203,7 +220,8 @@ export default connect(
           activeMobileCardsTab,
           calendarCardOpen,
           questionsCardOpen,
-          SchedulesCardOpen,
+          schedulesCardOpen,
+          albumCardOpen,
         },
       },
     },
@@ -212,7 +230,8 @@ export default connect(
     activeMobileCardsTab,
     calendarCardOpen,
     questionsCardOpen,
-    SchedulesCardOpen,
+    schedulesCardOpen,
+    albumCardOpen,
   }),
   {
     setCardsAction: setCards,
@@ -221,5 +240,6 @@ export default connect(
     openModalCalendarAction: openModalCalendar,
     openModalQuestionsAction: openModalQuestions,
     openModalSchedulesAction: openModalSchedules,
+    openModalAlbumAction: openModalAlbum,
   },
 )(SmallScreenCardTabs);

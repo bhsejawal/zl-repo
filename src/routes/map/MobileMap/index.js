@@ -9,7 +9,7 @@ import headerImage from './mapHeader.png';
 
 import style from '../style.scss';
 
-const Map = ({ allHabitats }) => {
+const Map = ({ allHabitats, onShowTrailer }) => {
   const onlineHabitats = useMemo(() => allHabitats.filter(
     (habitat) => (habitat.online && !habitat.liveTalk),
   ), [allHabitats]);
@@ -40,7 +40,7 @@ const Map = ({ allHabitats }) => {
               <Heading level="3">Live Talks</Heading>
               <Box height={{ min: 'fit-content'}}>
                 {liveTalkHabitats.map((habitat) => (
-                  <HabitatMobileCard habitat={habitat} />
+                  <HabitatMobileCard habitat={habitat} onShowTrailer={onShowTrailer} />
                 ))}
               </Box>
             </Box>
@@ -50,7 +50,7 @@ const Map = ({ allHabitats }) => {
               <Heading level="3">Online</Heading>
               <Box flexGrow="1" height={{ min: 'fit-content'}}>
                 {onlineHabitats.map((habitat) => (
-                  <HabitatMobileCard habitat={habitat} />
+                  <HabitatMobileCard habitat={habitat} onShowTrailer={onShowTrailer} />
                 ))}
               </Box>
             </Box>
@@ -60,7 +60,7 @@ const Map = ({ allHabitats }) => {
               <Heading level="3">Offline</Heading>
               <Box height={{ min: 'fit-content'}}>
                 {offlineHabitats.map((habitat) => (
-                  <HabitatMobileCard habitat={habitat} isOffline />
+                  <HabitatMobileCard habitat={habitat} isOffline onShowTrailer={onShowTrailer} />
                 ))}
               </Box>
             </Box>

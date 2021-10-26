@@ -11,18 +11,15 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faEyeSlash } from "@fortawesome/pro-solid-svg-icons";
 import {
   Heading,
-  Image,
   Box,
   Text,
   CheckBox,
-  ResponsiveContext,
 } from 'grommet';
 import { loadStripe } from '@stripe/stripe-js/pure';
 
 import { buildURL, post } from 'Shared/fetch';
 import classnames from 'classnames';
 import SocialLoginBar from 'Components/SocialLoginBar';
-import logo from 'Components/ZoolifeLogo/zoolife.svg';
 import { PrimaryButton } from 'Components/Buttons';
 import { openTermsModal } from 'Components/TermsAndConditions/actions';
 import { logPageViewGA } from 'Shared/ga';
@@ -40,8 +37,6 @@ import {
 
 import Layout from '../../layouts/LoginSignup';
 
-import signupImage from './zoolife-signup.jpg';
-
 import style from '../login/style.scss';
 
 const TERMS_VERSION = process.env.PREACT_APP_TERMS_VERSION ?? 1;
@@ -53,7 +48,6 @@ const Signup = ({
   logged,
   sessionChecked,
 }) => {
-  const size = useContext(ResponsiveContext);
   const { stripe } = useContext(StripeContext);
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
@@ -61,7 +55,7 @@ const Signup = ({
   const [emailError, setEmailError] = useState();
   const [passwordError, setPasswordError] = useState();
   const [showPassword, setShowPassword] = useState(false);
-  const [isTermsAccepted, setIsTermsAccepted] = useState(false);
+  const [isTermsAccepted, setIsTermsAccepted] = useState(true);
   const [termsError, setTermsError] = useState();
 
   const checkoutHandler = useCallback(async (planId, priceId) => {
@@ -93,8 +87,6 @@ const Signup = ({
       loadPage('/map', true);
     }
   }, [logged]);
-
-  const isLargeScreen = size === 'large';
 
   const onSubmit = async (evt) => {
     evt.preventDefault();
@@ -199,20 +191,9 @@ const Signup = ({
 
   return (
     <Box fill width={{ max: "var(--maxWidth)", min: "350px" }} height={{ min: 'max-content' }} margin={{ horizontal: 'auto' }}>
-      <Layout image={signupImage} showCarousel>
-        {isLargeScreen && (
-          <Heading margin={{top: '30px', bottom: '5px'}} level="4" color="var(--grey)">Step 1 of 2</Heading>
-        )}
-        <Box direction="row" align="center" height="40px">
-          <Heading level="2">
-            Try
-          </Heading>
-          <Box pad={{ horizontal: '10px'}} justify="center">
-            <Image src={logo} alt="" />
-          </Box>
-          <Heading level="2">
-            free
-          </Heading>
+      <Layout>
+        <Box direction="row" align="center" height="auto">
+          <Heading level="2">Try zoolife free.</Heading>
         </Box>
         <Box fill="horizontal" margin={{ top: 'medium' }}>
           <form onSubmit={onSubmit}>
@@ -237,9 +218,10 @@ const Signup = ({
                 <input
                   type={showPassword ? 'text' : 'password'}
                   name="password"
-                  placeholder="Password"
+                  placeholder="8+ characters with at least 1 number"
                   value={password}
                   onChange={onPasswordChange}
+                  style={{ fontSize: (!password ? '14px' : '20px') }}
                 />
                 <button type="button" onClick={() => setShowPassword(!showPassword)}>
                   <FontAwesomeIcon icon={showPassword ? faEye : faEyeSlash } />

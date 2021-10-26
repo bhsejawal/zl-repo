@@ -37,7 +37,7 @@ const Notifications = ({
       const existingNotification = notifications.some(({ id }) => id === date);
 
       if (!rate[`${date}-${getDesktopOrMobile()}`] && !existingNotification) {
-        timeout = setTimeout(() => addNotificationAction({ id: date, type: 'rate' }), 1000);
+        timeout = setTimeout(() => addNotificationAction({ id: date, type: 'rate' }), 60000);
       }
     }
 
