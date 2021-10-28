@@ -3,7 +3,7 @@
 @media screen and (max-width: #{$tablet-portrait-width}) {
 
   .partners {
-    margin-bottom: 103px !important;
+    margin-bottom: 0px !important;
   }
 }
 
@@ -29,7 +29,7 @@
   flex-direction: column;
 
   h2 {
-    margin: 140px auto 55px auto;
+    margin: 100px auto 45px auto;
     text-align: center;
     display: block;
     max-width: 780px;
@@ -51,7 +51,7 @@
 
 .partners {
   text-align: center;
-  margin-bottom: 130px;
+  margin-bottom: 0px;
   margin-top: 43px;
   overflow: hidden;
   cursor: pointer;

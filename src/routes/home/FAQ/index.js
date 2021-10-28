@@ -42,9 +42,9 @@ const FAQ = () => (
       <p>
         Single Day Pass: $4.99
         <br />
-        Monthly Membership: $9.99/month
+        Monthly Membership: $7.99/month
         <br />
-        Annual Membership: $97.99/year (Save 30%)
+        Annual Membership: $76.99/year (Save 45%)
         <br />
         You can cancel or upgrade your Zoolife pass any time.
       </p>
