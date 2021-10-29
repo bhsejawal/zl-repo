@@ -166,6 +166,7 @@ const InviteModal = ({ closeInviteModalAction }) => {
               <PrimaryButton
                 label="Send"
                 loading={loading && 'Sending...'}
+                className={loading && style.loadingBtn}
                 onClick={onSend}
               />
             </Box>
