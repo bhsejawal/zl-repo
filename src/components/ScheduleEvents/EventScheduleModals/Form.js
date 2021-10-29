@@ -10,9 +10,9 @@ import {
   Select,
   Text,
   TextInput,
+  Form,
+  FormField,
 } from 'grommet';
-import { faChevronDown } from '@fortawesome/pro-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import classnames from 'classnames';
 import useFetch from 'use-http';
 
@@ -39,7 +39,7 @@ const getDuration = (ms) => {
 }
 
 const defaultData = {
-  type: 'stream',
+  type: '',
   title: '',
   hostEmail: '',
   description: '',
@@ -50,7 +50,7 @@ const defaultData = {
   date: new Date().toISOString(),
   // NEW
   frequency: REPEATS,
-  singleEvent: false,
+  singleEvent: '',
 };
 
 const removeTimezoneDifference = (date) => {
@@ -63,7 +63,7 @@ const removeTimezoneDifference = (date) => {
   return localDate.toString();
 }
 
-const Form = ({
+const EventForm = ({
   onSubmit,
   scheduleData,
   timezone,
@@ -75,7 +75,7 @@ const Form = ({
   const [data, setData] = useState(isEdit ? {
     ...scheduleData,
     frequency: !scheduleData?.date ? REPEATS : ONE_TIME_EVENT,
-    singleEvent: !scheduleData?.date,
+    singleEvent: '',
   } : defaultData);
   const [error, setError] = useState();
   const [loading, setLoading] = useState();
@@ -121,6 +121,7 @@ const Form = ({
 
     try {
       setLoading(true);
+      data.singleEvent = data.singleEvent === 'true';
       await onSubmit({
         ...omit(data, 'frequency'),
         days: data.frequency === REPEATS && !data.singleEvent ? data.days : [],
@@ -157,12 +158,7 @@ const Form = ({
     }
 
     if (property === 'singleEvent') {
-      let val = value.toLocaleString() === 'true';
-
-      if (!val) {
-        val = value.toLocaleString() === 'false' ? false : '';
-      }
-      setData({ ...data, singleEvent: val });
+      setData({ ...data, singleEvent: e.value });
       return;
     }
 
@@ -184,28 +180,35 @@ const Form = ({
   };
 
   return (
-    <form onSubmit={submitHandler} className={style.form}>
+    <Form onSubmit={submitHandler} className={style.form}>
       <div className={classnames(style.wrapper, 'customScrollBar')}>
         <Box direction="column">
           {isEdit && !scheduleData.date && (
             <Box direction="column" width="calc(50% - 10px)" className={style.inputWrapper}>
               <Text size="xlarge" className={style.label}>Edit</Text>
-              <div className={style.simpleSelect}>
-                <select onChange={changeHandler('singleEvent')} required>
-                  {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
-                  <option value="" />
-                  <option value={true}>Single Event</option>
-                  <option value={false}>All Events</option>
-                </select>
-                <FontAwesomeIcon icon={faChevronDown} color="var(--blueMediumLight)" />
-              </div>
+
+              <FormField name="select-singleEvent" required className={style.selectContainer}>
+                <Select
+                  labelKey="label"
+                  valueKey={{ key: 'value', reduce: true }}
+                  value={data.singleEvent}
+                  options={[
+                    { label: '', value: ''},
+                    { label: 'Single Event', value: 'true'},
+                    { label: 'All Events', value: 'false'},
+                  ]}
+                  onChange={changeHandler('singleEvent')}
+                  name="select-singleEvent"
+                  placeholder="Select Event"
+                />
+              </FormField>
             </Box>
           )}
           {/* eslint-disable-next-line no-underscore-dangle */}
           {!isEdit && (
-            <Box direction="column">
+            <Box direction="column" width="calc(50% - 10px)">
               <Text size="xlarge" className={classnames(style.label, style.eventType)}>Event Type:</Text>
-              <div className={style.selectContainer}>
+              <FormField name="select-type" required className={style.selectContainer}>
                 <Select
                   labelKey="label"
                   valueKey={{ key: 'value', reduce: true }}
@@ -215,46 +218,56 @@ const Form = ({
                     { label: 'Stream', value: STREAM},
                   ]}
                   onChange={changeHandler('type')}
+                  name="select-type"
+                  placeholder="Select type"
                 />
-              </div>
+              </FormField>
             </Box>
           )}
 
           <Box direction="row">
             <Box direction="column" width="calc(50% - 10px)" margin={{ right: '10px' }} className={style.inputWrapper}>
-              <Text size="xlarge" className={style.label}>Event Title</Text>
-              <input value={data.title} className={style.letterCount} maxLength="50" onChange={changeHandler('title')} required />
-              <div>{`${data?.title?.length}/50`}</div>
+              <FormField name="title" required>
+                <Text size="xlarge" className={style.label}>Event Title</Text>
+                <TextInput value={data.title} name="title" className={style.letterCount} maxLength="50" onChange={changeHandler('title')} />
+                <div className={style.letterLabel}>{`${data?.title?.length}/50`}</div>
+              </FormField>
             </Box>
 
             {data.type === STREAM && (
-              <Box direction="column" width="calc(50% - 10px)" margin={{ left: '10px' }} className={style.inputWrapper}>
+              <Box direction="column" width="calc(50% - 10px)" margin={{ left: '10px' }}>
                 <Text size="xlarge" className={style.label}>Camera</Text>
-                <div className={style.simpleSelect}>
-                  <select onChange={changeHandler('camera')} required disabled={isEdit && data.singleEvent}>
-                    {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
-                    <option value={undefined} />
-                    {habitatCameras.map(({ _id, cameraName }) => (
-                      <option selected={data.camera === _id} value={_id}>{cameraName}</option>
-                    ))}
-                  </select>
-                  <FontAwesomeIcon icon={faChevronDown} color="var(--blueMediumLight)" />
-                </div>
+                <FormField name="select-camera" required className={style.selectContainer}>
+                  <Select
+                    labelKey="label"
+                    valueKey={{ key: 'value', reduce: true }}
+                    value={data.camera || undefined}
+                    options={habitatCameras.map(
+                      ({ _id, cameraName }) => ({label: cameraName, value: _id}),
+                    )}
+                    onChange={changeHandler('camera')}
+                    name="select-camera"
+                    placeholder="Select Camera"
+                    disabled={isEdit && data.singleEvent === 'true'}
+                  />
+                </FormField>
               </Box>
             )}
 
             {data.type === TALK && (
               <Box direction="column" width="calc(50% - 10px)" margin={{ left: '10px' }} className={style.inputWrapper}>
-                <Text size="xlarge" className={style.label}>Host Email</Text>
-                <TextInput
-                  required
-                  type="email"
-                  value={data.hostEmail}
-                  onChange={changeHandler('hostEmail')}
-                  onSuggestionSelect={onHostSuggestionClick}
-                  suggestions={hosts}
-                />
-                {data.hostEmail.length > 0 && <div className={style.error}>Invalid Email</div>}
+                <FormField name="email" required>
+                  <Text size="xlarge" className={style.label}>Host Email</Text>
+                  <TextInput
+                    type="email"
+                    name="email"
+                    value={data.hostEmail}
+                    onChange={changeHandler('hostEmail')}
+                    onSuggestionSelect={onHostSuggestionClick}
+                    suggestions={hosts}
+                  />
+                  {data.hostEmail.length > 0 && <div className={style.error}>Invalid Email</div>}
+                </FormField>
               </Box>
             )}
           </Box>
@@ -319,7 +332,7 @@ const Form = ({
               />
             </Box>
           </Box>
-          {data.singleEvent === false && (
+          {data.singleEvent === 'false' && (
             <Box direction="column">
               <Text size="xlarge" className={style.label}>Frequency</Text>
               <Box direction="row">
@@ -384,13 +397,14 @@ const Form = ({
         {isEdit && (
           <OutlineButton
             label="Delete"
-            onClick={() => showDeleteEventModalAction(true, !data.singleEvent, scheduleData.date)}
+            onClick={() => showDeleteEventModalAction(true, data.singleEvent === 'false', scheduleData.date)}
             margin={{ right: '20px' }}
+            disabled={isEdit && data.singleEvent === ''}
           />
         )}
-        <PrimaryButton loading={loading} type="submit" label="Publish" />
+        <PrimaryButton loading={loading} type="submit" label="Publish" disabled={isEdit && data.singleEvent === ''} />
       </Box>
-    </form>
+    </Form>
   )
 };
 
@@ -406,4 +420,4 @@ export default connect(({
 }) => ({ timezone, habitatId }),
 {
   showDeleteEventModalAction: showDeleteEventModal,
-})(Form);
+})(EventForm);
