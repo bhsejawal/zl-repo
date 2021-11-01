@@ -3,6 +3,19 @@ This file keeps track of all relevant change for every release.
 
 ## [Unreleased]
 
+## [5.26.0] - 2021-11-01
+### Added
+-  Tooltips for interactive controls on desktop
+
+### Changed
+- Invite friend copy and button update
+- Clip button has similar loading state to snapshot
+- Schedule modal, event type dropdown list has a stream selected by default
+- Update prices in FAQ
+
+### Fixed
+- Invite modal style fixes
+
 ## [5.25.0] - 2021-10-26
 ### Added
 - Album on full screen for mobile
