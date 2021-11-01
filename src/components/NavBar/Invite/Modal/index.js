@@ -104,7 +104,7 @@ const InviteModal = ({ closeInviteModalAction }) => {
   );
 
   return (
-    <Layer position="center" className={style.layer} background="white" ref={layerRef} onEsc={onClose}>
+    <Layer position="center" className={style.layer} background="transparent" ref={layerRef} onEsc={onClose}>
       {sent && (
         <StatusModalContent
           type="success"
@@ -122,7 +122,7 @@ const InviteModal = ({ closeInviteModalAction }) => {
       )}
 
       {!sent && !error && (
-        <Box width="min(480px, 100vw)" className="customScrollBar grey" background="white">
+        <Box width="min(480px, 100vw)" className="customScrollBar grey" background="transparent">
           <Box
             direction="row"
             align="center"

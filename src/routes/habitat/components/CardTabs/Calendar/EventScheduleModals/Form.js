@@ -13,6 +13,8 @@ import {
   Form,
   FormField,
 } from 'grommet';
+import { deepMerge } from 'grommet/utils';
+import { grommet } from 'grommet/themes';
 import classnames from 'classnames';
 import useFetch from 'use-http';
 
@@ -62,6 +64,15 @@ const removeTimezoneDifference = (date) => {
   localDate.setMinutes(localDate.getTimezoneOffset());
   return localDate.toString();
 }
+
+const theme = deepMerge(grommet, grommetTheme, {
+  formField: {
+    margin: 'none',
+    border: {
+      color: 'white',
+    },
+  },
+});
 
 const EventForm = ({
   onSubmit,
@@ -180,231 +191,233 @@ const EventForm = ({
   };
 
   return (
-    <Form onSubmit={submitHandler} className={style.form}>
-      <div className={classnames(style.wrapper, 'customScrollBar')}>
-        <Box direction="column">
-          {isEdit && !scheduleData.date && (
-            <Box direction="column" width="calc(50% - 10px)" className={style.inputWrapper}>
-              <Text size="xlarge" className={style.label}>Edit</Text>
+    <Grommet theme={theme}>
+      <Form onSubmit={submitHandler} className={style.form}>
+        <div className={classnames(style.wrapper, 'customScrollBar')}>
+          <Box direction="column">
+            {isEdit && !scheduleData.date && (
+              <Box direction="column" width="calc(50% - 10px)" className={style.inputWrapper}>
+                <Text size="xlarge" className={style.label}>Edit</Text>
 
-              <FormField name="select-singleEvent" required className={style.selectContainer}>
-                <Select
-                  labelKey="label"
-                  valueKey={{ key: 'value', reduce: true }}
-                  value={data.singleEvent}
-                  options={[
-                    { label: '', value: ''},
-                    { label: 'Single Event', value: 'true'},
-                    { label: 'All Events', value: 'false'},
-                  ]}
-                  onChange={changeHandler('singleEvent')}
-                  name="select-singleEvent"
-                  placeholder="Select Event"
-                />
-              </FormField>
-            </Box>
-          )}
-          {/* eslint-disable-next-line no-underscore-dangle */}
-          {!isEdit && (
-            <Box direction="column" width="calc(50% - 10px)">
-              <Text size="xlarge" className={classnames(style.label, style.eventType)}>Event Type:</Text>
-              <FormField name="select-type" required className={style.selectContainer}>
-                <Select
-                  labelKey="label"
-                  valueKey={{ key: 'value', reduce: true }}
-                  value={data.type || undefined}
-                  options={[
-                    { label: 'Talk', value: TALK},
-                    { label: 'Stream', value: STREAM},
-                  ]}
-                  onChange={changeHandler('type')}
-                  name="select-type"
-                  placeholder="Select type"
-                />
-              </FormField>
-            </Box>
-          )}
-
-          <Box direction="row">
-            <Box direction="column" width="calc(50% - 10px)" margin={{ right: '10px' }} className={style.inputWrapper}>
-              <FormField name="title" required>
-                <Text size="xlarge" className={style.label}>Event Title</Text>
-                <TextInput value={data.title} name="title" className={style.letterCount} maxLength="50" onChange={changeHandler('title')} />
-                <div className={style.letterLabel}>{`${data?.title?.length}/50`}</div>
-              </FormField>
-            </Box>
-
-            {data.type === STREAM && (
-              <Box direction="column" width="calc(50% - 10px)" margin={{ left: '10px' }}>
-                <Text size="xlarge" className={style.label}>Camera</Text>
-                <FormField name="select-camera" required className={style.selectContainer}>
+                <FormField name="select-singleEvent" required className={style.selectContainer}>
                   <Select
                     labelKey="label"
                     valueKey={{ key: 'value', reduce: true }}
-                    value={data.camera || undefined}
-                    options={habitatCameras.map(
-                      ({ _id, cameraName }) => ({label: cameraName, value: _id}),
-                    )}
-                    onChange={changeHandler('camera')}
-                    name="select-camera"
-                    placeholder="Select Camera"
-                    disabled={isEdit && data.singleEvent === ''}
+                    value={data.singleEvent}
+                    options={[
+                      { label: '', value: ''},
+                      { label: 'Single Event', value: 'true'},
+                      { label: 'All Events', value: 'false'},
+                    ]}
+                    onChange={changeHandler('singleEvent')}
+                    name="select-singleEvent"
+                    placeholder="Select Event"
+                  />
+                </FormField>
+              </Box>
+            )}
+            {/* eslint-disable-next-line no-underscore-dangle */}
+            {!isEdit && (
+              <Box direction="column" width="calc(50% - 10px)">
+                <Text size="xlarge" className={classnames(style.label, style.eventType)}>Event Type:</Text>
+                <FormField name="select-type" required className={style.selectContainer}>
+                  <Select
+                    labelKey="label"
+                    valueKey={{ key: 'value', reduce: true }}
+                    value={data.type || undefined}
+                    options={[
+                      { label: 'Talk', value: TALK},
+                      { label: 'Stream', value: STREAM},
+                    ]}
+                    onChange={changeHandler('type')}
+                    name="select-type"
+                    placeholder="Select type"
                   />
                 </FormField>
               </Box>
             )}
 
-            {data.type === TALK && (
-              <Box direction="column" width="calc(50% - 10px)" margin={{ left: '10px' }} className={style.inputWrapper}>
-                <FormField name="email" required>
-                  <Text size="xlarge" className={style.label}>Host Email</Text>
-                  <TextInput
-                    type="email"
-                    name="email"
-                    value={data.hostEmail}
-                    onChange={changeHandler('hostEmail')}
-                    onSuggestionSelect={onHostSuggestionClick}
-                    suggestions={hosts}
-                  />
-                  {data.hostEmail.length > 0 && <div className={style.error}>Invalid Email</div>}
+            <Box direction="row">
+              <Box direction="column" width="calc(50% - 10px)" margin={{ right: '10px' }} className={style.inputWrapper}>
+                <FormField name="title" required>
+                  <Text size="xlarge" className={style.label}>Event Title</Text>
+                  <TextInput value={data.title} name="title" className={style.letterCount} maxLength="50" onChange={changeHandler('title')} />
+                  <div className={style.letterLabel}>{`${data?.title?.length}/50`}</div>
                 </FormField>
               </Box>
-            )}
-          </Box>
-        </Box>
 
-        {data.type === TALK && (
-          <Box direction="column" className={style.inputWrapper}>
-            <Text size="xlarge" className={style.label}>Description</Text>
-            <textarea rows="3" value={data.description} onChange={changeHandler('description')} />
-          </Box>
-        )}
-
-        <Box direction="column" className={style.inputWrapper}>
-          <Text size="xlarge" className={style.label}>Time</Text>
-          {timezone !== currentTimezone && (
-            <Text margin={{ vertical: 'small' }}>
-              Time below is in
-              {' '}
-              {timezone}
-              {', '}
-              the local timezone of the habitat.
-            </Text>
-          )}
-          <Box direction="row" alignContent="center">
-            <Box flex={{ grow: 1 }}>
-              <input
-                type="time"
-                value={`${data.hour <= 9 ? '0' : ''}${data.hour}:${data.minute <= 9 ? '0' : ''}${data.minute}`}
-                onChange={changeHandler(null, 'time')} required
-              />
-            </Box>
-            <Text size="xlarge" alignSelf="center">
-              <Box margin={{ horizontal: '13px' }}>for</Box>
-            </Text>
-            <Box flex={{ grow: 1 }} width="30%" className={style.selectContainer}>
-              <Select
-                classname={style.select}
-                labelKey="label"
-                valueKey={{ key: 'value', reduce: true }}
-                value={getDuration(data.durationMs)[0] || 0}
-                options={new Array(24).fill(null).map((item, index) => (
-                  { label: `${index} hour${index !== 1 ? 's' : ''}`, value: index}
-                ))}
-                onChange={changeHandler(null, 'durationH')}
-              />
-            </Box>
-            &nbsp;
-            &nbsp;
-            <Box flex={{ grow: 1 }} width="30%" className={style.selectContainer}>
-              <Select
-                classname={style.select}
-                labelKey="label"
-                valueKey={{ key: 'value', reduce: true }}
-                value={getDuration(data.durationMs)[1] || 0}
-                options={new Array(59).fill(null).map((item, index) => {
-                  if (index % 5 === 0 ) {
-                    return { label: `${index} minute${index !== 1 ? 's' : ''}`, value: index}
-                  }
-                  return null;
-                }).filter((item) => item !== null)}
-                onChange={changeHandler(null, 'durationM')}
-              />
-            </Box>
-          </Box>
-          {data.singleEvent === 'false' && (
-            <Box direction="column">
-              <Text size="xlarge" className={style.label}>Frequency</Text>
-              <Box direction="row">
-                <Box direction="column" className={style.frequency}>
-                  <RadioButton
-                    checked={data.frequency === REPEATS}
-                    label={REPEATS}
-                    value={REPEATS}
-                    name="frequency"
-                    onChange={changeHandler('frequency', 'CheckBox')}
-                  />
-                  <br />
-                  <RadioButton
-                    checked={data.frequency === ONE_TIME_EVENT}
-                    label={ONE_TIME_EVENT}
-                    value={ONE_TIME_EVENT}
-                    name="frequency"
-                    onChange={changeHandler('frequency', 'CheckBox')}
-                  />
-                </Box>
-                <Box>
-                  {data.frequency === REPEATS && (
-                    <CheckBoxGroup
-                      value={get(data, 'days')}
-                      options={[
-                        { label: 'Monday', value: 'MO' },
-                        { label: 'Tuesday', value: 'TU' },
-                        { label: 'Wednesday', value: 'WE' },
-                        { label: 'Thursday', value: 'TH' },
-                        { label: 'Friday', value: 'FR' },
-                        { label: 'Saturday', value: 'SA' },
-                        { label: 'Sunday', value: 'SU' },
-                      ]}
-                      onChange={changeHandler('days', 'CheckBoxGroup')}
+              {data.type === STREAM && (
+                <Box direction="column" width="calc(50% - 10px)" margin={{ left: '10px' }}>
+                  <Text size="xlarge" className={style.label}>Camera</Text>
+                  <FormField name="select-camera" required className={style.selectContainer}>
+                    <Select
+                      labelKey="label"
+                      valueKey={{ key: 'value', reduce: true }}
+                      value={data.camera || undefined}
+                      options={habitatCameras.map(
+                        ({ _id, cameraName }) => ({label: cameraName, value: _id}),
+                      )}
+                      onChange={changeHandler('camera')}
+                      name="select-camera"
+                      placeholder="Select Camera"
+                      disabled={isEdit && data.singleEvent === ''}
                     />
-                  )}
-                  {data.frequency === ONE_TIME_EVENT && (
-                    <Grommet theme={{ global: { ...grommetTheme.global }}}>
-                      <DateInput
-                        className={style.dateInput}
-                        format="mm/dd/yyyy"
-                        value={data.date
-                          ? removeTimezoneDifference(data.date)
-                          : new Date().toString()}
-                        onChange={changeHandler('date', 'DateInput')}
-                        readOnly
-                      />
-                    </Grommet>
-                  )}
+                  </FormField>
                 </Box>
-              </Box>
+              )}
+
+              {data.type === TALK && (
+                <Box direction="column" width="calc(50% - 10px)" margin={{ left: '10px' }} className={style.inputWrapper}>
+                  <FormField name="email" required>
+                    <Text size="xlarge" className={style.label}>Host Email</Text>
+                    <TextInput
+                      type="email"
+                      name="email"
+                      value={data.hostEmail}
+                      onChange={changeHandler('hostEmail')}
+                      onSuggestionSelect={onHostSuggestionClick}
+                      suggestions={hosts}
+                    />
+                    {data.hostEmail.length > 0 && <div className={style.error}>Invalid Email</div>}
+                  </FormField>
+                </Box>
+              )}
+            </Box>
+          </Box>
+
+          {data.type === TALK && (
+            <Box direction="column" className={style.inputWrapper}>
+              <Text size="xlarge" className={style.label}>Description</Text>
+              <textarea rows="3" value={data.description} onChange={changeHandler('description')} />
             </Box>
           )}
-        </Box>
-      </div>
-      {error && (
-        <Box className={style.formSubmissionError}>
-          {error}
-        </Box>
-      )}
-      <Box direction="row" justify="end" margin={{ top: '38px' }} pad={{ right: '20px', left: '40px' }}>
-        {isEdit && (
-          <OutlineButton
-            label="Delete"
-            onClick={() => showDeleteEventModalAction(true, data.singleEvent === 'false', scheduleData.date)}
-            margin={{ right: '20px' }}
-            disabled={isEdit && data.singleEvent === ''}
-          />
+
+          <Box direction="column" className={style.inputWrapper}>
+            <Text size="xlarge" className={style.label}>Time</Text>
+            {timezone !== currentTimezone && (
+              <Text margin={{ vertical: 'small' }}>
+                Time below is in
+                {' '}
+                {timezone}
+                {', '}
+                the local timezone of the habitat.
+              </Text>
+            )}
+            <Box direction="row" alignContent="center">
+              <Box flex={{ grow: 1 }}>
+                <input
+                  type="time"
+                  value={`${data.hour <= 9 ? '0' : ''}${data.hour}:${data.minute <= 9 ? '0' : ''}${data.minute}`}
+                  onChange={changeHandler(null, 'time')} required
+                />
+              </Box>
+              <Text size="xlarge" alignSelf="center">
+                <Box margin={{ horizontal: '13px' }}>for</Box>
+              </Text>
+              <Box flex={{ grow: 1 }} width="30%" className={style.selectContainer}>
+                <Select
+                  classname={style.select}
+                  labelKey="label"
+                  valueKey={{ key: 'value', reduce: true }}
+                  value={getDuration(data.durationMs)[0] || 0}
+                  options={new Array(24).fill(null).map((item, index) => (
+                    { label: `${index} hour${index !== 1 ? 's' : ''}`, value: index}
+                  ))}
+                  onChange={changeHandler(null, 'durationH')}
+                />
+              </Box>
+              &nbsp;
+              &nbsp;
+              <Box flex={{ grow: 1 }} width="30%" className={style.selectContainer}>
+                <Select
+                  classname={style.select}
+                  labelKey="label"
+                  valueKey={{ key: 'value', reduce: true }}
+                  value={getDuration(data.durationMs)[1] || 0}
+                  options={new Array(59).fill(null).map((item, index) => {
+                    if (index % 5 === 0 ) {
+                      return { label: `${index} minute${index !== 1 ? 's' : ''}`, value: index}
+                    }
+                    return null;
+                  }).filter((item) => item !== null)}
+                  onChange={changeHandler(null, 'durationM')}
+                />
+              </Box>
+            </Box>
+            {data.singleEvent === 'false' && (
+              <Box direction="column">
+                <Text size="xlarge" className={style.label}>Frequency</Text>
+                <Box direction="row">
+                  <Box direction="column" className={style.frequency}>
+                    <RadioButton
+                      checked={data.frequency === REPEATS}
+                      label={REPEATS}
+                      value={REPEATS}
+                      name="frequency"
+                      onChange={changeHandler('frequency', 'CheckBox')}
+                    />
+                    <br />
+                    <RadioButton
+                      checked={data.frequency === ONE_TIME_EVENT}
+                      label={ONE_TIME_EVENT}
+                      value={ONE_TIME_EVENT}
+                      name="frequency"
+                      onChange={changeHandler('frequency', 'CheckBox')}
+                    />
+                  </Box>
+                  <Box>
+                    {data.frequency === REPEATS && (
+                      <CheckBoxGroup
+                        value={get(data, 'days')}
+                        options={[
+                          { label: 'Monday', value: 'MO' },
+                          { label: 'Tuesday', value: 'TU' },
+                          { label: 'Wednesday', value: 'WE' },
+                          { label: 'Thursday', value: 'TH' },
+                          { label: 'Friday', value: 'FR' },
+                          { label: 'Saturday', value: 'SA' },
+                          { label: 'Sunday', value: 'SU' },
+                        ]}
+                        onChange={changeHandler('days', 'CheckBoxGroup')}
+                      />
+                    )}
+                    {data.frequency === ONE_TIME_EVENT && (
+                      <Grommet theme={{ global: { ...grommetTheme.global }}}>
+                        <DateInput
+                          className={style.dateInput}
+                          format="mm/dd/yyyy"
+                          value={data.date
+                            ? removeTimezoneDifference(data.date)
+                            : new Date().toString()}
+                          onChange={changeHandler('date', 'DateInput')}
+                          readOnly
+                        />
+                      </Grommet>
+                    )}
+                  </Box>
+                </Box>
+              </Box>
+            )}
+          </Box>
+        </div>
+        {error && (
+          <Box className={style.formSubmissionError}>
+            {error}
+          </Box>
         )}
-        <PrimaryButton loading={loading} type="submit" label="Publish" disabled={isEdit && data.singleEvent === ''} />
-      </Box>
-    </Form>
+        <Box direction="row" justify="end" margin={{ top: '38px' }} pad={{ right: '20px', left: '40px' }}>
+          {isEdit && (
+            <OutlineButton
+              label="Delete"
+              onClick={() => showDeleteEventModalAction(true, data.singleEvent === 'false', scheduleData.date)}
+              margin={{ right: '20px' }}
+              disabled={isEdit && data.singleEvent === ''}
+            />
+          )}
+          <PrimaryButton loading={loading} type="submit" label="Publish" disabled={isEdit && data.singleEvent === ''} />
+        </Box>
+      </Form>
+    </Grommet>
   )
 };
 

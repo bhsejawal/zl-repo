@@ -263,10 +263,4 @@ export default {
       },
     },
   },
-  formField: {
-    margin: 'none',
-    border: {
-      color: 'white',
-    },
-  },
 };
