@@ -67,6 +67,7 @@
 
   .selectContainer button {
     border: 2px solid #CDCDCD;
+    border-radius: 0;
 
     > div {
       border: 0;
@@ -108,12 +109,12 @@
 
   input.letterCount {
     padding-right: 45px;
+  }
 
-    & + div {
-      position: absolute;
-      bottom: 5px;
-      right: 5px;
-    }
+  .letterLabel {
+    position: absolute;
+    bottom: 5px;
+    right: 5px;
   }
 }
 

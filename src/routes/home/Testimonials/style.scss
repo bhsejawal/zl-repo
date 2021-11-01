@@ -33,7 +33,7 @@
 
 .carousel {
   max-width: 1174px;
-  margin: 40px auto 80px;
+  margin: 40px auto 40px;
   position: relative;
   padding-bottom: 40px;
 }
@@ -41,7 +41,7 @@
 .testimonials {
   background-image: url("https://assets.zoolife.tv/landing/s6_background.jpg");
   background-size: cover;
-  padding-top: 40px;
+  padding-top: 100px;
 
   > h2 {
     text-align: center;
@@ -75,7 +75,7 @@
   }
 
   button {
-    margin: 50px 0 210px 0;
+    margin: 50px 0 100px 0;
     position: relative;
     z-index: 1;
   }

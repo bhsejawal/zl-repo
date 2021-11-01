@@ -18,28 +18,20 @@ import { getTimeString } from 'Components/RangeInput/helper';
 import { PrimaryButton } from 'Components/Buttons';
 import { setShareModalData } from 'Components/ShareModal/actions';
 import { API_BASE_URL } from 'Shared/fetch';
-import LoadingContent from './LoadingContent';
 
 import style from './style.scss';
 
 const TrimVideoModal = ({
+  videoData,
   onClose,
   streamId,
   habitatId,
   slug,
   setShareModalDataAction,
 }) => {
-  const [videoData, setVideoData] = useState({});
   const [showError, setShowError] = useState(false);
   const [range, setRange] = useState([0, 30]);
   const [title, setTitle] = useState('');
-
-  const { data, error, post } = useFetch(API_BASE_URL, {
-    credentials: 'include',
-    cachePolicy: 'no-cache',
-    headers: { 'Content-Type': 'application/json' },
-    timeout: 300000,
-  });
 
   const {
     data: trimData,
@@ -52,28 +44,6 @@ const TrimVideoModal = ({
     headers: { 'Content-Type': 'application/json' },
     timeout: 300000,
   });
-
-  useEffect(() => {
-    post('/videos/clip', { streamId });
-  }, [post, streamId]);
-
-  useEffect(() => {
-    if (data?.videoURL && data?.duration) {
-      setVideoData(data);
-    }
-
-    if (error) {
-      console.error('Error While requesting stream clip', error);
-      logGAEvent(
-        'error',
-        'creating-clip',
-        slug,
-      )
-
-      setShowError(true);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [data, error]);
 
   useEffect(() => {
     if (trimData?.video) {
@@ -101,7 +71,7 @@ const TrimVideoModal = ({
       const [min, max] = range;
 
       trimPost('/videos/trim', {
-        videoURL: data.videoURL,
+        videoURL: videoData.videoURL,
         startTime: getTimeString(min),
         endTime: getTimeString(max),
         streamId,
@@ -121,11 +91,7 @@ const TrimVideoModal = ({
     <Layer position="center" onClickOutside={onClose}>
       <CloseButton onClick={onClose} className={style.close} />
       <Box width="960px">
-        {isEmpty(videoData) && (
-          <Box pad="24px"><LoadingContent /></Box>
-        )}
-
-        {!isEmpty(videoData) && isEmpty(trimData) && (
+        {isEmpty(trimData) && (
           <Box className={style.contentContainer}>
             <Box className={style.leftSection}>
               <div className={style.videoWrapper}>

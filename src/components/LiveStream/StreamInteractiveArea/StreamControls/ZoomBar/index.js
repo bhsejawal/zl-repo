@@ -7,13 +7,15 @@ import {
 } from 'preact/hooks';
 import { connect } from 'react-redux';
 import classnames from 'classnames';
+import { Tip } from 'grommet';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus, faMinus } from '@fortawesome/pro-light-svg-icons';
 import { faSpinner } from '@fortawesome/pro-duotone-svg-icons';
 
+import TipContent from 'Components/Tooltip';
 import { GlobalsContext } from 'Shared/context';
-import { getConfig } from '../../../../../helpers';
 
+import { getConfig } from '../../../../../helpers';
 import style from './style.scss';
 
 const initialZoomState = {
@@ -69,7 +71,6 @@ const ZoomBar = ({
     setZoomInfo({ currentZoom, isLoading: true, requestedZoom });
     setTimeout(() => setIsLoading(false), getConfig(configs, 'ptu.votingTime')?.configValue);
   }, [habitatId, userId, socket, configs]);
-
   return (
     <div
       ref={wrapperRef}
@@ -78,14 +79,20 @@ const ZoomBar = ({
       <div className={classnames(style.zoomWrapperInner, { [style.horizontal]: horizontal })}>
         <div className={style.paddingWrapper}>
           {/* eslint-disable-next-line */}
-          <div
-            className={classnames(style.iconWrapper, {
-              [style.disabled]: isLoading || zoomInfo.currentZoom === 100,
-            })}
-            onClick={() => onClick(zoomInfo.currentZoom + 20, zoomInfo.currentZoom)}
+          <Tip
+            dropProps={{ align: { left: 'right' } }}
+            content={<TipContent message="Zoom In" />}
+            plain
           >
-            <FontAwesomeIcon icon={faPlus} />
-          </div>
+            <div
+              className={classnames(style.iconWrapper, {
+                [style.disabled]: isLoading || zoomInfo.currentZoom === 100,
+              })}
+              onClick={() => onClick(zoomInfo.currentZoom + 20, zoomInfo.currentZoom)}
+            >
+              <FontAwesomeIcon icon={faPlus} />
+            </div>
+          </Tip>
         </div>
         <div className={classnames({ [style.horizontalDots]: horizontal })}>
           <div
@@ -94,32 +101,45 @@ const ZoomBar = ({
           >
             {ZOOM_LEVELS.map((zLvl) => (
               // eslint-disable-next-line
-              <div
-                className={classnames(style.dotWrapper, {
-                  [style.active]: zoomInfo.currentZoom === zLvl || zoomInfo.requestedZoom === zLvl,
-                  [style.disabled]: isLoading && zoomInfo.requestedZoom !== zLvl,
-                })}
-                onClick={() => onClick(zLvl, zoomInfo.currentZoom)}
+              <Tip
+                dropProps={{ align: { left: 'right' } }}
+                content={<TipContent message="Zoom Controls" />}
+                plain
               >
-                <span key={zLvl} className={style.dot} />
-                {zoomInfo.requestedZoom === zLvl && isLoading && (
-                  <div className={style.loader}>
-                    <FontAwesomeIcon icon={faSpinner} spin />
-                  </div>
-                )}
-              </div>
+                <div
+                  className={classnames(style.dotWrapper, {
+                    // eslint-disable-next-line max-len
+                    [style.active]: zoomInfo.currentZoom === zLvl || zoomInfo.requestedZoom === zLvl,
+                    [style.disabled]: isLoading && zoomInfo.requestedZoom !== zLvl,
+                  })}
+                  onClick={() => onClick(zLvl, zoomInfo.currentZoom)}
+                >
+                  <span key={zLvl} className={style.dot} />
+                  {zoomInfo.requestedZoom === zLvl && isLoading && (
+                    <div className={style.loader}>
+                      <FontAwesomeIcon icon={faSpinner} spin />
+                    </div>
+                  )}
+                </div>
+              </Tip>
             ))}
           </div>
         </div>
         {/* eslint-disable-next-line */}
-        <div
-          className={classnames(style.iconWrapper, style.paddingWrapper, {
-            [style.disabled]: zoomInfo.currentZoom === 0 || isLoading,
-          })}
-          onClick={() => onClick(zoomInfo.currentZoom - 20, zoomInfo.currentZoom)}
+        <Tip
+          dropProps={{ align: { left: 'right' } }}
+          content={<TipContent message="Zoom Out" />}
+          plain
         >
-          <FontAwesomeIcon icon={faMinus} />
-        </div>
+          <div
+            className={classnames(style.iconWrapper, style.paddingWrapper, {
+              [style.disabled]: zoomInfo.currentZoom === 0 || isLoading,
+            })}
+            onClick={() => onClick(zoomInfo.currentZoom - 20, zoomInfo.currentZoom)}
+          >
+            <FontAwesomeIcon icon={faMinus} />
+          </div>
+        </Tip>
       </div>
     </div>
   );
