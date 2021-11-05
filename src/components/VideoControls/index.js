@@ -60,7 +60,7 @@ const customThemeRangeInputSeekbar = {
       height: '6px',
       extend: () => `border-radius: 10px`,
       lower: {
-        color: '#122717',
+        color: '#2E2D2D',
         opacity: 0.7,
       },
       upper: {
@@ -69,7 +69,7 @@ const customThemeRangeInputSeekbar = {
       },
     },
     thumb: {
-      color: '#122717',
+      color: '#2E2D2D',
     },
   },
 };
@@ -190,7 +190,7 @@ const VideoControls = forwardRef(({
           <RoundButton
           onClick={togglePlay}
           width="28"
-          backgroundColor="var(--hunterGreenMediumDark)"
+          backgroundColor="var(--charcoal)"
           color="white"
           loading={isLoading}
           >
@@ -210,7 +210,7 @@ const VideoControls = forwardRef(({
             <RoundButton
               onClick={toggleMute}
               width="28"
-              backgroundColor="var(--hunterGreenMediumDark)"
+              backgroundColor="var(--charcoal)"
               color="white"
             >
               <FontAwesomeIcon icon={isMuted ? faVolumeMute : faVolume} />
@@ -238,7 +238,7 @@ const VideoControls = forwardRef(({
           <RoundButton
           onClick={togglePictureInPicture}
           width="28"
-          backgroundColor="var(--hunterGreenMediumDark)"
+          backgroundColor="var(--charcoal)"
           color="white"
 
           >
@@ -250,7 +250,7 @@ const VideoControls = forwardRef(({
           <RoundButton
             onClick={openFullscreen}
             width="28"
-            backgroundColor="var(--hunterGreenMediumDark)"
+            backgroundColor="var(--charcoal)"
             color="white"
           >
             <FontAwesomeIcon icon={faExpand} />
