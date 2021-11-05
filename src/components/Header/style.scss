@@ -32,9 +32,14 @@
 }
 
 div.searchContainer {
-  margin: 0 22px;
-  width: unquote("min(calc(100vw - 200px), 290px)");
   padding: 0 8px;
+  width: unquote("min(calc(100vw - 200px), 290px)");
+  margin: 0 22px;
+  
+  @media screen and (max-width: 414px) {
+    width: auto;
+    margin: 0;
+  }
 }
 
 .navBar {
