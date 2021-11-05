@@ -2,7 +2,6 @@ import { h } from 'preact';
 import { useCallback, useEffect, useRef } from 'preact/hooks';
 import { connect } from 'react-redux';
 import { logGAEvent } from 'Shared/ga';
-import { hasPermission } from 'Components/Authorize';
 import List from 'Components/List';
 
 import { setActiveTab } from '../actions';
@@ -32,6 +31,7 @@ import style from './style.scss';
 const Tabs = ({
   activeTab,
   habitatId,
+  role,
   setActiveTabAction,
 }) => {
   const listRef = useRef();
@@ -88,17 +88,6 @@ const Tabs = ({
           icon={QuestionsIcon}
         />
 
-        {hasPermission('habitat:edit-schedule') && (
-          <Tab
-            active={activeTab === CALENDAR}
-            title="Calendar"
-            description="See when this habitat is online and event times"
-            onClick={onClick(CALENDAR)}
-            color="#C9D341"
-            icon={CalendarIcon}
-          />
-        )}
-
         <Tab
           active={activeTab === SCHEDULES}
           title="Schedules"
@@ -125,6 +114,17 @@ const Tabs = ({
           color="#418589"
           icon={QuizIcon}
         />
+
+        {role === 'admin' && (
+          <Tab
+            active={activeTab === CALENDAR}
+            title="Calendar"
+            description="See when this habitat is online and event times"
+            onClick={onClick(CALENDAR)}
+            color="#C9D341"
+            icon={CalendarIcon}
+          />
+        )}
       </List>
     </div>
   );
@@ -132,7 +132,9 @@ const Tabs = ({
 
 export default connect(({
   habitat: { habitatInfo: { _id: habitatId }, cards: { activeTab } },
+  user: { role },
 }) => ({
   habitatId,
   activeTab,
+  role,
 }), { setActiveTabAction: setActiveTab })(Tabs);

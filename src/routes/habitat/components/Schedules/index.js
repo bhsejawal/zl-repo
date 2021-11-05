@@ -16,7 +16,12 @@ const SchedulesTab = ({ habitatId, showAddEventModalAction }) => {
   const [date, setDate] = useState();
 
   useEffect(() => {
-    setDate(new Date());
+    const dateObj = new Date();
+    dateObj.setHours(0);
+    dateObj.setMinutes(0);
+    dateObj.setSeconds(0);
+    dateObj.setMilliseconds(0);
+    setDate(dateObj);
   }, [habitatId]);
 
   const onChange = (value) => {

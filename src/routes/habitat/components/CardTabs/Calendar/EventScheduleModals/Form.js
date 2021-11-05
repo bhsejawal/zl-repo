@@ -41,7 +41,7 @@ const getDuration = (ms) => {
 }
 
 const defaultData = {
-  type: '',
+  type: STREAM,
   title: '',
   hostEmail: '',
   description: '',
@@ -52,7 +52,7 @@ const defaultData = {
   date: new Date().toISOString(),
   // NEW
   frequency: REPEATS,
-  singleEvent: '',
+  singleEvent: 'false',
 };
 
 const removeTimezoneDifference = (date) => {
@@ -132,11 +132,12 @@ const EventForm = ({
 
     try {
       setLoading(true);
-      data.singleEvent = data.singleEvent === 'true';
+      const singleEvent = data.singleEvent === 'true';
       await onSubmit({
         ...omit(data, 'frequency'),
-        days: data.frequency === REPEATS && !data.singleEvent ? data.days : [],
-        date: data.frequency === ONE_TIME_EVENT || data.singleEvent ? data.date : null,
+        days: data.frequency === REPEATS && !singleEvent ? data.days : [],
+        date: data.frequency === ONE_TIME_EVENT || singleEvent ? data.date : null,
+        singleEvent,
       });
     } catch (err) {
       setError(err.message);
@@ -205,7 +206,6 @@ const EventForm = ({
                     valueKey={{ key: 'value', reduce: true }}
                     value={data.singleEvent}
                     options={[
-                      { label: '', value: ''},
                       { label: 'Single Event', value: 'true'},
                       { label: 'All Events', value: 'false'},
                     ]}
@@ -411,10 +411,10 @@ const EventForm = ({
               label="Delete"
               onClick={() => showDeleteEventModalAction(true, data.singleEvent === 'false', scheduleData.date)}
               margin={{ right: '20px' }}
-              disabled={isEdit && data.singleEvent === ''}
+              disabled={isEdit && !data.date && data.singleEvent === ''}
             />
           )}
-          <PrimaryButton loading={loading} type="submit" label="Publish" disabled={isEdit && data.singleEvent === ''} />
+          <PrimaryButton loading={loading} type="submit" label="Publish" disabled={isEdit && !data.date && data.singleEvent === ''} />
         </Box>
       </Form>
     </Grommet>
