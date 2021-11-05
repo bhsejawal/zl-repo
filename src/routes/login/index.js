@@ -142,7 +142,7 @@ const Login = ({
     <Box fill width={{ max: "var(--maxWidth)", min: "350px" }} height={{ min: 'max-content' }} margin={{ horizontal: 'auto'}}>
       <Layout>
         <Box direction="row" align="center" height="auto">
-          <Heading level="2">Try zoolife free.</Heading>
+          <Heading level="2">Welcome back to Zoolife.</Heading>
         </Box>
         <Box fill="horizontal" margin={{ top: 'medium' }}>
           <form onSubmit={onSubmit}>

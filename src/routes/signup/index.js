@@ -99,8 +99,13 @@ const Signup = ({
       return;
     }
 
+    if (!password.length) {
+      setPasswordError('Password is required');
+      return;
+    }
+
     if (!password.match(passwordRegex)) {
-      setPasswordError('Invalid password');
+      setPasswordError('8+ characters with at least 1 number');
       return;
     }
 
@@ -139,7 +144,7 @@ const Signup = ({
       } else if (emailError) {
         setEmailError(error);
       } else if (error) {
-        setServerError(error); // recheck
+        setServerError(error);
       } else if (user) {
         logPageViewGA('/signed-up', false, false);
         if (typeof window !== 'undefined' && window.fbq) {
@@ -227,6 +232,9 @@ const Signup = ({
                 <button type="button" onClick={() => setShowPassword(!showPassword)}>
                   <FontAwesomeIcon icon={showPassword ? faEye : faEyeSlash } />
                 </button>
+              </div>
+              <div className={classnames(style.errorSection, style.active)}>
+                {passwordError || serverError}
               </div>
             </div>
             <Box margin={{ top: 'medium' }} className={classnames({ error: termsError })}>

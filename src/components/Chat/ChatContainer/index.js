@@ -160,7 +160,7 @@ const ChatContainer = ({
     <>
       {showHeader && (
         <div className={style.chatHeader}>
-          <span>Community Chat</span>
+          <span>Comments</span>
           <ViewersCount plain />
         </div>
       )}
