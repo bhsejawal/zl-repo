@@ -206,6 +206,7 @@ const Signup = ({
                   value={email}
                   onChange={onEmailChange}
                   className={classnames({[style.errorBorder]: emailError})}
+                  style={{ fontSize: (!email ? '11px' : '20px') }}
                 />
               </div>
               <div className={classnames(style.errorSection, {[style.active]: emailError})}>
@@ -221,18 +222,11 @@ const Signup = ({
                   placeholder="8+ characters with at least 1 number"
                   value={password}
                   onChange={onPasswordChange}
-                  style={{ fontSize: (!password ? '14px' : '20px') }}
+                  style={{ fontSize: (!password ? '11px' : '20px') }}
                 />
                 <button type="button" onClick={() => setShowPassword(!showPassword)}>
                   <FontAwesomeIcon icon={showPassword ? faEye : faEyeSlash } />
                 </button>
-              </div>
-              <div
-                className={classnames(style.errorSection, {
-                  [style.active]: passwordError || serverError,
-                })}
-              >
-                {serverError || 'Use a minimum of 8 characters with at least 1 number and 1 character'}
               </div>
             </div>
             <Box margin={{ top: 'medium' }} className={classnames({ error: termsError })}>

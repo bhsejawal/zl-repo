@@ -137,10 +137,10 @@ const PlanCard = ({
               )}
               {showDetailsModal && (
                 <Box
-                  pad="xsmall"
+                  pad="3px"
                   justify="center"
                   align="center"
-                  margin={{ top: '11px'}}
+                  margin={{ top: '0px'}}
                   onClick={openDetailsModalHandler}
                 >
                   <Text

@@ -155,6 +155,7 @@ const Login = ({
                   placeholder="Email"
                   value={email}
                   onChange={onUsernameChange}
+                  style={{ fontSize: (!email ? '11px' : '20px') }}
                 />
               </div>
               <div className={classnames(style.errorSection, {[style.active]: emailError})}>
@@ -170,6 +171,7 @@ const Login = ({
                   placeholder="Password"
                   value={password}
                   onChange={onPasswordChange}
+                  style={{ fontSize: (!password ? '11px' : '20px') }}
                 />
                 <button type="button" onClick={() => setShowPassword(!showPassword)}>
                   <FontAwesomeIcon icon={showPassword ? faEye : faEyeSlash } />
