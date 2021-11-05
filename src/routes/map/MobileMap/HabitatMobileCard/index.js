@@ -75,7 +75,7 @@ const HabitatMobileCard = ({
                 label={(
                   <Box direction="row" justify="center" align="center">
                     <FontAwesomeIcon icon={faLockAlt} color="#2E2D2D" size="1x" />
-                    <Text className={style.buttonText}>Unlock all Habitats</Text>
+                    <Text className={style.buttonText}>Unlock</Text>
                   </Box>
                 )}
                 size="large"

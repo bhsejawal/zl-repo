@@ -163,15 +163,6 @@ const HabitatCard = ({
               />
             </Link>
           )}
-          {!isLocked && trailer && (
-            <OutlineButton
-              label="Trailer"
-              height="45px"
-              style={{ minWidth: '126px', width: '126px' }}
-              width="126px"
-              onClick={() => onShowTrailer(trailer)}
-            />
-          )}
           {isLocked && (
             <Link href={encodeURI(`/plans`)}>
               <Button
@@ -179,13 +170,22 @@ const HabitatCard = ({
                 label={(
                   <Box direction="row" justify="center" align="center">
                     <FontAwesomeIcon icon={faLockAlt} color="#2E2D2D" size="1x" />
-                    <Text className={style.buttonText}>Unlock all Habitats</Text>
+                    <Text className={style.buttonText}>Unlock</Text>
                   </Box>
                 )}
                 size="large"
                 className={style.lockButton}
               />
             </Link>
+          )}
+          {trailer && (
+            <OutlineButton
+              label="Trailer"
+              height="45px"
+              style={{ minWidth: '126px', width: '126px' }}
+              width="126px"
+              onClick={() => onShowTrailer(trailer)}
+            />
           )}
         </Box>
       </div>
