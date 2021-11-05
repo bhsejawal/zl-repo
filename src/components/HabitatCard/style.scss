@@ -35,15 +35,17 @@
 .lockButton {
   justify-content: center;
   align-items: center;
-  padding: 11px !important;
+  height: 45px;
+  min-width: 126px;
 
   svg {
-    font-size: 9px !important;
+    font-size: 16px !important;
     margin-right: 5px;
   }
 
   .buttonText {
     color: #2E2D2D;
+    font-size: 16px;
   }
 }
 

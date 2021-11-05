@@ -109,6 +109,7 @@ const PasswordResetModal = ({
                 value={email}
                 onChange={onEmailChange}
                 className={classnames({[style.errorBorder]: hasError})}
+                style={{ fontSize: (!email ? '11px' : '20px') }}
               />
             </Box>
             <div className={classnames(style.errorSection, {

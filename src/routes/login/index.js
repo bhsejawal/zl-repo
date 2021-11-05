@@ -142,7 +142,7 @@ const Login = ({
     <Box fill width={{ max: "var(--maxWidth)", min: "350px" }} height={{ min: 'max-content' }} margin={{ horizontal: 'auto'}}>
       <Layout>
         <Box direction="row" align="center" height="auto">
-          <Heading level="2">Try zoolife free.</Heading>
+          <Heading level="2">Welcome back to Zoolife.</Heading>
         </Box>
         <Box fill="horizontal" margin={{ top: 'medium' }}>
           <form onSubmit={onSubmit}>
@@ -155,6 +155,7 @@ const Login = ({
                   placeholder="Email"
                   value={email}
                   onChange={onUsernameChange}
+                  style={{ fontSize: (!email ? '11px' : '20px') }}
                 />
               </div>
               <div className={classnames(style.errorSection, {[style.active]: emailError})}>
@@ -170,6 +171,7 @@ const Login = ({
                   placeholder="Password"
                   value={password}
                   onChange={onPasswordChange}
+                  style={{ fontSize: (!password ? '11px' : '20px') }}
                 />
                 <button type="button" onClick={() => setShowPassword(!showPassword)}>
                   <FontAwesomeIcon icon={showPassword ? faEye : faEyeSlash } />

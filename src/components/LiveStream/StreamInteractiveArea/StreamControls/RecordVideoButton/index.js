@@ -58,6 +58,7 @@ const RecordVideoButton = ({
   }, [data, error]);
 
   const onClickHandler = () => {
+    setVideoData({});
     setShowModal(true);
     setClipButtonClickedAction(true);
   };

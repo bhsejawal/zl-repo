@@ -1,6 +1,7 @@
-import { useEffect, useState, useCallback } from 'preact/hooks';
+import { useEffect, useState } from 'preact/hooks';
 import { endOfDay, startOfDay } from 'date-fns';
 import { connect } from 'react-redux';
+import { isArray } from 'lodash-es';
 import useFetch from 'use-http'
 
 import Loader from 'Components/Loader';
@@ -9,7 +10,7 @@ import Dialog from 'Components/modals/Dialog';
 import ErrorModal from 'Components/modals/Error';
 import SuccessModal from 'Components/modals/Success';
 import TalkSchedule from 'Components/ScheduleEvents/LiveTalk';
-import { buildURL } from 'Shared/fetch';
+import { API_BASE_URL } from 'Shared/fetch';
 
 import Accordion from '../../../../account/Accordion';
 import { setLiveTalks } from '../actions';
@@ -25,15 +26,15 @@ const LiveTalks = ({
 }) => {
   const {
     get,
-    response,
     loading,
-  } = useFetch(buildURL('/livetalks/schedule'), { credentials: 'include', cachePolicy: 'no-cache' });
+    error,
+  } = useFetch(API_BASE_URL, { credentials: 'include', cachePolicy: 'no-cache' });
 
   const {
     post,
     response: reminderResponse,
     loading: sendingReminder,
-  } = useFetch(buildURL(), { credentials: 'include', cachePolicy: 'no-cache' });
+  } = useFetch(API_BASE_URL, { credentials: 'include', cachePolicy: 'no-cache' });
 
   const [showDialog, setShowDialog] = useState(false);
   const [showErrorModal, setShowErrorModal] = useState(false);
@@ -55,20 +56,23 @@ const LiveTalks = ({
     }
   }
 
-  const getSchedule = useCallback(async () => {
-    const params = new URLSearchParams();
-    params.append('animals[]', animal);
-    params.append('zoos[]', zoo);
-    params.append('startTime', startOfDay(date).getTime());
-    params.append('endTime', endOfDay(date).getTime());
-
-    const schedulesData = await get(params);
-    setLiveTalksAction(schedulesData);
-  }, [animal, zoo, date, get, setLiveTalksAction]);
-
   useEffect(() => {
-    getSchedule();
-  }, [date, getSchedule]);
+    const getSchedules = async () => {
+      const params = new URLSearchParams();
+      params.append('animals[]', animal);
+      params.append('zoos[]', zoo);
+      params.append('startTime', startOfDay(date).getTime());
+      params.append('endTime', endOfDay(date).getTime());
+
+      const schedulesData = await get(`/livetalks/schedule?${params}`);
+
+      if (isArray(schedulesData)) {
+        setLiveTalksAction(schedulesData);
+      }
+    };
+
+    getSchedules();
+  }, [animal, date, get, setLiveTalksAction, zoo]);
 
   if (loading) {
     return (
@@ -76,7 +80,12 @@ const LiveTalks = ({
     )
   }
 
-  if (response.status === 200 && !loading && !liveTalks.length) {
+  if (error) {
+    console.error('Error fetching live talks', error);
+    return null;
+  }
+
+  if (!liveTalks.length) {
     return null;
   }
 

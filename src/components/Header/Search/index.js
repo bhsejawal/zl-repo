@@ -16,7 +16,7 @@ import {
   Grommet,
 } from 'grommet';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSearch, faLockAlt } from '@fortawesome/pro-solid-svg-icons';
+import { faSearch, faLockAlt, faTimes } from '@fortawesome/pro-solid-svg-icons';
 import { deepMerge } from 'grommet/utils';
 import { differenceInMinutes } from 'date-fns';
 import classnames from 'classnames';
@@ -50,6 +50,9 @@ const theme = deepMerge(grommet, zoolifeTheme, {
 
 const Search = ({
   className,
+  switchableSearch = false,
+  searchShow = true,
+  setSearchShow = () => {},
   allHabitats,
   subscription,
   setHabitatsAction,
@@ -155,45 +158,68 @@ const Search = ({
 
   return (
     <Grommet theme={theme}>
-      <Box
-        ref={boxRef}
-        direction="row"
-        align="center"
-        round="20px"
-        className={classnames(style.searchWrapper, className)}
-        pad={{ horizontal: 'small' }}
-        elevation={suggestionOpen ? 'medium' : undefined}
-        border={{
-          side: 'all',
-          color: suggestionOpen ? 'transparent' : '#CDCDCD',
-        }}
-        style={suggestionOpen ? {
-          borderBottomLeftRadius: '0px',
-          borderBottomRightRadius: '0px',
-        } : undefined}
-      >
-        <TextInput
-          dropTarget={boxRef.current}
-          placeholder="Search for an animal..."
-          plain
-          suggestions={suggestions}
-          value={value}
-          onChange={onChange}
-          onSuggestionsOpen={onSuggestionsOpen}
-          onSuggestionsClose={onSuggestionsClose}
-          onFocus={onSearchFocus}
-          onSelect={() => boxRef.current.querySelector('input').blur()}
-          style={{ padding: '2px' }}
-          dropHeight="medium"
-        />
-        <Box onClick={() => boxRef.current.querySelector('input').focus()} className={style.searchClickIndicator}>
+      {searchShow && (
+        <Box
+          ref={boxRef}
+          direction="row"
+          align="center"
+          round="20px"
+          className={classnames(style.searchWrapper, className)}
+          pad={{ horizontal: 'small' }}
+          elevation={suggestionOpen ? 'medium' : undefined}
+          border={{
+            side: 'all',
+            color: suggestionOpen ? 'transparent' : '#CDCDCD',
+          }}
+          style={suggestionOpen ? {
+            borderBottomLeftRadius: '0px',
+            borderBottomRightRadius: '0px',
+          } : undefined}
+        >
+          <TextInput
+            dropTarget={boxRef.current}
+            placeholder="Search for an animal..."
+            plain
+            suggestions={suggestions}
+            value={value}
+            onChange={onChange}
+            onSuggestionsOpen={onSuggestionsOpen}
+            onSuggestionsClose={onSuggestionsClose}
+            onFocus={onSearchFocus}
+            onSelect={() => boxRef.current.querySelector('input').blur()}
+            style={{ padding: '2px' }}
+            dropHeight="medium"
+          />
+          {switchableSearch
+            ? (
+              <Box onClick={() => setSearchShow(false)} className={style.searchClickIndicator}>
+                <FontAwesomeIcon
+                  icon={faTimes}
+                  color="var(--grey)"
+                  style={{ width: '14px' }}
+                />
+              </Box>
+            )
+            : (
+              <Box onClick={() => boxRef.current.querySelector('input').focus()} className={style.searchClickIndicator}>
+                <FontAwesomeIcon
+                  icon={faSearch}
+                  color="var(--grey)"
+                  style={{ width: '14px' }}
+                />
+              </Box>
+            )}
+        </Box>
+      )}
+      {!searchShow && (
+        <Box onClick={() => setSearchShow(true)} className={style.searchClickIndicator}>
           <FontAwesomeIcon
             icon={faSearch}
             color="var(--grey)"
             style={{ width: '14px' }}
           />
         </Box>
-      </Box>
+      )}
     </Grommet>
   );
 };

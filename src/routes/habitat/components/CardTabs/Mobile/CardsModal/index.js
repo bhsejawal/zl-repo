@@ -146,9 +146,9 @@ const MobileCardsModal = ({
           setProgress(0);
           nextCardAction(cardsLen);
         } else {
-          setProgress(progress + 10);
+          setProgress(progress + 5);
         }
-      }, 300);
+      }, 450);
 
       const timeout = timeoutRef.current;
       return () => clearInterval(timeout);

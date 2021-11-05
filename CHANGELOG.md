@@ -3,6 +3,24 @@ This file keeps track of all relevant change for every release.
 
 ## [Unreleased]
 
+## [5.27.0] - 2021-11-05
+### Added
+- Search bar for Mobile UI update
+- Ability to watch trailers for freemium users
+- Gradient to avoid carousel buttons blending with images on login
+
+### Changed
+- Increase card view time from 3 to 9 seconds
+- Copy changes for chat
+- Copy changes for login
+- Manage subscription page loader
+- Style changes to price page
+- Update custom video control
+
+### Fixed
+- Schedules enhancements and fixes
+- Clear clips data after first call
+
 ## [5.26.0] - 2021-11-01
 ### Added
 -  Tooltips for interactive controls on desktop

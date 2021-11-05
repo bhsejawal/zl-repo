@@ -1,11 +1,12 @@
 import { connect } from 'react-redux';
 import { add, format, startOfDay } from 'date-fns';
-import { useEffect, useMemo } from 'preact/hooks';
+import { useEffect } from 'preact/hooks';
+import { isArray } from 'lodash-es';
 import useFetch from 'use-http';
 import classnames from 'classnames';
 
 import { hasPermission } from 'Components/Authorize';
-import { buildURL } from 'Shared/fetch';
+import { API_BASE_URL } from 'Shared/fetch';
 import Loader from 'Components/Loader';
 import EditButton from 'Components/AdminEditWrappers/EditButton';
 import { showEditEventModal } from 'Components/ScheduleEvents/actions';
@@ -25,43 +26,34 @@ const LiveStreams = ({
   setSchedulesAction,
 }) => {
   const isMobileSize = useIsMobileSize();
-  const url = useMemo(() => {
-    const params = new URLSearchParams({
-      habitatId,
-      startTime: startOfDay(date).toISOString(),
-      stopTime: startOfDay(add(date, { days: 1 })).toISOString(),
-      pageSize: 10000,
-    });
-    return buildURL(`/schedules?${params}`);
-  }, [habitatId, date]);
 
-  const { loading, error, data: { events = [] } = {} } = useFetch(
-    url,
+  const {
+    get,
+    loading,
+    error,
+  } = useFetch(
+    API_BASE_URL,
     { credentials: 'include', cachePolicy: 'no-cache' },
-    [habitatId, date],
   );
 
   useEffect(() => {
-    if (error) {
-      console.error('Error while fetching streams');
-    }
-  }, [error]);
+    const getSchedules = async () => {
+      const params = new URLSearchParams({
+        habitatId,
+        startTime: startOfDay(date).toISOString(),
+        stopTime: add(date, { days: 1 }).toISOString(),
+        pageSize: 10000,
+      });
 
-  useEffect(() => {
-    if (events.length) {
-      setSchedulesAction(events);
-    }
-  }, [events, setSchedulesAction]);
+      const { events } = await get(`/schedules?${params}`);
 
-  useEffect(() => {
-    if (error) {
-      console.error('Error while fetching streams');
-    }
-  }, [error]);
+      if (isArray(events)) {
+        setSchedulesAction(events);
+      }
+    };
 
-  if (!liveStreams.length) {
-    return null;
-  }
+    getSchedules();
+  }, [date, get, habitatId, setSchedulesAction]);
 
   if (loading) {
     return (
@@ -69,6 +61,15 @@ const LiveStreams = ({
         <Loader color="white" fill />
       </div>
     );
+  }
+
+  if (error) {
+    console.error('Error while fetching live streams', error);
+    return null
+  }
+
+  if (!liveStreams.length) {
+    return null;
   }
 
   const content = (

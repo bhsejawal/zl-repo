@@ -107,7 +107,7 @@
     }
   }
 
-  input.letterCount {
+  input.letterCount:not([type="checkbox"]):not([type="radio"]) {
     padding-right: 45px;
   }
 

@@ -394,7 +394,7 @@ const SubscriptionSection = ({
           onCancel={handleCancelDialogClose}
           onConfirm={handleCancelDialogClose}
         />)}
-      {loading && (<LoaderModal />)}
+      {loading && (<LoaderModal background="transparent" />)}
     </>
   )
 };

@@ -1,4 +1,5 @@
 import { h } from 'preact';
+import { useState, useMemo } from 'preact/hooks';
 import { connect } from 'react-redux';
 import { Box, Header } from 'grommet';
 import {
@@ -24,17 +25,20 @@ import { unsetUserData } from '../../redux/actions';
 import style from './style.scss';
 
 const cutOffWidth = 950;
+const searchBarWidth = 414;
 
 const HeaderComponent = ({ unsetUserDataAction, openContactUsModalAction }) => {
   const { width } = useWindowResize();
   const isSmallScreen = useIsMobileSize();
+  const containableSearchBar = useMemo(() => width > searchBarWidth, [width]);
+  const [searchShow, setSearchShow] = useState(containableSearchBar);
 
   const logout = useLogout(unsetUserDataAction);
 
   return (
     <Header className={style.header} gap="none">
       <div className={style.logo}>
-        <ZoolifeLogo />
+        {(containableSearchBar || !searchShow) && <ZoolifeLogo />}
       </div>
       {width > cutOffWidth ? (
         <div>
@@ -49,7 +53,12 @@ const HeaderComponent = ({ unsetUserDataAction, openContactUsModalAction }) => {
         </div>
       ) : (
         <div>
-          <Search className={style.searchContainer} />
+          <Search
+            className={style.searchContainer}
+            switchableSearch={!containableSearchBar}
+            searchShow={searchShow}
+            setSearchShow={setSearchShow}
+          />
           <BurgerMenu>
             <NavItem clickable text={isSmallScreen ? 'Habitats' : 'Map'} url="/map" icon={faMapMarkerAlt} />
             <NavItem clickable text="Talk Schedule" url="/schedule" icon={faCalendarDay} />

@@ -15,6 +15,8 @@ import {
 } from 'grommet';
 import { deepMerge } from 'grommet/utils';
 import { grommet } from 'grommet/themes';
+import { utcToZonedTime } from 'date-fns-tz';
+import { sub, add } from 'date-fns';
 import classnames from 'classnames';
 import useFetch from 'use-http';
 
@@ -40,7 +42,7 @@ const getDuration = (ms) => {
   return [Math.floor(ms / oneHourMs), (ms % oneHourMs) / oneMinuteMs];
 }
 
-const defaultData = {
+const defaultData = (timezone) => ({
   type: '',
   title: '',
   hostEmail: '',
@@ -49,21 +51,12 @@ const defaultData = {
   minute: 0,
   durationMs: 0,
   days: [], // ['MO', 'TU', 'WE', 'TH', 'FR', 'SA', 'SU'],
-  date: new Date().toISOString(),
-  // NEW
+  // to avoid edge cases for converting in between local/utc/zoo timezones
+  // Date should be zoneless/timeless just like the visible text
+  date: utcToZonedTime(new Date(), timezone).toLocaleDateString(),
   frequency: REPEATS,
-  singleEvent: '',
-};
-
-const removeTimezoneDifference = (date) => {
-  // Date input takes a string and converts it to a local Date object
-  // Timezone fetched from server is already converted to events timezone
-  // we need an event that uses events time (in habitat timezone), but in local timezone,
-  // so it's not converted by date input automatically
-  const localDate = new Date(date);
-  localDate.setMinutes(localDate.getTimezoneOffset());
-  return localDate.toString();
-}
+  singleEvent: 'false',
+});
 
 const theme = deepMerge(grommet, grommetTheme, {
   formField: {
@@ -73,6 +66,35 @@ const theme = deepMerge(grommet, grommetTheme, {
     },
   },
 });
+
+const clearTimeOffset = (date, timezone) => {
+  // Calendar input consume a date sting, but it also deals with time internally
+  // we need clear the timezone offset to have the date in input box matches date in drop panel
+  let dateStr = date;
+
+  // recurring event single event edit
+  if (!dateStr) {
+    dateStr = utcToZonedTime(new Date(), timezone).toLocaleDateString();
+  }
+  // unify format
+  if (dateStr.includes('-')) {
+    // new Date('2021-11-04') is Thu Nov 04 2021 12:00:00 GMT+1200 (Anadyr Standard Time)
+    // new Date('11/04/2021') is Thu Nov 04 2021 00:00:00 GMT+1200 (Anadyr Standard Time)
+    const [year, month, day] = dateStr.split('-');
+    dateStr = [month, day, year].join('/');
+  }
+
+  let result = new Date(dateStr);
+
+  const offset = result.getTimezoneOffset();
+  if (offset > 0) {
+    result = add(result, { minutes: offset });
+  } else {
+    result = sub(result, { minutes: offset });
+  }
+
+  return result.toString();
+};
 
 const EventForm = ({
   onSubmit,
@@ -87,7 +109,7 @@ const EventForm = ({
     ...scheduleData,
     frequency: !scheduleData?.date ? REPEATS : ONE_TIME_EVENT,
     singleEvent: '',
-  } : defaultData);
+  } : defaultData(timezone));
   const [error, setError] = useState();
   const [loading, setLoading] = useState();
   const [habitatCameras, setHabitatCameras] = useState([]);
@@ -132,12 +154,16 @@ const EventForm = ({
 
     try {
       setLoading(true);
-      data.singleEvent = data.singleEvent === 'true';
-      await onSubmit({
+      const singleEvent = data.singleEvent === 'true';
+      console.error({ data })
+      const submitData = {
         ...omit(data, 'frequency'),
-        days: data.frequency === REPEATS && !data.singleEvent ? data.days : [],
-        date: data.frequency === ONE_TIME_EVENT || data.singleEvent ? data.date : null,
-      });
+        days: data.frequency === REPEATS && !singleEvent ? data.days : [],
+        date: data.frequency === ONE_TIME_EVENT || singleEvent ? data.date?.slice(0, 10) : null,
+        singleEvent,
+      };
+      console.error({ submitData })
+      await onSubmit(submitData);
     } catch (err) {
       setError(err.message);
     } finally {
@@ -179,7 +205,8 @@ const EventForm = ({
 
     if (type === 'DateInput') {
       if (e.value) {
-        value = e.value;
+        // date should be stored in state as a string without any timezone/time
+        value = new Date(e.value).toLocaleDateString();
       }
     }
 
@@ -205,7 +232,6 @@ const EventForm = ({
                     valueKey={{ key: 'value', reduce: true }}
                     value={data.singleEvent}
                     options={[
-                      { label: '', value: ''},
                       { label: 'Single Event', value: 'true'},
                       { label: 'All Events', value: 'false'},
                     ]}
@@ -295,7 +321,7 @@ const EventForm = ({
           <Box direction="column" className={style.inputWrapper}>
             <Text size="xlarge" className={style.label}>Time</Text>
             {timezone !== currentTimezone && (
-              <Text margin={{ vertical: 'small' }}>
+              <Text margin={{ bottom: 'small' }} color="rgb(240, 94, 100)">
                 Time below is in
                 {' '}
                 {timezone}
@@ -344,6 +370,21 @@ const EventForm = ({
                 />
               </Box>
             </Box>
+            {/* This is not based on design - will be used for monitoring purpose */}
+            {data.frequency === ONE_TIME_EVENT && isEdit && !data.days?.length && (
+              <Box direction="row" alignContent="center" margin={{ top: '30px' }}>
+                <Grommet theme={{ global: { ...grommetTheme.global }}}>
+                  <DateInput
+                    className={style.dateInput}
+                    format="dd/mm/yyyy"
+                    value={clearTimeOffset(data.date, timezone)}
+                    onChange={changeHandler('date', 'DateInput')}
+                    calendarProps={{ daysOfWeek: true }}
+                    readOnly
+                  />
+                </Grommet>
+              </Box>
+            )}
             {data.singleEvent === 'false' && (
               <Box direction="column">
                 <Text size="xlarge" className={style.label}>Frequency</Text>
@@ -385,11 +426,10 @@ const EventForm = ({
                       <Grommet theme={{ global: { ...grommetTheme.global }}}>
                         <DateInput
                           className={style.dateInput}
-                          format="mm/dd/yyyy"
-                          value={data.date
-                            ? removeTimezoneDifference(data.date)
-                            : new Date().toString()}
+                          format="dd/mm/yyyy"
+                          value={clearTimeOffset(data.date, timezone)}
                           onChange={changeHandler('date', 'DateInput')}
+                          calendarProps={{ daysOfWeek: true }}
                           readOnly
                         />
                       </Grommet>
@@ -411,10 +451,10 @@ const EventForm = ({
               label="Delete"
               onClick={() => showDeleteEventModalAction(true, data.singleEvent === 'false', scheduleData.date)}
               margin={{ right: '20px' }}
-              disabled={isEdit && data.singleEvent === ''}
+              disabled={isEdit && !data.date && data.singleEvent === ''}
             />
           )}
-          <PrimaryButton loading={loading} type="submit" label="Publish" disabled={isEdit && data.singleEvent === ''} />
+          <PrimaryButton loading={loading} type="submit" label="Publish" disabled={isEdit && !data.date && data.singleEvent === ''} />
         </Box>
       </Form>
     </Grommet>
