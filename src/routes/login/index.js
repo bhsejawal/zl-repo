@@ -1,5 +1,6 @@
 import { h } from 'preact';
 import { useEffect, useState } from 'preact/hooks';
+import { route } from 'preact-router';
 import { connect } from 'react-redux';
 import { get } from 'lodash-es';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -14,7 +15,7 @@ import {
 
 import { buildURL, post } from 'Shared/fetch';
 import SocialLoginBar from 'Components/SocialLoginBar';
-import { PrimaryButton } from 'Components/Buttons';
+import { PrimaryButton, OutlineButton } from 'Components/Buttons';
 
 import PasswordResetModal from './ResetModal';
 import Layout from '../../layouts/LoginSignup';
@@ -134,12 +135,22 @@ const Login = ({
     setPassword(target.value);
   };
 
+  const onSignUp = () => {
+    route('/signup');
+  }
+
   if (!sessionChecked || logged) {
     return null;
   }
 
   return (
-    <Box fill width={{ max: "var(--maxWidth)", min: "350px" }} height={{ min: 'max-content' }} margin={{ horizontal: 'auto'}}>
+    <Box fill width={{ max: 'var(--maxWidth)', min: '350px' }} height={{ min: 'max-content' }} margin={{ horizontal: 'auto'}}>
+      <Box direction="row" align="center" background="none" className={style.topNavigationContainer}>
+        <Text>
+          Don&apos;t have an account?&nbsp;
+        </Text>
+        <OutlineButton size="medium" label="Sign Up" height="30px" margin={{ left: '16px' }} width={{ min: '85px' }} onClick={onSignUp} />
+      </Box>
       <Layout>
         <Box direction="row" align="center" height="auto">
           <Heading level="2">Welcome back to Zoolife.</Heading>
@@ -190,7 +201,7 @@ const Login = ({
               label="Log in"
               type="submit"
             />
-            <Box margin={{ vertical: "large" }}>
+            <Box margin={{ vertical: 'large' }} className={style.navigationContainer}>
               <Text>
                 Don&apos;t have an account?&nbsp;
                 <Anchor href="/signup">Sign Up</Anchor>

@@ -1,3 +1,5 @@
+@import "../../style/media-query.scss";
+
 .login {
   display: flex;
   flex-grow: 1;
@@ -128,5 +130,30 @@
 
   a:nth-child(2) {
     margin: 0 0 20px auto;
+  }
+}
+
+.navigationContainer {
+  display: none;
+}
+
+.topNavigationContainer {
+  position: absolute;
+  top: 22px;
+  right: 26px;
+
+  @media screen and (min-width: #{$max-width}) {
+    right: calc(50vw - (var(--maxWidth) / 2) + 46px);
+  }
+}
+
+@media screen and (max-width: #{$tablet-portrait-width}) {
+  
+  .navigationContainer {
+    display: block;
+  }
+
+  .topNavigationContainer {
+    display: none;
   }
 }
