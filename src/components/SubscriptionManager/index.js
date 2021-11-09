@@ -43,9 +43,17 @@ const getBenefitText = (interval) => (interval === 'month'
   ? 'Enjoy new animals added every month'
   : 'With an annual membership');
 
-const getBenefitTitle = (interval, discount) => (interval === 'month'
-  ? 'Unlimited Access'
-  : `Save ${discount}`);
+const getBenefitTitle = (interval, discount) => {
+  let title = '';
+
+  if (interval === 'month') {
+    title = 'Unlimited Access';
+  } else if (discount) {
+    title = `Save ${discount}`;
+  }
+
+  return title;
+};
 
 const SubscriptionSection = ({
   plans = [],
@@ -211,7 +219,7 @@ const SubscriptionSection = ({
           currentPlan: true,
           label: 'Renew',
           display: true,
-          benefitTitle: interval === 'visit' ? '' : getBenefitTitle(interval),
+          benefitTitle: interval === 'visit' ? '' : getBenefitTitle(interval, discount),
           benefitText: interval !== 'visit' ? getBenefitText(interval) : 'Unlock everything for a full day',
           clickHandler: () => openDialogHandler('Renew', planProductId, priceId, interval),
           originalPrice,
@@ -260,7 +268,7 @@ const SubscriptionSection = ({
         disabled = true;
       }
 
-      const benefitTitle = interval === 'visit' ? '' : getBenefitTitle(interval);
+      const benefitTitle = interval === 'visit' ? '' : getBenefitTitle(interval, discount);
       const benefitText = interval !== 'visit' ? getBenefitText(interval) : 'Unlock everything for a full day';
 
       return {
