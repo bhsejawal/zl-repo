@@ -25,7 +25,7 @@ import style from './style.scss';
 
 let timeout;
 
-const TakeSnapshotButton = ({ plain, habitatId, userId }) => {
+const TakeSnapshotButton = ({ plain, cameraId, userId }) => {
   const { socket } = useContext(GlobalsContext);
   const [loading, setLoading] = useState();
   const [tryAgain, setTryAgain] = useState();
@@ -35,7 +35,7 @@ const TakeSnapshotButton = ({ plain, habitatId, userId }) => {
   const ref = useRef();
 
   const clickHandler = () => {
-    socket.emit('zl_takeSnapshot', { room: habitatId, userId });
+    socket.emit('userTookSnapshot', { cameraId, userId });
     setLoading(true);
     // This is a fallback in case socket didn't return any photo in 8 seconds
     timeout = setTimeout(() => {
@@ -152,8 +152,8 @@ const TakeSnapshotButton = ({ plain, habitatId, userId }) => {
 
 export default connect(({
   user: { userId },
-  habitat: { habitatInfo: { _id: habitatId } },
+  habitat: { habitatInfo: { selectedCamera: { _id: cameraId } } },
 }) => ({
   userId,
-  habitatId,
+  cameraId,
 }))(TakeSnapshotButton);

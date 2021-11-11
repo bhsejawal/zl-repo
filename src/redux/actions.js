@@ -58,7 +58,7 @@ const newUserInteraction = (payload) => ({
 const removeUserInteraction = () => ({ type: REMOVE_USER_INTERACTION });
 
 export const addUserInteraction = (payload) => (dispatch, getState) => {
-  const configs = get(getState(), 'habitat.habitatInfo.camera.configs', []);
+  const configs = get(getState(), 'habitat.habitatInfo.selectedCamera.configs', []);
   const { configValue: votingTime } = getConfig(configs, 'ptu.votingTime');
 
   interactionId += 1;

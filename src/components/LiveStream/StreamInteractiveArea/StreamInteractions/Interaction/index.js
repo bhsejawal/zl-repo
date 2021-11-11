@@ -1,8 +1,6 @@
 import { connect } from 'react-redux';
-import classnames from 'classnames';
 
 import CustomCursor from '../../CustomCursor';
-import CameraPin from '../../StreamControls/CameraPin/cursor.png';
 
 import { LOADING_PIN } from '../../CustomCursor/constants';
 
@@ -55,26 +53,6 @@ const Click = ({
         alt="emoji"
         className={style.emoji}
       />
-    )
-  }
-
-  if (type === 'cursorPin') {
-    return (
-      <div
-        className={style.cursorPin}
-        style={{ top: `${y * 100}%`, left: `${x * 100}%` }}
-      >
-        <div style={{ position: 'relative'}} />
-        <img
-          src={CameraPin}
-          draggable="false"
-          alt="emoji"
-          className={classnames(style.cameraPin, { [style.hidden]: !isUserAction })}
-        />
-        <div className={isUserAction ? style.clickIndicatorPin : style.clickIndicatorPinOtherUser}>
-          <div className={style.pulseIndicator} />
-        </div>
-      </div>
     )
   }
 

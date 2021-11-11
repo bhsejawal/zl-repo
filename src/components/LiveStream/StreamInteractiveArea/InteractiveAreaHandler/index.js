@@ -24,11 +24,12 @@ import { FULL_CURSOR, LOADING } from '../CustomCursor/constants';
 import {getConfig} from '../../../../helpers';
 import { useIsMobileSize } from '../../../../hooks';
 
-const validDropTypes = ['emoji', 'cursorPin'];
+const validDropTypes = ['emoji'];
 
 const CursorPortal = ({ children }) => createPortal(children, document.body);
 
 const InteractiveAreaHandler = ({
+  cameraId,
   userId,
   habitatId,
   animal,
@@ -57,7 +58,7 @@ const InteractiveAreaHandler = ({
         clearTimeout(timeout);
       }
     }
-  }, [cursorState]);
+  }, [cursorState, configs]);
 
   useEffect(() => {
     if (socket) {
@@ -85,8 +86,9 @@ const InteractiveAreaHandler = ({
     const normalizedX = (clientX - leftSpacing) / containerRef.current.offsetWidth;
     const normalizedY = (clientY - topSpacing) / containerRef.current.offsetHeight;
 
-    socket.emit('zl_userClickedStream', {
-      room: habitatId,
+    socket.emit('userClickedStream', {
+      habitatId,
+      cameraId,
       userId,
       animal,
       color,
@@ -107,6 +109,7 @@ const InteractiveAreaHandler = ({
     habitatId,
     color,
     userId,
+    cameraId,
     cursorState,
     isStreamClicked,
     updateUserPropertyAction,
@@ -132,21 +135,6 @@ const InteractiveAreaHandler = ({
     const x = (evt.clientX - leftSpacing) / offsetWidth;
     const y = (evt.clientY - topSpacing) / offsetHeight;
 
-    if (type === 'cursorPin') {
-      // This is under validation, so we're not supporting multiple
-      // colors/animals yet
-      socket.emit('zl_userClickedStream', {
-        room: habitatId,
-        userId,
-        token: '',
-        normalizedX: x.toPrecision(3),
-        normalizedY: y.toPrecision(3),
-        type,
-      });
-
-      return;
-    }
-
     if (type === 'emoji') {
       const path = (new URL(url)).pathname;
       const decodedUrl = decodeURI(url);
@@ -158,9 +146,10 @@ const InteractiveAreaHandler = ({
           path,
         });
 
-        socket.emit('zl_emoji', {
+        socket.emit('userDroppedEmoji', {
           userId,
-          channelId: habitatId,
+          habitatId,
+          cameraId,
           path,
           x: x * 100,
           y: y * 100,
@@ -207,8 +196,6 @@ const InteractiveAreaHandler = ({
 
 export default connect(({
   user: {
-    // TODO: not sure what type of userId is this
-    // maybe we should use mongodb _id here
     userId,
     profile: {
       animalIcon: animal,
@@ -220,12 +207,13 @@ export default connect(({
     habitatInfo: {
       _id: habitatId,
       emojiDrops: emojis = [],
-      camera: { configs },
+      selectedCamera: { configs, _id: cameraId },
       streamStarted,
     },
   },
 }) => ({
   userId,
+  cameraId,
   animal,
   color,
   habitatId,

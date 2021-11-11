@@ -14,8 +14,8 @@ const camFieldsParams = new URLSearchParams();
 camFieldsParams.append('fields[]', 'cameraStatus');
 camFieldsParams.append('fields[]', 'configs');
 
-const Power = ({ cameraId }) => {
-  const [streamStatus, setStreamStatus] = useState();
+const Power = ({ habitatId }) => {
+  const [cameras, setCameras] = useState([]);
 
   const {
     put: putStreamStatus,
@@ -23,33 +23,35 @@ const Power = ({ cameraId }) => {
     response: streamStatusResponse,
     error: streamStatusError,
   } = useFetch(
-    buildURL(`/admin/cameras/${cameraId}/stream`),
+    buildURL(`/admin/cameras`),
     { credentials: 'include', cachePolicy: 'no-cache' },
   );
 
   const { loading, error, data } = useFetch(
-    buildURL(`/admin/cameras/${cameraId}?${camFieldsParams}`),
+    buildURL(`/admin/habitats/${habitatId}/cameras`),
     { credentials: 'include', cachePolicy: 'no-cache' },
-    [cameraId],
+    [habitatId],
   );
 
   useEffect(() => {
     if (data) {
-      setStreamStatus(data.cameraStatus === 'on');
+      setCameras(data);
     }
   }, [data]);
 
-  const onStreamToggle = async () => {
-    await putStreamStatus(streamStatus ? 'off' : 'on');
-    // TODO: we either need to (1.) broadcast WS events to update these values
-    // or (2.) update them in redux
-    // guessing solution 1. will be used, but again leaving this here to remind us
-    if (streamStatusResponse.ok) {
-      setStreamStatus(!streamStatus);
-    }
-  };
+  const onStreamToggle = async (cameraId, streamStatus) => {
+    const newStatus = streamStatus === 'on' ? 'off' : 'on';
+    await putStreamStatus(`${cameraId}/stream/${newStatus}`);
 
-  if (loading) {
+    if (streamStatusResponse.ok) {
+      setCameras((currentCameras) => currentCameras.map((camera) => ({
+        ...camera,
+        cameraStatus: camera._id === cameraId ? newStatus : camera.cameraStatus,
+      })));
+    }
+  }
+
+  if (loading || streamStatusLoading) {
     return (
       <Box pad={{ bottom: 'medium', horizontal: 'large' }} width="350px" height="210px" align="center">
         <Box width="150px" height="150px" margin={{ top: '24px' }}>
@@ -70,19 +72,19 @@ const Power = ({ cameraId }) => {
   }
 
   return (
-    <Box pad={{ bottom: 'medium', horizontal: 'large' }} width="350px" height="210px">
+    <Box pad={{ bottom: 'medium', horizontal: 'large' }} width="350px">
       <Heading level="4">On/Off Controls</Heading>
-
-      <Box pad="small">
-        <CheckBox
-          toggle
-          disabled={streamStatusLoading}
-          label={`Stream ${streamStatus ? 'On' : 'Off'}`}
-          checked={streamStatus}
-          onChange={onStreamToggle}
-        />
-      </Box>
-
+      {cameras.map((camera) => (
+        <Box pad="small">
+          <CheckBox
+            toggle
+            disabled={streamStatusLoading}
+            label={`Stream ${camera.cameraName}`}
+            checked={camera.cameraStatus === 'on'}
+            onChange={() => onStreamToggle(camera._id, camera.cameraStatus)}
+          />
+        </Box>
+      ))}
       {streamStatusError && (
         <Box pad="large">
           <Text color="status-error">
@@ -98,8 +100,8 @@ export default connect(
   ({
     habitat: {
       habitatInfo: {
-        camera: { _id: cameraId },
+        _id: habitatId,
       },
     },
-  }) => ({ cameraId }),
+  }) => ({ habitatId }),
 )(Power);

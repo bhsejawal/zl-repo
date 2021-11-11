@@ -30,6 +30,7 @@ const ZoomBar = ({
   userId,
   habitatId,
   configs,
+  cameraId,
 }) => {
   const { socket } = useContext(GlobalsContext);
   const [zoomInfo, setZoomInfo] = useState(initialZoomState);
@@ -62,10 +63,11 @@ const ZoomBar = ({
 
     setIsLoading(true);
 
-    socket.emit('zl_setZoom', {
+    socket.emit('userSetZoom', {
       zoom: requestedZoom,
       userId,
-      channelId: habitatId,
+      habitatId,
+      cameraId,
     });
 
     setZoomInfo({ currentZoom, isLoading: true, requestedZoom });
@@ -147,7 +149,12 @@ const ZoomBar = ({
 
 export default connect(({
   user: { userId },
-  habitat: { habitatInfo: { _id: habitatId, camera: { configs } } },
+  habitat: { habitatInfo: { _id: habitatId, selectedCamera: { configs, _id: cameraId } } },
 }) => (
-  { userId, habitatId, configs }
+  {
+    userId,
+    habitatId,
+    configs,
+    cameraId,
+  }
 ))(ZoomBar);

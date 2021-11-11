@@ -19,6 +19,7 @@ import style from './style.scss';
 const EmojiList = ({
   userId,
   habitatId,
+  cameraId,
   emojis,
   onClose,
 }) => {
@@ -32,9 +33,10 @@ const EmojiList = ({
   );
 
   const onEmojiClick = (path) => {
-    socket.emit('zl_emoji_bubble', {
+    socket.emit('userDroppedBubbleEmoji', {
       userId,
-      channelId: habitatId,
+      habitatId,
+      cameraId,
       path,
     });
 
@@ -87,11 +89,14 @@ const EmojiList = ({
 
 export default connect(
   ({
-    habitat: { habitatInfo: { _id: habitatId, emojiDrops: emojis = [] } },
+    habitat: {
+      habitatInfo: { _id: habitatId, emojiDrops: emojis = [], camera: { _id: cameraId } },
+    },
     user: { userId },
   }) => ({
     emojis,
     userId,
     habitatId,
+    cameraId,
   }),
 )(EmojiList);

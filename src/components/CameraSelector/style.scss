@@ -1,0 +1,34 @@
+.cameraDrop {
+  min-width: 130px;
+}
+
+.cameraButton >div {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.switchCameraIcon {
+  width: 20px;
+  height: auto;
+}
+
+.radioContainer {
+  align-self: flex-start;
+
+  label {
+    font-size: 10px;
+    line-height: 16px;
+    color: white;
+
+    > div > div {
+      border-color: white;
+      width: 16px;
+      height: 16px;
+
+      svg {
+        fill: white;
+      }
+    }
+  }
+}

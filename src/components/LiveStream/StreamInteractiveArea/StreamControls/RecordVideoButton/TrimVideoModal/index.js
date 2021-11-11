@@ -149,12 +149,12 @@ export default connect(
     {
       habitat: {
         habitatInfo: {
-          streamKey,
           _id,
           slug: habitatSlug,
           zoo: {
             slug: zooSlug,
           },
+          selectedCamera: { streamKey },
         },
       },
     },

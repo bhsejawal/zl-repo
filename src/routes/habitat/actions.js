@@ -4,6 +4,8 @@ import {
   SET_HABITAT_LIKED,
   UNSET_HABITAT,
   SET_HABITAT_STREAM_STARTED,
+  SET_SELECTED_CAMERA,
+  UPDATE_AVAILABLE_CAMERAS,
 } from './types';
 
 export const setHabitat = ({ habitat }) => ({
@@ -11,10 +13,9 @@ export const setHabitat = ({ habitat }) => ({
   payload: {
     habitat: {
       ...habitat,
-      streamKey: habitat.streamKey
-        || habitat?.camera?.channelSettings?.[0]?.streamKey,
-      hostStreamKey: habitat.hostStreamKey
-        || habitat.camera?.channelSettings?.[0]?.hostKey,
+      selectedCamera: habitat?.cameras[0],
+      streamKey: habitat?.cameras[0]?.channelSettings?.[0]?.streamKey,
+      hostStreamKey: habitat.hostStreamKey,
     },
   },
 });
@@ -35,3 +36,13 @@ export const setHabitatStreamStarted = (streamStarted) => ({
   type: SET_HABITAT_STREAM_STARTED,
   payload: { streamStarted },
 });
+
+export const setSelectedCamera = (camera) => ({
+  type: SET_SELECTED_CAMERA,
+  payload: { camera },
+});
+
+export const handleCameraUpdate = (availableCameras) => ({
+  type: UPDATE_AVAILABLE_CAMERAS,
+  payload: { availableCameras },
+})
