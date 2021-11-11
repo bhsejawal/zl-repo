@@ -6,7 +6,7 @@ import {
   Tabs,
   Tab,
 } from 'grommet';
-import { useState } from 'preact/hooks';
+import { route} from 'preact-router';
 import { merge } from 'lodash-es';
 import classnames from 'classnames';
 
@@ -35,8 +35,21 @@ const tabsTheme = {
   },
 };
 
-const Account = () => {
-  const [activeIndex, setActiveIndex] = useState(1);
+const tabs = ['me', 'info', 'subscription'];
+const tabPicker = (activeTab) => {
+  if (tabs.includes(activeTab.toLowerCase())) {
+    return tabs.indexOf(activeTab)
+  }
+
+  // info is the default tab if active tab is not listed
+  return 1;
+};
+
+const onTabChange = (index) => {
+  route(`/account/${tabs[index]}`);
+}
+
+const Account = ({ activeTab }) => {
   const isMobileSize = useIsMobileSize();
 
   return (
@@ -44,8 +57,8 @@ const Account = () => {
       <Box fill>
         <Box fill>
           <Tabs
-            activeIndex={activeIndex}
-            onActive={setActiveIndex}
+            activeIndex={tabPicker(activeTab)}
+            onActive={onTabChange}
             className={classnames(style.tabs, {[style.mobile]: isMobileSize})}
             flex
           >

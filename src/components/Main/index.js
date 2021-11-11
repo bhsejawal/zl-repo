@@ -287,7 +287,7 @@ const Main = ({
             <Favorite />
           </PageWrapper>
         </AuthGuard>
-        <AuthGuard path="/account" permission="profile:edit">
+        <AuthGuard path="/account/:activeTab" permission="profile:edit">
           <Header />
           <PageWrapper>
             <Account />
