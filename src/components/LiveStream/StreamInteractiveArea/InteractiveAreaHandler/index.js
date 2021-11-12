@@ -12,6 +12,7 @@ import { createPortal } from 'preact/compat';
 import { GlobalsContext } from 'Shared/context';
 import { buildURL, post } from 'Shared/fetch';
 import ClickMessageTip from 'Components/ClickMessageTip';
+import { EMOJI_ANIMATION_TIME } from 'Components/LiveStream/constants';
 
 import { addUserInteraction, updateUserProperty } from '../../../../redux/actions';
 
@@ -21,7 +22,7 @@ import { useCursorHook } from '../CustomCursor/hooks';
 import style from './style.scss';
 
 import { FULL_CURSOR, LOADING } from '../CustomCursor/constants';
-import {getConfig} from '../../../../helpers';
+import { getConfig } from '../../../../helpers';
 import { useIsMobileSize } from '../../../../hooks';
 
 const validDropTypes = ['emoji'];
@@ -62,7 +63,7 @@ const InteractiveAreaHandler = ({
 
   useEffect(() => {
     if (socket) {
-      socket.on('propagateClick', (clickData) => addUserInteractionAction({ ...clickData }));
+      socket.on('propagateClick', (clickData) => addUserInteractionAction({ ...clickData, ttl: EMOJI_ANIMATION_TIME }));
 
       //  type is here to support cross emotes from twitch, we can remove this later
       socket.on('emoji', (emoteData) => addUserInteractionAction({ ...emoteData, type: 'emoji' }));
@@ -70,7 +71,7 @@ const InteractiveAreaHandler = ({
 
     return () => {
       if (socket) {
-        socket.off('propagateClick', (clickData) => addUserInteractionAction({ ...clickData }));
+        socket.off('propagateClick', (clickData) => addUserInteractionAction({ ...clickData, ttl: EMOJI_ANIMATION_TIME }));
       }
     };
   }, [socket, addUserInteractionAction]);
@@ -144,6 +145,7 @@ const InteractiveAreaHandler = ({
           y: y * 100,
           type,
           path,
+          ttl: EMOJI_ANIMATION_TIME,
         });
 
         socket.emit('userDroppedEmoji', {
