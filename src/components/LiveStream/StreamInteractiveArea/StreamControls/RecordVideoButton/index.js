@@ -38,7 +38,9 @@ const RecordVideoButton = ({
   });
 
   useEffect(() => {
-    if (showModal) post('/videos/clip', { streamId });
+    if (showModal) {
+      post('/videos/clip', { streamId });
+    }
   }, [post, streamId, showModal]);
 
   useEffect(() => {
@@ -54,6 +56,7 @@ const RecordVideoButton = ({
         slug,
       )
     }
+    setShowModal(false);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data, error]);
 
@@ -115,7 +118,9 @@ export default connect(({
   user: { clipButtonClicked: isClicked },
   habitat: {
     habitatInfo: {
-      streamKey,
+      selectedCamera: {
+        streamKey,
+      },
       slug: habitatSlug,
       zoo: {
         slug: zooSlug,
