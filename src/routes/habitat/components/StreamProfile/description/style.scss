@@ -1,8 +1,14 @@
+@import "../../../../../style/media-query";
+
 .desc {
   display: flex;
   flex-direction: column;
   color: #2E2D2D;
   padding-top: 22px;
+
+  @media screen and (max-width: #{$tablet-portrait-width}) {
+    display: none;
+  }
 
   .wrapper {
     display: flex;

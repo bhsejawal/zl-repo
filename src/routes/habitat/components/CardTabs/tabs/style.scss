@@ -59,8 +59,12 @@
   padding: 8px 10px;
   transition: .2s ease-in-out all;
 
+  @media screen and (max-width: #{$phone-landscape-width}) {
+    padding: 8px 6px;
+  }
+
   &.active {
-    padding: 0px 10px;
+    padding: 0 10px;
 
     .wrapper {
       width: 166px;
@@ -78,6 +82,15 @@
     transition: .2s ease-in-out all;
     box-shadow: 0 3px 6px rgba(0, 0, 0, .15);
     cursor: pointer;
+
+    @media screen and (max-width: #{$phone-landscape-width}) {
+      width: 145px;
+      height: 200px;
+
+      .bottom p {
+        font-size: 9px;
+      }
+    }
   }
 
   .top {

@@ -1,3 +1,5 @@
+@import "../../style/media-query";
+
 .content {
   overflow: auto;
   min-height: unquote("max(100%, 54px)");
@@ -7,6 +9,7 @@
 
 .tabControls {
   box-shadow: 0 0 5px rgba(41, 31, 31, .5);
+  position: relative;
 }
 
 .tabBtn {
@@ -14,5 +17,31 @@
 
   &.active {
     color: var(--blueMediumDark);
+  }
+}
+
+@media screen and (max-width: #{$tablet-portrait-width}) {
+
+  .tabControls:before {
+    content: "";
+    width: 148px;
+    height: 4px;
+    background: #B7B8BA;
+    position: absolute;
+    bottom: 8px;
+    right: calc(50% - (148px / 2));
+    border-radius: 3px;
+  }
+
+  .tabBtn {
+    padding: 12px 0;
+
+    svg {
+      font-size: 15px;
+    }
+
+    span {
+      font-size: 10px;
+    }
   }
 }
