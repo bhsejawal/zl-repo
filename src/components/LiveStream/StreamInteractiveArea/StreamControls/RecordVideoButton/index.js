@@ -38,14 +38,9 @@ const RecordVideoButton = ({
   });
 
   useEffect(() => {
-    if (showModal) {
-      post('/videos/clip', { streamId });
-    }
-  }, [post, streamId, showModal]);
-
-  useEffect(() => {
     if (data?.videoURL && data?.duration) {
       setVideoData(data);
+      setShowModal(true);
     }
 
     if (error) {
@@ -56,13 +51,12 @@ const RecordVideoButton = ({
         slug,
       )
     }
-    setShowModal(false);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data, error]);
 
   const onClickHandler = () => {
     setVideoData({});
-    setShowModal(true);
+    post('/videos/clip', { streamId });
     setClipButtonClickedAction(true);
   };
 
