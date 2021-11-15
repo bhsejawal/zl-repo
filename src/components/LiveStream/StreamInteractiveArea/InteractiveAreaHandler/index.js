@@ -62,16 +62,20 @@ const InteractiveAreaHandler = ({
   }, [cursorState, configs]);
 
   useEffect(() => {
-    if (socket) {
-      socket.on('propagateClick', (clickData) => addUserInteractionAction({ ...clickData, ttl: EMOJI_ANIMATION_TIME }));
+    const onPropagateClick = (data) => addUserInteractionAction({ ...data });
+    const onEmoji = (data) => addUserInteractionAction({
+      ...data, type: 'emoji', ttl: EMOJI_ANIMATION_TIME,
+    });
 
-      //  type is here to support cross emotes from twitch, we can remove this later
-      socket.on('emoji', (emoteData) => addUserInteractionAction({ ...emoteData, type: 'emoji' }));
+    if (socket) {
+      socket.on('propagateClick', onPropagateClick);
+      socket.on('emoji', onEmoji);
     }
 
     return () => {
       if (socket) {
-        socket.off('propagateClick', (clickData) => addUserInteractionAction({ ...clickData, ttl: EMOJI_ANIMATION_TIME }));
+        socket.off('propagateClick', onPropagateClick);
+        socket.off('emoji', onEmoji);
       }
     };
   }, [socket, addUserInteractionAction]);
@@ -140,14 +144,6 @@ const InteractiveAreaHandler = ({
       const path = (new URL(url)).pathname;
       const decodedUrl = decodeURI(url);
       if (availableEmojis.includes(decodedUrl)) {
-        addUserInteractionAction({
-          x: x * 100,
-          y: y * 100,
-          type,
-          path,
-          ttl: EMOJI_ANIMATION_TIME,
-        });
-
         socket.emit('userDroppedEmoji', {
           userId,
           habitatId,
