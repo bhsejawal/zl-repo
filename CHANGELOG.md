@@ -3,6 +3,22 @@ This file keeps track of all relevant change for every release.
 
 ## [Unreleased]
 
+## [5.28.0] - 2021-11-15
+### Added
+- Subscription cancellation popup
+- Update account page to open tabs based on URL
+- Multiple stream per habitats: fix database/logs structure
+- Add navigation button between Login and Signup pages
+
+### Changed
+- Map page UI update
+- Optimize sizing on habitat page for mobile
+- Increasing emoji's time to 10 seconds
+
+### Fixed
+- Clip feature issues
+- Subscription undefined discount property
+
 ## [5.27.0] - 2021-11-05
 ### Added
 - Search bar for Mobile UI update
