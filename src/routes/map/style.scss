@@ -30,31 +30,10 @@
   .content {
     display: flex;
     flex-direction: row;
-    padding: 0 60px;
     height: auto;
     width: 100%;
   }
 
-  .description {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    max-width: 360px;
-
-    &.habitatSelected {
-      justify-content: start !important;
-      margin-top: 25px;
-    }
-  }
-
-}
-
-.card {
-  margin: 0px;
-  min-width: 310px;
-  max-width: 310px;
-  min-height: 360px;
-  max-height: 360px;
 }
 
 @media screen and (max-width: #{$tablet-portrait-width}) {
@@ -65,16 +44,6 @@
       flex-direction: column;
       padding: 0 20px;
       align-items: center;
-    }
-
-    .description {
-      display: flex;
-      flex-direction: revert;
-      max-width: initial;
-
-      > div:first-child {
-        padding-right: 20px;
-      }
     }
   }
 }

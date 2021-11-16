@@ -22,6 +22,8 @@ import {
 import { faVolume, faVolumeMute, faCompress } from '@fortawesome/pro-solid-svg-icons';
 import RoundButton from 'Components/RoundButton';
 import { PrimaryButton } from 'Components/Buttons';
+import CameraSelector from 'Components/CameraSelector';
+
 import { getDeviceType, formatSecondsToVideoDuration } from '../../helpers';
 
 import { useIsHabitatTabbed } from '../../hooks';
@@ -89,6 +91,7 @@ const VideoControls = forwardRef(({
   videoLength,
   timeElapsed,
   updateVideoTimeHandler,
+  showSwitchCameraControl,
   mode = 'webrtc',
   muted = true,
   onNextHandler,
@@ -257,6 +260,8 @@ const VideoControls = forwardRef(({
           </RoundButton>
 
         )}
+
+        {showSwitchCameraControl && (<CameraSelector />)}
 
         {mode === 'vod' && (
           <div className={style.timelineWrapper}>

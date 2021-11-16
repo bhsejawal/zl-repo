@@ -32,20 +32,6 @@
   width: 40px;
 }
 
-.cameraPin {
-  width: 30px;
-  animation: scalePin 1s forwards;
-}
-
-.cursorPin {
-  position: absolute;
-  transform: translate3d(-55%, -100% , 0);
-
-  img {
-    animation: scalePin .5s forwards;
-  }
-
-}
 
 .clickIndicatorPin {
   border-radius: 50%;

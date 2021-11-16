@@ -14,12 +14,11 @@ import {
   faLaughWink,
   faPowerOff,
   faImage,
-  faUndo,
 } from '@fortawesome/pro-solid-svg-icons';
 import { hasPermission } from 'Components/Authorize';
 import StreamEditModalLoader from './EditModal/Loader';
 import { showSwitchCameraModal } from '../../../routes/habitat/components/CameraControlModal/actions';
-import { POWER, SWITCH } from '../../../routes/habitat/components/CameraControlModal/types';
+import { POWER } from '../../../routes/habitat/components/CameraControlModal/types';
 
 import {
   EMOJI_SECTION,
@@ -39,21 +38,6 @@ const AdminButton = ({ showSwitchCameraModalAction }) => {
 
   const items = useMemo(() => {
     const itemsArr = [];
-
-    if (hasPermission('habitat:switch-stream')) {
-      itemsArr.push({
-        className: style.item,
-        label: 'Switch Stream',
-        icon: (
-          <FontAwesomeIcon
-            className={style.icon}
-            icon={faUndo}
-            size="lg"
-          />
-        ),
-        onClick: () => showSwitchCameraModalAction(true, SWITCH),
-      })
-    }
 
     if (hasPermission('habitat:edit-stream')) {
       itemsArr.push({

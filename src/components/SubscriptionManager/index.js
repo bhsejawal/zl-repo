@@ -7,6 +7,7 @@ import {
 } from 'preact/hooks';
 
 import { connect } from 'react-redux';
+import { isEmpty } from 'lodash-es';
 import { Box, Text } from 'grommet';
 
 import useFetch from 'use-http';
@@ -22,8 +23,9 @@ import { StripeContext } from 'Shared/context';
 
 import UpdateSubscriptionDialog from './UpdateSubscriptionDialog';
 import ClassPassDetailsModal from './ClassPassDetailsModal';
+import CancelSubscriptionModal from './CancelSubscriptionModal';
 
-import { setPlans, setSubscriptionData } from '../../redux/actions';
+import { setPlans } from '../../redux/actions';
 
 import { useIsMobileSize } from '../../hooks';
 
@@ -39,34 +41,38 @@ const defaultDialogSettings = {
   interval: null,
 }
 
-const getBenefitText = (interval) => (interval === 'month'
-  ? 'Enjoy new animals added every month'
-  : 'With an annual membership');
-
-const getBenefitTitle = (interval, discount) => (interval === 'month'
-  ? 'Unlimited Access'
-  : `Save ${discount}`);
-
 const SubscriptionSection = ({
   plans = [],
   productId,
   isSubscriptionActive,
   subscriptionStatus,
+  validUntil,
   setPlansAction,
-  setSubscriptionDataAction,
   showCancelCTA,
   showFreemium,
   isPublicPage,
 }) => {
   const { stripe } = useContext(StripeContext);
   const isSmallScreen = useIsMobileSize();
+  const [showCancelModal, setShowCancelModal] = useState(false);
   const [showCancelDialog, setShowCancelDialog] = useState(false);
   const [showClassPassModal, setShowClassPassModal] = useState(false);
   const showCancelButton = useMemo(() => {
     if (['FREEMIUM', 'TRIAL'].includes(productId)) {
       return false;
     }
-    if (!plans || !plans.length) {
+
+    if (isEmpty(plans)) {
+      return false;
+    }
+
+    // prevent canceling a canceled status
+    if (subscriptionStatus === 'canceled') {
+      return false;
+    }
+
+    // prevent canceling a subscription in the past
+    if (new Date(validUntil) < new Date()) {
       return false;
     }
 
@@ -75,7 +81,7 @@ const SubscriptionSection = ({
       return false;
     }
     return true;
-  }, [productId, plans]);
+  }, [productId, plans, subscriptionStatus, validUntil]);
 
   const mobileBackground = '#24412B';
   const desktopBackground = { image: `url(${plansBackground})`, size: 'cover', position: 'left bottom' };
@@ -115,17 +121,6 @@ const SubscriptionSection = ({
       // TODO: display error modal
     }
   }, [post, stripe])
-
-  const cancelSubscription = useCallback(async () => {
-    try {
-      const { subscriptionStatus } = await post('/users/subscription/unsubscribe');
-      setSubscriptionDataAction(subscriptionStatus);
-      setShowCancelDialog(true);
-    } catch (err) {
-      // TODO: display error modal;
-      console.error(err);
-    }
-  }, [setSubscriptionDataAction, setShowCancelDialog, post])
 
   const openDialogHandler = (action, planId, priceId, interval) => {
     setDialogSettings({
@@ -199,6 +194,8 @@ const SubscriptionSection = ({
           order,
           price,
           originalPrice,
+          title,
+          description,
         }) => ({
           planProductId,
           priceId,
@@ -211,8 +208,8 @@ const SubscriptionSection = ({
           currentPlan: true,
           label: 'Renew',
           display: true,
-          benefitTitle: interval === 'visit' ? '' : getBenefitTitle(interval),
-          benefitText: interval !== 'visit' ? getBenefitText(interval) : 'Unlock everything for a full day',
+          benefitTitle: interval === 'visit' ? '' : title,
+          benefitText: interval !== 'visit' ? description : 'Unlock everything for a full day',
           clickHandler: () => openDialogHandler('Renew', planProductId, priceId, interval),
           originalPrice,
         }));
@@ -227,6 +224,8 @@ const SubscriptionSection = ({
     return plans.map(({
       productId: planProductId,
       priceId,
+      title,
+      description,
       color,
       discount,
       interval,
@@ -242,7 +241,7 @@ const SubscriptionSection = ({
 
       if (isCurrentPlan && interval !== 'visit') {
         label = 'Cancel';
-        clickHandler = cancelSubscription;
+        clickHandler = () => setShowCancelModal(true);
       } else if (currentPlanPrice < price) {
         if (currentPlanInterval === 'visit') {
           label = 'Subscribe';
@@ -260,8 +259,8 @@ const SubscriptionSection = ({
         disabled = true;
       }
 
-      const benefitTitle = interval === 'visit' ? '' : getBenefitTitle(interval);
-      const benefitText = interval !== 'visit' ? getBenefitText(interval) : 'Unlock everything for a full day';
+      const benefitTitle = interval === 'visit' ? '' : title;
+      const benefitText = interval !== 'visit' ? description : 'Unlock everything for a full day';
 
       return {
         planProductId,
@@ -288,7 +287,6 @@ const SubscriptionSection = ({
     subscriptionStatus,
     isSubscriptionActive,
     checkoutHandler,
-    cancelSubscription,
   ]);
 
   return (
@@ -296,7 +294,7 @@ const SubscriptionSection = ({
       {showClassPassModal && <ClassPassDetailsModal onClose={() => setShowClassPassModal(false)} />}
       {showCancelCTA && showCancelButton && (
         <Box background="#F9FCE7" pad={isSmallScreen ? 'large' : 'medium'} align="center" justify="center">
-          <Text onClick={cancelSubscription} className={style.cancelText}>
+          <Text onClick={() => setShowCancelModal(true)} className={style.cancelText}>
             Looking to cancel your pass? Click here.
           </Text>
         </Box>
@@ -371,7 +369,7 @@ const SubscriptionSection = ({
               planPrice="FREE"
               color="#C5D8FF"
               benefitText="Access a single Zoolife habitat"
-              disabled={productId}
+              disabled={!!productId}
               buttonLabel={productId === 'FREEMIUM' ? 'Current' : 'Select'}
               onClickHandler={() => route('/signup')}
             />
@@ -395,6 +393,7 @@ const SubscriptionSection = ({
           onConfirm={handleCancelDialogClose}
         />)}
       {loading && (<LoaderModal background="transparent" />)}
+      {showCancelModal && (<CancelSubscriptionModal onClose={() => setShowCancelModal(false)} />)}
     </>
   )
 };
@@ -419,5 +418,4 @@ export default connect((
   isSubscriptionActive,
 }), {
   setPlansAction: setPlans,
-  setSubscriptionDataAction: setSubscriptionData,
 })(SubscriptionSection);

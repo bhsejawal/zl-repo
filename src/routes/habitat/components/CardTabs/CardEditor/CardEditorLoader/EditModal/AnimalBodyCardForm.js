@@ -181,11 +181,11 @@ const PartInputCard = memo(({
               rows="5"
               data-prop="text"
               onChange={onChangeHandler}
-              maxLength="80"
+              maxLength="120"
             />
             <span className={style.bottomRight}>
               {part.text?.length ?? 0}
-              /80
+              /120
             </span>
           </div>
           {errors?.text && (

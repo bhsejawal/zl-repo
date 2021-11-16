@@ -2,23 +2,10 @@
 
 .info {
   display: flex;
-  padding-bottom: 22px;
-  border-bottom: 1px solid var(--lightGrey);
-}
+  padding: 8px 0 22px 0;
 
-
-.profileImgWrapper {
-  position: relative;
-  margin-right: 14px;
-  z-index: 1;
-
-  &.trailer {
-    margin: 14px 13px 0 6px;
-
-    .profileImg {
-      border: 4px solid white;
-      margin-top: 0;
-    }
+  @media screen and (min-width: #{$phone-landscape-width}) {
+    border-bottom: 1px solid var(--lightGrey);
   }
 }
 
@@ -26,63 +13,12 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
-}
+  margin-left: 30px;
 
-.background {
-  height: 130px;
-  width: 130px;
-  border-radius: 50%;
-  background: linear-gradient(285deg, rgba(255,165,175, 1) 0%, rgba(255,199,167,1) 50%, rgba(255,163,175,1) 100%);
-  position: absolute;
-  top: 0;
-  left: 0;
-  transform: translate3d(-5px, -5px, 0px);
-  cursor: pointer;
-}
-
-.interactive {
-  cursor: pointer;
-}
-
-.profileImg {
-  width: 120px;
-  height: 120px;
-  margin-top: 8px;
-  position: relative;
-  border: 0;
-  border-radius: 50%;
-
-  > div {
-    width: 100%;
-    height: 100%;
-    border-radius: 100%;
-    overflow: hidden;
+  @media screen and (max-width: #{$tablet-portrait-width}) {
+    margin: 0;
+    padding: 0 20px;
   }
-
-  img {
-    width: 100%;
-    height: 100%;
-  }
-}
-
-.favBtn {
-  display: flex;
-  position: absolute;
-  bottom: 2px;
-  right: 2px;
-  background-color: #fff;
-  padding: 10px;
-  border-radius: 100%;
-  border: 0;
-  box-shadow: 0px 4px 4px rgba(0, 0, 0, .25);
-  cursor: pointer;
-  z-index: 5;
-}
-
-.mask {
-  position: absolute;
-  top: 0;
-  right: 0;
 }
 
 .name {
@@ -102,18 +38,65 @@
   }
 }
 
-.mobile {
 
-  &.profileImgWrapper {
-    margin-right: 30px;
+.profileImgContainer {
+  display: flex;
+  width: 110px;
+  height: 110px;
+  flex-shrink: 0;
+  position: relative;
+  border-radius: 50%;
+
+  @media screen and (max-width: #{$tablet-landscape-width}) {
+    width: 105px;
+    height: 105px;
   }
 
-  .profileImg {
-    margin-right: 0;
-    z-index: 0;
+  @media screen and (max-width: #{$phone-landscape-width}) {
+    margin-left: 6px;
   }
 
-  .mask {
-    display: none;
+  .wrapper {
+    border-radius: inherit;
+    height: 100%;
+    width: 100%;
+  }
+
+  .imageWrapper img {
+    border-radius: 50%;
+    max-width: 100%;
+  }
+
+  .favBtn {
+    display: flex;
+    position: absolute;
+    bottom: 2px;
+    right: 2px;
+    background-color: #fff;
+    padding: 10px;
+    border-radius: 100%;
+    border: 0;
+    box-shadow: 0 4px 4px rgba(0, 0, 0, .25);
+    cursor: pointer;
+    z-index: 5;
+  }
+
+  &.trailer {
+    background: linear-gradient(285deg, rgba(255,165,175, 1) 0%, rgba(255,199,167,1) 50%, rgba(255,163,175,1) 100%);
+    cursor: pointer;
+
+    .wrapper {
+      display: flex;
+      width: calc(100% - 10px);
+      height: calc(100% - 10px);
+      margin: auto;
+      border: 4px solid white;
+
+      // Edit image component wrapper
+      > div {
+        width: 100%;
+        height: 100%;
+      }
+    }
   }
 }

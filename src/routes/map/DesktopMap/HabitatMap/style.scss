@@ -1,21 +1,43 @@
+@import "../../../../style/media-query";
+
 .map {
   align-self: center;
-  margin-left: auto;
   display: flex;
   flex-grow: 1;
   align-items: center;
-  padding-left: 20px;
+  width: 100%;
 
   .wrapper {
     position: relative;
-    max-width: 100%;
+    width: 100%;
     max-height: 100%;
     height: fit-content;
+
+    > img {
+      max-height: 100vh;
+      width: 100%;
+    }
+  }
+
+  .description {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    max-width: 360px;
+
+    &.habitatSelected {
+      justify-content: start;
+
+      > div {
+        position: relative;
+        width: fit-content;
+      }
+    }
   }
 
   .habitat {
-    width: 45px;
-    height: 60px;
+    width: 80px;
+    height: 80px;
     position: absolute;
     transform: translate(-25%, -100%);
     cursor: pointer;
@@ -81,16 +103,45 @@
 
     .profile {
       position: absolute;
-      width: 36px;
-      transform: translate(6px, 5px);
+      width: 72px;
+      transform: translate(8px, 8px);
       border-radius: 50%;
     }
   }
+}
 
-  img {
-    max-height: 80vh;
-    width: auto;
-    max-width: 100%;
+.card {
+  margin: 0px;
+  min-width: 310px;
+  max-width: 310px;
+  min-height: 340px;
+  max-height: 340px;
+}
+
+.closeBtn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 10;
+}
+
+@media screen and (max-width: #{$tablet-portrait-width}) {
+
+  .map {
+    
+    .description {
+      display: flex;
+      flex-direction: revert;
+      max-width: initial;
+
+      > div:first-child {
+        padding-right: 20px;
+      }
+    }
+  }
+
+  .closeBtn {
+    right: 30px;
   }
 }
 

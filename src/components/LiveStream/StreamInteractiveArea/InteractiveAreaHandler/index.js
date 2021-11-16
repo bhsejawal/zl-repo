@@ -12,6 +12,7 @@ import { createPortal } from 'preact/compat';
 import { GlobalsContext } from 'Shared/context';
 import { buildURL, post } from 'Shared/fetch';
 import ClickMessageTip from 'Components/ClickMessageTip';
+import { EMOJI_ANIMATION_TIME } from 'Components/LiveStream/constants';
 
 import { addUserInteraction, updateUserProperty } from '../../../../redux/actions';
 
@@ -21,14 +22,15 @@ import { useCursorHook } from '../CustomCursor/hooks';
 import style from './style.scss';
 
 import { FULL_CURSOR, LOADING } from '../CustomCursor/constants';
-import {getConfig} from '../../../../helpers';
+import { getConfig } from '../../../../helpers';
 import { useIsMobileSize } from '../../../../hooks';
 
-const validDropTypes = ['emoji', 'cursorPin'];
+const validDropTypes = ['emoji'];
 
 const CursorPortal = ({ children }) => createPortal(children, document.body);
 
 const InteractiveAreaHandler = ({
+  cameraId,
   userId,
   habitatId,
   animal,
@@ -57,19 +59,23 @@ const InteractiveAreaHandler = ({
         clearTimeout(timeout);
       }
     }
-  }, [cursorState]);
+  }, [cursorState, configs]);
 
   useEffect(() => {
-    if (socket) {
-      socket.on('propagateClick', (clickData) => addUserInteractionAction({ ...clickData }));
+    const onPropagateClick = (data) => addUserInteractionAction({ ...data });
+    const onEmoji = (data) => addUserInteractionAction({
+      ...data, type: 'emoji', ttl: EMOJI_ANIMATION_TIME,
+    });
 
-      //  type is here to support cross emotes from twitch, we can remove this later
-      socket.on('emoji', (emoteData) => addUserInteractionAction({ ...emoteData, type: 'emoji' }));
+    if (socket) {
+      socket.on('propagateClick', onPropagateClick);
+      socket.on('emoji', onEmoji);
     }
 
     return () => {
       if (socket) {
-        socket.off('propagateClick', (clickData) => addUserInteractionAction({ ...clickData }));
+        socket.off('propagateClick', onPropagateClick);
+        socket.off('emoji', onEmoji);
       }
     };
   }, [socket, addUserInteractionAction]);
@@ -85,8 +91,9 @@ const InteractiveAreaHandler = ({
     const normalizedX = (clientX - leftSpacing) / containerRef.current.offsetWidth;
     const normalizedY = (clientY - topSpacing) / containerRef.current.offsetHeight;
 
-    socket.emit('zl_userClickedStream', {
-      room: habitatId,
+    socket.emit('userClickedStream', {
+      habitatId,
+      cameraId,
       userId,
       animal,
       color,
@@ -107,6 +114,7 @@ const InteractiveAreaHandler = ({
     habitatId,
     color,
     userId,
+    cameraId,
     cursorState,
     isStreamClicked,
     updateUserPropertyAction,
@@ -132,35 +140,14 @@ const InteractiveAreaHandler = ({
     const x = (evt.clientX - leftSpacing) / offsetWidth;
     const y = (evt.clientY - topSpacing) / offsetHeight;
 
-    if (type === 'cursorPin') {
-      // This is under validation, so we're not supporting multiple
-      // colors/animals yet
-      socket.emit('zl_userClickedStream', {
-        room: habitatId,
-        userId,
-        token: '',
-        normalizedX: x.toPrecision(3),
-        normalizedY: y.toPrecision(3),
-        type,
-      });
-
-      return;
-    }
-
     if (type === 'emoji') {
       const path = (new URL(url)).pathname;
       const decodedUrl = decodeURI(url);
       if (availableEmojis.includes(decodedUrl)) {
-        addUserInteractionAction({
-          x: x * 100,
-          y: y * 100,
-          type,
-          path,
-        });
-
-        socket.emit('zl_emoji', {
+        socket.emit('userDroppedEmoji', {
           userId,
-          channelId: habitatId,
+          habitatId,
+          cameraId,
           path,
           x: x * 100,
           y: y * 100,
@@ -207,8 +194,6 @@ const InteractiveAreaHandler = ({
 
 export default connect(({
   user: {
-    // TODO: not sure what type of userId is this
-    // maybe we should use mongodb _id here
     userId,
     profile: {
       animalIcon: animal,
@@ -220,12 +205,13 @@ export default connect(({
     habitatInfo: {
       _id: habitatId,
       emojiDrops: emojis = [],
-      camera: { configs },
+      selectedCamera: { configs, _id: cameraId },
       streamStarted,
     },
   },
 }) => ({
   userId,
+  cameraId,
   animal,
   color,
   habitatId,

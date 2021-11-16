@@ -38,12 +38,9 @@ const RecordVideoButton = ({
   });
 
   useEffect(() => {
-    if (showModal) post('/videos/clip', { streamId });
-  }, [post, streamId, showModal]);
-
-  useEffect(() => {
     if (data?.videoURL && data?.duration) {
       setVideoData(data);
+      setShowModal(true);
     }
 
     if (error) {
@@ -59,7 +56,7 @@ const RecordVideoButton = ({
 
   const onClickHandler = () => {
     setVideoData({});
-    setShowModal(true);
+    post('/videos/clip', { streamId });
     setClipButtonClickedAction(true);
   };
 
@@ -115,7 +112,9 @@ export default connect(({
   user: { clipButtonClicked: isClicked },
   habitat: {
     habitatInfo: {
-      streamKey,
+      selectedCamera: {
+        streamKey,
+      },
       slug: habitatSlug,
       zoo: {
         slug: zooSlug,

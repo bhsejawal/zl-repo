@@ -46,7 +46,12 @@ import SmallScreenCardTabs from './components/CardTabs/Mobile';
 import PMMCModal from './components/PMMCModal';
 
 import { useIsHabitatTabbed, useShowMobileControls, useWindowResize } from '../../hooks';
-import { setHabitat, unsetHabitat, setHabitatProps } from './actions';
+import {
+  setHabitat,
+  unsetHabitat,
+  setHabitatProps,
+  handleCameraUpdate,
+} from './actions';
 import { setUserData, setHabitatViewers } from '../../redux/actions';
 
 import { generateTitle, getDeviceType } from '../../helpers';
@@ -77,6 +82,7 @@ const Habitat = ({
   streamKey,
   isStreamOn,
   habitatId,
+  cameraId,
   title,
   habitatSlug,
   zooName,
@@ -95,11 +101,8 @@ const Habitat = ({
   setHabitatPropsAction,
   setUserDataAction,
   setHabitatViewersAction,
+  handleCameraUpdateAction,
 }) => {
-  // this will be undefined most of the time
-  // but in case camera is changed, this value will be set by from socket message
-  // and it will trigger habitat request to update it
-  const [cameraId, setCameraId] = useState();
   const loadedRef = useRef(false);
   const { width: windowWidth } = useWindowResize();
   const size = useContext(ResponsiveContext);
@@ -111,6 +114,7 @@ const Habitat = ({
   const isTabbed = useIsHabitatTabbed();
   const [showPMMCModal, setShowPPMCModal] = useState(false);
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const staticViewers = useMemo(() => Math.floor(Math.random() * 5) + 2, [habitatId]);
 
   useEffect(() => {
@@ -147,13 +151,24 @@ const Habitat = ({
   }, [socket, habitatId, userId]);
 
   useEffect(() => {
+    if (socket && userId && cameraId) {
+      socket.emit('joinRoom', { room: cameraId, userId });
+    }
+    return () => {
+      if (socket && cameraId) {
+        socket.emit('leaveRoom', { room: cameraId });
+      }
+    }
+  }, [socket, cameraId, userId]);
+
+  useEffect(() => {
     const onStreamUpdated = ({ isHostStreamOn, isStreamOn }) => {
       setHabitatPropsAction({ isHostStreamOn, isStreamOn })
     };
 
-    const onCameraChange = ({ camId }) => {
-      setCameraId(camId);
-    };
+    const onCameraStatusChange = ({ availableCameras }) => {
+      handleCameraUpdateAction(availableCameras);
+    }
 
     const onViewersCount = ({ count }) => {
       setHabitatViewersAction(count + staticViewers);
@@ -161,23 +176,29 @@ const Habitat = ({
 
     if (socket) {
       socket.on('streamUpdated', onStreamUpdated);
-      socket.on('cameraChanged', onCameraChange);
       socket.on('viewers-count', onViewersCount);
+      socket.on('camera-status-changed', onCameraStatusChange);
     }
 
     return () => {
       if (socket) {
         socket.off('streamUpdated', onStreamUpdated);
-        socket.off('cameraChanged', onCameraChange);
         socket.off('viewers-count', onViewersCount);
+        socket.off('camera-status-changed', onCameraStatusChange);
       }
     }
-  }, [socket, setHabitatPropsAction, setHabitatViewersAction]);
+  }, [
+    socket,
+    setHabitatPropsAction,
+    setHabitatViewersAction,
+    staticViewers,
+    handleCameraUpdateAction,
+  ]);
 
   const { loading: habitatLoading, error, response } = useFetch(
     buildURL(`/zoos/${zooName}/habitats/${habitatSlug}`),
     { credentials: 'include', cachePolicy: 'no-cache' },
-    [zooName, habitatSlug, cameraId],
+    [zooName, habitatSlug],
   );
 
   loadedRef.current = loadedRef.current || !habitatLoading;
@@ -280,7 +301,7 @@ const Habitat = ({
               {!isStreamOn && (
                 <>
                   <OfflineContent width={streamWidth} height={height} />
-                  {(hasPermission('habitat:edit-stream') || hasPermission('habitat:switch-stream')) && <AdminButton />}
+                  {hasPermission('habitat:edit-stream') && <AdminButton />}
                 </>
 
               )}
@@ -349,12 +370,12 @@ const ConnectedHabitat = connect(
   ({
     habitat: {
       habitatInfo: {
-        streamKey,
         _id: habitatId,
         title,
         isStreamOn,
         hostStreamKey,
         isHostStreamOn,
+        selectedCamera: camera,
       },
     },
     mainStream: { interactionState: { isBroadcasting } },
@@ -369,8 +390,9 @@ const ConnectedHabitat = connect(
       } = {},
     },
   }) => ({
-    streamKey,
+    streamKey: camera?.streamKey,
     habitatId,
+    cameraId: camera?._id || '',
     title,
     userId,
     isStreamOn,
@@ -390,6 +412,7 @@ const ConnectedHabitat = connect(
     setHabitatPropsAction: setHabitatProps,
     setUserDataAction: setUserData,
     setHabitatViewersAction: setHabitatViewers,
+    handleCameraUpdateAction: handleCameraUpdate,
   },
 )(Habitat);
 

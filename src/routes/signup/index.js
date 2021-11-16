@@ -5,7 +5,7 @@ import {
   useEffect,
   useCallback,
 } from 'preact/hooks';
-import { Link } from 'preact-router';
+import { Link, route } from 'preact-router';
 import { connect } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faEyeSlash } from "@fortawesome/pro-solid-svg-icons";
@@ -20,7 +20,7 @@ import { loadStripe } from '@stripe/stripe-js/pure';
 import { buildURL, post } from 'Shared/fetch';
 import classnames from 'classnames';
 import SocialLoginBar from 'Components/SocialLoginBar';
-import { PrimaryButton } from 'Components/Buttons';
+import { PrimaryButton, OutlineButton } from 'Components/Buttons';
 import { openTermsModal } from 'Components/TermsAndConditions/actions';
 import { logPageViewGA } from 'Shared/ga';
 
@@ -190,12 +190,22 @@ const Signup = ({
     openTermsModalAction(false, type);
   };
 
+  const onLogin = () => {
+    route('/login');
+  }
+
   if (!sessionChecked || logged) {
     return null;
   }
 
   return (
-    <Box fill width={{ max: "var(--maxWidth)", min: "350px" }} height={{ min: 'max-content' }} margin={{ horizontal: 'auto' }}>
+    <Box fill width={{ max: 'var(--maxWidth)', min: '350px' }} height={{ min: 'max-content' }} margin={{ horizontal: 'auto' }}>
+      <Box direction="row" align="center" background="none" className={style.topNavigationContainer}>
+        <Text>
+          Have an account?
+        </Text>
+        <OutlineButton size="medium" label="Sign In" height="30px" margin={{ left: '16px' }} width={{ min: '85px' }} onClick={onLogin} />
+      </Box>
       <Layout>
         <Box direction="row" align="center" height="auto">
           <Heading level="2">Try zoolife free.</Heading>
@@ -227,6 +237,7 @@ const Signup = ({
                   placeholder="8+ characters with at least 1 number"
                   value={password}
                   onChange={onPasswordChange}
+                  className={classnames({[style.errorBorder]: passwordError})}
                   style={{ fontSize: (!password ? '11px' : '20px') }}
                 />
                 <button type="button" onClick={() => setShowPassword(!showPassword)}>
@@ -266,10 +277,10 @@ const Signup = ({
             <br />
           </form>
         </Box>
-        <Box margin={{ top: "30px", bottom: '20px' }}>
+        <Box margin={{ top: '30px', bottom: '20px' }} className={style.navigationContainer}>
           <Text>
-            Already have an account?&nbsp;
-            <Link href="/login" className="small">Log In</Link>
+            Have an account?&nbsp;
+            <Link href="/login" className="small">Sign In</Link>
           </Text>
         </Box>
 

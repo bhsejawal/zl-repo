@@ -181,7 +181,8 @@ const Stream = ({
               />
               <VideoControls
                 ref={videoRef}
-                showControls={showControls}
+                showControls={true}
+                showSwitchCameraControl={mode !== 'liveTalk'}
                 showPlayControl={mode !== 'liveTalk'}
                 showVolumeControl
                 showFullscreenControl
@@ -201,7 +202,7 @@ const Stream = ({
             />
           )}
 
-          {(interactive && isStreamOn && (hasPermission('habitat:edit-stream') || hasPermission('habitat:switch-stream'))) && <AdminButton />}
+          {(interactive && isStreamOn && hasPermission('habitat:edit-stream')) && <AdminButton />}
         </div>
 
         {/* mobile controls */}
@@ -220,7 +221,7 @@ const Stream = ({
         {streamStatus === ERROR && (
           <>
             <Fallback type="error" />
-            {(interactive && (hasPermission('habitat:edit-stream') || hasPermission('habitat:switch-stream'))) && <AdminButton />}
+            {interactive && hasPermission('habitat:edit-stream') && <AdminButton />}
           </>
         )}
       </div>

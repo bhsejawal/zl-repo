@@ -52,18 +52,22 @@ export const updateFavoriteHabitat = (habitatId) => ({
 let interactionId = 0;
 const newUserInteraction = (payload) => ({
   type: ADD_USER_INTERACTION,
-  payload: { ...payload, interactionId },
+  payload: { ...payload },
 });
 
-const removeUserInteraction = () => ({ type: REMOVE_USER_INTERACTION });
+const removeUserInteraction = (interactionId) => ({
+  type: REMOVE_USER_INTERACTION,
+  payload: { interactionId },
+});
 
 export const addUserInteraction = (payload) => (dispatch, getState) => {
-  const configs = get(getState(), 'habitat.habitatInfo.camera.configs', []);
+  const configs = get(getState(), 'habitat.habitatInfo.selectedCamera.configs', []);
   const { configValue: votingTime } = getConfig(configs, 'ptu.votingTime');
+  // eslint-disable-next-line no-plusplus
+  const id = ++interactionId;
 
-  interactionId += 1;
-  dispatch(newUserInteraction(payload));
-  setTimeout(() => dispatch(removeUserInteraction()),
+  dispatch(newUserInteraction({ ...payload, interactionId: id }));
+  setTimeout(() => dispatch(removeUserInteraction(id)),
     payload.ttl || Number(votingTime) + 1000);
 }
 

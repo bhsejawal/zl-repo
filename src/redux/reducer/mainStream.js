@@ -82,9 +82,11 @@ export default (state = initialState, { type, payload }) => {
     }
 
     case REMOVE_USER_INTERACTION: {
+      const { interactionId: id } = payload;
+
       return {
         ...state,
-        userInteractions: state.userInteractions.slice(1),
+        userInteractions: state.userInteractions.filter((item) => item.interactionId !== id),
       }
     }
 

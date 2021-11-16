@@ -113,7 +113,7 @@ const Menu = ({ unsetUserDataAction, openContactUsModalAction }) => {
             pad={{ horizontal: '15px' }}
             direction="row"
             align="center"
-            onClick={() => route('/account')}
+            onClick={() => route('/account/info')}
           >
             <FontAwesomeIcon icon={faCog} />
             <Box margin={{ left: '12px' }}>

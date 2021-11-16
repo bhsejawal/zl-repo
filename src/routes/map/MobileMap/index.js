@@ -4,8 +4,6 @@ import { connect } from 'react-redux';
 import { Heading, Text, Box } from 'grommet';
 
 import HabitatMobileCard from './HabitatMobileCard';
-import background from './mapFooter.png';
-import headerImage from './mapHeader.png';
 
 import style from '../style.scss';
 
@@ -24,8 +22,8 @@ const Map = ({ allHabitats, onShowTrailer }) => {
 
   return (
     <Box className={style.map}>
-      <img src={background} className={style.bottomImage} alt="Map Top" />
-      <img src={headerImage} className={style.headerImage} alt="Map Background" />
+      <img src="https://assets.zoolife.tv/mapFooter.png" className={style.bottomImage} alt="Map Top" />
+      <img src="https://assets.zoolife.tv/mapHeader.png" className={style.headerImage} alt="Map Background" />
       <Box pad={{ horizontal: "20px", top: '90px', bottom: '20px' }} style={{ zIndex: 2 }} height={{ min: 'fit-content'}} >
         <Box
           background="white"
