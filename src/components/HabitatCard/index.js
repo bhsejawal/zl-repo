@@ -126,6 +126,7 @@ const HabitatCard = ({
       liveTalk={liveTalk}
       image={image}
       logo={logo}
+      free={subscription.freeHabitat === habitatId}
     >
       <div style={{ flexGrow: 1 }}>
         <div className={style.titleSection}>

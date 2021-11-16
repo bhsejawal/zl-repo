@@ -14,6 +14,7 @@ const BaseHabitatCard = ({
   image,
   logo,
   children,
+  free = false,
 }) => (
   <div className={classnames(style.habitatCard, className)}>
     <div className={classnames(style.header, {[style.fallback]: !image})}>
@@ -21,7 +22,7 @@ const BaseHabitatCard = ({
       <div className={style.logo}>
         <img src={logo ?? zooPlaceholder} alt="" />
       </div>
-      <HabitatStatus className={style.tag} online={online} liveTalk={liveTalk} />
+      <HabitatStatus className={style.tag} online={online} liveTalk={liveTalk} free={free} />
     </div>
     <div className={style.body}>
       {children}

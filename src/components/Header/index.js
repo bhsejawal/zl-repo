@@ -1,5 +1,5 @@
 import { h } from 'preact';
-import { useState, useMemo } from 'preact/hooks';
+import { useState, useMemo, useEffect } from 'preact/hooks';
 import { connect } from 'react-redux';
 import { Box, Header } from 'grommet';
 import {
@@ -27,11 +27,15 @@ import style from './style.scss';
 const cutOffWidth = 950;
 const searchBarWidth = 414;
 
-const HeaderComponent = ({ unsetUserDataAction, openContactUsModalAction }) => {
+const HeaderComponent = ({ unsetUserDataAction, openContactUsModalAction, url }) => {
   const { width } = useWindowResize();
   const isSmallScreen = useIsMobileSize();
   const containableSearchBar = useMemo(() => width > searchBarWidth, [width]);
   const [searchShow, setSearchShow] = useState(containableSearchBar);
+
+  useEffect(() => {
+    setSearchShow(containableSearchBar);
+  }, [containableSearchBar, url])
 
   const logout = useLogout(unsetUserDataAction);
 
@@ -52,7 +56,7 @@ const HeaderComponent = ({ unsetUserDataAction, openContactUsModalAction }) => {
           <UserMenu />
         </div>
       ) : (
-        <div>
+        <div className={style.searchWrapper}>
           <Search
             className={style.searchContainer}
             switchableSearch={!containableSearchBar}
