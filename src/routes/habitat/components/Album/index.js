@@ -170,11 +170,12 @@ const Album = ({
                   comments,
                   usersLike,
                   previewURL,
+                  thumbnailURL,
                 }) => (
                   <MediaContent
                     key={_id}
                     id={_id}
-                    image={url ?? previewURL}
+                    image={thumbnailURL || url || previewURL}
                     disabled={disabled}
                     accessControlButtonHandler={openConfirmActionModal}
                     type={type}
