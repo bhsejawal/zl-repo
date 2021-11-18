@@ -75,7 +75,6 @@ const MobileOnboarding = ({ updateOnboarding, error }) => {
               >
                 <div className={style.content}>
                   <img src="https://assets.zoolife.tv/onboardingSlide1.png" alt="1" />
-                  <span className={style.step}>ZOOLIFE TIP 1/2</span>
                   <Heading level="2" margin="8px 0 40px 0">
                     <span className={style.blue}>Tap&nbsp;</span>
                     the stream to move the camera!
@@ -84,7 +83,6 @@ const MobileOnboarding = ({ updateOnboarding, error }) => {
 
                 <div className={style.content}>
                   <img src="https://assets.zoolife.tv/onboardingSlide2.png" alt="2" />
-                  <span className={style.step}>ZOOLIFE TIP 2/2</span>
                   <Heading level="2" margin="8px 0 40px 0">
                     Tune into live
                     <span className={style.blue}>&nbsp;Expert Talks&nbsp;</span>
