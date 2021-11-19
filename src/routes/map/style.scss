@@ -29,22 +29,25 @@
 
   .content {
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     height: auto;
     width: 100%;
+    position: relative;
   }
 
 }
 
-@media screen and (max-width: #{$tablet-portrait-width}) {
 
-  .map {
+.settingContainer {
+  position: absolute;
+  z-index: 1;
+  top: 40px;
+  right: 0;
 
-    .content {
-      flex-direction: column;
-      padding: 0 20px;
-      align-items: center;
-    }
+  > div {
+    margin-top: 15px;
+    align-self: flex-end;
+    width: 170px;
   }
 }
 

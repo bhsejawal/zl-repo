@@ -172,7 +172,7 @@ const HabitatMap = ({
       <Can
         perform="maps:edit"
         yes={() => (
-          <Box margin={{ top: '20px' }} alignSelf="end" pad={{ right: '25px', bottom: '4px'}}>
+          <Box margin={{ top: '20px' }} alignSelf="end" pad={{ right: '25px', bottom: '4px'}} style={{ position: 'absolute', bottom: 0 }}>
             {!coordinates && (
               <Heading level="4" color="var(--blueDark)" textAlign="end" margin={{ vertical: '0px'}}>Click on map to show location percentages</Heading>
             )}
