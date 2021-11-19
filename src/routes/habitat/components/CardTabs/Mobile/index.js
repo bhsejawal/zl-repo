@@ -19,6 +19,11 @@ import {
   openModalQuestions,
   openModalSchedules,
   openModalAlbum,
+  closeModalCards,
+  closeModalAlbum,
+  closeModalQuestions,
+  closeModalCalendar,
+  closeModalSchedules,
 } from './actions';
 import {
   BODY,
@@ -51,10 +56,15 @@ const SmallScreenCardTabs = ({
   setLoadingAction,
   setCardsAction,
   openModalCardsAction,
+  closeModalCardsAction,
   openModalCalendarAction,
+  closeModalCalendarAction,
   openModalQuestionsAction,
+  closeModalQuestionsAction,
   openModalSchedulesAction,
+  closeModalSchedulesAction,
   openModalAlbumAction,
+  closeModalAlbumAction,
 }) => {
   const { get } = useFetch(API_BASE_URL, {
     credentials: 'include',
@@ -109,6 +119,83 @@ const SmallScreenCardTabs = ({
     }
   };
 
+  useEffect(() => {
+    const queryString = window.location.search;
+    const urlParams = new URLSearchParams(queryString);
+    const activeCard = urlParams.get('card');
+
+    const openCardModal = (cardType) => {
+      switch (cardType) {
+        case 'album': {
+          openModalAlbumAction();
+          break;
+        }
+
+        case 'species': {
+          onCardBtnClick(INFO);
+          break;
+        }
+
+        case 'family': {
+          onCardBtnClick(MEET);
+          break;
+        }
+
+        case 'questions': {
+          openModalQuestionsAction();
+          break;
+        }
+
+        case 'schedules': {
+          openModalSchedulesAction();
+          break;
+        }
+
+        case 'calendar': {
+          openModalCalendarAction();
+          break;
+        }
+
+        case 'body': {
+          onCardBtnClick(BODY);
+          break;
+        }
+
+        case 'quiz': {
+          onCardBtnClick(QUIZ);
+          break;
+        }
+
+        default: {
+          break;
+        }
+      }
+    };
+
+    // this checks if there is any card modal should be open, if not close all card modals
+    const onPopState = () => {
+      const cardType = new URLSearchParams(window.location.search).get('card');
+
+      if (!cardType) {
+        closeModalCardsAction();
+        closeModalAlbumAction();
+        closeModalQuestionsAction();
+        closeModalCalendarAction();
+        closeModalSchedulesAction();
+      } else {
+        openCardModal(cardType);
+      }
+    }
+
+    // this is triggered on both back and forward browser navigation
+    window.addEventListener('popstate', onPopState);
+
+    openCardModal(activeCard);
+
+    return () => window.removeEventListener('popstate', onPopState);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   return (
     <>
       <Box
@@ -118,6 +205,7 @@ const SmallScreenCardTabs = ({
         overflow={{ horizontal: 'auto' }}
       >
         <Tab
+          param="album"
           title="Album"
           description="Updates, photos, clips, past talks, and more"
           onClick={openModalAlbumAction}
@@ -126,6 +214,7 @@ const SmallScreenCardTabs = ({
         />
 
         <Tab
+          param="species"
           title="The Species"
           description="Learn about their habitat, behaviour, and more"
           onClick={() => onCardBtnClick(INFO)}
@@ -134,6 +223,7 @@ const SmallScreenCardTabs = ({
         />
 
         <Tab
+          param="family"
           title="The Family"
           description="Get to know the members of this habitat"
           onClick={() => onCardBtnClick(MEET)}
@@ -142,6 +232,7 @@ const SmallScreenCardTabs = ({
         />
 
         <Tab
+          param="questions"
           title="Q&A"
           description="Ask questions and start discussions"
           onClick={openModalQuestionsAction}
@@ -151,6 +242,7 @@ const SmallScreenCardTabs = ({
 
         {hasPermission('habitat:edit-schedule') && (
           <Tab
+            param="calendar"
             title="Calendar"
             description="See when this habitat is online and event times"
             onClick={openModalCalendarAction}
@@ -160,6 +252,7 @@ const SmallScreenCardTabs = ({
         )}
 
         <Tab
+          param="schedules"
           title="Schedules"
           description="See when this habitat is online and event times"
           onClick={openModalSchedulesAction}
@@ -168,6 +261,7 @@ const SmallScreenCardTabs = ({
         />
 
         <Tab
+          param="body"
           title="The Body"
           description="Explore different parts of the animal body"
           onClick={() => onCardBtnClick(BODY)}
@@ -176,6 +270,7 @@ const SmallScreenCardTabs = ({
         />
 
         <Tab
+          param="quiz"
           title="Quiz"
           description="Test your knowledge of the species with a fun quiz"
           onClick={() => onCardBtnClick(QUIZ)}
@@ -237,9 +332,14 @@ export default connect(
     setCardsAction: setCards,
     setLoadingAction: setLoading,
     openModalCardsAction: openModalCards,
+    closeModalCardsAction: closeModalCards,
     openModalCalendarAction: openModalCalendar,
+    closeModalCalendarAction: closeModalCalendar,
     openModalQuestionsAction: openModalQuestions,
+    closeModalQuestionsAction: closeModalQuestions,
     openModalSchedulesAction: openModalSchedules,
+    closeModalSchedulesAction: closeModalSchedules,
     openModalAlbumAction: openModalAlbum,
+    closeModalAlbumAction: closeModalAlbum,
   },
 )(SmallScreenCardTabs);

@@ -27,11 +27,16 @@ const CalendarModal = ({ closeAction }) => {
     closeAction();
   }, [closeAction]);
 
+  const closeHandler = () => {
+    closeAction();
+    window.history.back();
+  }
+
   return (
     <Grommet theme={fullLayerTheme}>
-      <Layer full onEsc={closeAction}>
+      <Layer full onEsc={closeHandler}>
         <Box fill>
-          <CloseButton onClick={closeAction} className={style.controls} />
+          <CloseButton onClick={closeHandler} className={style.controls} />
           <Box fill pad="small" overflow="auto">
             <CalendarLoader />
           </Box>

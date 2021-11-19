@@ -26,22 +26,28 @@ const fullLayerTheme = deepMerge(grommetTheme, {
 const SchedulesModal = ({ closeAction }) => {
   const [date, setDate] = useState(new Date());
 
-  const onChange = (value) => {
-    setDate(value);
-  }
-
+  // close on unmount
   useEffect(() => () => {
     closeAction();
   }, [closeAction]);
 
+  const onChange = (value) => {
+    setDate(value);
+  }
+
+  const closeHandler = () => {
+    closeAction();
+    window.history.back();
+  }
+
   return (
     <Grommet theme={fullLayerTheme}>
-      <Layer full onEsc={closeAction} background={{ color: '#F4F4F4' }}>
+      <Layer full onEsc={closeHandler} background={{ color: '#F4F4F4' }}>
         <Box fill className={style.container}>
           <div className={style.header}>
             <h3>Schedules</h3>
             <DatePicker date={date} onChange={onChange} />
-            <CloseButton onClick={closeAction} className={style.close} />
+            <CloseButton onClick={closeHandler} className={style.close} />
           </div>
           <div className={style.body}>
             <LiveTalks date={date} accordion />
