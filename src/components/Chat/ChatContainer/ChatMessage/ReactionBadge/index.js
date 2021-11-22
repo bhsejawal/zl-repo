@@ -8,12 +8,13 @@ const ReactionBadge = ({
   reaction,
   count,
   onClick,
+  isReaction,
 }) => (
   // eslint-disable-next-line
   <div
     className={classnames(
       style.reactionContainer,
-      style.alternate,
+      {[style.reacted]: isReaction },
     )}
     onClick={() => onClick(reaction)}
   >
