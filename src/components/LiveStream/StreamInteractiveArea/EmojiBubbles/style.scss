@@ -8,10 +8,12 @@
 }
 
 .emoji {
+  opacity: 0;
   position: absolute;
   width: 30px;
   bottom: -20px;
-  animation: float 2.5s;
+  // this number should be consistent with EMOJI_BUBBLE_ANIMATION_TIME
+  animation: float 4000ms;
 
   img {
     width: 100%;

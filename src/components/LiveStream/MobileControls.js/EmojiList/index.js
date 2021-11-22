@@ -12,7 +12,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTimes } from '@fortawesome/pro-solid-svg-icons';
 
 import { GlobalsContext } from 'Shared/context';
-import { EMOJI_ANIMATION_TIME } from 'Components/LiveStream/constants';
+import { EMOJI_BUBBLE_ANIMATION_TIME } from 'Components/LiveStream/constants';
 
 import style from './style.scss';
 
@@ -43,7 +43,7 @@ const EmojiList = ({
     setDisabled(true);
     disabledTimeoutRef.current = setTimeout(
       () => setDisabled(false),
-      EMOJI_ANIMATION_TIME,
+      EMOJI_BUBBLE_ANIMATION_TIME,
     );
   };
 
@@ -87,16 +87,18 @@ const EmojiList = ({
   );
 };
 
-export default connect(
-  ({
-    habitat: {
-      habitatInfo: { _id: habitatId, emojiDrops: emojis = [], camera: { _id: cameraId } },
+export default connect(({
+  habitat: {
+    habitatInfo: {
+      _id: habitatId,
+      emojiDrops: emojis = [],
+      selectedCamera: { _id: cameraId },
     },
-    user: { userId },
-  }) => ({
-    emojis,
-    userId,
-    habitatId,
-    cameraId,
-  }),
-)(EmojiList);
+  },
+  user: { userId },
+}) => ({
+  emojis,
+  userId,
+  habitatId,
+  cameraId,
+}))(EmojiList);
