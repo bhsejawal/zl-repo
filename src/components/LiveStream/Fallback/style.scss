@@ -26,3 +26,17 @@
     margin-top: 5px;
   }
 }
+
+.SendButton {
+  padding: 10px;
+  margin-left: 10px;
+  color: black;
+  background: white;
+  border-radius: 100px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 0;
+  height: 34px;
+  cursor: pointer;
+}
