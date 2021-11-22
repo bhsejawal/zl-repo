@@ -27,6 +27,7 @@ import AnimalIcon from 'Components/AnimalIcon';
 import RoundButton from 'Components/RoundButton';
 import VideoPlayer from 'Components/VideoPlayer';
 import ViewersCount from 'Components/ViewersCount/standalone';
+import CopyLink from 'Components/CopyLink';
 
 import { API_BASE_URL } from 'Shared/fetch';
 import { getDeviceType, androidDevice, iOSDevice } from '../../helpers';
@@ -309,6 +310,7 @@ const ShareModal = ({
                 </Text>
               </Box>
               <div className={style.shareButtons}>
+                <CopyLink link={url || videoURL} className={style.shareIcon} />
                 {!videoURL && (
                   <RoundButton
                     onClick={sendEmail}
@@ -324,7 +326,6 @@ const ShareModal = ({
                 )}
                 {isDownloadAllowed && (
                   <RoundButton
-                    type="button"
                     backgroundColor="#71475D"
                     color="white"
                     width={20}
@@ -344,7 +345,6 @@ const ShareModal = ({
                 {(androidDevice() || iOSDevice()) && htmlURL && (
                   <RoundButton
                     onClick={webShareHandler}
-                    type="button"
                     className={style.shareIcon}
                     backgroundColor="#1DA1F2"
                     color="white"
@@ -357,7 +357,6 @@ const ShareModal = ({
                 {!androidDevice() && !iOSDevice() && htmlURL && (
                   <>
                     <RoundButton
-                      type="button"
                       backgroundColor="#2174EE"
                       color="white"
                       width={20}
@@ -373,7 +372,6 @@ const ShareModal = ({
                       </a>
                     </RoundButton>
                     <RoundButton
-                      type="button"
                       backgroundColor="#1DA1F2"
                       color="white"
                       width={20}
