@@ -148,7 +148,7 @@ const HabitatCard = ({
             <Heading level="4" margin={{ vertical: "0px" }}>{title}</Heading>
           </Link>
         </div>
-        <Text size="xlarge" as="p">
+        <Text className={style.description} size="xlarge" as="p">
           {description}
         </Text>
       </div>
