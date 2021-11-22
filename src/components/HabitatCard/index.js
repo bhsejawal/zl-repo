@@ -126,6 +126,7 @@ const HabitatCard = ({
       liveTalk={liveTalk}
       image={image}
       logo={logo}
+      free={subscription.freeHabitat === habitatId}
     >
       <div style={{ flexGrow: 1 }}>
         <div className={style.titleSection}>
@@ -147,7 +148,7 @@ const HabitatCard = ({
             <Heading level="4" margin={{ vertical: "0px" }}>{title}</Heading>
           </Link>
         </div>
-        <Text size="xlarge" as="p">
+        <Text className={style.description} size="xlarge" as="p">
           {description}
         </Text>
       </div>

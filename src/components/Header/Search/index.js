@@ -16,7 +16,7 @@ import {
   Grommet,
 } from 'grommet';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSearch, faLockAlt, faTimes } from '@fortawesome/pro-solid-svg-icons';
+import { faSearch, faTimes } from '@fortawesome/pro-solid-svg-icons';
 import { deepMerge } from 'grommet/utils';
 import { differenceInMinutes } from 'date-fns';
 import classnames from 'classnames';
@@ -139,18 +139,11 @@ const Search = ({
               />
             </Box>
             <Text className={style.title}>{title}</Text>
-            {subscription.productId !== 'FREEMIUM' && (
-              <>
-                {windowWidth >= 460 && <HabitatStatus online={online} liveTalk={liveTalk} />}
-              </>
-            )}
-            {subscription.productId === 'FREEMIUM' && _id !== subscription.freeHabitat && (
-              <div className={classnames(style.lock, { [style.offline]: !online })}>
-                <div>
-                  <FontAwesomeIcon icon={faLockAlt} />
-                </div>
-              </div>
-            )}
+            <HabitatStatus
+              online={online}
+              liveTalk={liveTalk}
+              free={_id === subscription.freeHabitat}
+            />
           </Box>
         </Link>
       ),
@@ -212,7 +205,7 @@ const Search = ({
         </Box>
       )}
       {!searchShow && (
-        <Box onClick={() => setSearchShow(true)} className={style.searchClickIndicator}>
+        <Box onClick={() => setSearchShow(true)} className={style.searchClickIndicator} align="end">
           <FontAwesomeIcon
             icon={faSearch}
             color="var(--grey)"

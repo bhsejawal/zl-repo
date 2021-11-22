@@ -2,13 +2,14 @@
   min-width: 40px;
   width: fit-content;
   height: 25px;
-  background: #24412B;
+  background: #EBEBEB;
   border-radius: 100px;
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 5px;
   margin: 5px 0px;
+  color: #2E2D2D;
 
   img {
     margin-right: 5px;
@@ -16,20 +17,10 @@
     height: 15px;
   }
 
-  &.alternate {
-    background-color: #EBEBEB;
-  }
-
-
   &.reacted,
   &:hover {
     cursor: pointer;
-    background-color: white;
-    color: #2E2D2D;
-
-    &.alternate {
-      background-color: #9BB7F1;
-    }
+    background-color: #C5D8FF;
   }
 }
 

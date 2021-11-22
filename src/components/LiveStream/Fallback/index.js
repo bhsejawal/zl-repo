@@ -1,3 +1,6 @@
+import { h } from 'preact';
+import { useEffect, useState } from 'preact/hooks';
+import { getCurrentUrl } from 'preact-router';
 import { connect } from 'react-redux';
 import { faTimesCircle } from '@fortawesome/pro-regular-svg-icons';
 import { faPlay } from '@fortawesome/pro-solid-svg-icons';
@@ -24,12 +27,28 @@ const Fallback = ({
   openContactUsModalAction,
   onClick,
 }) => {
+  const [needRefresh, setRefresh] = useState(false);
   const isMobileSize = useIsMobileSize();
+
+  useEffect(() => {
+    if (type === 'loading') {
+      const timer = setTimeout(() => {
+        setRefresh(true);
+      }, 10000);
+      return () => {
+        clearTimeout(timer);
+      };
+    }
+    return () => {}
+  }, [type])
+
   const clickHandler = () => {
     if (typeof onClick === 'function') {
       onClick();
     }
   }
+
+  const loaderSize = isMobileSize ? '100px' : '200px';
 
   return (
     <Box
@@ -41,7 +60,7 @@ const Fallback = ({
       {type === 'loading' && (
         <>
           <Box height={mode === 'liveTalk' ? '50%' : ''}>
-            <Loader color="#ffffff" fill />
+            <Loader color="#ffffff" fill width={loaderSize} height={loaderSize} />
           </Box>
           <Box width={{ max: '80%' }} align="center">
             {mode === 'liveTalk' && (
@@ -51,13 +70,36 @@ const Fallback = ({
             )}
             {mode !== 'liveTalk' && (
               <>
-                <Heading level="3" color="white" margin={{ top: 'medium' }} textAlign="center">
+                <Heading level={isMobileSize ? 4 : 3} color="white" margin={{ top: 'medium' }} textAlign="center">
                   Hang in there, nature is coming!
                 </Heading>
-                <Text color="white" margin={{ top: 'large' }} size="large">
-                  Not loading?&nbsp;
-                  <Anchor color="white" className={style.contactUs} onClick={openContactUsModalAction}>Contact Us</Anchor>
-                </Text>
+                {needRefresh ? (
+                  <>
+                    <Box margin={{ top: isMobileSize ? 0 : 'medium' }} direction="row" align="center">
+                      <Text color="white" size="large">
+                        Not loading?&nbsp;
+                      </Text>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          window.location = getCurrentUrl();
+                        }}
+                        className={style.SendButton}
+                      >
+                        Try Refreshing
+                      </button>
+                    </Box>
+                    <Text color="white" margin={{ top: 'medium', bottom: 'small' }} size="medium">
+                      Still not working&nbsp;
+                      <Anchor color="white" className={style.contactUs} onClick={openContactUsModalAction}>Contact Us</Anchor>
+                    </Text>
+                  </>
+                ) : (
+                  <Text color="white" margin={{ top: 'large' }} size="large">
+                    Not loading?&nbsp;
+                    <Anchor color="white" className={style.contactUs} onClick={openContactUsModalAction}>Contact Us</Anchor>
+                  </Text>
+                )}
               </>
             )}
           </Box>

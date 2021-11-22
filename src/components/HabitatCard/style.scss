@@ -113,3 +113,14 @@
   align-items: center;
   margin-bottom: 15px;
 }
+
+// for more than 4 line shows ellipses in supported browsers
+// and hides in rest of them.
+.description {
+  display: -webkit-box;
+  height: 88px;
+  line-height: 22px;
+  overflow: hidden;
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;
+}

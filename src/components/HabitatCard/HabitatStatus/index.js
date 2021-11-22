@@ -8,11 +8,20 @@ import Tag from 'Components/Tag';
 
 import style from './style.scss';
 
-const HabitatStatus = ({ online, liveTalk, className }) => {
-  let label = online ? 'ONLINE' : 'OFFLINE'
-
-  if (online && liveTalk) {
-    label = 'LIVE TALK';
+const HabitatStatus = ({
+  online,
+  liveTalk,
+  free,
+  className,
+}) => {
+  let label = '';
+  if (free) {
+    label = 'FREE';
+  } else {
+    label = online ? 'ONLINE' : 'OFFLINE';
+    if (online && liveTalk) {
+      label = 'LIVE TALK';
+    }
   }
 
   const tagLabel = (

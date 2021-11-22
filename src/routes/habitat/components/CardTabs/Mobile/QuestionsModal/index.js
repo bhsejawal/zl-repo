@@ -28,11 +28,16 @@ const QuestionsModal = ({ closeAction }) => {
     closeAction();
   }, [closeAction]);
 
+  const closeHandler = () => {
+    closeAction();
+    window.history.back();
+  }
+
   return (
     <Grommet theme={fullLayerTheme}>
-      <Layer full onEsc={closeAction} background={{ color: '#F4F4F4' }}>
+      <Layer full onEsc={closeHandler} background={{ color: '#F4F4F4' }}>
         <Box fill className={style.container}>
-          <CloseButton onClick={closeAction} className={style.close} />
+          <CloseButton onClick={closeHandler} className={style.close} />
           <h4>Q&A</h4>
           <Box fill overflow="auto">
             <Questions />

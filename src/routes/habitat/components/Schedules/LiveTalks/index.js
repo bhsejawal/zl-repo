@@ -157,9 +157,9 @@ const LiveTalks = ({
 export default connect(
   ({
     habitat: {
-      habitatInfo: { animal, zoo: { name } },
+      habitatInfo: { title, zoo: { name } },
       schedulesTab: { liveTalks },
     },
-  }) => ({ animal, zoo: name, liveTalks }),
+  }) => ({ animal: title, zoo: name, liveTalks }),
   { setLiveTalksAction: setLiveTalks },
 )(LiveTalks);

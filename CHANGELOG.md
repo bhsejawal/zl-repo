@@ -3,6 +3,25 @@ This file keeps track of all relevant change for every release.
 
 ## [Unreleased]
 
+## [5.29.0] - 2021-11-22
+### Added
+- Copy URL button for media sharing
+- Try refreshing button when video does not load
+- Habitat card modals are served with URL parameter
+
+### Changed
+- Update reaction color
+- Update map to include banner and some enhancements
+- Use thumbnail for images and clips
+- Adjusting semaphore settings
+- Search dropdown remove lock and show tag on mobile and desktop
+
+### Fixed
+- Set max 4 line for description
+- Mobile emoji bubbles timing and functionality
+- Schedule talks not showing in habitat tab
+- Ensure onboarding text is always visible
+
 ## [5.28.0] - 2021-11-15
 ### Added
 - Subscription cancellation popup

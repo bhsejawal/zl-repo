@@ -7,7 +7,7 @@ import {
   useRef,
   useState,
 } from 'preact/hooks';
-import { batch, connect } from 'react-redux';
+import { connect } from 'react-redux';
 import {
   Box,
   Button,
@@ -36,12 +36,9 @@ import ViewersCount from 'Components/ViewersCount/standalone';
 import { hasPermission } from 'Components/Authorize';
 
 import { API_BASE_URL } from 'Shared/fetch';
-import { fetchCards } from '../../api';
-import { setCards, setLoading } from '../../actions';
 import {
   closeModalCards,
   nextCard,
-  openModalCards,
   prevCard,
   resetCardInd,
 } from '../actions';
@@ -56,16 +53,10 @@ import {
   SINGLE_VIDEO_CARD_TYPE,
   THREE_ICONS_CARD_TYPE,
   TWO_VIDEOS_CARD_TYPE,
-  MEET,
-  INFO,
-  BODY,
-  QUIZ,
 } from '../../constants';
 import grommetTheme from '../../../../../../grommetTheme';
 
 import style from './style.scss';
-
-const allCardTypes = [MEET, INFO, BODY, QUIZ];
 
 const fullLayerTheme = deepMerge(grommetTheme, {
   layer: {
@@ -91,15 +82,10 @@ const findVideoControlBtnAncestor = (el) => {
 };
 
 const MobileCardsModal = ({
-  habitatId,
   loading,
   cards,
-  activeMobileCardsTab,
   activeCardIndex,
   closeAction,
-  openModalCardsAction,
-  setLoadingAction,
-  setCardsAction,
   nextCardAction,
   prevCardAction,
   resetCardIndAction,
@@ -112,7 +98,7 @@ const MobileCardsModal = ({
   const [currentCardId, setCurrentCardId] = useState(null);
   const card = useMemo(() => cards?.[activeCardIndex], [activeCardIndex, cards]);
   const noTimedMove = [ANIMAL_BODY_CARD_TYPE, QUIZ_CARD_TYPE].includes(card?.type);
-  const { get, put } = useFetch(API_BASE_URL, {
+  const { put } = useFetch(API_BASE_URL, {
     credentials: 'include',
     cachePolicy: 'no-cache',
   });
@@ -143,8 +129,13 @@ const MobileCardsModal = ({
     if (!paused) {
       timeoutRef.current = setTimeout(() => {
         if (progress >= 100) {
-          setProgress(0);
-          nextCardAction(cardsLen);
+          if (activeCardIndex < (cardsLen - 1)) {
+            setProgress(0);
+            nextCardAction(cardsLen);
+          } else {
+            closeAction();
+            window.history.back();
+          }
         } else {
           setProgress(progress + 5);
         }
@@ -153,7 +144,7 @@ const MobileCardsModal = ({
       const timeout = timeoutRef.current;
       return () => clearInterval(timeout);
     }
-  }, [progress, paused, nextCardAction, cardsLen, activeCardIndex]);
+  }, [progress, paused, nextCardAction, cardsLen, activeCardIndex, closeAction]);
 
   useEffect(() => {
     setProgress(0);
@@ -162,22 +153,34 @@ const MobileCardsModal = ({
   // eslint-disable-next-line consistent-return
   const onClick = useCallback((evt) => {
     const { clientX, clientY, view } = evt;
+    const prevClick = clientX < 60 && activeCardIndex > 0;
+    const nextClick = view.innerWidth - clientX < 60;
 
-    // controls are on top and we'll just ignore this click if it's to close to controls
+    // controls are on top, so we'll just ignore this click if it's too close to controls
     if (clientY < 60) {
       return undefined;
     }
 
-    if (clientX < 60) {
-      clearTimeout(timeoutRef.current)
+    // quiz cards have no prev or next
+    if (cards[activeCardIndex]?.type === QUIZ_CARD_TYPE) {
+      return undefined;
+    }
+
+    if (prevClick) {
+      clearTimeout(timeoutRef.current);
       return prevCardAction();
     }
 
-    if (view.innerWidth - clientX < 60) {
-      clearTimeout(timeoutRef.current)
-      return nextCardAction(cardsLen);
+    if (nextClick) {
+      if (activeCardIndex < (cardsLen - 1)) {
+        clearTimeout(timeoutRef.current);
+        return nextCardAction(cardsLen);
+      }
+
+      closeAction();
+      return window.history.back();
     }
-  }, [cardsLen, nextCardAction, prevCardAction]);
+  }, [activeCardIndex, cards, cardsLen, closeAction, nextCardAction, prevCardAction]);
 
   const onTouchStart = useCallback((evt) => {
     const { view } = evt;
@@ -208,49 +211,6 @@ const MobileCardsModal = ({
     resetCardIndAction();
   }, [cards, resetCardIndAction]);
 
-  useEffect(() => {
-    const load = async (nextCardType) => {
-      batch(() => {
-        openModalCardsAction(nextCardType);
-        setLoadingAction(true);
-      });
-
-      try {
-        const { cards: newCards } = await fetchCards(habitatId, nextCardType);
-
-        await Promise.all(newCards.map(async (card) => {
-          // quiz cards have trivia question IDs in data which needs to be mapped
-          // into questions, and we also need to map answers
-          if (card.type === QUIZ_CARD_TYPE) {
-            const cardData = await get(`cards/${card._id}/questions`);
-            // eslint-disable-next-line no-param-reassign
-            card.data = cardData;
-          }
-        }));
-
-        setCardsAction(newCards);
-      } catch (err) {
-        // TODO: implement error UI
-        console.error(err);
-      } finally {
-        setLoadingAction(false);
-      }
-    };
-
-    if (activeCardIndex === cardsLen) {
-      const currentCardTypeInd = allCardTypes.indexOf(activeMobileCardsTab);
-      const nextInd = (currentCardTypeInd + 1) % allCardTypes.length;
-      const nextCardType = allCardTypes[nextInd];
-      load(nextCardType);
-    } else if (activeCardIndex === -1) {
-      const currentCardTypeInd = allCardTypes.indexOf(activeMobileCardsTab);
-      const prevInd = (allCardTypes.length + currentCardTypeInd - 1) % allCardTypes.length;
-      const prevCardType = allCardTypes[prevInd];
-      load(prevCardType);
-    }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [activeCardIndex, cardsLen]);
-
   // close on unmount
   useEffect(() => () => {
     closeAction();
@@ -268,7 +228,10 @@ const MobileCardsModal = ({
         <Button
           plain
           margin="small"
-          onClick={closeAction}
+          onClick={() => {
+            closeAction();
+            window.history.back();
+          }}
           icon={<FontAwesomeIcon size="lg" color="var(--charcoalLight)" icon={faTimes} />}
         />
       </Box>
@@ -461,28 +424,21 @@ const MobileCardsModal = ({
 export default connect(
   ({
     habitat: {
-      habitatInfo: { _id: habitatId },
       cards: {
         loading,
         items: cards,
         mobile: {
-          activeMobileCardsTab,
           activeCardIndex,
         },
       },
     },
   }) => ({
-    habitatId,
     loading,
     cards,
-    activeMobileCardsTab,
     activeCardIndex,
   }),
   {
     closeAction: closeModalCards,
-    openModalCardsAction: openModalCards,
-    setLoadingAction: setLoading,
-    setCardsAction: setCards,
     nextCardAction: nextCard,
     prevCardAction: prevCard,
     resetCardIndAction: resetCardInd,
