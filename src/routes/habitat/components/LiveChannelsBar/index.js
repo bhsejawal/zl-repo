@@ -31,7 +31,13 @@ const LiveChannelsBar = ({
   const list = useMemo(
     () => {
       if (currentHabitat) {
-        return allHabitats.filter(({ online, _id }) => online && _id !== currentHabitat)
+        const allOnline = allHabitats.filter(({online, _id}) => online && _id !== currentHabitat);
+        allOnline.sort((firstHabitat, secondHabitat) => {
+          const firstIsLive = Number(firstHabitat.liveTalk);
+          const secondIsLive = Number(secondHabitat.liveTalk);
+          return secondIsLive - firstIsLive;
+        });
+        return allOnline;
       }
       return [];
     },
