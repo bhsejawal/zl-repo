@@ -65,6 +65,7 @@ const ImageSelector = forwardRef(({
   const [errorMsg, setErrorMsg] = useState();
   const [errors, setErrors] = useState({});
   const acceptedFormatsStr = acceptedFormats.map((format) => `.${format}`).join(',');
+  const origin = `${process.env.PREACT_APP_HTTP_PROTOCOL}${process.env.PREACT_APP_API_AUTHORITY}`.replace('api.', '');
 
   useEffect(() => setErrorMsg(undefined), [url]);
 
@@ -179,10 +180,11 @@ const ImageSelector = forwardRef(({
       try {
         const parsedUrl = new URL(url);
         const normalizeAssetHost = parsedUrl.hostname.replace('www.', '');
-        const normalizedLocationHost = window.location.hostname.replace('www.', '');
+        const originUrl = new URL(origin);
+        const normalizedLocationHost = originUrl.hostname.replace('www.', '');
 
         if (normalizeAssetHost !== normalizedLocationHost) {
-          setErrorMsg(`Only URLs from ${window.location.origin} are allowed`);
+          setErrorMsg(`Only URLs from ${origin} are allowed`);
           return false;
         }
       } catch (err) {
@@ -302,7 +304,7 @@ const ImageSelector = forwardRef(({
         width,
         height,
       );
-      onChange(`${window.location.origin}/${path}`);
+      onChange(`${origin}/${path}`);
     } catch (err) {
       const { error } = err.body;
 
@@ -325,8 +327,7 @@ const ImageSelector = forwardRef(({
     }
 
     const urlObj = new URL(target.value);
-
-    if (urlObj.origin === window.location.origin) {
+    if (urlObj.origin === origin) {
       onChange(target.value);
       return;
     }
@@ -334,7 +335,7 @@ const ImageSelector = forwardRef(({
     try {
       setIsLoading(true);
       const { path } = await fromUrlToS3(target.value);
-      onChange(`${window.location.origin}/${path}`);
+      onChange(`${origin}/${path}`);
     } catch (err) {
       console.error(err);
     } finally {
