@@ -59,18 +59,10 @@ const FilterButton = ({
       dropProps={{ elevation: "xlarge" }}
       open={isOpen}
       dropContent={(
-        <Box
-          pad={{
-            top: "medium",
-            left: "medium",
-            right: "medium",
-            bottom: "small",
-          }}
-          className={style.filterBox}
-        >
+        <Box className={style.filterBox}>
           <CheckBoxGroup
             options={items}
-            className={style.customCheckbox}
+            className={classnames(style.customCheckbox, 'customScrollBar grey')}
             value={selectedItems}
             onChange={(evt) => setSelectedItems(evt.value)}
           />

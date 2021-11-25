@@ -161,4 +161,21 @@ $horizontal-padding: 62px;
     margin-bottom: 20px;
     text-align: center;
   }
+
+  button {
+    border-radius: 100px;
+    border: 1.5px solid var(--grey);
+    outline: none;
+    max-width: 160px;
+    height: 45px;
+    font-weight: bold;
+    font-size: 16px;
+    line-height: 18px;
+    text-align: left;
+  }
+
+  input {
+    padding-left: 15px;
+    color: var(--grey);
+  }
 }
