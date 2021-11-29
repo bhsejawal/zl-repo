@@ -76,6 +76,7 @@ const CameraSelector = ({ selectedCamera, cameras, setSelectedCameraAction }) =>
             className={style.cameraDrop}
           >
             <RadioButtonGroup
+              name="selectedStream"
               options={availableCameras}
               value={currentCamera}
               onChange={onChangeHandler}

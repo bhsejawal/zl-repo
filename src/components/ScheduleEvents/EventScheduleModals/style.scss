@@ -134,3 +134,45 @@
     overflow-y: auto;
   }
 }
+
+.dropContainer {
+  padding: 8px;
+  font-size: 13px;
+  line-height: 18px;
+
+  > label {
+    width: 100%;
+  }
+}
+
+.cameraSelect {
+  height: 36px;
+  border-radius: 3px;
+  border: 2px solid #CDCDCD;
+  padding: 0;
+
+  &:hover,
+  &:active {
+    border: 2px solid #CDCDCD;
+    opacity: .8;
+  }
+
+  .labelContainer {
+    display: flex;
+    flex-grow: 1;
+    height: 100%;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 12px;
+
+    span {
+      color: var(--charcoalLight);
+      font-size: 13px;
+      line-height: 18px;
+      font-weight: 100;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+  }
+}
