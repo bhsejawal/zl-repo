@@ -126,19 +126,6 @@ const Menu = ({ unsetUserDataAction, openContactUsModalAction }) => {
             pad={{ horizontal: '15px' }}
             direction="row"
             align="center"
-            onClick={() => route('/redeem')}
-          >
-            <FontAwesomeIcon icon={faGlobeAmericas} />
-            <Box margin={{ left: '12px' }}>
-              <Text size="large">Redeem</Text>
-            </Box>
-          </Box>
-          <Box
-            width="195px"
-            height="35px"
-            pad={{ horizontal: '15px' }}
-            direction="row"
-            align="center"
             onClick={() => route('/account/info')}
           >
             <FontAwesomeIcon icon={faCog} />
