@@ -38,6 +38,7 @@ const rules = {
       'habitat:view': isSubscriptionActive,
       'subscription:cancel': isSubscriptionActive,
       'subscription:edit': notTrial,
+      'redeem:view': () => !isSubscriptionActive(),
     },
   },
   vip: {

@@ -51,12 +51,15 @@ const SubscriptionSection = ({
   showCancelCTA,
   showFreemium,
   isPublicPage,
+  showGiftExplore = true,
+  showGiftUserPlan = false,
 }) => {
   const { stripe } = useContext(StripeContext);
   const isSmallScreen = useIsMobileSize();
   const [showCancelModal, setShowCancelModal] = useState(false);
   const [showCancelDialog, setShowCancelDialog] = useState(false);
   const [showClassPassModal, setShowClassPassModal] = useState(false);
+  const [userPlanData, setUserPlanData] = useState(null);
   const showCancelButton = useMemo(() => {
     if (['FREEMIUM', 'TRIAL'].includes(productId)) {
       return false;
@@ -98,9 +101,17 @@ const SubscriptionSection = ({
     setPlansAction(plans);
   }, [get, setPlansAction]);
 
+  const fetchUserPlan = useCallback(async () => {
+    if (showGiftUserPlan) {
+      const userPlan = await get('/users/product');
+      setUserPlanData(userPlan);
+    }
+  }, [get, setUserPlanData, showGiftUserPlan]);
+
   useEffect(() => {
     fetchPlans();
-  }, [fetchPlans])
+    fetchUserPlan();
+  }, [fetchPlans, fetchUserPlan])
 
   const goToSignup = useCallback(async (planId, priceId) => {
     route(`/signup?plan=${planId}&price=${priceId}`);
@@ -149,7 +160,17 @@ const SubscriptionSection = ({
       return [];
     }
 
-    if (!productId || productId === 'TRIAL' || !isSubscriptionActive) {
+    let currentPlanPrice = null;
+    let currentPlanInterval = null;
+
+    const currentPlan = plans.find((plan) => productId === plan.productId);
+
+    if (currentPlan) {
+      currentPlanPrice = currentPlan.price;
+      currentPlanInterval = currentPlan.interval;
+    }
+
+    if (!productId || productId === 'TRIAL' || !isSubscriptionActive || !currentPlan) {
       return plans.map(({
         productId: planProductId,
         priceId,
@@ -216,11 +237,6 @@ const SubscriptionSection = ({
     }
 
     // Subscription is Active, so we will set each available option per plan
-    const {
-      price: currentPlanPrice,
-      interval: currentPlanInterval,
-    } = plans.find((plan) => productId === plan.productId);
-
     return plans.map(({
       productId: planProductId,
       priceId,
@@ -319,6 +335,21 @@ const SubscriptionSection = ({
           gap="medium"
           wrap={!isSmallScreen}
         >
+          {showGiftUserPlan && userPlanData?.type === 'giftCard' && (
+            <PlanCard
+              key="gift-card"
+              planType="Gift"
+              planPrice="Free"
+              planTitle="Zoolife"
+              planSubtitle={userPlanData.description}
+              color="#FFEAB5"
+              benefitTitle="Unlimited Access"
+              disabled
+              benefitText={userPlanData.daysLeft > 0 ? `${userPlanData.daysLeft} days left` : 'Expired'}
+              buttonLabel="Current"
+              onClickHandler={() => route('/gift')}
+            />
+          )}
           {plansData.map(({
             name,
             price,
@@ -374,6 +405,21 @@ const SubscriptionSection = ({
               onClickHandler={() => route('/signup')}
             />
           )}
+          {showGiftExplore && (
+            <PlanCard
+              key="gift-card"
+              planType="Gift"
+              planPrice="Free"
+              planTitle="Zoolife"
+              planSubtitle="Gift Card"
+              color="#FFEAB5"
+              benefitTitle="Starting at $23.99"
+              benefitText="The perfect gift for any nature lover."
+              buttonLabel="Explore"
+              onClickHandler={() => route('/gift')}
+            />
+          )}
+
         </Box>
       </Box>
       <UpdateSubscriptionDialog

@@ -52,6 +52,8 @@ import Habitat from '../../routes/habitat';
 import Welcome from '../../routes/welcome';
 import Prices from '../../routes/prices';
 import FreemiumOnboarding from '../../routes/freemiumOnboarding';
+import Redeem from '../../routes/redeem';
+import Gift from '../../routes/gift';
 
 import PageWrapper from './PageWrapper';
 
@@ -84,7 +86,9 @@ const Main = ({
   isFreemiumOnboarded,
   timezone,
   profile,
+  isGiftCardUser,
   updateReferralDataAction,
+  subscription,
 }) => {
   const [path, setPath] = useState();
   const isTabbed = useIsHabitatTabbed();
@@ -105,10 +109,15 @@ const Main = ({
 
   useEffect(() => {
     if (logged && !isProfileSet(profile)) {
-      route('/profile', true);
-      setPath('/profile')
+      if (isGiftCardUser && !subscription.active) {
+        route('/redeem', true);
+        setPath('/redeem');
+      } else {
+        route('/profile', true);
+        setPath('/profile');
+      }
     }
-  }, [logged, profile]);
+  }, [logged, profile, isGiftCardUser, subscription]);
 
   const checkoutHandler = useCallback(async (planId, priceId) => {
     try {
@@ -133,8 +142,10 @@ const Main = ({
     } = props;
 
     if (logged && !isProfileSet(profile)) {
-      route('/profile', true);
-      setPath('/profile')
+      if (!url.includes('redeem')) {
+        route('/profile', true);
+        setPath('/profile');
+      }
     } else if (!freemiumRoutes.includes(url) && !isFreemiumOnboarded && productId === 'FREEMIUM') {
       route('/freemiumOnboarding', true);
       setPath('/freemiumOnboarding');
@@ -281,6 +292,10 @@ const Main = ({
             <Schedule />
           </PageWrapper>
         </AuthGuard>
+        <AuthGuard path="/redeem" permission="redeem:view" redirectTo="/login">
+          <Redeem />
+        </AuthGuard>
+        <Gift path="/gift" />
         <AuthGuard path="/favorite" permission="favorite:edit" redirectTo="/plans">
           <Header />
           <PageWrapper>
@@ -339,6 +354,8 @@ export default connect(({
     isFreemiumOnboarded,
     subscription: { productId },
     profile,
+    isGiftCardUser,
+    subscription,
   },
   modals: { contactus: { isOpen: showContactUs }, invite: { isOpen: showInvite }},
 }) => ({
@@ -349,6 +366,8 @@ export default connect(({
   productId,
   isFreemiumOnboarded,
   profile,
+  isGiftCardUser,
+  subscription,
 }), {
   updateReferralDataAction: updateReferralData,
 })(Main);

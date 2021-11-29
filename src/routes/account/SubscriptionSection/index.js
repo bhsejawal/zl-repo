@@ -30,7 +30,7 @@ const SubscriptionSection = () => {
         </Heading>
         <SubscriptionBenefits />
       </Box>
-      <SubscriptionManager showCancelCTA />
+      <SubscriptionManager showCancelCTA showGiftExplore={false} showGiftUserPlan />
     </Box>
   )
 };

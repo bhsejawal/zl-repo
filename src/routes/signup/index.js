@@ -123,6 +123,7 @@ const Signup = ({
       const { searchParams } = new URL(document.location);
       const plan = searchParams.get('plan');
       const price = searchParams.get('price');
+      const isGiftCardUser = searchParams.get('isGiftCardUser');
 
       const {
         user,
@@ -135,7 +136,7 @@ const Signup = ({
         password,
         origin,
         termsVersion,
-        referralData: { ...referralData, userAgent },
+        referralData: { ...referralData, userAgent, isGiftCardUser },
         planData: { plan, price },
       });
 
@@ -157,7 +158,11 @@ const Signup = ({
         }
         setServerError();
         setUserDataAction(user);
-        loadPage('/profile');
+        if (isGiftCardUser) {
+          loadPage('/redeem');
+        } else {
+          loadPage('/profile');
+        }
         try {
           localStorage.setItem('returningUser', true);
         } catch (err) {
