@@ -135,6 +135,11 @@
 
 .navigationContainer {
   display: none;
+
+  a {
+    text-decoration: none;
+    color: var(--blue);
+  }
 }
 
 .topNavigationContainer {
@@ -151,6 +156,7 @@
   
   .navigationContainer {
     display: block;
+    text-align: center;
   }
 
   .topNavigationContainer {

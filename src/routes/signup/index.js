@@ -212,8 +212,14 @@ const Signup = ({
         <OutlineButton size="medium" label="Sign In" height="30px" margin={{ left: '16px' }} width={{ min: '85px' }} onClick={onLogin} />
       </Box>
       <Layout>
-        <Box direction="row" align="center" height="auto">
+        <Box direction="row" align="center" justify="center" height="auto">
           <Heading level="2">{isGiftCardUser ? 'Redeem your Zoolife gift.' : 'Try zoolife free.'}</Heading>
+        </Box>
+        <Box margin={{ top: 'small' }} className={style.navigationContainer}>
+          <Text>
+            Already have an account?&nbsp;
+            <Link href="/login" className="small">Sign In</Link>
+          </Text>
         </Box>
         <Box fill="horizontal" margin={{ top: 'medium' }}>
           <form onSubmit={onSubmit}>
@@ -278,15 +284,9 @@ const Signup = ({
                 {termsError}
               </div>
             </Box>
-            <PrimaryButton type="submit" label={isGiftCardUser ? 'Next' : 'Get Started!'} />
+            <PrimaryButton type="submit" label={isGiftCardUser ? 'Next' : 'Get Started!'} fill="horizontal" />
             <br />
           </form>
-        </Box>
-        <Box margin={{ top: '30px', bottom: '20px' }} className={style.navigationContainer}>
-          <Text>
-            Have an account?&nbsp;
-            <Link href="/login" className="small">Sign In</Link>
-          </Text>
         </Box>
 
         <Box>
