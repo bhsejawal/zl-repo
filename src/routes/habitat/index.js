@@ -335,18 +335,20 @@ const Habitat = ({
           <div className={style.contentSection} style={{ height: `calc((var(--vh) * 100) - var(--headerHeight) - ${topSectionHeight}px)` }}>
             <Tabs show={isTabbed} onChange={onTabChange}>
               <Tab label="Explore" icon={<FontAwesomeIcon size="lg" icon={faInfoCircle} />}>
-                <div className={style.middleSection}>
-                  <StreamProfile />
-                  {isTabletOrLarger ? <TabCarousel /> : <SmallScreenCardTabs />}
-                </div>
+                <div key="Explore">
+                  <div className={style.middleSection}>
+                    <StreamProfile />
+                    {isTabletOrLarger ? <TabCarousel /> : <SmallScreenCardTabs />}
+                  </div>
 
-                <div className={style.bottomSection}>
-                  {isTabletOrLarger && <CardTabs />}
+                  <div className={style.bottomSection}>
+                    {isTabletOrLarger && <CardTabs />}
+                  </div>
                 </div>
               </Tab>
 
               <Tab label="Chat" icon={<FontAwesomeIcon size="lg" icon={faComment} />}>
-                <Box fill direction="column" justify="center">
+                <Box key="Chat" fill direction="column" justify="center">
                   <Suspense fallback={<Loader />}>
                     <ChatComponent channelId={habitatId} />
                   </Suspense>
