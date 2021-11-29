@@ -62,7 +62,7 @@ const Redeem = ({ setUserDataAction }) => {
   return (
     <Layout>
       <Box width="450px">
-        <Heading level="1" margin={{ bottom: '33px' }}>Redeem Gift Card</Heading>
+        <Heading level="1" margin={{ bottom: '33px' }}>Almost there!</Heading>
         <Text color="var(--charcoal)" size="large" margin={{ bottom: '7px' }}>
           Enter your Gift Card Code
         </Text>
