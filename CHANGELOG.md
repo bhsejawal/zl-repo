@@ -3,6 +3,25 @@ This file keeps track of all relevant change for every release.
 
 ## [Unreleased]
 
+## [5.30.0] - 2021-11-29
+### Added
+- Gift section on landing page
+- Gift flow
+- Gradient on gift page
+
+### Changed
+- Scheduler events support multiple cameras selection
+- Revamp login/signup screen
+
+### Fixed
+- Scroll on gift page
+- Mobile chat becomes unusable after clicking explore
+- Fixes missing script on app template file
+- Full screen for main video
+- UI bugs with share page
+- Trailer links do not appear in admin configuration window
+- Schedules time reminder button paddings
+
 ## [5.29.0] - 2021-11-22
 ### Added
 - Copy URL button for media sharing
