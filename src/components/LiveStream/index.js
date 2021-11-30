@@ -184,7 +184,7 @@ const Stream = ({
                 }}
               />
               <VideoControls
-                ref={containerRef}
+                ref={videoRef}
                 onChangeFullscreen={setIsFullscreen}
                 showControls={true}
                 showSwitchCameraControl={mode !== 'liveTalk'}
