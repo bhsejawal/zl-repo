@@ -152,8 +152,14 @@ const Login = ({
         <OutlineButton size="medium" label="Sign Up" height="30px" margin={{ left: '16px' }} width={{ min: '85px' }} onClick={onSignUp} />
       </Box>
       <Layout>
-        <Box direction="row" align="center" height="auto">
+        <Box direction="row" align="center" justify="center" height="auto">
           <Heading level="2">Welcome back to Zoolife.</Heading>
+        </Box>
+        <Box margin={{ top: 'small' }} className={style.navigationContainer}>
+          <Text>
+            Don&apos;t have an account?&nbsp;
+            <Anchor href="/signup" className="small">Sign Up</Anchor>
+          </Text>
         </Box>
         <Box fill="horizontal" margin={{ top: 'medium' }}>
           <form onSubmit={onSubmit}>
@@ -197,16 +203,7 @@ const Login = ({
                 Forgot password?
               </Anchor>
             </Box>
-            <PrimaryButton
-              label="Log in"
-              type="submit"
-            />
-            <Box margin={{ vertical: 'large' }} className={style.navigationContainer}>
-              <Text>
-                Don&apos;t have an account?&nbsp;
-                <Anchor href="/signup">Sign Up</Anchor>
-              </Text>
-            </Box>
+            <PrimaryButton label="Log in" type="submit" fill="horizontal" />
             <div className={style.separator}>
               <hr />
               <span>or</span>

@@ -1,4 +1,4 @@
-import { get, omit } from 'lodash-es';
+import { get, isEmpty, omit } from 'lodash-es';
 import { useEffect, useState } from 'preact/hooks';
 import { connect } from 'react-redux';
 import {
@@ -12,11 +12,13 @@ import {
   TextInput,
   Form,
   FormField,
+  DropButton,
 } from 'grommet';
 import { deepMerge } from 'grommet/utils';
 import { grommet } from 'grommet/themes';
 import { utcToZonedTime } from 'date-fns-tz';
 import { sub, add } from 'date-fns';
+import { FormDown } from 'grommet-icons';
 import classnames from 'classnames';
 import useFetch from 'use-http';
 
@@ -50,6 +52,7 @@ const defaultData = (timezone) => ({
   hour: 0,
   minute: 0,
   durationMs: 0,
+  cameras: [],
   days: [], // ['MO', 'TU', 'WE', 'TH', 'FR', 'SA', 'SU'],
   // to avoid edge cases for converting in between local/utc/zoo timezones
   // Date should be zoneless/timeless just like the visible text
@@ -96,6 +99,18 @@ const clearTimeOffset = (date, timezone) => {
   return result.toString();
 };
 
+const cameraLabel = (cameras, ids) => {
+  if (ids.length === 0) {
+    return 'Select Camera';
+  }
+
+  if (ids.length <= 2) {
+    return ids.map((item) => cameras.find(({ _id }) => _id === item)?.cameraName || item).join(', ');
+  }
+
+  return `Selected Cameras (${ids.length})`;
+};
+
 const EventForm = ({
   onSubmit,
   scheduleData,
@@ -136,8 +151,8 @@ const EventForm = ({
       setHabitatCameras(cameras.filter(({ habitat }) => habitat === habitatId));
     }
 
-    if (data.type === TALK && data.camera) {
-      setData({ ...data, camera: undefined });
+    if (data.type === TALK && !isEmpty(data.cameras)) {
+      setData({ ...data, cameras: [] });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [getCameras, data.type, cameras]);
@@ -155,14 +170,14 @@ const EventForm = ({
     try {
       setLoading(true);
       const singleEvent = data.singleEvent === 'true';
-      console.error({ data })
+
       const submitData = {
         ...omit(data, 'frequency'),
         days: data.frequency === REPEATS && !singleEvent ? data.days : [],
         date: data.frequency === ONE_TIME_EVENT || singleEvent ? data.date?.slice(0, 10) : null,
         singleEvent,
       };
-      console.error({ submitData })
+
       await onSubmit(submitData);
     } catch (err) {
       setError(err.message);
@@ -274,19 +289,36 @@ const EventForm = ({
 
               {data.type === STREAM && (
                 <Box direction="column" width="calc(50% - 10px)" margin={{ left: '10px' }}>
-                  <Text size="xlarge" className={style.label}>Camera</Text>
-                  <FormField name="select-camera" required className={style.selectContainer}>
-                    <Select
-                      labelKey="label"
-                      valueKey={{ key: 'value', reduce: true }}
-                      value={data.camera || undefined}
-                      options={habitatCameras.map(
-                        ({ _id, cameraName }) => ({label: cameraName, value: _id}),
-                      )}
-                      onChange={changeHandler('camera')}
-                      name="select-camera"
-                      placeholder="Select Camera"
-                      disabled={isEdit && data.singleEvent === 'true'}
+                  <FormField
+                    name="cameras"
+                    validate={() => (isEmpty(data.cameras) ? { message: 'required', status: 'error' } : true)}
+                  >
+                    <Text size="xlarge" className={style.label}>Camera</Text>
+                    <DropButton
+                      className={style.cameraSelect}
+                      label={
+                        <div className={style.labelContainer}>
+                          <span>{cameraLabel(habitatCameras, data.cameras)}</span>
+                          <FormDown color="var(--blueMediumLight)" size="24px" />
+                        </div>
+                      }
+                      dropContent={
+                        <CheckBoxGroup
+                          className={style.dropContainer}
+                          name="cameras"
+                          labelKey="label"
+                          valueKey="value"
+                          value={data.cameras}
+                          onChange={({ value }) => {
+                            const handler = changeHandler('cameras');
+                            handler({ target: { value } });
+                          }}
+                          options={habitatCameras.map(
+                            ({ _id, cameraName }) => ({ label: cameraName, value: _id }),
+                          )}
+                        />
+                      }
+                      dropProps={{ align: { top: 'bottom' } }}
                     />
                   </FormField>
                 </Box>

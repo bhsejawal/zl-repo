@@ -43,7 +43,11 @@ const SocialLoginButton = ({ variant, referralData }) => {
       native
       href={buildURL('connect', variant, `?${queryParams}`)}
       rel="noopener noreferrer nofollow"
-      className={classnames(style.socialButton, {[style.roundButton]: isSmallScreen})}
+      className={classnames(
+        style.socialButton,
+        {[style.roundButton]: isSmallScreen},
+        {[style.facebookButton]: variant === 'facebook' && isSmallScreen},
+      )}
     >
       <img src={variant === 'facebook' ? facebook : google} alt={`Social Login using ${variant}`} />
       <span>

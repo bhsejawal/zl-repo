@@ -8,7 +8,7 @@ import {
 } from 'grommet';
 import classnames from 'classnames';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faGraduationCap } from '@fortawesome/pro-solid-svg-icons';
+import { faGraduationCap, faGift } from '@fortawesome/pro-solid-svg-icons';
 
 import { PrimaryButton, OutlineButton } from '../Buttons';
 
@@ -41,6 +41,7 @@ const PlanCard = ({
   benefitText,
   originalPrice,
   benefitTitle,
+  planSubtitle,
   showDetailsModal,
   openDetailsModalHandler,
 }) => {
@@ -88,6 +89,20 @@ const PlanCard = ({
               margin={{
                 bottom: isMobileSize ? '0px' : getMarginBottom(planPrice),
               }}>
+              {planType === 'Gift' && (
+                <Box direction="row" align="center" justify="center">
+                  <FontAwesomeIcon icon={faGift} style={{ height: '14px' }} />
+                  <Text
+                    alignSelf="center"
+                    size="xlarge"
+                    weight={800}
+                    margin={{ left: '8px'}}
+                    style={{ lineHeight: '13px' }}
+                  >
+                    Zoolife
+                  </Text>
+                </Box>
+              )}
               {planName === 'Class Pass' && (
                 <Box direction="row" align="center" justify="center">
                   <FontAwesomeIcon icon={faGraduationCap} />
@@ -110,21 +125,40 @@ const PlanCard = ({
                   {planName ? `${planName} (USD)` : ''}
                 </Text>
               )}
-              <Box direction="row" justify="center" align="center" >
-                <Heading
-                  // eslint-disable-next-line no-nested-ternary
-                  margin={{ top: !isMobileSize ? planPrice === 'FREE' ? '0px' : '12px' : '0px', bottom: '0' }}
-                  alignSelf="center"
-                  level="2"
-                >
-                  {planPrice === 'FREE' ? planPrice : `$${planPrice / 100}`}
-                </Heading>
-                {['month', 'year'].includes(planType) && (
-                  <Text alignSelf="end" margin={{ bottom: '2px' }}>
-                    {`/${planType}`}
-                  </Text>
-                )}
-              </Box>
+              {planType !== 'Gift' && (
+                <Box direction="row" justify="center" align="center" >
+                  <Heading
+                    // eslint-disable-next-line no-nested-ternary
+                    margin={{ top: !isMobileSize ? planPrice === 'FREE' ? '0px' : '12px' : '0px', bottom: '0' }}
+                    alignSelf="center"
+                    level="2"
+                  >
+                    {planPrice === 'FREE' ? planPrice : `$${planPrice / 100}`}
+                  </Heading>
+                  {['month', 'year'].includes(planType) && (
+                    <Text alignSelf="end" margin={{ bottom: '2px' }}>
+                      {`/${planType}`}
+                    </Text>
+                  )}
+                </Box>
+              )}
+              {planType === 'Gift' && (
+                <Box direction="row" justify="center" align="center" >
+                  <Heading
+                    // eslint-disable-next-line no-nested-ternary
+                    margin={{ top: !isMobileSize ? '12px' : '0px', bottom: '0' }}
+                    alignSelf="center"
+                    level="2"
+                  >
+                    {planSubtitle}
+                  </Heading>
+                  {['month', 'year'].includes(planType) && (
+                    <Text alignSelf="end" margin={{ bottom: '2px' }}>
+                      {`/${planType}`}
+                    </Text>
+                  )}
+                </Box>
+              )}
               {originalPrice && (
               <Box align="center" margin={{ top: '3px'}}>
                 <Text
@@ -168,15 +202,16 @@ const PlanCard = ({
               pad={{ horizontal: isMobileSize ? '0px' : planPrice === 199 ? 'medium' : '10px'}}
             >
               <Text
-                margin={{ top: '10px' }}
                 size="medium"
                 style={{ textTransform: 'capitalize' }}
+                weight={700}
               >
                 {benefitTitle}
               </Text>
               <Text
                 size={isMobileSize ? 'medium' : 'xlarge'}
                 textAlign="center"
+                margin={{ top: '5px' }}
               >
                 {benefitText}
               </Text>

@@ -30,7 +30,20 @@ import zoolifeTheme from '../../grommetTheme';
 import style from './style.scss';
 
 const ShareModal = lazy(() => import('Components/ShareModal/Standalone'));
-const customBreakpoints = deepMerge(grommet, zoolifeTheme);
+const customBreakpoints = deepMerge(grommet, zoolifeTheme, {
+  select: {
+    options: {
+      text: {
+        size: 'xlarge',
+      },
+    },
+    container: {
+      extend: {
+        fontSize: '16px',
+      },
+    },
+  },
+});
 
 const Album = ({ mediaType: mediaTypeProp, matches: { photoId, videoId } = {} }) => {
   const [mediaType, setMediaType] = useState(mediaTypeProp);
@@ -47,7 +60,8 @@ const Album = ({ mediaType: mediaTypeProp, matches: { photoId, videoId } = {} })
     data: { url: photoURL = '', videoURL } = {},
     error: mediaError,
   } = useFetch(buildURL(`/${mediaTypeProp}/${photoId || videoId}`), [photoId, videoId]);
-  const { data: allAnimals } = useFetch(buildURL('/animals'), []);
+  const { data: allAnimals = [] } = useFetch(buildURL('/animals'), []);
+
   const { get, loading: itemsLoading, error: itemsError } = useFetch(buildURL(mediaType));
   const allZoos = useMemo(
     () => zoos.map(({ name, _id }) => ({ label: name, value: _id })),
@@ -197,11 +211,10 @@ const Album = ({ mediaType: mediaTypeProp, matches: { photoId, videoId } = {} })
                   <div className={style.typeSelectWrapper}>
                     <Select
                       labelKey="label"
-                      style={{ width: '70px' }}
                       valueKey={{ key: 'value', reduce: true }}
                       options={[
                         { label: 'Photo', value: 'photos' },
-                        { label: 'Video', value: 'videos' },
+                        { label: 'Clip', value: 'videos' },
                       ]}
                       value={mediaType}
                       onChange={onMediaTypeChange}

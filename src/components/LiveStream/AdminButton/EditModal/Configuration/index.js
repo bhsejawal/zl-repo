@@ -1,6 +1,6 @@
 import { h } from 'preact';
 import { connect } from 'react-redux';
-import { useRef, useState, useEffect } from 'preact/hooks';
+import { useRef, useState } from 'preact/hooks';
 import {
   Box,
   Heading,
@@ -10,14 +10,14 @@ import useFetch from 'use-http';
 
 import ImageSelector from 'Components/ImageSelector';
 import { PrimaryButton } from 'Components/Buttons';
-import { buildURL} from 'Shared/fetch';
+import { buildURL } from 'Shared/fetch';
+
+import { setHabitatProps } from '../../../../../routes/habitat/actions';
 
 import style from './style.scss';
 
-const Configuration = ({
-  habitatId,
-}) => {
-  const [videoURL, setVideoURL] = useState(undefined);
+const Configuration = ({ habitatId, trailer, setHabitatPropsAction }) => {
+  const [videoURL, setVideoURL] = useState(trailer?.videoURL);
   const [validationError, setValidationError] = useState();
   const videoSelectorRef = useRef();
 
@@ -30,33 +30,13 @@ const Configuration = ({
     { credentials: 'include', cachePolicy: 'no-cache' },
   );
 
-  const {
-    get,
-    data: habitatTrailerData,
-    response: habitatTrailerResponse,
-  } = useFetch(buildURL(`/habitats/${habitatId}/trailer`), {
-    credentials: 'include',
-    cachePolicy: 'no-cache',
-    headers: { 'Content-Type': 'application/json' },
-  });
-
-  useEffect(() => {
-    if (habitatId) {
-      get();
-    }
-  }, [habitatId, get])
-
-  useEffect(() => {
-    if (habitatTrailerResponse.status === 200) {
-      setVideoURL(habitatTrailerData.videoURL);
-    }
-  }, [habitatTrailerData, habitatTrailerResponse])
   const onPublish = async () => {
     const isValid = await videoSelectorRef.current.validate();
 
     if (isValid) {
       setValidationError(false);
-      await post("/trailer", { videoURL });
+      await post('/trailer', { videoURL });
+      setHabitatPropsAction({ trailer: { ...trailer, videoURL } });
     } else {
       setValidationError('Your input is not valid.');
     }
@@ -109,10 +89,15 @@ export default connect(
   ({
     habitat: {
       habitatInfo: {
-        _id: habitatId,
+        _id,
+        trailer,
       },
     },
   }) => ({
-    habitatId,
+    habitatId: _id,
+    trailer,
   }),
+  {
+    setHabitatPropsAction: setHabitatProps,
+  },
 )(Configuration);

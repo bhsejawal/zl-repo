@@ -11,3 +11,7 @@ export const goToLogin = () => {
 export const goToPrices = () => {
   loadPage('/prices', true);
 }
+
+export const goToGift = () => {
+  loadPage('/gift', true);
+}

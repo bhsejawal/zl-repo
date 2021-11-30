@@ -1,0 +1,97 @@
+@import "../../../style/media-query";
+
+.background {
+  position: relative;
+  display: flex;
+  background: linear-gradient(270deg, #C20530 42.88%, rgba(194, 5, 48, 0) 93.56%);
+
+  @media screen and (max-width: #{$tablet-portrait-width}) {
+    flex-direction: column;
+    background: linear-gradient(0deg, #C20530 66.76%, rgba(194, 5, 48, 0) 93.56%);
+  }
+}
+
+.backgroundImage {
+  width: 60%;
+  min-height: 300px;
+  vertical-align: top;
+  display: flex;
+  object-fit: fill;
+
+  @media screen and (max-width: #{$tablet-portrait-width}) {
+    width: 100%;
+  }
+}
+
+.giftItem1 {
+  z-index: 1;
+  position: absolute;
+  width: 25%;
+  left: 9%;
+  top: 31%;
+
+  @media screen and (max-width: #{$tablet-portrait-width}) {
+    width: 35%;
+    left: 18%;
+    top: 7rem;
+  }
+}
+
+.giftItem2 {
+  z-index: 2;
+  position: absolute;
+  width: 21%;
+  left: 27%;
+  top: 10%;
+
+  @media screen and (max-width: #{$tablet-portrait-width}) {
+    width: 30%;
+    left: 45%;
+    top: 4rem;
+  }
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  color: white;
+  padding: 0 80px;
+  white-space: pre-line;
+
+  @media screen and (max-width: #{$tablet-landscape-width + 60}) {
+    padding: 0 2%;
+  }
+
+  @media screen and (max-width: #{$tablet-portrait-width}) {
+    padding: 0 20px;
+  }
+}
+
+.title {
+  font-size: 30px;
+  font-weight: 700;
+  line-height: 40px;
+  margin-bottom: 20px;
+
+  @media screen and (max-width: #{$tablet-landscape-width}) {
+    font-size: 26px;
+  }
+}
+
+.description {
+  font-size: 18px;
+  font-weight: 400;
+  line-height: 30px;
+  margin-bottom: 20px;
+
+  @media screen and (max-width: #{$tablet-landscape-width}) {
+    font-size: 16px;
+  }
+}
+
+.button {
+  background-color: #FFFFFF;
+  padding: 20px 60px;
+  margin-bottom: 8px;
+}

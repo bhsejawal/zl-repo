@@ -10,6 +10,7 @@ import Overview from './Overview';
 import FAQ from './FAQ';
 import Testimonials from './Testimonials';
 import Footer from './Footer';
+import LandingPageGift from './LandingPageGift';
 
 import { goToSignup } from './helpers';
 
@@ -23,6 +24,7 @@ const Home = ({ partnerImage, partner }) => (
     <div className={style.container}>
       <div className={style.wrapper}>
         <HeroSection partnerImage={partnerImage} partner={partner} />
+        <LandingPageGift />
         <Partners />
         <Overview />
         <Features />

@@ -1,0 +1,32 @@
+.input {
+  width: 100%;
+  border-width: 0 0 2px 0;
+  border-radius: 0;
+  border-color: var(--mediumGrey);
+  color: var(--grey);
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 22px;
+  font-family: inherit;
+
+  &:focus {
+    border-color: var(--mediumGrey);
+    color: var(--charcoal);
+  }
+
+  &.error {
+    border-color: var(--red);
+  }
+}
+
+.errorMessageWrapper {
+  min-height: 24px;
+  margin-top: 7px;
+
+  .errorMessage {
+    color: var(--red);
+    font-size: 12px;
+    line-height: 18px;
+    font-weight: 400;
+  }
+}

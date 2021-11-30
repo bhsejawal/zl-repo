@@ -11,6 +11,7 @@ import {
   faQuestionCircle,
   faSignOut,
   faUsersCog,
+  faGift,
 } from '@fortawesome/pro-solid-svg-icons';
 
 import { hasPermission } from 'Components/Authorize';
@@ -106,7 +107,19 @@ const Menu = ({ unsetUserDataAction, openContactUsModalAction }) => {
               </Box>
             </>
           )}
-
+          <Box
+            width="195px"
+            height="35px"
+            pad={{ horizontal: '15px' }}
+            direction="row"
+            align="center"
+            onClick={() => route('/gift')}
+          >
+            <FontAwesomeIcon icon={faGift} />
+            <Box margin={{ left: '12px' }}>
+              <Text size="large">Gift Zoolife</Text>
+            </Box>
+          </Box>
           <Box
             width="195px"
             height="35px"

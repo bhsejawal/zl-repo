@@ -13,10 +13,10 @@ const desktopList = [
 ];
 
 const mobileList = [
-  'https://zoolife.tv/assets/login-m1.jpg',
-  'https://zoolife.tv/assets/login-m2.jpg',
-  'https://zoolife.tv/assets/login-m3.jpg',
-  'https://zoolife.tv/assets/login-m4.jpg',
+  'https://zoolife.tv/assets/login-n1.jpg',
+  'https://zoolife.tv/assets/login-n2.jpg',
+  'https://zoolife.tv/assets/login-n3.jpg',
+  'https://zoolife.tv/assets/login-n4.jpg',
 ];
 
 const Carousel = () => {

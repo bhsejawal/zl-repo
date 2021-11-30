@@ -24,7 +24,7 @@ import RoundButton from 'Components/RoundButton';
 import { PrimaryButton } from 'Components/Buttons';
 import CameraSelector from 'Components/CameraSelector';
 
-import { getDeviceType, formatSecondsToVideoDuration } from '../../helpers';
+import { formatSecondsToVideoDuration } from '../../helpers';
 
 import { useIsHabitatTabbed } from '../../hooks';
 
@@ -84,7 +84,6 @@ const VideoControls = forwardRef(({
   showSeekBar,
   showTimeStats,
   showPIPControl,
-  hasCameraControls,
   onPauseHandler,
   isPlaying,
   isLoading,
@@ -92,6 +91,7 @@ const VideoControls = forwardRef(({
   timeElapsed,
   updateVideoTimeHandler,
   showSwitchCameraControl,
+  onChangeFullscreen,
   mode = 'webrtc',
   muted = true,
   onNextHandler,
@@ -109,11 +109,18 @@ const VideoControls = forwardRef(({
 
   useEffect(() => {
     const handleFullscreenMode = () => {
-      setIsFullscreen(document.fullscreenElement !== null);
+      const isFullscreen = document.fullscreenElement
+          || document.webkitCurrentFullScreenElement;
+      setIsFullscreen(isFullscreen);
+      onChangeFullscreen(isFullscreen);
     }
 
     document.addEventListener('fullscreenchange', handleFullscreenMode);
-    return () => document.removeEventListener('fullscreenchange', handleFullscreenMode);
+    document.addEventListener('webkitfullscreenchange', handleFullscreenMode);
+    return () => {
+      document.removeEventListener('fullscreenchange', handleFullscreenMode);
+      document.removeEventListener('webkitfullscreenchange', handleFullscreenMode);
+    }
   }, []);
 
   // TODO: we need to refactor this
@@ -149,7 +156,7 @@ const VideoControls = forwardRef(({
     if (isFullscreen) {
       target = document;
     } else {
-      target = hasCameraControls && getDeviceType() === 'desktop' ? document.body : video;
+      target = video;
     }
 
     if (!isFullscreen) {

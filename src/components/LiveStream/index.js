@@ -61,6 +61,7 @@ const Stream = ({
   const containerRef = useRef(null);
   const { socket } = useContext(GlobalsContext);
   const [isInitialized, setIsInitialized] = useState(false);
+  const [isFullscreen, setIsFullscreen] = useState(false);
   const showMobileControls = useShowMobileControls();
   const isTabbed = useIsHabitatTabbed();
   const [showControls, setShowControls] = useState(false);
@@ -177,16 +178,19 @@ const Stream = ({
                 muted
                 playsInline
                 key={streamId}
-                style={{ width, height }}
+                style={{
+                  width: isFullscreen ? window.innerWidth : width,
+                  height: isFullscreen ? window.innerHeight : height,
+                }}
               />
               <VideoControls
-                ref={videoRef}
+                ref={containerRef}
+                onChangeFullscreen={setIsFullscreen}
                 showControls={true}
                 showSwitchCameraControl={mode !== 'liveTalk'}
                 showPlayControl={mode !== 'liveTalk'}
                 showVolumeControl
                 showFullscreenControl
-                hasCameraControls={mode !== 'liveTalk'}
                 onPauseHandler={pauseStreamHandler}
                 isPlaying={streamStatus === PLAY_STARTED}
                 isLoading={streamStatus === LOADING}

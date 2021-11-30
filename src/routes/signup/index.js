@@ -57,6 +57,10 @@ const Signup = ({
   const [showPassword, setShowPassword] = useState(false);
   const [isTermsAccepted, setIsTermsAccepted] = useState(true);
   const [termsError, setTermsError] = useState();
+  const { searchParams } = new URL(document.location);
+  const plan = searchParams.get('plan');
+  const price = searchParams.get('price');
+  const isGiftCardUser = searchParams.get('isGiftCardUser');
 
   const checkoutHandler = useCallback(async (planId, priceId) => {
     try {
@@ -120,9 +124,6 @@ const Signup = ({
       const termsVersion = TERMS_VERSION;
       const referralData = getCampaignData();
       const { userAgent } = navigator;
-      const { searchParams } = new URL(document.location);
-      const plan = searchParams.get('plan');
-      const price = searchParams.get('price');
 
       const {
         user,
@@ -135,7 +136,7 @@ const Signup = ({
         password,
         origin,
         termsVersion,
-        referralData: { ...referralData, userAgent },
+        referralData: { ...referralData, userAgent, isGiftCardUser },
         planData: { plan, price },
       });
 
@@ -157,7 +158,11 @@ const Signup = ({
         }
         setServerError();
         setUserDataAction(user);
-        loadPage('/profile');
+        if (isGiftCardUser) {
+          loadPage('/redeem');
+        } else {
+          loadPage('/profile');
+        }
         try {
           localStorage.setItem('returningUser', true);
         } catch (err) {
@@ -207,8 +212,14 @@ const Signup = ({
         <OutlineButton size="medium" label="Sign In" height="30px" margin={{ left: '16px' }} width={{ min: '85px' }} onClick={onLogin} />
       </Box>
       <Layout>
-        <Box direction="row" align="center" height="auto">
-          <Heading level="2">Try zoolife free.</Heading>
+        <Box direction="row" align="center" justify="center" height="auto">
+          <Heading level="2">{isGiftCardUser ? 'Redeem your Zoolife gift.' : 'Try zoolife free.'}</Heading>
+        </Box>
+        <Box margin={{ top: 'small' }} className={style.navigationContainer}>
+          <Text>
+            Already have an account?&nbsp;
+            <Link href="/login" className="small">Sign In</Link>
+          </Text>
         </Box>
         <Box fill="horizontal" margin={{ top: 'medium' }}>
           <form onSubmit={onSubmit}>
@@ -273,15 +284,9 @@ const Signup = ({
                 {termsError}
               </div>
             </Box>
-            <PrimaryButton type="submit" label="Get Started!" />
+            <PrimaryButton type="submit" label={isGiftCardUser ? 'Next' : 'Get Started!'} fill="horizontal" />
             <br />
           </form>
-        </Box>
-        <Box margin={{ top: '30px', bottom: '20px' }} className={style.navigationContainer}>
-          <Text>
-            Have an account?&nbsp;
-            <Link href="/login" className="small">Sign In</Link>
-          </Text>
         </Box>
 
         <Box>
