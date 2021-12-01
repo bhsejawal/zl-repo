@@ -19,6 +19,7 @@ import ContactUsModalLoader from 'Components/async/ContactUsModalLoader';
 import InviteModalLoader from 'Components/async/InviteModalLoader';
 import HabitatsUpdater from 'Components/HabitatsUpdater';
 import WhatsNew from 'Components/WhatsNew';
+import GiftPopUp from 'Components/GiftPopUp';
 
 import { logPageViewGA } from 'Shared/ga';
 import { patch, post, buildURL } from 'Shared/fetch';
@@ -343,6 +344,7 @@ const Main = ({
       <InviteModalLoader isOpen={showInvite} />
       <HabitatsUpdater />
       <WhatsNew />
+      <GiftPopUp />
     </Box>
   )
 };

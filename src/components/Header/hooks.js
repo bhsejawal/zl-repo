@@ -14,6 +14,7 @@ export const useLogout = (onLogout) => {
     await post();
     if (response.ok) {
       onLogout?.();
+      localStorage.removeItem('giftModal');
       route('/login');
     }
   };
