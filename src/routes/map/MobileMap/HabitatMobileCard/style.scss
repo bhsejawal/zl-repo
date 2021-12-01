@@ -1,16 +1,3 @@
-.offline {
-  opacity: .5;
-
-  .habitatImage:not(.freemium) {
-    border-color: #3B499C !important;
-  };
-
-  .lock {
-    background-color: var(--purple) !important;
-    color: white;
-  }
-}
-
 .habitatImage {
   max-width: 50px;
   max-height: 50px;
@@ -25,6 +12,27 @@
 
   &.freemium {
     border-color: var(--pink) !important;
+  }
+
+  &.disabled {
+    border-color: var(--charcoalLight);
+
+    img {
+      opacity: .8;
+    }
+  }
+
+  &.offline:not(.freemium) {
+    border-color: #3B499C;
+
+    .lock {
+      background-color: var(--purple);
+      color: white;
+    }
+
+    img {
+      opacity: .8;
+    }
   }
 
   img {

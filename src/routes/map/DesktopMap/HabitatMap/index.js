@@ -126,6 +126,7 @@ const HabitatMap = ({
             online,
             liveTalk,
             profileImage,
+            disabled,
             mapPosition: { top, left },
           }) => (
             <div
@@ -135,6 +136,7 @@ const HabitatMap = ({
               className={classnames(style.habitat, {
                 [style.liveTalk]: liveTalk,
                 [style.offline]: !online,
+                [style.disabled]: disabled,
               })}
               onClick={(evt) => habitatClickHandler(evt, _id)}
             >
@@ -151,6 +153,7 @@ const HabitatMap = ({
                   style.pin,
                   {
                     [style.offline]: !online,
+                    [style.disabled]: disabled,
                     [style.freemiumPin]: subscription.productId === 'FREEMIUM' && subscription.freeHabitat === _id,
                   },
                 )}>

@@ -33,8 +33,17 @@ const HabitatMobileCard = ({
     <Accordion
       className={style.accordion}
       header={
-        <Box direction="row" align="center" onClick={() => setIsOpen(!isOpen)} className={classnames({[style.offline]: isOffline })}>
-          <div className={classnames(style.habitatImage, {[style.freemium]: showFreemiumTag})}>
+        <Box direction="row" align="center" onClick={() => setIsOpen(!isOpen)}>
+          <div className={
+            classnames(
+              style.habitatImage,
+              {
+                [style.freemium]: showFreemiumTag,
+                [style.disabled]: habitat.disabled,
+                [style.offline]: isOffline,
+              },
+            )
+          }>
             <img src={habitat.profileImage} alt="profile" />
             {subscription.productId === 'FREEMIUM' && (
               <div className={style.freemiumTag}>

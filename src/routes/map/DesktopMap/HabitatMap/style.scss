@@ -43,19 +43,28 @@
     transform: translate(-25%, -100%);
     cursor: pointer;
 
-
     &.liveTalk {
       border-color: var(--oliveMedium);
     }
 
     &.offline {
       border-color: var(--purple);
-      opacity: .75;
+
+      img {
+        opacity: .8;
+      }
 
       .lock {
         color: white !important;
       }
+    }
 
+    &.disabled {
+      border-color: var(--charcoalLight);
+
+      img {
+        opacity: .8;
+      }
     }
 
     .pinWrapper {
@@ -93,6 +102,11 @@
         &.offline svg {
           fill: #3B499C;
           stroke: #3B499C;
+        }
+
+        &.disabled svg {
+          fill: var(--charcoalLight);
+          stroke: var(--charcoalLight);
         }
 
         &.freemiumPin svg {
