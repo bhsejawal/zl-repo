@@ -83,6 +83,13 @@ const Search = ({
     }
   };
 
+  const handleSearchShow = () => {
+    setSearchShow(true);
+    setTimeout(() => {
+      boxRef.current.querySelector('input').focus();
+    })
+  }
+
   const onChange = useCallback(({ target }) => {
     setValue(target.value);
   }, []);
@@ -205,7 +212,7 @@ const Search = ({
         </Box>
       )}
       {!searchShow && (
-        <Box onClick={() => setSearchShow(true)} className={style.searchClickIndicator} align="end">
+        <Box onClick={handleSearchShow} className={style.searchClickIndicator} align="end">
           <FontAwesomeIcon
             icon={faSearch}
             color="var(--grey)"
