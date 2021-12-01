@@ -16,9 +16,7 @@ const LandingPageGift = () => (
          alt="Gift landing page background" />
     <div className={style.content}>
       <Text className={style.title}>
-        Zoolife gift cards.
-        <br />
-        The perfect WFH gift.
+        Help them stress less with a Zoolife gift.
       </Text >
       <Text className={style.description}>
         Whatever their new normal looks like this year,
