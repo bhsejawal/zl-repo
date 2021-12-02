@@ -15,7 +15,7 @@ import { faSpinner } from '@fortawesome/pro-duotone-svg-icons';
 import TipContent from 'Components/Tooltip';
 import { GlobalsContext } from 'Shared/context';
 
-import { getConfig } from '../../../../../helpers';
+import { getConfig, getDesktopOrMobile } from '../../../../../helpers';
 import style from './style.scss';
 
 const initialZoomState = {
@@ -37,6 +37,7 @@ const ZoomBar = ({
   const [isLoading, setIsLoading] = useState(false);
   const barRef = useRef();
   const wrapperRef = useRef();
+  const device = getDesktopOrMobile();
 
   const onPropagateZoom = useCallback(({ zoom }) => {
     setZoomInfo({...zoomInfo, currentZoom: zoom, requestedZoom: null });
@@ -80,12 +81,7 @@ const ZoomBar = ({
     >
       <div className={classnames(style.zoomWrapperInner, { [style.horizontal]: horizontal })}>
         <div className={style.paddingWrapper}>
-          {/* eslint-disable-next-line */}
-          <Tip
-            dropProps={{ align: { left: 'right' } }}
-            content={<TipContent message="Zoom In" />}
-            plain
-          >
+          {device === 'mobile' ? (
             <div
               className={classnames(style.iconWrapper, {
                 [style.disabled]: isLoading || zoomInfo.currentZoom === 100,
@@ -94,7 +90,22 @@ const ZoomBar = ({
             >
               <FontAwesomeIcon icon={faPlus} />
             </div>
-          </Tip>
+          ) : (
+            <Tip
+              dropProps={{ align: { left: 'right' } }}
+              content={<TipContent message="Zoom In" />}
+              plain
+            >
+              <div
+                className={classnames(style.iconWrapper, {
+                  [style.disabled]: isLoading || zoomInfo.currentZoom === 100,
+                })}
+                onClick={() => onClick(zoomInfo.currentZoom + 20, zoomInfo.currentZoom)}
+              >
+                <FontAwesomeIcon icon={faPlus} />
+              </div>
+            </Tip>
+          )}
         </div>
         <div className={classnames({ [style.horizontalDots]: horizontal })}>
           <div
@@ -102,12 +113,7 @@ const ZoomBar = ({
             className={classnames(style.bar, { [style.horizontal]: horizontal })}
           >
             {ZOOM_LEVELS.map((zLvl) => (
-              // eslint-disable-next-line
-              <Tip
-                dropProps={{ align: { left: 'right' } }}
-                content={<TipContent message="Zoom Controls" />}
-                plain
-              >
+              device === 'mobile' ? (
                 <div
                   className={classnames(style.dotWrapper, {
                     // eslint-disable-next-line max-len
@@ -123,16 +129,33 @@ const ZoomBar = ({
                     </div>
                   )}
                 </div>
-              </Tip>
+              ) : (
+                <Tip
+                  dropProps={{ align: { left: 'right' } }}
+                  content={<TipContent message="Zoom Controls" />}
+                  plain
+                >
+                  <div
+                    className={classnames(style.dotWrapper, {
+                      // eslint-disable-next-line max-len
+                      [style.active]: zoomInfo.currentZoom === zLvl || zoomInfo.requestedZoom === zLvl,
+                      [style.disabled]: isLoading && zoomInfo.requestedZoom !== zLvl,
+                    })}
+                    onClick={() => onClick(zLvl, zoomInfo.currentZoom)}
+                  >
+                    <span key={zLvl} className={style.dot} />
+                    {zoomInfo.requestedZoom === zLvl && isLoading && (
+                      <div className={style.loader}>
+                        <FontAwesomeIcon icon={faSpinner} spin />
+                      </div>
+                    )}
+                  </div>
+                </Tip>
+              )
             ))}
           </div>
         </div>
-        {/* eslint-disable-next-line */}
-        <Tip
-          dropProps={{ align: { left: 'right' } }}
-          content={<TipContent message="Zoom Out" />}
-          plain
-        >
+        {device === 'mobile' ? (
           <div
             className={classnames(style.iconWrapper, style.paddingWrapper, {
               [style.disabled]: zoomInfo.currentZoom === 0 || isLoading,
@@ -141,7 +164,22 @@ const ZoomBar = ({
           >
             <FontAwesomeIcon icon={faMinus} />
           </div>
-        </Tip>
+        ) : (
+          <Tip
+            dropProps={{ align: { left: 'right' } }}
+            content={<TipContent message="Zoom Out" />}
+            plain
+          >
+            <div
+              className={classnames(style.iconWrapper, style.paddingWrapper, {
+                [style.disabled]: zoomInfo.currentZoom === 0 || isLoading,
+              })}
+              onClick={() => onClick(zoomInfo.currentZoom - 20, zoomInfo.currentZoom)}
+            >
+              <FontAwesomeIcon icon={faMinus} />
+            </div>
+          </Tip>
+        )}
       </div>
     </div>
   );

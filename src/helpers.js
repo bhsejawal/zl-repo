@@ -27,7 +27,7 @@ export const getDeviceType = () => {
   }
 
   const ua = navigator.userAgent;
-  if (/(tablet|ipad|playbook|silk)|(android(?!.*mobi))/i.test(ua)) {
+  if (/(tablet|ipad|playbook|silk)|(android(?!.*mobi))/i.test(ua) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1)) {
     return "tablet";
   }
 

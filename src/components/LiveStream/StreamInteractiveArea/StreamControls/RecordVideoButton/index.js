@@ -13,6 +13,7 @@ import { API_BASE_URL } from 'Shared/fetch';
 import { logGAEvent } from 'Shared/ga';
 import TrimVideoModal from './TrimVideoModal';
 import { setClipButtonClicked } from '../../../../../redux/actions'
+import { getDesktopOrMobile } from '../../../../../helpers';
 
 import style from './style.scss';
 
@@ -36,6 +37,7 @@ const RecordVideoButton = ({
     headers: { 'Content-Type': 'application/json' },
     timeout: 300000,
   });
+  const device = getDesktopOrMobile();
 
   useEffect(() => {
     if (data?.videoURL && data?.duration) {
@@ -82,11 +84,7 @@ const RecordVideoButton = ({
 
   return (
     <>
-      <Tip
-        dropProps={{ align: { left: 'right' } }}
-        content={<TipContent message="Take a Clip" />}
-        plain
-      >
+      {device === 'mobile' ? (
         <Box>
           <RoundButton
             onClick={onClickHandler}
@@ -100,7 +98,27 @@ const RecordVideoButton = ({
             <FontAwesomeIcon icon={faVideo} />
           </RoundButton>
         </Box>
-      </Tip>
+      ) : (
+        <Tip
+          dropProps={{ align: { left: 'right' } }}
+          content={<TipContent message="Take a Clip" />}
+          plain
+        >
+          <Box>
+            <RoundButton
+              onClick={onClickHandler}
+              width="36"
+              backgroundColor="var(--blueDark)"
+              color="white"
+              className={classnames(style.button, { [style.animate]: !isClicked })}
+              disabled={loading}
+              loading={loading}
+            >
+              <FontAwesomeIcon icon={faVideo} />
+            </RoundButton>
+          </Box>
+        </Tip>
+      )}
       {showModal && !isEmpty(videoData) && (
         <TrimVideoModal onClose={() => setShowModal(false)} videoData={videoData} />
       )}

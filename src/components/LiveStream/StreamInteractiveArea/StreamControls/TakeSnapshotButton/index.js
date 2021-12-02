@@ -19,6 +19,7 @@ import RoundButton from 'Components/RoundButton';
 import TipContent from 'Components/Tooltip';
 import { GlobalsContext } from 'Shared/context';
 import { useIsMobileSize } from '../../../../../hooks';
+import { getDesktopOrMobile } from '../../../../../helpers';
 import TakeSnapshotModal from './TakeSnapshotModal';
 
 import style from './style.scss';
@@ -31,6 +32,7 @@ const TakeSnapshotButton = ({ plain, cameraId, userId }) => {
   const [tryAgain, setTryAgain] = useState();
   const [snapshotData, setSnapshotData] = useState({});
   const isMobileSize = useIsMobileSize();
+  const device = getDesktopOrMobile();
 
   const ref = useRef();
 
@@ -120,11 +122,7 @@ const TakeSnapshotButton = ({ plain, cameraId, userId }) => {
           </div>
         </Drop>
       )}
-      <Tip
-        dropProps={{ align: { left: 'right' } }}
-        content={<TipContent message="Take a Photo" />}
-        plain
-      >
+      {device === 'mobile' ? (
         <Box>
           <RoundButton
             onClick={clickHandler}
@@ -137,7 +135,26 @@ const TakeSnapshotButton = ({ plain, cameraId, userId }) => {
             <FontAwesomeIcon icon={faCamera} />
           </RoundButton>
         </Box>
-      </Tip>
+      ) : (
+        <Tip
+          dropProps={{ align: { left: 'right' } }}
+          content={<TipContent message="Take a Photo" />}
+          plain
+        >
+          <Box>
+            <RoundButton
+              onClick={clickHandler}
+              width="36"
+              backgroundColor="var(--blueDark)"
+              color="white"
+              disabled={loading}
+              loading={loading}
+            >
+              <FontAwesomeIcon icon={faCamera} />
+            </RoundButton>
+          </Box>
+        </Tip>
+      )}
       {!isEmpty(snapshotData) && (
         <TakeSnapshotModal
           onClose={() => setSnapshotData({})}
