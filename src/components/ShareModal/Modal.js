@@ -310,7 +310,7 @@ const ShareModal = ({
                 </Text>
               </Box>
               <div className={style.shareButtons}>
-                <CopyLink link={url || videoURL} className={style.shareIcon} />
+                {htmlURL && <CopyLink link={htmlURL} className={style.shareIcon} />}
                 {!videoURL && (
                   <RoundButton
                     onClick={sendEmail}
