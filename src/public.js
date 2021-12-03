@@ -31,6 +31,7 @@ import { logAndGetCampaignData } from './helpers';
 import { updateReferralData } from "./redux/actions";
 
 import '@fortawesome/fontawesome-svg-core/styles.css';
+import './style/globalStyle.scss';
 
 const homeTitle = "The world's first virtual zoo.";
 

@@ -54,7 +54,7 @@ const Album = ({ mediaType: mediaTypeProp, matches: { photoId, videoId } = {} })
   const [items, setItems] = useState([]);
   const [modalItem, setModalItem] = useState();
   const [totalItems, setTotalItems] = useState(0);
-  const zoosParams = new URLSearchParams({ 'fields[]': 'name' });
+  const zoosParams = new URLSearchParams({ 'fields[]': 'name', disabled: false });
   const { data: { zoos = [] } = {} } = useFetch(buildURL(`/zoos?${zoosParams}`), []);
   const {
     data: { url: photoURL = '', videoURL } = {},
@@ -220,20 +220,24 @@ const Album = ({ mediaType: mediaTypeProp, matches: { photoId, videoId } = {} })
                       onChange={onMediaTypeChange}
                     />
                   </div>
-                  <FilterButton
-                    label="All Zoos"
-                    items={allZoos}
-                    filteredItems={filteredZoos}
-                    onFilter={onZoosFilterChange}
-                    onClear={clearZoosFilter}
-                  />
-                  <FilterButton
-                    label="All Animals"
-                    items={allAnimals}
-                    filteredItems={filteredAnimals}
-                    onFilter={onAnimalsFilterChange}
-                    onClear={clearAnimalsFilter}
-                  />
+                  <div className={style.filterButtonWrapper}>
+                    <FilterButton
+                      label="All Zoos"
+                      items={allZoos}
+                      filteredItems={filteredZoos}
+                      onFilter={onZoosFilterChange}
+                      onClear={clearZoosFilter}
+                    />
+                  </div>
+                  <div className={style.filterButtonWrapper}>
+                    <FilterButton
+                      label="All Animals"
+                      items={allAnimals}
+                      filteredItems={filteredAnimals}
+                      onFilter={onAnimalsFilterChange}
+                      onClear={clearAnimalsFilter}
+                    />
+                  </div>
                 </div>
               </div>
 
