@@ -8,13 +8,28 @@ import { goToGift } from '../helpers';
 import style from './style.scss';
 
 const LandingPageGift = () => (
-  <div className={style.background}>
-    <img
-         className={style.backgroundImage}
-         loading="lazy"
-         src="https://assets.zoolife.tv/landing/s9_gift_1.jpg"
-         alt="Gift landing page background" />
-    <div className={style.content}>
+  <div className={style.giftSection}>
+    <div className={style.left}>
+      <div className={style.wrapper}>
+        <img
+            className={style.backgroundImage}
+            loading="lazy"
+            src="https://assets.zoolife.tv/landing/s9_gift_1.jpg"
+            alt="Gift landing page background" />
+        <img
+            className={style.giftItem1}
+            loading="lazy"
+            src="https://assets.zoolife.tv/landing/s9_gift_2.png"
+            alt="Gift landing page item 1" />
+
+        <img
+            className={style.giftItem2}
+            loading="lazy"
+            src="https://assets.zoolife.tv/landing/s9_gift_3.png"
+            alt="Gift landing page item 2" />
+      </div>
+    </div>
+    <div className={style.right}>
       <Text className={style.title}>
         Help them stress less with a Zoolife gift.
       </Text >
@@ -26,16 +41,6 @@ const LandingPageGift = () => (
         Shop Gifts
       </LandingPrimary>
     </div>
-    <img
-        className={style.giftItem1}
-        loading="lazy"
-        src="https://assets.zoolife.tv/landing/s9_gift_2.png"
-        alt="Gift landing page item 1" />
-    <img
-        className={style.giftItem2}
-        loading="lazy"
-        src="https://assets.zoolife.tv/landing/s9_gift_3.png"
-        alt="Gift landing page item 2" />
   </div>
 )
 
