@@ -348,7 +348,7 @@ const Habitat = ({
               </Tab>
 
               <Tab label="Chat" icon={<FontAwesomeIcon size="lg" icon={faComment} />}>
-                <Box key="Chat" fill direction="column" justify="center">
+                <Box key="Chat" fill direction="column" justify="center" flex="grow">
                   <Suspense fallback={<Loader />}>
                     <ChatComponent channelId={habitatId} />
                   </Suspense>

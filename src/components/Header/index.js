@@ -25,12 +25,11 @@ import { unsetUserData } from '../../redux/actions';
 import style from './style.scss';
 
 const cutOffWidth = 950;
-const searchBarWidth = 414;
 
 const HeaderComponent = ({ unsetUserDataAction, openContactUsModalAction, url }) => {
   const { width } = useWindowResize();
   const isSmallScreen = useIsMobileSize();
-  const containableSearchBar = useMemo(() => width > searchBarWidth, [width]);
+  const containableSearchBar = useMemo(() => width > 440, [width]);
   const [searchShow, setSearchShow] = useState(containableSearchBar);
 
   useEffect(() => {

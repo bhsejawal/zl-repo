@@ -55,7 +55,7 @@ export default {
     },
     breakpoints: {
       xsmall: {
-        value: 414,
+        value: 440,
       },
       small: {
         value: 568,

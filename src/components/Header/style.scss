@@ -47,8 +47,8 @@ div.searchContainer {
   padding: 0 8px;
   width: unquote("min(calc(100vw - 200px), 290px)");
   margin: 0 22px;
-  
-  @media screen and (max-width: 414px) {
+
+  @media screen and (max-width: $phone-portrait-width) {
     width: 100%;
     margin: 0;
   }

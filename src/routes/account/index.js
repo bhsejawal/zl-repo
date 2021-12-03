@@ -53,7 +53,7 @@ const Account = ({ activeTab }) => {
   const isMobileSize = useIsMobileSize();
 
   return (
-    <Grommet theme={merge(tabsTheme, grommetTheme)} className="full-height">
+    <Grommet theme={merge(tabsTheme, grommetTheme)} className={style.accountContainer}>
       <Box fill>
         <Box fill>
           <Tabs
