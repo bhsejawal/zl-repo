@@ -1,13 +1,13 @@
 import { connect } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faFacebookF, faTwitter } from '@fortawesome/free-brands-svg-icons';
+import { faFacebookF, faTwitter, faReddit } from '@fortawesome/free-brands-svg-icons';
 import { faDownload } from '@fortawesome/pro-solid-svg-icons';
 import { Box, Heading, Text } from 'grommet';
 import classnames from 'classnames';
 import useFetch from 'use-http';
 
 import { PrimaryButton } from 'Components/Buttons';
-import { generateFacebookURL, generateTwitterURL } from 'Components/ShareModal/Modal';
+import { generateFacebookURL, generateTwitterURL, generateRedditURL } from 'Components/ShareModal/Modal';
 import { API_BASE_URL } from 'Shared/fetch';
 // import EmailShare from './EmailShare';
 import { getDeviceType } from '../../../../../../helpers';
@@ -81,6 +81,16 @@ const ShareContent = ({
             onClick={() => logShare('twitter')}
           >
             <FontAwesomeIcon icon={faTwitter} />
+          </a>
+
+          <a
+            className={style.reddit}
+            href={generateRedditURL(htmlURL, title)}
+            target="_blank"
+            rel="noreferrer"
+            onClick={() => logShare('reddit')}
+          >
+            <FontAwesomeIcon icon={faReddit} />
           </a>
 
           <a

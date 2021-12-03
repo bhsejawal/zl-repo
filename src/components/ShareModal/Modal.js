@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'preact/hooks';
 import { Box, Layer, Text } from 'grommet';
 import { isEmpty, isNil } from 'lodash-es';
-import { faFacebookF, faTwitter } from '@fortawesome/free-brands-svg-icons';
+import { faFacebookF, faTwitter, faReddit } from '@fortawesome/free-brands-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faEnvelope,
@@ -61,6 +61,20 @@ export const generateTwitterURL = (html, text, hashtag, handle) => {
 export const generateFacebookURL = (html) => {
   const shareURL = new URL('https://www.facebook.com/sharer/sharer.php');
   shareURL.searchParams.append('u', html);
+  return shareURL.href;
+};
+
+export const generateRedditURL = (html, title) => {
+  const shareURL = new URL('https://www.reddit.com/submit');
+
+  let modifiedTitle = title.trim();
+  // Reddit has a limit for title length which is 300 character
+  if (modifiedTitle.length > 300) {
+    modifiedTitle = `${modifiedTitle.substring(0, 296)} ...`;
+  }
+  shareURL.searchParams.append('title', modifiedTitle);
+  shareURL.searchParams.append('url', html);
+
   return shareURL.href;
 };
 
@@ -384,6 +398,21 @@ const ShareModal = ({
                         onClick={() => logShare('twitter')}
                       >
                         <FontAwesomeIcon icon={faTwitter} />
+                      </a>
+                    </RoundButton>
+                    <RoundButton
+                      backgroundColor="#ff4500"
+                      color="white"
+                      width={20}
+                      className={style.shareIcon}
+                    >
+                      <a
+                        href={generateRedditURL(htmlURL, title)}
+                        target="_blank"
+                        rel="noreferrer"
+                        onClick={() => logShare('reddit')}
+                      >
+                        <FontAwesomeIcon icon={faReddit} />
                       </a>
                     </RoundButton>
                   </>

@@ -93,6 +93,7 @@
 
   .facebook,
   .twitter,
+  .reddit,
   .download,
   .email {
     width: 45px;
@@ -118,6 +119,10 @@
 
   .twitter {
     background: #1DA1F2;
+  }
+
+  .reddit {
+    background: #ff4500;
   }
 
   .download {
