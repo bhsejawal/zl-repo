@@ -205,6 +205,15 @@ const SmallScreenCardTabs = ({
         overflow={{ horizontal: 'auto' }}
       >
         <Tab
+          param="family"
+          title="The Family"
+          description="Get to know the members of this habitat"
+          onClick={() => onCardBtnClick(MEET)}
+          color="#FF97E5"
+          icon={FamilyIcon}
+        />
+
+        <Tab
           param="album"
           title="Album"
           description="Updates, photos, clips, past talks, and more"
@@ -223,15 +232,6 @@ const SmallScreenCardTabs = ({
         />
 
         <Tab
-          param="family"
-          title="The Family"
-          description="Get to know the members of this habitat"
-          onClick={() => onCardBtnClick(MEET)}
-          color="#FF97E5"
-          icon={FamilyIcon}
-        />
-
-        <Tab
           param="questions"
           title="Q&A"
           description="Ask questions and start discussions"
@@ -239,17 +239,6 @@ const SmallScreenCardTabs = ({
           color="#FF6E40"
           icon={QuestionsIcon}
         />
-
-        {hasPermission('habitat:edit-schedule') && (
-          <Tab
-            param="calendar"
-            title="Calendar"
-            description="See when this habitat is online and event times"
-            onClick={openModalCalendarAction}
-            color="#C9D341"
-            icon={CalendarIcon}
-          />
-        )}
 
         <Tab
           param="schedules"
@@ -277,6 +266,17 @@ const SmallScreenCardTabs = ({
           color="#418589"
           icon={QuizIcon}
         />
+
+        {hasPermission('habitat:edit-schedule') && (
+          <Tab
+            param="calendar"
+            title="Calendar"
+            description="See when this habitat is online and event times"
+            onClick={openModalCalendarAction}
+            color="#C9D341"
+            icon={CalendarIcon}
+          />
+        )}
       </Box>
 
       {activeMobileCardsTab && (

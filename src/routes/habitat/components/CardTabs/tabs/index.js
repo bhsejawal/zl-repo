@@ -53,6 +53,15 @@ const Tabs = ({
     <div className={style.tabsContainer}>
       <List className={style.carousel} ref={listRef}>
         <Tab
+          active={activeTab === MEET}
+          title="The Family"
+          description="Get to know the members of this habitat"
+          onClick={onClick(MEET)}
+          color="#FF97E5"
+          icon={FamilyIcon}
+        />
+
+        <Tab
           active={activeTab === ALBUM}
           title="Album"
           description="Updates, photos, clips, past talks, and more"
@@ -68,15 +77,6 @@ const Tabs = ({
           onClick={onClick(INFO)}
           color="#19705A"
           icon={AnimalInfoIcon}
-        />
-
-        <Tab
-          active={activeTab === MEET}
-          title="The Family"
-          description="Get to know the members of this habitat"
-          onClick={onClick(MEET)}
-          color="#FF97E5"
-          icon={FamilyIcon}
         />
 
         <Tab
