@@ -8,7 +8,7 @@ import RoundButton from 'Components/RoundButton';
 
 import style from './style.scss';
 
-const CopyLink = ({ link, className }) => {
+const CopyLink = ({ link, width, className }) => {
   const [linkCopied, setLinkCopied] = useState();
   const targetRef = useRef();
 
@@ -57,7 +57,7 @@ const CopyLink = ({ link, className }) => {
         onClick={copyToClipboardBtnHandler}
         backgroundColor="#DC3D7D"
         color="white"
-        width={20}
+        width={width}
       >
         <FontAwesomeIcon icon={faLink} />
         <div ref={targetRef} />

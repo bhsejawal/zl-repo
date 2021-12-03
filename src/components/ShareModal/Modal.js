@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'preact/hooks';
+import { useEffect, useState, useMemo } from 'preact/hooks';
 import { Box, Layer, Text } from 'grommet';
 import { isEmpty, isNil } from 'lodash-es';
 import { faFacebookF, faTwitter, faReddit } from '@fortawesome/free-brands-svg-icons';
@@ -113,6 +113,7 @@ const ShareModal = ({
   const [showEmailError, setShowEmailError] = useState();
   const [showEmailSuccess, setShowEmailSuccess] = useState();
   const [contentLikes, setContentLikes] = useState({ isLiked: false, likes: 0 });
+  const shareButtonWidth = useMemo(() => (isMobileSize ? 25 : 20), [isMobileSize]);
 
   useEffect(() => {
     setContentLikes({ isLiked, likes: usersLike });
@@ -324,7 +325,9 @@ const ShareModal = ({
                 </Text>
               </Box>
               <div className={style.shareButtons}>
-                {htmlURL && <CopyLink link={htmlURL} className={style.shareIcon} />}
+                {htmlURL && (
+                  <CopyLink link={htmlURL} width={shareButtonWidth} className={style.shareIcon} />
+                )}
                 {!videoURL && (
                   <RoundButton
                     onClick={sendEmail}
@@ -332,7 +335,7 @@ const ShareModal = ({
                     disabled={loading || showEmailSuccess}
                     backgroundColor="#F18C43"
                     color="white"
-                    width={20}
+                    width={shareButtonWidth}
                     loading={loading}
                   >
                     {!loading && <FontAwesomeIcon icon={showEmailSuccess ? faCheck : faEnvelope} />}
@@ -342,7 +345,7 @@ const ShareModal = ({
                   <RoundButton
                     backgroundColor="#71475D"
                     color="white"
-                    width={20}
+                    width={shareButtonWidth}
                     className={style.shareIcon}
                   >
                     <a
@@ -362,7 +365,7 @@ const ShareModal = ({
                     className={style.shareIcon}
                     backgroundColor="#1DA1F2"
                     color="white"
-                    width={20}
+                    width={shareButtonWidth}
                   >
                     {androidDevice() && <FontAwesomeIcon icon={faShareAlt} />}
                     {iOSDevice() && <FontAwesomeIcon icon={faShareSquare} />}
@@ -373,7 +376,7 @@ const ShareModal = ({
                     <RoundButton
                       backgroundColor="#2174EE"
                       color="white"
-                      width={20}
+                      width={shareButtonWidth}
                       className={style.shareIcon}
                     >
                       <a
@@ -388,7 +391,7 @@ const ShareModal = ({
                     <RoundButton
                       backgroundColor="#1DA1F2"
                       color="white"
-                      width={20}
+                      width={shareButtonWidth}
                       className={style.shareIcon}
                     >
                       <a
@@ -403,7 +406,7 @@ const ShareModal = ({
                     <RoundButton
                       backgroundColor="#ff4500"
                       color="white"
-                      width={20}
+                      width={shareButtonWidth}
                       className={style.shareIcon}
                     >
                       <a
