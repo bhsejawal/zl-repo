@@ -169,7 +169,7 @@ const HabitatMap = ({
             </div>
           ))}
 
-          <img src="https://assets.zoolife.tv/zoolifeMap2.png" alt="" />
+          <img src="https://assets.zoolife.tv/zoolifeMap3.png" alt="" />
         </div>
       </div>
       <Can
