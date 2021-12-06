@@ -8,6 +8,7 @@ import { isNumber } from 'lodash-es';
 import useFetch from 'use-http';
 import { buildURL } from 'Shared/fetch';
 
+import { videoImperativeHandle } from 'Components/VideoControls/helper';
 import Loader from 'Components/Loader';
 import VideoControls from 'Components/VideoControls';
 
@@ -30,6 +31,8 @@ const VideoPlayer = ({
 }) => {
   const videoRef = useRef();
   const timeoutRef = useRef();
+  const containerRef = useRef();
+  const controllerRef = useRef();
   const [hasUserPlayed, setHasUserPlayed] = useState(false);
   const [isPlaying, setIsPlaying] = useState(autoPlay );
   const [isLoading, setIsLoading] = useState(true);
@@ -170,8 +173,11 @@ const VideoPlayer = ({
     // onSuspendeHandler,
   ]);
 
+  videoImperativeHandle(controllerRef, containerRef.current, videoRef.current);
+
   return (
     <div
+      ref={containerRef}
       onMouseEnter={() => setShowControls(true)}
       onMouseLeave={() => setShowControls(false)}
       onClick={handleScreenClick}
@@ -195,7 +201,7 @@ const VideoPlayer = ({
         className={className}
       />
       <VideoControls
-        ref={videoRef}
+        ref={controllerRef}
         showControls={showControls}
         showPlayControl
         showVolumeControl

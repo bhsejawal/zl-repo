@@ -10,12 +10,12 @@ import { addUserInteraction } from '../../../redux/actions';
 import EmojiBubbles from './EmojiBubbles';
 import { useShowMobileControls } from '../../../hooks';
 
-const StreamInteractiveArea = () => {
+const StreamInteractiveArea = ({ isFullscreen }) => {
   const showMobileControls = useShowMobileControls();
 
   return (
     <>
-      {!showMobileControls && <StreamControls />}
+      {!showMobileControls && <StreamControls isFullscreen={isFullscreen} />}
       <StreamInteractions />
       <InteractiveAreaHandler />
       <WeatherWidget />

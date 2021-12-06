@@ -11,10 +11,11 @@ import classnames from 'classnames';
 
 import { GlobalsContext } from 'Shared/context';
 import { hasPermission } from 'Components/Authorize';
+import { videoImperativeHandle } from 'Components/VideoControls/helper';
+import { post, buildURL } from 'Shared/fetch';
 import TimeBar from 'Components/TimeBar';
 import VideoControls from 'Components/VideoControls';
 import ContentExplorer from 'Components/ContentExplorer';
-import { post, buildURL } from 'Shared/fetch';
 
 import Fallback from './Fallback';
 
@@ -29,7 +30,7 @@ import { useIsHabitatTabbed, useShowMobileControls } from '../../hooks';
 import { setHabitatStreamStarted } from '../../routes/habitat/actions';
 import { updateUserProperty } from '../../redux/actions';
 
-import { getDeviceType } from '../../helpers';
+import { getDeviceType, isPhone } from '../../helpers';
 
 import style from './style.scss';
 
@@ -59,6 +60,7 @@ const Stream = ({
   const videoRef = useRef();
   const timeoutRef = useRef();
   const containerRef = useRef(null);
+  const controllerRef = useRef();
   const { socket } = useContext(GlobalsContext);
   const [isInitialized, setIsInitialized] = useState(false);
   const [isFullscreen, setIsFullscreen] = useState(false);
@@ -149,6 +151,8 @@ const Stream = ({
     setIsInitialized(true);
   }, []);
 
+  videoImperativeHandle(controllerRef, containerRef.current, videoRef.current)
+
   return (
     <LiveStreamContext.Provider value={{ videoRef }}>
       {interactive && isTabbed && <TimeBar className={style.timeBar} />}
@@ -184,7 +188,7 @@ const Stream = ({
                 }}
               />
               <VideoControls
-                ref={videoRef}
+                ref={controllerRef}
                 onChangeFullscreen={setIsFullscreen}
                 showControls={true}
                 showSwitchCameraControl={mode !== 'liveTalk'}
@@ -200,13 +204,16 @@ const Stream = ({
 
           {streamStatus === PLAY_STARTED && isStreamOn && interactive && (
             <StreamInteractiveArea
+              isFullscreen={isFullscreen}
               width={width}
               height={height}
               parentRef={containerRef}
             />
           )}
 
-          {(interactive && isStreamOn && hasPermission('habitat:edit-stream')) && <AdminButton />}
+          {(interactive && isStreamOn && hasPermission('habitat:edit-stream'))
+          && (!isPhone() || !isFullscreen)
+          && <AdminButton />}
         </div>
 
         {/* mobile controls */}

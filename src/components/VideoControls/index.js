@@ -121,7 +121,7 @@ const VideoControls = forwardRef(({
       document.removeEventListener('fullscreenchange', handleFullscreenMode);
       document.removeEventListener('webkitfullscreenchange', handleFullscreenMode);
     }
-  }, []);
+  }, [setIsFullscreen, onChangeFullscreen]);
 
   // TODO: we need to refactor this
   // there are a lot of references passed between different components
@@ -150,29 +150,11 @@ const VideoControls = forwardRef(({
   };
 
   const openFullscreen = (evt) => {
-    let target;
     evt.stopPropagation();
-
-    if (isFullscreen) {
-      target = document;
-    } else {
-      target = video;
-    }
-
     if (!isFullscreen) {
-      if (target.requestFullscreen) {
-        target.requestFullscreen();
-      } else if (target.webkitRequestFullscreen) { /* Safari */
-        target.webkitRequestFullscreen();
-      } else if (target.msRequestFullscreen) { /* IE11 */
-        target.msRequestFullscreen();
-      }
-    } else if (target.exitFullscreen) {
-      target.exitFullscreen();
-    } else if (target.webkitExitFullscreen) { /* Safari */
-      target.webkitExitFullscreen();
-    } else if (target.msExitFullscreen) { /* IE11 */
-      target.msExitFullscreen();
+      video.requestFullscreen(mode);
+    } else {
+      video.exitFullscreen();
     }
   };
 

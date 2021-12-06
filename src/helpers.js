@@ -38,6 +38,8 @@ export const getDeviceType = () => {
   return "desktop";
 };
 
+export const isPhone = () => getDeviceType() === 'phone';
+
 export const getDesktopOrMobile = () => {
   const type = getDeviceType();
 

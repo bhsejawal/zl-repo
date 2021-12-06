@@ -8,20 +8,26 @@ import TakeSnapshotButton from './TakeSnapshotButton';
 import RecordVideoButton from './RecordVideoButton';
 
 import { toggleShowEmojiBasket } from '../../../../redux/actions';
+import { isPhone } from '../../../../helpers';
 
 import style from './style.scss';
 
-const StreamControls = ({ position = 'left', toggleShowEmojiBasketAction }) => (
+const StreamControls = ({ position = 'left', toggleShowEmojiBasketAction, isFullscreen }) => (
   <div className={classnames(style.streamControlsWrapper, style[position])}>
     <div className={style.streamControls}>
       <ZoomBar />
-      <EmojiButton onClick={toggleShowEmojiBasketAction} />
-      <EmojiBasket className={style.emojiContainer} />
-      <TakeSnapshotButton />
-      <RecordVideoButton />
+
+      {(!isPhone() || !isFullscreen) && (
+      <>
+        <EmojiButton onClick={toggleShowEmojiBasketAction} />
+        <EmojiBasket className={style.emojiContainer} />
+        <TakeSnapshotButton />
+        <RecordVideoButton />
+      </>
+      )}
     </div>
   </div>
-);
+)
 
 export default connect(
   null,
