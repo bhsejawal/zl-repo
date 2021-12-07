@@ -1,28 +1,35 @@
 import { h } from 'preact';
 import { connect } from 'react-redux';
 import { useRef, useState } from 'preact/hooks';
-import {
-  Box,
-  Heading,
-  Text,
-} from 'grommet';
+import { Box, Text } from 'grommet';
 import useFetch from 'use-http';
+import { isArray } from 'lodash-es';
 
-import ImageSelector from 'Components/ImageSelector';
 import { PrimaryButton } from 'Components/Buttons';
 import { buildURL } from 'Shared/fetch';
+import Trailer from 'Components/LiveStream/AdminButton/EditModal/Configuration/Trailer';
+import HabitatTags from 'Components/LiveStream/AdminButton/EditModal/Configuration/HabitatTags';
 
 import { setHabitatProps } from '../../../../../routes/habitat/actions';
 
 import style from './style.scss';
 
-const Configuration = ({ habitatId, trailer, setHabitatPropsAction }) => {
+const Configuration = ({
+  habitatId,
+  trailer,
+  shareSettings,
+  setHabitatPropsAction,
+}) => {
   const [videoURL, setVideoURL] = useState(trailer?.videoURL);
+  const [hashtags, setHashtags] = useState(
+    isArray(shareSettings.hashtag) ? shareSettings.hashtag : [],
+  );
   const [validationError, setValidationError] = useState();
   const videoSelectorRef = useRef();
 
   const {
     post,
+    patch,
     loading,
     error: patchError,
   } = useFetch(
@@ -30,7 +37,7 @@ const Configuration = ({ habitatId, trailer, setHabitatPropsAction }) => {
     { credentials: 'include', cachePolicy: 'no-cache' },
   );
 
-  const onPublish = async () => {
+  const updateVideoURL = async () => {
     const isValid = await videoSelectorRef.current.validate();
 
     if (isValid) {
@@ -42,25 +49,29 @@ const Configuration = ({ habitatId, trailer, setHabitatPropsAction }) => {
     }
   }
 
+  const updateHashtags = async () => {
+    setValidationError(false);
+    await patch('/prop', { shareSettings: {...shareSettings, hashtag: hashtags} });
+    setHabitatPropsAction({ shareSettings: { ...shareSettings, hashtag: hashtags } });
+  }
+
+  const onPublish = async () => {
+    if (trailer.videoURL !== videoURL) {
+      await updateVideoURL();
+    }
+    if (shareSettings.hashtag !== hashtags) {
+      await updateHashtags();
+    }
+  }
+
   return (
     <Box justify="center" align="center" flex="grow">
       <Box fill align="stretch" direction="row">
         <Box width="500px" pad="medium">
           <Box margin={{ top: 'medium' }} pad={{ horizontal: 'medium' }} className="customScrollBar grey">
 
-            <Box margin={{ bottom: '20px' }}>
-              <Heading margin={{ top: '0', bottom: '5px' }} level="5">Habitat Trailer</Heading>
-              <ImageSelector
-                url={videoURL}
-                ref={videoSelectorRef}
-                placeholder="https://"
-                constraints={{
-                  acceptedFormats: ['mp4'],
-                  maxFileSize: 12_000_000,
-                }}
-                onChange={(value) => setVideoURL(value)}
-              />
-            </Box>
+            <Trailer ref={videoSelectorRef} videoURL={videoURL} setVideoURL={setVideoURL} />
+            <HabitatTags habitatTags={hashtags} setHabitatTags={setHashtags} />
 
             <Box>
               {(patchError || validationError) && (
@@ -91,11 +102,13 @@ export default connect(
       habitatInfo: {
         _id,
         trailer,
+        shareSettings,
       },
     },
   }) => ({
     habitatId: _id,
     trailer,
+    shareSettings,
   }),
   {
     setHabitatPropsAction: setHabitatProps,

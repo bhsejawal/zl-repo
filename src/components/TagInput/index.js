@@ -63,6 +63,7 @@ const TagInput = forwardRef(({
   onValidate,
   label,
   name,
+  labelClassName,
   ...rest
 }, ref) => {
   const [currentTag, setCurrentTag] = useState('');
@@ -115,7 +116,11 @@ const TagInput = forwardRef(({
         align="center"
         wrap
       >
-        <FormField className={style.input} label={label} name={name}>
+        <FormField
+          className={style.input}
+          label={<Text className={labelClassName}>{label}</Text> }
+          name={name}
+        >
           <div
             ref={tagListRef}
             className={classnames(style.values, 'customScrollBar', 'grey')}

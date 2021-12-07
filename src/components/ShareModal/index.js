@@ -12,6 +12,9 @@ export default connect(
         slug: habitatSlug,
         zoo: { name: zoo, slug: zooSlug } = {},
         camera: { _id: cameraId } = {},
+        shareSettings: {
+          hashtag,
+        },
       },
       shareModal: {
         open,
@@ -31,6 +34,7 @@ export default connect(
     data,
     cameraId,
     mediaId,
+    hashtags: hashtag,
     slug: `${zooSlug}/${habitatSlug}`,
   }),
   { onClose: closeShareModal, setShareModalMediaId },

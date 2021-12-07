@@ -22,6 +22,7 @@ const ShareContent = ({
   userId,
   habitatId,
   cameraId,
+  hashtag,
 }) => {
   const { post: sharePost } = useFetch(API_BASE_URL, {
     credentials: 'include',
@@ -65,7 +66,7 @@ const ShareContent = ({
         <Box className={style.shareMedia}>
           <a
             className={style.facebook}
-            href={generateFacebookURL(htmlURL)}
+            href={generateFacebookURL(htmlURL, hashtag)}
             target="_blank"
             rel="noreferrer"
             onClick={() => logShare('facebook')}
@@ -75,7 +76,7 @@ const ShareContent = ({
 
           <a
             className={style.twitter}
-            href={generateTwitterURL(htmlURL)}
+            href={generateTwitterURL(htmlURL, hashtag)}
             target="_blank"
             rel="noreferrer"
             onClick={() => logShare('twitter')}
@@ -123,5 +124,16 @@ const ShareContent = ({
 
 export default connect(({
   user: { userId },
-  habitat: { habitatInfo: { _id: habitatId, camera: { _id: cameraId } }},
-}) => ({ userId, habitatId, cameraId }))(ShareContent);
+  habitat: {
+    habitatInfo: {
+      _id: habitatId,
+      camera: { _id: cameraId },
+      shareSettings: {hashtag},
+    },
+  },
+}) => ({
+  userId,
+  habitatId,
+  cameraId,
+  hashtags: hashtag,
+}))(ShareContent);

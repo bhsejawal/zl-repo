@@ -1,6 +1,6 @@
 import { useEffect, useState, useMemo } from 'preact/hooks';
 import { Box, Layer, Text } from 'grommet';
-import { isEmpty, isNil } from 'lodash-es';
+import { isArray, isEmpty, isNil} from 'lodash-es';
 import { faFacebookF, faTwitter, faReddit } from '@fortawesome/free-brands-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
@@ -38,11 +38,11 @@ import style from './style.scss';
 const Chat = lazy(() => import('Components/Chat'));
 const PubNubWrapper = lazy(() => import('Components/PubNubWrapper'));
 
-export const generateTwitterURL = (html, text, hashtag, handle) => {
+export const generateTwitterURL = (html, hashtags, text, handle) => {
   const shareURL = new URL('https://twitter.com/intent/tweet');
 
-  if (!isNil(hashtag) && !isEmpty(hashtag)) {
-    shareURL.searchParams.append('hashtags', hashtag);
+  if (isArray(hashtags) && hashtags.length > 0) {
+    shareURL.searchParams.append('hashtags', hashtags.join(','));
   }
 
   if (!isNil(text) && !isEmpty(text)) {
@@ -58,9 +58,12 @@ export const generateTwitterURL = (html, text, hashtag, handle) => {
   return shareURL.href;
 };
 
-export const generateFacebookURL = (html) => {
+export const generateFacebookURL = (html, hashtags) => {
   const shareURL = new URL('https://www.facebook.com/sharer/sharer.php');
   shareURL.searchParams.append('u', html);
+  if (isArray(hashtags) && hashtags.length > 0) {
+    shareURL.searchParams.append('hashtag', `#${hashtags[0]}`);
+  }
   return shareURL.href;
 };
 
@@ -90,6 +93,7 @@ const ShareModal = ({
   habitat,
   slug,
   isGuest,
+  hashtags,
   isDownloadAllowed = true,
   shouldLoadPubnub = false,
 }) => {
@@ -380,7 +384,7 @@ const ShareModal = ({
                       className={style.shareIcon}
                     >
                       <a
-                        href={generateFacebookURL(htmlURL)}
+                        href={generateFacebookURL(htmlURL, hashtags)}
                         target="_blank"
                         rel="noreferrer"
                         onClick={() => logShare('facebook')}
@@ -395,7 +399,7 @@ const ShareModal = ({
                       className={style.shareIcon}
                     >
                       <a
-                        href={generateTwitterURL(htmlURL)}
+                        href={generateTwitterURL(htmlURL, hashtags)}
                         target="_blank"
                         rel="noreferrer"
                         onClick={() => logShare('twitter')}
