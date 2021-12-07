@@ -13,6 +13,7 @@ $animationTime: .3s;
     padding: 0 50px;
     text-align: left;
     cursor: pointer;
+    border-bottom: 1px solid #DFDFDF;
   }
 
   .icon {
@@ -42,6 +43,13 @@ $animationTime: .3s;
 
     .icon {
       transform: translateY(-50%) rotateZ(180deg);
+    }
+  }
+  
+  &:last-child {
+
+    .header {
+      border-bottom: 0;
     }
   }
 }

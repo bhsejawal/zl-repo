@@ -173,7 +173,7 @@
 .freeLabel {
   width: 48px;
   height: 20px;
-  font-size: 11px;
+  font-size: 10px;
   line-height: 20px;
   font-weight: bold;
   background-color: var(--pink);
@@ -182,5 +182,30 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-bottom: 4px;
+  margin: 0 auto 4px auto;
+}
+
+.talkLabel {
+  width: 48px;
+  height: 20px;
+  font-size: 10px;
+  line-height: 20px;
+  font-weight: bold;
+  background-color: var(--oliveLight);
+  color: var(--charcoal);
+  border-radius: 100px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 auto 4px auto;
+
+  svg {
+    font-size: 5px;
+    margin-right: 5px;
+  }
+
+  &.free {
+    background-color: var(--pink);
+    color: white;
+  }
 }

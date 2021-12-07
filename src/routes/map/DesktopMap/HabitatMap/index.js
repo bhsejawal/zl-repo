@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 import classnames from 'classnames';
 import { Box, Heading } from 'grommet';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faLockAlt } from '@fortawesome/pro-solid-svg-icons';
+import { faCircle, faLockAlt } from '@fortawesome/pro-solid-svg-icons';
 
 import Can from 'Components/Authorize'
 import EditButton from 'Components/AdminEditWrappers/EditButton';
@@ -144,7 +144,15 @@ const HabitatMap = ({
                 style.pinWrapper,
                 {[style.selected]: _id === activeHabitatId },
               )}>
-                {subscription.productId === 'FREEMIUM' && subscription.freeHabitat === _id && (
+                {(online && liveTalk) && (
+                  <div className={classnames(style.talkLabel, {
+                    [style.free]: subscription.productId === 'FREEMIUM' && subscription.freeHabitat === _id,
+                  })}>
+                    <FontAwesomeIcon icon={faCircle} />
+                    TALK
+                  </div>
+                )}
+                {!(online && liveTalk) && (subscription.productId === 'FREEMIUM' && subscription.freeHabitat === _id) && (
                   <div className={style.freeLabel}>
                     FREE
                   </div>
