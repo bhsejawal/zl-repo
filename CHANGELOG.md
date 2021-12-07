@@ -3,6 +3,30 @@ This file keeps track of all relevant change for every release.
 
 ## [Unreleased]
 
+## [5.31.0] - 2021-12-07
+### Added
+- Sharing hashtag support
+- Reddit Share
+- Improve public album
+- Different pin for disabled habitats on map page
+- Gift popup
+
+### Changed
+- Gift page layout update
+- Update map image
+- Increase spacing for share buttons for mobile
+- Order of card tabs
+- Update mobile break point
+- Remove tooltip from zoom bar on mobile and tablets
+- Focus on search input when search icon is clicked
+- Update landing page gift section header
+
+### Fixed
+- Live talk tag does not appear on the map
+- Camera controls can be used in full screen on mobile
+- Hard edge of landing page background image
+- Use html link for copy link share
+
 ## [5.30.0] - 2021-11-29
 ### Added
 - Gift section on landing page
