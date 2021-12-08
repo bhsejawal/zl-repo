@@ -104,7 +104,7 @@ const InviteModal = ({ closeInviteModalAction }) => {
   );
 
   return (
-    <Layer position="center" className={style.layer} background="transparent" ref={layerRef} onEsc={onClose}>
+    <Layer position="center" className={style.layer} background="white" ref={layerRef} onEsc={onClose}>
       {sent && (
         <StatusModalContent
           type="success"
