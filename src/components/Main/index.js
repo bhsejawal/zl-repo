@@ -20,6 +20,7 @@ import InviteModalLoader from 'Components/async/InviteModalLoader';
 import HabitatsUpdater from 'Components/HabitatsUpdater';
 import WhatsNew from 'Components/WhatsNew';
 import GiftPopUp from 'Components/GiftPopUp';
+import AppLoader from 'Components/AppLoader';
 
 import { logPageViewGA } from 'Shared/ga';
 import { patch, post, buildURL } from 'Shared/fetch';
@@ -334,8 +335,8 @@ const Main = ({
         <Album mediaType="photos" path="/album/photos/:photoId" />
         <Album mediaType="videos" path="/album/videos/:videoId" />
 
-        {/* NOTE: NotFound need to be at the end */}
-        <NotFound path=":*" />
+        {/* NOTE: NotFound need to be at the end, on first render path is undefined */}
+        {path === undefined ? <AppLoader path=":*" /> : <NotFound path=":*" />}
       </Router>
 
       {!isTabbedHabitatPath && <TimeBar path={path} />}
