@@ -48,6 +48,7 @@ import Album from '../../routes/album';
 import Plans from '../../routes/plans';
 import Map from '../../routes/map';
 import Schedule from '../../routes/schedule';
+import TalkSchedule from '../../routes/talkSchedule';
 import Favorite from '../../routes/favorite';
 import Account from '../../routes/account';
 import Habitat from '../../routes/habitat';
@@ -288,11 +289,14 @@ const Main = ({
             <Map />
           </PageWrapper>
         </AuthGuard>
-        <AuthGuard path="/schedule" permission="schedule:view" redirectTo="/plans">
+        <AuthGuard path="/schedule" publicPath="/talk-schedule" permission="schedule:view" redirectTo="/talk-schedule">
           <Header />
           <PageWrapper>
             <Schedule />
           </PageWrapper>
+        </AuthGuard>
+        <AuthGuard path="/talk-schedule" guestOnly redirectTo="/schedule">
+          <TalkSchedule />
         </AuthGuard>
         <AuthGuard path="/redeem" permission="redeem:view" redirectTo="/login">
           <Redeem />

@@ -7,10 +7,10 @@ import {
 } from 'grommet';
 import { format, isSameDay } from 'date-fns';
 import { useState } from 'preact/hooks';
-import { Link, route } from 'preact-router';
+import { Link } from 'preact-router';
 import { connect } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faLockAlt } from '@fortawesome/pro-solid-svg-icons';
+import { faExternalLink, faLockAlt } from '@fortawesome/pro-solid-svg-icons';
 import useFetch from 'use-http';
 import { inRange } from 'lodash-es';
 
@@ -26,6 +26,8 @@ import SuccessModal from 'Components/modals/Success';
 
 import { useIsMobileSize } from '../../../hooks';
 import { showEditEventModal } from '../actions';
+import { goToSignup } from '../../../routes/home/helpers';
+import { goToHabitatPage } from '../../../routes/habitat/helpers';
 import HabitatImage from '../HabitatImage';
 
 import style from './style.scss';
@@ -50,17 +52,23 @@ const TalkSchedule = ({
   subscription,
   editDisabled = false,
   showEditEventModalAction,
+  isLoggedIn,
 }) => {
   const isSmallScreen = useIsMobileSize();
   const [showDialog, setShowDialog] = useState(false);
   const [showErrorModal, setShowErrorModal] = useState(false);
   const [showSuccessModal, setShowSuccessModal] = useState(false);
+  const [showSignUpDialog, setShowSignUpDialog] = useState(false);
 
   const {
     post,
     response: reminderResponse,
     loading: sendingReminder,
   } = useFetch(buildURL(), { credentials: 'include', cachePolicy: 'no-cache' });
+
+  const unauthorizedInteraction = () => {
+    setShowSignUpDialog(true);
+  }
 
   const sendInvitationHandler = async () => {
     setShowDialog(false)
@@ -72,11 +80,23 @@ const TalkSchedule = ({
     }
   }
 
-  const onClickTimeHandler = () => {
-    if (inRange(Date.now(), Date.parse(startTime), Date.parse(stopTime))) {
-      route(`/h/${zooSlug}/${habitatSlug}`);
+  const goToHabitat = () => {
+    if (isLoggedIn) {
+      goToHabitatPage(zooSlug, habitatSlug);
     } else {
-      setShowDialog(true);
+      unauthorizedInteraction();
+    }
+  }
+
+  const onClickTimeHandler = () => {
+    if (isLoggedIn) {
+      if (inRange(Date.now(), Date.parse(startTime), Date.parse(stopTime))) {
+        goToHabitat();
+      } else {
+        setShowDialog(true);
+      }
+    } else {
+      unauthorizedInteraction();
     }
   }
 
@@ -92,9 +112,10 @@ const TalkSchedule = ({
           liveTalk={isHostStreamOn}
         >
           <Box flex="grow">
-            <Link href={encodeURI(`/h/${zooSlug}/${habitatSlug}`)}>
+            <div onClick={() => goToHabitat()} className={style.name}>
               <Heading level="4" margin="0px">{animal}</Heading>
-            </Link>
+              <FontAwesomeIcon className={style.externalLinkIcon} icon={ faExternalLink } />
+            </div>
             <Text size="medium" margin={{ top: 'small' }}>
               {description}
             </Text>
@@ -145,6 +166,9 @@ const TalkSchedule = ({
             onCancel={() => setShowDialog(false)}
           />
         )}
+        {showSignUpDialog && (
+          <SignUpDialog setShowSignUpDialog={setShowSignUpDialog} />
+        )}
         {sendingReminder && (<LoaderModal />)}
         {showErrorModal && (
           <ErrorModal
@@ -178,17 +202,18 @@ const TalkSchedule = ({
   return (
     <Box className={style.scheduleItem}>
       <Box direction="row" className={style.header}>
-        <Link href={encodeURI(`/h/${zooSlug}/${habitatSlug}`)} className={style.imageWrapper}>
+        <div onClick={() => goToHabitat()} className={style.imageWrapper}>
           <HabitatImage image={habitatImage} />
           {/* We need to load this from the habitats, size contraints should be defined on api */}
           <div className={style.logo}>
             <img src={zooLogo} alt="" />
           </div>
-        </Link>
+        </div>
         <Box justify="center" margin={{ left: 'medium' }} className={style.textWrapper}>
-          <Link href={encodeURI(`/h/${zooSlug}/${habitatSlug}`)}>
+          <div onClick={() => goToHabitat()} className={style.name}>
             <Heading level="3" margin="0px">{animal}</Heading>
-          </Link>
+            <FontAwesomeIcon className={style.externalLinkIcon} icon={ faExternalLink } />
+          </div>
           <Text size="xlarge" margin={{ top: 'small' }} >
             {habitatDescription}
           </Text>
@@ -257,6 +282,9 @@ const TalkSchedule = ({
           onCancel={() => setShowDialog(false)}
         />
       )}
+      {showSignUpDialog && (
+        <SignUpDialog setShowSignUpDialog={setShowSignUpDialog} />
+      )}
       {sendingReminder && (<LoaderModal />)}
       {showErrorModal && (
         <ErrorModal
@@ -274,7 +302,17 @@ const TalkSchedule = ({
   );
 };
 
+const SignUpDialog = ({ setShowSignUpDialog }) => (
+  <Dialog
+      title="Join Zoolife to access."
+      text="Expert talks and habitats from zoos and sanctuaries around the world await!"
+      buttonLabel="Sign Up Now"
+      onConfirm={() => goToSignup()}
+      onCancel={() => setShowSignUpDialog(false)}
+    />
+)
+
 export default connect(
-  ({ user: { subscription }}) => ({ subscription }),
+  ({ user: { subscription, logged }}) => ({ subscription, isLoggedIn: logged }),
   { showEditEventModalAction: showEditEventModal },
 )(TalkSchedule);

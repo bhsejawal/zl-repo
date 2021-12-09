@@ -1,6 +1,7 @@
 import { h } from 'preact';
 import { Box, Header } from 'grommet';
 import {
+  faCalendarDay,
   faGift,
   faSignInAlt,
   faSignOut,
@@ -31,6 +32,7 @@ const HeaderComponent = () => (
     <div className={style.navBar}>
       <NavItem text="Pricing" onClick={goToPrices} icon={faTicketAlt} />
       <NavItem text="Gift Cards" onClick={goToGift} icon={faGift} />
+      <NavItem text="Talk Schedule" url="/schedule" icon={faCalendarDay} />
       <Invite text="Invite Friends" />
       <NavItem text="Log In" onClick={goToLogin} icon={faSignInAlt} />
       <LandingSecondary onClick={goToSignup} className={style.signUpButton}>
@@ -41,6 +43,7 @@ const HeaderComponent = () => (
     <BurgerMenu id={style.burgerMenu}>
       <NavItem text="Pricing" onClick={goToPrices} icon={faTicketAlt} />
       <NavItem text="Gift Cards" onClick={goToGift} icon={faGift} />
+      <NavItem text="Talk Schedule" url="/schedule" icon={faCalendarDay} />
       <Invite text="Invite Friends" />
       <NavItem onClick={goToLogin} text="Log In" url="/login" icon={faSignOut} />
       <Box margin={{ left: '15px' }}>

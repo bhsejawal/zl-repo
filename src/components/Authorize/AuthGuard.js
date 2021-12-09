@@ -27,6 +27,7 @@ const AuthGuard = ({
   setUserDataAction,
   setSessionChechedAction,
   unsetUserDataAction,
+  publicPath,
   // we need to pass this to children
   // because we'll have props added by preact router or some other parent
   ...props
@@ -48,7 +49,9 @@ const AuthGuard = ({
       response: async ({ response }) => {
         if (response.status === 401) {
           unsetUserDataAction();
-          if (!guestOnly) {
+          if (publicPath) {
+            authRedirect(publicPath);
+          } else if (!guestOnly) {
             authRedirect();
           }
         }
@@ -67,7 +70,9 @@ const AuthGuard = ({
           identifyUser(response.data);
         } else if (response.status === 401) {
           unsetUserDataAction();
-          if (!guestOnly) {
+          if (publicPath) {
+            authRedirect(publicPath);
+          } else if (!guestOnly) {
             authRedirect();
           }
         } else {

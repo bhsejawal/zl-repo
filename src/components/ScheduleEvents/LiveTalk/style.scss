@@ -23,6 +23,7 @@
       padding-right: 45px;
       position: relative;
       height: fit-content;
+      cursor: pointer;
 
       .logo {
         width: 75px;
@@ -68,6 +69,18 @@
       top: 10px;
     }
   }
+}
+
+.name {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.externalLinkIcon {
+  color: var(--blueDark);
+  font-size: 20px;
+  padding-left: 4px;
 }
 
 .sessionButton {
