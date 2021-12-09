@@ -21,7 +21,7 @@ const defaultModalState = {
   changeLog: null,
 }
 
-const WhatsNew = () => {
+const WhatsNew = ({ logged }) => {
   const [appVersion, setAppVersion] = useLocalStorage('appVersion', 0);
   const [modalState, setModalState] = useState(defaultModalState);
 
@@ -59,19 +59,22 @@ const WhatsNew = () => {
       }
     }
 
-    if (!appVersion) {
-      fetchLatestRelease();
-    } else {
-      fetchCurrentRelease();
+    if (logged) {
+      if (!appVersion) {
+        fetchLatestRelease();
+      } else {
+        fetchCurrentRelease();
+      }
+
+      const interval = setInterval(fetchCurrentRelease, 5 * 60 * 1000);
+      return () => {
+        clearInterval(interval);
+      };
     }
 
-    const interval = setInterval(fetchCurrentRelease, 5 * 60 * 1000);
-    return () => {
-      clearInterval(interval);
-    };
-
+    return () => {};
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [logged]);
 
   const onClose = () => {
     window.location.reload(true);
@@ -120,4 +123,4 @@ const WhatsNew = () => {
   )
 }
 
-export default connect(({ user }) => ( user ))(WhatsNew);
+export default connect(({ user: { logged } }) => ({ logged }))(WhatsNew);
